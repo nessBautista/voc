@@ -55,3 +55,13 @@ testpaths = ["tests"]
 # Add the project root to Python's import search path for the test session.
 # This helps tests import local code; it does not install that code.
 pythonpath = ["."]
+
+
+# Console entry points: installing the package creates these shell commands.
+# Left side: command name (voc). Right side: Python module:callable.
+# "voc.cli:main" loads voc/cli/__init__.py and calls its main Click group,
+# which dispatches subcommands such as "voc version" and "voc dataset-info".
+# In this container, uv sync installs the launcher into /opt/venv/bin (on PATH).
+# After changing entry points, run uv sync to regenerate the installed commands.
+[project.scripts]
+voc = "voc.cli:main"
