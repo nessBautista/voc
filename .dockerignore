@@ -1,0 +1,17 @@
+.venv
+.git
+.zen
+__pycache__
+.pytest_cache
+.ruff_cache
+*.egg-info
+data
+out
+.env
+site
+**/__pycache__
+**/data
+**/build
+**/*.egg-info
+**/.ipynb_checkpoints
+ml-project/src

@@ -1,0 +1,54 @@
+# Compose uses this project name to group containers, networks, and volumes.
+# It keeps this environment separate from the original prototype's project.
+name: voc-dev
+
+# Define the containers that make up this environment.
+services:
+  # Service name used in commands such as: docker compose exec workspace bash
+  workspace:
+    # Build the image using this directory as the context and its Dockerfile.
+    build: .
+
+    # Add a small init process to forward signals and reap exited child processes.
+    init: true
+
+    # Set environment variables inside the running container.
+    # These override matching Dockerfile ENV defaults; they do not create mounts.
+    environment:
+      VOC_DATA_DIR: /data
+      ZENML_CONFIG_PATH: /data/zenml-client
+      ZENML_ANALYTICS_OPT_IN: "false"
+      MLFLOW_DISABLE_AGENT_HINT: "1"
+
+    # Mount storage into this service's container. Both mounts are writable.
+    volumes:
+      # BIND MOUNT: expose your actual host repository inside the container.
+      # source: . means the directory containing this Compose file (your voc repo).
+      # target is the path where that directory appears INSIDE the container.
+      # Example: host voc/src/example.py <-> container /workspace/src/example.py.
+      # Edits from either side affect the same files; this is not a separate copy.
+      # Deleting a file through /workspace also deletes that file on the host.
+      # This mount hides the image's existing /workspace contents while mounted.
+      # Dependencies remain visible because the Dockerfile puts them in /opt/venv.
+      - type: bind
+        source: .
+        target: /workspace
+
+      # NAMED VOLUME: mount Docker-managed storage at /data in the container.
+      # Short syntax is SOURCE:TARGET; "runtime" refers to the declaration below.
+      # App writes such as /data/raw/raw.db go into this volume.
+      # This is NOT your repository's data/ folder. On macOS, Docker Desktop
+      # manages this storage inside its Linux VM, rather than a chosen host folder.
+      # The volume survives container removal and ordinary docker compose down.
+      # A later up with the same project/volume configuration reuses its data.
+      # docker compose down --volumes explicitly removes this named volume.
+      - runtime:/data
+
+    # Allow up to 45 seconds for the container to stop before forcibly killing it.
+    stop_grace_period: 45s
+
+# Declare the named volumes used above; this declaration alone mounts nothing.
+# With project name voc-dev, Docker normally names this volume voc-dev_runtime.
+# An empty definition uses Docker's default volume configuration.
+volumes:
+  runtime:
