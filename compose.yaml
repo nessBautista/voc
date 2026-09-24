@@ -19,6 +19,7 @@ services:
       ZENML_CONFIG_PATH: /data/zenml-client
       ZENML_ANALYTICS_OPT_IN: "false"
       MLFLOW_DISABLE_AGENT_HINT: "1"
+      VOC_SEED_PATH: /seed/dataset.db
 
     # Mount storage into this service's container. Both mounts are writable.
     volumes:
@@ -33,6 +34,12 @@ services:
       - type: bind
         source: .
         target: /workspace
+      - type: bind
+        source: ${VOC_SEED_DIR:?Set VOC_SEED_DIR in .env}
+        target: /seed
+        read_only: true
+        bind:
+          create_host_path: false
 
       # NAMED VOLUME: mount Docker-managed storage at /data in the container.
       # Short syntax is SOURCE:TARGET; "runtime" refers to the declaration below.

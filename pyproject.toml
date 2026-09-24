@@ -1,20 +1,57 @@
+# Standard Python project metadata. Packaging tools use this to identify VOC
+# and determine which Python versions and runtime dependencies it requires.
 [project]
+# Distribution name used when installing the package; voc/ contains its code.
 name = "voc"
 version = "0.1.0"
 description = "VOC development environment"
+# Supported Python range: 3.11 and 3.12. The Dockerfile selects Python 3.12.
 requires-python = ">=3.11,<3.13"
+# Dependencies installed with VOC, including when someone installs its wheel.
+# click: command-line interfaces; pandas: dataframes; pyarrow: Arrow/Parquet data;
+# google-play-scraper: fetching reviews from Google Play.
+# >= and < express allowed ranges; == pins one version. uv.lock records the
+# exact resolved versions, including dependencies of these dependencies.
 dependencies = [
   "click>=8.0,<=8.2.1", "pandas>=2.2,<3", "pyarrow>=18,<24",
   "google-play-scraper==1.2.7",
 ]
 
+# Additional dependencies for working in this repository. These groups are
+# not declared as runtime requirements of the distributed VOC library.
+# Our Docker build selects both with: uv sync --locked --group ml --group dev
 [dependency-groups]
+# pytest runs tests; ruff checks code style and common programming mistakes.
 dev = ["pytest>=8,<10", "ruff>=0.12"]
+# The ML development environment: orchestration, tracking, notebooks, plots,
+# and documentation tools. The name "ml" is a grouping chosen by this project.
+# zenml[server] includes ZenML's optional server dependencies.
+# python-rapidjson has a compatibility bound inherited from the prototype.
+# mkdocs builds documentation; mkdocstrings[python] documents Python APIs.
 ml = [
   "zenml[server]==0.96.4", "mlflow==3.16.1", "python-rapidjson<1.15",
   "jupyterlab>=4,<5", "marimo>=0.15", "matplotlib>=3.9",
   "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27",
 ]
 
-[tool.uv]
-package = false
+# Tell packaging tools how to build VOC for installation.
+# Hatchling is a build backend, not the Python interpreter or a dependency manager.
+# uv supplies these build requirements in an isolated build environment by default.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Hatchling-specific settings: include voc/ in the installable .whl package.
+# The separate ML code in src/ is not included by this package selection.
+# During development, uv sync normally installs the project in editable mode,
+# so imports use the source files rather than a separately copied code tree.
+[tool.hatch.build.targets.wheel]
+packages = ["voc"]
+
+# pytest-specific settings; these configure tests, not package installation.
+[tool.pytest.ini_options]
+# Look here when pytest is run without explicit test paths.
+testpaths = ["tests"]
+# Add the project root to Python's import search path for the test session.
+# This helps tests import local code; it does not install that code.
+pythonpath = ["."]
