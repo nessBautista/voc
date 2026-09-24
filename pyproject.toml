@@ -1,0 +1,20 @@
+[project]
+name = "voc"
+version = "0.1.0"
+description = "VOC development environment"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "click>=8.0,<=8.2.1", "pandas>=2.2,<3", "pyarrow>=18,<24",
+  "google-play-scraper==1.2.7",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.12"]
+ml = [
+  "zenml[server]==0.96.4", "mlflow==3.16.1", "python-rapidjson<1.15",
+  "jupyterlab>=4,<5", "marimo>=0.15", "matplotlib>=3.9",
+  "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27",
+]
+
+[tool.uv]
+package = false
