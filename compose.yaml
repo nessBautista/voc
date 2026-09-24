@@ -20,6 +20,7 @@ services:
       ZENML_ANALYTICS_OPT_IN: "false"
       MLFLOW_DISABLE_AGENT_HINT: "1"
       VOC_SEED_PATH: /seed/dataset.db
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:?Set JUPYTER_TOKEN in .env}
 
     # Mount storage into this service's container. Both mounts are writable.
     volumes:

@@ -22,7 +22,7 @@ def main():
                    "--host", "0.0.0.0", "--port", "5000", "--workers", "1"],
         "jupyter": [py, "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888",
                     "--no-browser", "--allow-root",
-                    "--ServerApp.root_dir=" + str(root / "notebooks")],
+                    "--ServerApp.root_dir=/workspace/notebooks"],
     }
     processes, logs = [], []
     stopping = False
