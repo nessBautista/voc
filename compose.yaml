@@ -43,7 +43,16 @@ services:
       # A later up with the same project/volume configuration reuses its data.
       # docker compose down --volumes explicitly removes this named volume.
       - runtime:/data
-
+    ports:
+      - "127.0.0.1:${VOC_ZENML_PORT:-8237}:8237"
+      - "127.0.0.1:${VOC_MLFLOW_PORT:-5000}:5000"
+      - "127.0.0.1:${VOC_JUPYTER_PORT:-8888}:8888"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; [urllib.request.urlopen('http://127.0.0.1:'+str(p),timeout=5).close() for p in (8237,5000,8888)]"]
+      interval: 15s
+      timeout: 25s
+      start_period: 90s
+      retries: 5
     # Allow up to 45 seconds for the container to stop before forcibly killing it.
     stop_grace_period: 45s
 

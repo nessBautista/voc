@@ -50,4 +50,4 @@ RUN uv sync --locked --group ml --group dev
 # Default command when a container starts: keep it running so you can enter it.
 # Unlike RUN, CMD does not execute during the image build.
 # This placeholder does not start dashboards; a later lesson replaces it.
-CMD ["sleep", "infinity"]
+CMD ["python", "-m", "src.mlops.services"]

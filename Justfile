@@ -14,7 +14,7 @@ shell:
     {{compose}} exec workspace bash
 
 logs:
-    {{compose}} logs --tail=80
+    {{compose}} exec workspace sh -c 'tail -n 60 /data/logs/*.log'
 
 status:
     {{compose}} ps
