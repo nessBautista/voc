@@ -1,0 +1,4 @@
+blank_text = "exclude_and_report"
+combine_title_body = false
+platforms = ["app_store", "google_play", "x", "youtube"]
+# Null filters are represented by omitted keys. All 18 workable-v1 columns are required.
