@@ -1,0 +1,15 @@
+[project]
+name = "voc-ml"
+version = "0.1.0"
+requires-python = ">=3.11,<3.13"
+dependencies = []
+[project.scripts]
+voc-ml = "src.mlops.cli:main"
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+[tool.setuptools.packages.find]
+where = [".."]
+include = ["src*"]
+[tool.setuptools.package-dir]
+"" = ".."

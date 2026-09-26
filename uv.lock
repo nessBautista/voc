@@ -6,6 +6,12 @@ resolution-markers = [
     "python_full_version < '3.12'",
 ]
 
+[manifest]
+members = [
+    "voc",
+    "voc-ml",
+]
+
 [[package]]
 name = "aiohappyeyeballs"
 version = "2.7.1"
@@ -3400,6 +3406,7 @@ ml = [
     { name = "mkdocstrings", extra = ["python"] },
     { name = "mlflow" },
     { name = "python-rapidjson" },
+    { name = "voc-ml" },
     { name = "zenml", extra = ["server"] },
 ]
 
@@ -3424,8 +3431,14 @@ ml = [
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.27" },
     { name = "mlflow", specifier = "==3.16.1" },
     { name = "python-rapidjson", specifier = "<1.15" },
+    { name = "voc-ml", editable = "ml-project" },
     { name = "zenml", extras = ["server"], specifier = "==0.96.4" },
 ]
+
+[[package]]
+name = "voc-ml"
+version = "0.1.0"
+source = { editable = "ml-project" }
 
 [[package]]
 name = "waitress"

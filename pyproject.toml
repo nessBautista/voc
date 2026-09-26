@@ -28,10 +28,12 @@ dev = ["pytest>=8,<10", "ruff>=0.12"]
 # zenml[server] includes ZenML's optional server dependencies.
 # python-rapidjson has a compatibility bound inherited from the prototype.
 # mkdocs builds documentation; mkdocstrings[python] documents Python APIs.
+# voc-ml installs our local ML code and its CLI when the ml group is selected.
+# The workspace/source settings below tell uv where to find that package.
 ml = [
   "zenml[server]==0.96.4", "mlflow==3.16.1", "python-rapidjson<1.15",
   "jupyterlab>=4,<5", "marimo>=0.15", "matplotlib>=3.9",
-  "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27",
+  "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27", "voc-ml"
 ]
 
 # Tell packaging tools how to build VOC for installation.
@@ -65,3 +67,14 @@ pythonpath = ["."]
 # After changing entry points, run uv sync to regenerate the installed commands.
 [project.scripts]
 voc = "voc.cli:main"
+
+
+# Manage the root VOC package and the ML package together, sharing uv.lock.
+# This directory holds the second pyproject.toml; the ML source stays in src/.
+[tool.uv.workspace]
+members = ["ml-project"]
+
+# Resolve the voc-ml dependency from a local workspace member, not PyPI.
+# uv matches this name to the project name in ml-project/pyproject.toml.
+[tool.uv.sources]
+voc-ml = { workspace = true }
