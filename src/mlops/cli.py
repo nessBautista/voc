@@ -28,7 +28,7 @@ def main():
 
 @main.command()
 def setup():
-    """Register and select the local ZenML stack (services must be running)."""
+    """Register and select the configured ZenML stack."""
     from .bootstrap import bootstrap
 
     click.echo(bootstrap())

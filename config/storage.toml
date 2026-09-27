@@ -1,4 +1,4 @@
-# Storage configuration only; tool wiring is the next Stage 3 checkpoint.
+# ZenML consumes these settings at startup/setup; MLflow wiring follows next.
 # Local remains the default while we verify the personal S3 destinations.
 artifact_destination = "local"  # local | s3
 # Shared dataset reads are implemented later; keep this local for now.

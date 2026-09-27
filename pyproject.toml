@@ -36,6 +36,9 @@ dev = ["pytest>=8,<10", "ruff>=0.12"]
 ml = [
   "zenml[server]==0.96.4", "mlflow==3.16.1", "python-rapidjson<1.15",
   "s3fs>2022.3.0,!=2025.3.1", "aws-profile-manager",
+  # 3.9.1 races when ZenML finalizers close one HTTP session concurrently.
+  # Keep this pin until tests/test_s3_shutdown.py passes with a newer release.
+  "aiobotocore==3.9.0",
   "jupyterlab>=4,<5", "marimo>=0.15", "matplotlib>=3.9",
   "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27", "voc-ml"
 ]

@@ -56,3 +56,25 @@ or Docker inspection output. Expiring credentials require a fresh credential
 session and container recreation with `just up-aws`; injection does not refresh
 them automatically. Direct field references do not perform a plugin's role
 assumption or MFA flow, so compare host and container identities.
+
+
+## Checking ZenML artifact storage
+
+After `just s3-check` passes, set `VOC_ARTIFACT_DESTINATION=s3` in your ignored
+`config/aws.refs.env`, then run `just up-aws` and `just shell`. Inside the container:
+
+```bash
+python -m src.mlops.check_zenml
+python -m src.mlops.check_zenml --reload
+```
+
+Expect `status: passed`, `row_count: 2`, and an S3 artifact URI under your personal
+installation's `zenml-artifacts` prefix. The second command reloads the same
+artifact ID recorded in `/data/checks/zenml-s3.json`, without running the pipeline
+again. After `just down` / `just up-aws`, repeat `--reload` to prove persistence.
+This diagnostic does not collect or publish datasets.
+
+ZenML now selects a separate S3 stack at startup while preserving the local stack.
+Set the destination back to `local` and recreate the container to switch back.
+MLflow still uses local artifact storage until its own configuration checkpoint;
+`storage-info` currently shows its intended S3 destination, not an active one.

@@ -2,7 +2,46 @@
 
 import os
 
-from voc.paths import data_root
+from voc.storage import load_storage
+
+
+def zenml_store_settings(storage):
+    """Keep local names stable; give each S3 installation separate registrations."""
+    if storage.artifact_destination == "local":
+        return (
+            "voc-local",
+            "voc-artifacts",
+            "local",
+            {"path": storage.zenml_artifact_uri},
+        )
+    suffix = storage.installation_id
+    return (
+        f"voc-s3-{suffix}",
+        f"voc-artifacts-s3-{suffix}",
+        "s3",
+        {
+            "path": storage.zenml_artifact_uri,
+            "client_kwargs": {"region_name": storage.region},
+        },
+    )
+
+
+def ensure_component(client, kind, name, flavor, config):
+    """Reuse exact intended settings; never silently repoint an old component."""
+    try:
+        item = client.get_stack_component(kind, name)
+    except KeyError:
+        return client.create_stack_component(name, flavor, kind, config)
+    if item.flavor_name != flavor or any(
+        item.configuration.get(k) != v for k, v in config.items()
+    ):
+        raise ValueError("Existing component configuration differs: " + name)
+    if flavor == "s3" and any(
+        item.configuration.get(k)
+        for k in ("key", "secret", "token", "authentication_secret")
+    ):
+        raise ValueError("S3 component must use environment credentials: " + name)
+    return item
 
 
 def bootstrap():
@@ -13,7 +52,9 @@ def bootstrap():
 
     # Enable installed integrations and prepare persistent directories.
     integration_registry.activate_integrations()
-    root = data_root()
+    storage = load_storage()
+    root = storage.runtime_root
+    stack_name, store_name, store_flavor, store_config = zenml_store_settings(storage)
     root.mkdir(parents=True, exist_ok=True)
     (root / "mlflow").mkdir(exist_ok=True)
     # Client reads and writes ZenML configuration and metadata.
@@ -22,12 +63,8 @@ def bootstrap():
     # Each tuple: component type, registered name, implementation flavor, settings.
     definitions = [
         (T.ORCHESTRATOR, "voc-local", "local", {}),
-        (
-            T.ARTIFACT_STORE,
-            "voc-artifacts",
-            "local",
-            {"path": str(root / "zenml-artifacts")},
-        ),
+        # S3 registration stores only its URI/region; SDK credentials come from env.
+        (T.ARTIFACT_STORE, store_name, store_flavor, store_config),
         (
             T.EXPERIMENT_TRACKER,
             "voc-mlflow",
@@ -42,28 +79,25 @@ def bootstrap():
     ]
     # Reuse matching components; create missing ones, but reject conflicts.
     for kind, name, flavor, config in definitions:
-        try:
-            item = client.get_stack_component(kind, name)
-            if any(item.configuration.get(k) != v for k, v in config.items()):
-                raise ValueError("Existing component configuration differs: " + name)
-        except KeyError:  # This component has not been registered yet.
-            item = client.create_stack_component(name, flavor, kind, config)
+        item = ensure_component(client, kind, name, flavor, config)
         components[kind] = item.id  # Collect the IDs for the stack definition.
     # A stack groups the selected components into one infrastructure configuration.
     try:
-        stack = client.get_stack("voc-local")
-        if any(stack.components[k][0].id != v for k, v in components.items()):
-            raise ValueError("Existing voc-local stack has unexpected components")
+        stack = client.get_stack(stack_name)
+        if any(
+            not stack.components.get(k) or stack.components[k][0].id != v
+            for k, v in components.items()
+        ):
+            raise ValueError("Existing stack has unexpected components: " + stack_name)
     except KeyError:  # First setup: register the stack.
-        stack = client.create_stack("voc-local", components)
-    # Use this stack for subsequent pipeline runs.
-    client.activate_stack(stack.id)
+        stack = client.create_stack(stack_name, components)
     from mlflow.tracking import MlflowClient
 
     # Use the tracking URI from the last component definition (MLflow).
     tracker_uri = definitions[-1][3]["tracking_uri"]
     tracker = MlflowClient(tracking_uri=tracker_uri)
     name = "voc-datasets"
+    # MLflow remains local in this increment; its S3 wiring follows next.
     artifact_location = (root / "mlflow/artifacts").as_uri()
     # Prepare the experiment for later logging; this does not create a run.
     experiment = tracker.get_experiment_by_name(name)
@@ -73,5 +107,7 @@ def bootstrap():
         raise ValueError(
             "MLflow experiment artifact path differs from configured storage"
         )
+    # Activate only after component and experiment validation succeeds.
+    client.activate_stack(stack.id)
     # The setup CLI prints this identifier as confirmation.
     return str(stack.id)
