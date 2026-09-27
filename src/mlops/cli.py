@@ -1,28 +1,36 @@
+"""Click commands for the ML project; deliberately separate from the VOC CLI."""
+
+import json
 import os
-from pathlib import Path
 import tomllib
 import uuid
+from pathlib import Path
+
 import click
 
 
 def environment():
     from voc.paths import data_root
+
     os.environ.setdefault("VOC_DATA_DIR", str(data_root()))
     os.environ.setdefault("ZENML_CONFIG_PATH", str(data_root() / "zenml-client"))
-    os.environ.setdefault("ZENML_CUSTOM_SOURCE_ROOT", str(Path(__file__).resolve().parents[2]))
+    os.environ.setdefault(
+        "ZENML_CUSTOM_SOURCE_ROOT", str(Path(__file__).resolve().parents[2])
+    )
     os.environ.setdefault("ZENML_ANALYTICS_OPT_IN", "false")
 
 
 @click.group()
 def main():
-    """ML project workflows."""
+    """ML environment, collection/preparation pipelines and publication."""
     environment()
 
 
 @main.command()
 def setup():
-    """Select the local stack."""
+    """Register and select the local ZenML stack (services must be running)."""
     from .bootstrap import bootstrap
+
     click.echo(bootstrap())
 
 
@@ -32,10 +40,13 @@ def dataset():
 
 
 @dataset.command("init")
-@click.option("--seed", type=click.Path(exists=True), envvar="VOC_SEED_PATH", required=True)
+@click.option(
+    "--seed", type=click.Path(exists=True), envvar="VOC_SEED_PATH", required=True
+)
 @click.option("--config", default="config/collector.toml")
 def initialize(seed, config):
     from voc.collector import initialize_raw_store, load_config
+
     cfg = load_config(config)
     click.echo(initialize_raw_store(cfg["raw_store"], seed_path=seed))
 
@@ -43,19 +54,43 @@ def initialize(seed, config):
 @dataset.command("run")
 @click.option("--config", default="config/collector.toml")
 @click.option("--rules", default="config/preparation.toml")
-@click.option("--refresh/--no-refresh", default=False)
-@click.option("--live", is_flag=True)
-def run(config, rules, refresh, live):
+@click.option(
+    "--refresh/--no-refresh",
+    default=False,
+    help="Refresh requires --live acknowledgement.",
+)
+@click.option("--live", is_flag=True, help="Allow real store requests.")
+@click.option("--operation-id", default=None)
+def run(config, rules, refresh, live, operation_id):
     if refresh and not live:
         raise click.UsageError("Use --refresh --live to make store requests")
     from voc.collector import load_config
+
     from .pipeline import dataset_pipeline
-    with open(rules, "rb") as stream:
-        settings = tomllib.load(stream)
-    result = dataset_pipeline(config=load_config(config), rules=settings,
-                              refresh=refresh, operation_id=str(uuid.uuid4()),
-                              project_identity="tutorial-lesson-06")
-    click.echo(str(result.id))
+    from .runner import code_identity, publish_run
+
+    cfg = load_config(config)
+    with open(rules, "rb") as f:
+        settings = tomllib.load(f)
+    result = dataset_pipeline(
+        config=cfg,
+        rules=settings,
+        refresh=refresh,
+        operation_id=operation_id or str(uuid.uuid4()),
+        project_identity=code_identity(),
+    )
+    if result is None:
+        raise click.ClickException("No completed run returned")
+    click.echo(json.dumps(publish_run(str(result.id)), indent=2))
+
+
+@dataset.command("publish")
+@click.argument("run_id")
+def publish(run_id):
+    """Retry publication of an already-completed dataset run."""
+    from .runner import publish_run
+
+    click.echo(json.dumps(publish_run(run_id), indent=2))
 
 
 if __name__ == "__main__":
