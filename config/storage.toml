@@ -1,0 +1,15 @@
+# Storage configuration only; tool wiring is the next Stage 3 checkpoint.
+# Local remains the default while we verify the personal S3 destinations.
+artifact_destination = "local"  # local | s3
+# Shared dataset reads are implemented later; keep this local for now.
+dataset_source = "local"        # local | s3
+
+# Prefixes within the bucket, not filesystem directories or full s3:// URIs.
+shared_prefix = "voc/datasets"
+members_prefix = "members"
+
+# AWS_BUCKET, AWS_REGION and VOC_MEMBER_ID normally come from aws.refs.env.
+# Optional non-secret fallbacks can be added here:
+# bucket = "your-team-bucket"
+# region = "us-east-2"
+# member_id = "your-name"
