@@ -25,7 +25,8 @@ def code_identity():
     return h.hexdigest()
 
 
-def publish_run(run_id):
+def validated_run(run_id):
+    """Load and validate completed outputs without changing any catalog."""
     run = Client().get_pipeline_run(run_id)
     if str(run.status.value) != "completed":
         raise RuntimeError("Only completed pipelines can publish")
@@ -71,5 +72,24 @@ def publish_run(run_id):
         artifact_id=str(artifact.id),
         mlflow_run_id=tracking["mlflow_run_id"],
     )
+    return info, frame
+
+
+def publish_run(run_id):
+    info, _ = validated_run(run_id)
     publish(info)
     return info
+
+
+def share_run(run_id):
+    """Share an already-published local result; collection is never invoked here."""
+    from voc.datasets import resolve
+    from voc.shared import publish_release
+    from voc.storage import load_storage
+    from voc.store import Snapshot
+
+    info, frame = validated_run(run_id)
+    if resolve(info["artifact_id"]) != info:
+        raise ValueError("Local publication differs from validated pipeline output")
+    raw = RawStore(info["raw_store_id"]).read(info["raw_revision_id"])
+    return publish_release(raw, Snapshot(frame, info), load_storage())

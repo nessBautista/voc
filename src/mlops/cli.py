@@ -107,5 +107,27 @@ def publish(run_id):
     click.echo(json.dumps(publish_run(run_id), indent=2))
 
 
+@dataset.command("share")
+@click.argument("run_id")
+def share(run_id):
+    """Upload a published run's raw/workable release and advance shared latest."""
+    from botocore.exceptions import BotoCoreError, ClientError
+
+    from .runner import share_run
+
+    try:
+        result = share_run(run_id)
+    except (
+        ValueError,
+        LookupError,
+        RuntimeError,
+        OSError,
+        BotoCoreError,
+        ClientError,
+    ) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=2))
+
+
 if __name__ == "__main__":
     main()

@@ -107,3 +107,49 @@ The server uses a local SQLite backend with `--no-serve-artifacts` and the
 configured `--default-artifact-root`. Python clients access S3 directly using
 the container credentials. Do not set `MLFLOW_TRACKING_URI` to an S3 URI.
 Switching destinations changes new writes, without moving previous runs.
+
+
+## Checking shared dataset publication
+
+Shared exports are an explicit action, separate from personal ZenML/MLflow storage.
+Keep `dataset_source = "local"` until the automatic reader checkpoint is implemented.
+Rebuild/start using `just up-aws`, then enter with `just shell` and run:
+
+```bash
+python -m src.mlops.check_shared
+python -m src.mlops.check_shared --reload
+```
+
+This creates two synthetic two-row releases under your personal
+`members/<member>/<installation>/tests/shared/<check-id>/` prefix. It verifies
+raw reuse, exact bytes, idempotent retry and rejection of an older release trying
+to replace latest. It does not write to `voc/datasets/`. The reload creates no
+objects and reads `/data/checks/shared-publication.json` to locate the same pair.
+Diagnostic files remain in S3; there is no automatic deletion.
+
+After that check passes, inspect `voc dataset-info` and choose its `run_id`:
+
+```bash
+voc dataset-info
+voc-ml dataset share COMPLETED_PUBLISHED_RUN_UUID
+```
+
+Replace the placeholder with the selected run ID. Sharing validates that completed
+run against its personal publication, loads the exact raw revision referenced by
+its workable artifact, exports both to Parquet and verifies their round trips.
+Files and a manifest are uploaded to the configured shared dataset root; shared
+`latest.json` advances only after all immutable objects have been verified.
+It does not collect new reviews or run the pipeline again. `voc-ml dataset publish`
+still refers only to the personal catalog.
+
+Repeat the same share command after an interrupted upload. Its saved release ID,
+export bytes and original latest precondition live under
+`/data/shared-publications/`. Preserve that directory for retries. If someone else
+has advanced latest, the old attempt is rejected; inspect the newer release before
+choosing a new successful pipeline run to share. There is no force-overwrite flag.
+
+For this initial implementation, each export is limited to 1 GiB and uses one
+conditional S3 upload. New and reused objects are downloaded for SHA-256 validation;
+this favors a verifiable first implementation over minimal transfer. Shared raw
+snapshots are reused by revision ID; different raw revisions are full snapshots.
+These exports do not back up raw revision history or experiment metadata.

@@ -65,3 +65,28 @@ This installs `voc` and its core dependencies, without the `src` package, `voc-m
 ::: voc.datasets
 
 ::: voc.store.Snapshot
+
+
+## Shared releases
+
+`voc.shared.publish_release(raw, workable, storage)` exports a pinned pair of
+`Snapshot` objects as portable Parquet and creates a versioned release manifest.
+The framework validates the matching raw identity and workable content checksum;
+`src/mlops/runner.py` additionally checks the completed ZenML run and its existing
+personal publication before calling this function through `voc-ml dataset share`.
+
+The manifest records file hashes, row counts, Arrow/pandas column types,
+preparation rules and source run/artifact identifiers. Its paths are bucket-relative
+keys under the configured dataset root. Local database paths and credentials are
+not part of the shared manifest. SHA-256 for file bytes is distinct from the existing
+dataframe content checksum.
+
+`ReleaseObjects` performs bounded reads, conditional immutable writes and a
+conditional latest-pointer update. `PublicationConflict` means that another release
+has superseded the attempt's saved precondition. Retrying must not replace that
+newer result. Local attempt state and exported files remain in
+`/data/shared-publications/`; keep them across container recreation.
+
+Only the explicit share action changes team discovery. Collection, pipeline runs
+and personal catalog publication do not. Automatic shared reads are the next stage;
+`co.get_dataset()` still uses its existing personal catalog at this checkpoint.
