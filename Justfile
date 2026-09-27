@@ -4,7 +4,7 @@ compose := if mode == "bind" { "docker compose -f compose.yaml -f compose.bind.y
 
 up:
     @test "{{mode}}" = volume -o "{{mode}}" = bind || { echo 'Use volume or bind'; exit 1; }
-    mkdir -p data/runtime
+    mkdir -p data
     {{compose}} up --build -d --wait
 
 down:
