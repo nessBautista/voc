@@ -9,6 +9,9 @@ import time
 from pathlib import Path
 
 from voc.paths import data_root
+from voc.storage import load_storage
+
+from .tracking import server_command
 
 
 def main():
@@ -45,22 +48,7 @@ def main():
             "--port",
             "8237",
         ],
-        "mlflow": [
-            py,
-            "-m",
-            "mlflow",
-            "server",
-            "--backend-store-uri",
-            "sqlite:///" + str(root / "mlflow/mlflow.db"),
-            "--artifacts-destination",
-            str(root / "mlflow/artifacts"),
-            "--host",
-            "0.0.0.0",
-            "--port",
-            "5000",
-            "--workers",
-            "1",
-        ],
+        "mlflow": server_command(py, load_storage()),
         "dashboard": [py, "-m", "voc.dashboard"],
         "jupyter": [
             py,

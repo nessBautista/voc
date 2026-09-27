@@ -76,5 +76,34 @@ This diagnostic does not collect or publish datasets.
 
 ZenML now selects a separate S3 stack at startup while preserving the local stack.
 Set the destination back to `local` and recreate the container to switch back.
-MLflow still uses local artifact storage until its own configuration checkpoint;
-`storage-info` currently shows its intended S3 destination, not an active one.
+MLflow also selects a new S3 experiment while preserving `voc-datasets` locally.
+Both tools keep their metadata databases in `/data`; shared dataset reads are not
+implemented yet.
+
+## Checking MLflow artifact storage
+
+With `VOC_ARTIFACT_DESTINATION=s3` and the rebuilt container started via
+`just up-aws`, run inside the container:
+
+```bash
+python -m src.mlops.check_mlflow
+python -m src.mlops.check_mlflow --reload
+```
+
+Expect `status: passed`, the experiment `voc-datasets-s3-<installation-id>`, and
+an artifact URI under your personal `mlflow-artifacts` prefix. The check writes
+one tiny text file and downloads it through MLflow to compare its contents.
+The reload uses the same run ID saved in `/data/checks/mlflow-s3.json`.
+After `just down` / `just up-aws`, repeat `--reload` inside the new container.
+
+Open http://127.0.0.1:5000/ and select that experiment, then its
+`artifact-storage-check` run. Its Artifacts tab contains `storage-check.txt`.
+Existing local runs stay in `voc-datasets`. The dataset pipeline selects the
+same configured experiment, but logs metrics and references rather than copying
+its ZenML dataset into MLflow. This diagnostic does not publish shared datasets.
+
+`src/mlops/tracking.py` centralizes experiment selection and server arguments.
+The server uses a local SQLite backend with `--no-serve-artifacts` and the
+configured `--default-artifact-root`. Python clients access S3 directly using
+the container credentials. Do not set `MLFLOW_TRACKING_URI` to an S3 URI.
+Switching destinations changes new writes, without moving previous runs.

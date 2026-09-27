@@ -1,4 +1,4 @@
-# ZenML consumes these settings at startup/setup; MLflow wiring follows next.
+# ZenML and MLflow consume these settings at startup/setup and pipeline creation.
 # Local remains the default while we verify the personal S3 destinations.
 artifact_destination = "local"  # local | s3
 # Shared dataset reads are implemented later; keep this local for now.

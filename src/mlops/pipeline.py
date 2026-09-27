@@ -10,7 +10,10 @@ from zenml.client import Client
 
 from src.preparation.dataset import prepare_dataset
 from voc import collector
+from voc.storage import load_storage
 from voc.store import RawStore
+
+from .tracking import experiment_name
 
 
 @step(enable_cache=False)
@@ -60,7 +63,6 @@ def prepare(
 @step(
     enable_cache=False,
     experiment_tracker="voc-mlflow",
-    settings={"experiment_tracker": {"experiment_name": "voc-datasets"}},
 )
 def track(report: dict, project_identity: str) -> Annotated[dict, "tracking_report"]:
     import mlflow
@@ -94,4 +96,9 @@ def dataset_pipeline(
 ):
     reference = raw_revision(config, refresh, operation_id)
     _workable, report = prepare(reference, rules, project_identity)
-    track(report, project_identity)
+    # Record the selected experiment in this run's step configuration.
+    track.with_options(
+        settings={
+            "experiment_tracker": {"experiment_name": experiment_name(load_storage())}
+        }
+    )(report, project_identity)

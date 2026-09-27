@@ -1,8 +1,8 @@
 """Configure a local orchestrator with explicit, separated persistent storage."""
 
-import os
-
 from voc.storage import load_storage
+
+from .tracking import ensure_experiment, tracking_uri
 
 
 def zenml_store_settings(storage):
@@ -69,12 +69,7 @@ def bootstrap():
             T.EXPERIMENT_TRACKER,
             "voc-mlflow",
             "mlflow",
-            {
-                "tracking_uri": (
-                    os.environ.get("MLFLOW_TRACKING_URI")
-                    or "sqlite:///" + str(root / "mlflow" / "mlflow.db")
-                )
-            },
+            {"tracking_uri": tracking_uri(storage)},
         ),
     ]
     # Reuse matching components; create missing ones, but reject conflicts.
@@ -96,17 +91,8 @@ def bootstrap():
     # Use the tracking URI from the last component definition (MLflow).
     tracker_uri = definitions[-1][3]["tracking_uri"]
     tracker = MlflowClient(tracking_uri=tracker_uri)
-    name = "voc-datasets"
-    # MLflow remains local in this increment; its S3 wiring follows next.
-    artifact_location = (root / "mlflow/artifacts").as_uri()
-    # Prepare the experiment for later logging; this does not create a run.
-    experiment = tracker.get_experiment_by_name(name)
-    if experiment is None:
-        tracker.create_experiment(name, artifact_location=artifact_location)
-    elif experiment.artifact_location != artifact_location:
-        raise ValueError(
-            "MLflow experiment artifact path differs from configured storage"
-        )
+    # Creating an experiment records its artifact URI; it creates no run or S3 file.
+    ensure_experiment(tracker, storage)
     # Activate only after component and experiment validation succeeds.
     client.activate_stack(stack.id)
     # The setup CLI prints this identifier as confirmation.
