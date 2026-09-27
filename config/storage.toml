@@ -8,7 +8,8 @@ dataset_source = "local"        # local | s3
 shared_prefix = "voc/datasets"
 members_prefix = "members"
 
-# AWS_BUCKET, AWS_REGION and VOC_MEMBER_ID normally come from aws.refs.env.
+# AWS_BUCKET, AWS_REGION and VOC_MEMBER_ID come from the selected AWS file
+# (aws.refs.env for 1Password, aws.local.env for direct credentials).
 # Optional non-secret fallbacks can be added here:
 # bucket = "your-team-bucket"
 # region = "us-east-2"

@@ -1,0 +1,13 @@
+# Added by Justfile only when VOC_SEED_DIR is non-empty (publisher setup).
+# Teammates reading shared releases need neither this mount nor dataset init.
+services:
+  workspace:
+    environment:
+      VOC_SEED_PATH: /seed/dataset.db
+    volumes:
+      - type: bind
+        source: ${VOC_SEED_DIR:?Set VOC_SEED_DIR for publisher seed access}
+        target: /seed
+        read_only: true
+        bind:
+          create_host_path: false

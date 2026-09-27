@@ -18,3 +18,6 @@ build/
 
 # Marimo session state and cached outputs; notebook .py files remain versioned.
 __marimo__/
+
+# Plaintext credential files: only *.local.env.example templates are tracked.
+*.local.env

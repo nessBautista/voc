@@ -1,11 +1,14 @@
 set dotenv-load
 mode := env("VOC_STORAGE_MODE", "volume")
-compose := if mode == "bind" { "docker compose -f compose.yaml -f compose.bind.yaml" } else { "docker compose -f compose.yaml" }
+base_compose := if mode == "bind" { "docker compose -f compose.yaml -f compose.bind.yaml" } else { "docker compose -f compose.yaml" }
+# Only publishers with a configured seed directory receive the seed mount.
+seed_compose := if env("VOC_SEED_DIR", "") == "" { "" } else { " -f compose.seed.yaml" }
+compose := base_compose + seed_compose
 
 # Default team startup: resolve AWS credentials before creating the container.
 up: up-aws
 
-# Explicit fully local mode, without 1Password or AWS credential injection.
+# Explicit fully local mode, without AWS credential injection.
 up-local:
     @test "{{mode}}" = volume -o "{{mode}}" = bind || { echo 'Use volume or bind'; exit 1; }
     mkdir -p data
@@ -26,12 +29,12 @@ status:
 test:
     {{compose}} exec workspace pytest -q
 
-# Host-only: resolve 1Password references, then forward credentials into Docker.
+# Host-only: select 1Password or a local credential file; both use runtime injection.
 # `up` delegates here; `up-aws` remains available for existing instructions.
 up-aws:
     @test "{{mode}}" = volume -o "{{mode}}" = bind || { echo 'Use volume or bind'; exit 1; }
     mkdir -p data
-    op run --env-file "${VOC_AWS_REFS_FILE:-config/aws.refs.env}" -- sh scripts/up-aws.sh {{compose}} -f compose.aws-credentials.yaml
+    sh scripts/start-aws.sh {{compose}}
 
 # Uses credentials already present in the running container; no host AWS alias.
 s3-check:

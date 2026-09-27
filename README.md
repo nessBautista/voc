@@ -1,5 +1,108 @@
 hola
 
+## Fresh teammate setup (without 1Password)
+
+Use branch `WOR-200-MLOps-infra` while this setup is under review. Install Docker
+Desktop (with Compose v2), Git and `just` on the host. Python, uv, AWS SDKs and the
+notebook tools are installed inside the image. This path needs neither the AWS
+CLI nor `op`. On Windows, use Git Bash for the current shell recipes; Windows
+execution is still unverified.
+
+From a fresh checkout, copy these templates:
+
+```bash
+cp .env.example .env
+cp config/aws.local.env.example config/aws.local.env
+```
+
+Set a private `JUPYTER_TOKEN` in `.env`; both notebook editors use it. In
+`config/aws.local.env`, enter your supplied AWS key ID, secret key, bucket, region
+code, and your own `VOC_MEMBER_ID` (letters, digits, underscore or hyphen).
+Include a session token only for temporary credentials. Keep both storage
+selections as `s3`. Use single-quoted values as shown in the template.
+
+These copies are ignored by Git and Docker builds. The local credential file is
+plaintext: restrict its file permissions/access to your account (on macOS/Linux,
+`chmod 600 .env config/aws.local.env`). It remains visible inside the container
+through the repo bind mount, and injected credentials appear in Docker metadata.
+Do not share these files or expanded environment/Compose output. Edit only the
+copies, never put secrets in the tracked examples.
+
+```bash
+just up
+just shell
+```
+
+Inside the container:
+
+```bash
+voc-ml storage-info
+voc dataset-info
+python -m src.mlops.check_shared_reader
+```
+
+Expect `artifact_destination: s3`, `dataset_source: s3`, your member prefix with
+a newly generated installation ID, and a published shared release. No seed,
+`dataset init`, collector update, or dataset pipeline run is needed for reading.
+Open Jupyter at <http://127.0.0.1:8888> or Marimo at <http://127.0.0.1:2719> (the
+`.env.example` host port), and use `from voc import collector as co` followed by
+`snapshot = co.get_dataset()`. Files saved under `notebooks/` appear on the host.
+The dataset dashboard is at <http://127.0.0.1:8050>.
+
+To prove personal artifact writes, run these inside the container:
+
+```bash
+python -m src.mlops.check_zenml
+python -m src.mlops.check_mlflow
+```
+
+Both checks must pass with artifact URIs under
+`members/<your-member-id>/<your-installation-id>/`. Their run IDs differ because
+they are separate diagnostics. Your ZenML (8237) and MLflow (5000) dashboards
+show your own runs. These diagnostics do not advance shared dataset latest.
+After host `just down` / `just up`, use `--reload` on both commands to check that
+metadata and artifact access survived recreation.
+
+### Startup choices
+
+- `VOC_AWS_AUTH_MODE=env-file` in `.env`: Compose reads the ignored
+  `config/aws.local.env`; override its path with `VOC_AWS_ENV_FILE` if needed.
+  The launcher clears inherited AWS/member/storage variables before Compose so
+  this selected file supplies those values, including an optional session token.
+  `.env` still controls ports, mounts and the notebook login token.
+- `VOC_AWS_AUTH_MODE=1password`: keep the existing `config/aws.refs.env` and
+  `op run` workflow. This remains the default when no mode is specified, so
+  existing installations keep working.
+- `just up-local`: explicitly use local artifacts and local dataset reads without
+  credentials. A fresh reader has no local publication until one is created.
+
+The launcher never sources a credential file as shell code. Compose validates
+required AWS fields before starting. To rotate credentials, update your selected
+source and recreate with `just up`; running containers do not refresh keys.
+
+`VOC_SEED_DIR` is optional. Leave it empty for readers. Publishers with an existing
+seed path keep that setting; the Justfile then adds `compose.seed.yaml`, mounting
+`/seed` read-only and setting `VOC_SEED_PATH`. Direct Compose users must explicitly
+include that override when they need the seed.
+
+### Isolated onboarding rehearsal
+
+Use a separate checkout of the committed branch, not a copy of your current
+runtime. In that checkout, copy `config/onboarding.env.example` to `.env` instead
+of `.env.example`, set its login token, and create a new `config/aws.local.env`
+with member ID `ness-onboarding` (or another rehearsal identifier).
+
+This selects project `voc-onboarding`, an initially empty `./data`, no seed, and
+ports **8238** (ZenML), **5001** (MLflow), **8889** (Jupyter), **2720** (Marimo),
+and **8051** (dataset dashboard). Open a new terminal without exported VOC/Compose
+settings, which otherwise take precedence over `.env`. Do not copy `data/`,
+`.env`, or credentials from the publisher checkout. Use `just down` from the
+rehearsal checkout to stop only that project.
+
+This simulates an independent installation using your supplied AWS credentials;
+it does not prove a different IAM identity's permissions. Current bucket-wide
+permissions mean prefixes separate application output, not IAM access rights.
+
 
 ## Checking S3 access from Docker
 
@@ -38,8 +141,8 @@ just up
 just s3-check
 ```
 
-`up` delegates to `up-aws`, which resolves references through `op run`, validates that credentials are
-present, and applies `compose.aws-credentials.yaml` when creating the container.
+`up` delegates to `up-aws`; in 1Password mode it resolves references through
+`op run`, validates that credentials are present, and applies `compose.aws-credentials.yaml` when creating the container.
 It builds with the updated lock and reuses your current bind directory or named
 volume. `s3-check` runs `src/mlops/check_s3.py` inside that container: it checks
 identity, reads the host marker, and writes/reads a unique container marker.

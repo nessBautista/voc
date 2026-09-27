@@ -23,10 +23,9 @@ services:
       ZENML_CONFIG_PATH: /data/zenml-client
       ZENML_ANALYTICS_OPT_IN: "false"
       MLFLOW_DISABLE_AGENT_HINT: "1"
-      VOC_SEED_PATH: /seed/dataset.db
       JUPYTER_TOKEN: ${JUPYTER_TOKEN:?Set JUPYTER_TOKEN in .env}
 
-    # Mount storage into this service's container. Both mounts are writable.
+    # Repo and runtime mounts are writable; an optional seed override is read-only.
     volumes:
       # BIND MOUNT: expose your actual host repository inside the container.
       # source: . means the directory containing this Compose file (your voc repo).
@@ -39,12 +38,6 @@ services:
       - type: bind
         source: .
         target: /workspace
-      - type: bind
-        source: ${VOC_SEED_DIR:?Set VOC_SEED_DIR in .env}
-        target: /seed
-        read_only: true
-        bind:
-          create_host_path: false
 
       # NAMED VOLUME: mount Docker-managed storage at /data in the container.
       # Short syntax is SOURCE:TARGET; "runtime" refers to the declaration below.
