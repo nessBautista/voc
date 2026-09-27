@@ -12,3 +12,6 @@ build/
 .ipynb_checkpoints/
 # setuptools sdist staging for the local ML workspace helper
 /ml-project/src/
+
+# Personal credential-reference files; commit only the .example template.
+*.refs.env
