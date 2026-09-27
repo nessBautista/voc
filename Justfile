@@ -18,7 +18,7 @@ down:
     {{compose}} down
 
 shell:
-    {{compose}} exec workspace bash
+    @if [ -n "${MSYSTEM:-}" ] && command -v winpty >/dev/null 2>&1; then winpty {{compose}} exec workspace bash; else {{compose}} exec workspace bash; fi
 
 logs:
     {{compose}} exec workspace sh -c 'tail -n 60 /data/logs/*.log'
@@ -39,3 +39,18 @@ up-aws:
 # Uses credentials already present in the running container; no host AWS alias.
 s3-check:
     {{compose}} exec workspace python -m src.mlops.check_s3
+
+# Create/open a .py notebook; exported argument avoids interpolating user input as shell code.
+new-marimo $notebook_name:
+    @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2718")}} {{compose}}
+
+# Create/open a Jupyter .ipynb notebook under the same notebooks/ directory.
+new-notebook $notebook_name:
+    @sh scripts/notebook.sh jupyter create {{env("VOC_JUPYTER_PORT", "8888")}} {{compose}}
+
+# Open either editor's home page using the running container's login token.
+marimo:
+    @sh scripts/notebook.sh marimo open {{env("VOC_MARIMO_PORT", "2718")}} {{compose}}
+
+jupyter:
+    @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8888")}} {{compose}}

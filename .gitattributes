@@ -1,0 +1,4 @@
+# Shell recipes must stay LF even when Windows Git checks out other files as CRLF.
+*.sh text eol=lf
+Justfile text eol=lf
+*.ps1 text eol=crlf

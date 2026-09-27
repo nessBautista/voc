@@ -1,5 +1,23 @@
 hola
 
+## Start here for the team session
+
+Use the team setup guide in the Sonar vault (`journal/linear/WOR-200/team-session.md`) to fetch
+`WOR-200-MLOps-infra`, run the Windows/macOS installer, fill your AWS keys,
+and open your workspace. The setup scripts preserve existing settings.
+
+```bash
+just up
+just new-marimo teammate/my-notebook
+# Or create a Jupyter notebook:
+just new-notebook teammate/my-notebook
+```
+
+`just marimo` and `just jupyter` open the editor home pages. Notebook commands
+run on the host while the container is running, save under `notebooks/`, and
+open existing files without replacing them. They respect your configured ports.
+The guide includes facilitator checkpoints and the later move back to `main`.
+
 ## Fresh teammate setup (without 1Password)
 
 Use branch `WOR-200-MLOps-infra` while this setup is under review. Install Docker
@@ -356,7 +374,7 @@ again or fail visibly. Metadata-only CLI queries do not download the dataframe.
 
 ## Updating and comparing releases in a notebook
 
-Open `notebooks/update-and-compare-releases.ipynb` in JupyterLab. This publisher
+Open `notebooks/samples/update-and-compare-releases.ipynb` in JupyterLab. This publisher
 walkthrough pins the current shared release, runs the collector update, prepares
 and publishes a new workable snapshot, explicitly shares it, and compares both
 releases. Execute cells in order: update and share are live write operations.

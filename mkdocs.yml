@@ -2,7 +2,6 @@ site_name: VOC framework
 nav:
   - Framework API: index.md
   - Decisions: decisions.md
-  - Validation: validation.md
 plugins:
   - search
   - mkdocstrings:
