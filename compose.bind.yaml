@@ -1,0 +1,6 @@
+services:
+  workspace:
+    volumes:
+      - type: bind
+        source: ${VOC_RUNTIME_DIR:-./data/runtime}
+        target: /data
