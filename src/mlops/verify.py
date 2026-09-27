@@ -37,7 +37,7 @@ def main():
 
     first = run({})
     first_info = publish_run(str(first.id))
-    one = get_dataset()
+    one = get_dataset(source="local")
     assert one.info == first_info
     second = run({})
     from unittest.mock import patch
@@ -51,15 +51,17 @@ def main():
             pass
         else:
             raise AssertionError("Publication failure was not injected")
-    assert resolve() == first_info
+    assert resolve(source="local") == first_info
     second_info = publish_run(str(second.id))
-    two = get_dataset()
+    two = get_dataset(source="local")
     assert two.info == second_info
     assert first_info["artifact_id"] != second_info["artifact_id"]
     assert one.data.equals(two.data)
-    assert get_dataset(version=first_info["artifact_id"]).data.equals(two.data)
+    assert get_dataset(version=first_info["artifact_id"], source="local").data.equals(
+        two.data
+    )
     assert publish_run(str(second.id)) == second_info
-    assert resolve() == second_info
+    assert resolve(source="local") == second_info
     assert len(two.data) == two.info["row_count"]
     assert sum(summary(two)["platform_counts"].values()) == len(two.data)
     # One dataframe output per run, without a full raw dataframe artifact.
@@ -73,7 +75,7 @@ def main():
         }
     changed = run({"combine_title_body": True})
     changed_info = publish_run(str(changed.id))
-    titled = get_dataset()
+    titled = get_dataset(source="local")
     titles = two.data.title.fillna("").str.strip().ne("")
     assert (
         titled.data.loc[titles, "model_text"] != two.data.loc[titles, "model_text"]
@@ -100,7 +102,7 @@ def main():
             raise AssertionError("Failed run was published")
     else:
         raise AssertionError("Invalid rules did not fail")
-    assert resolve() == changed_info
+    assert resolve(source="local") == changed_info
     assert raw.revision()["id"] == original
     assert (
         get_raw_dataset(config["raw_store"], original).info["revision_id"] == original

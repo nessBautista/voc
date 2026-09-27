@@ -89,7 +89,7 @@ def share_run(run_id):
     from voc.store import Snapshot
 
     info, frame = validated_run(run_id)
-    if resolve(info["artifact_id"]) != info:
+    if resolve(info["artifact_id"], source="local") != info:
         raise ValueError("Local publication differs from validated pipeline output")
     raw = RawStore(info["raw_store_id"]).read(info["raw_revision_id"])
     return publish_release(raw, Snapshot(frame, info), load_storage())

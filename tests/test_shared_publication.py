@@ -300,7 +300,7 @@ def test_share_runner_requires_matching_local_publication_and_pins_raw(
     monkeypatch.setattr(
         runner, "validated_run", lambda _: (workable.info, workable.data)
     )
-    monkeypatch.setattr(datasets, "resolve", lambda _: workable.info)
+    monkeypatch.setattr(datasets, "resolve", lambda _, **kwargs: workable.info)
     mock_store = Mock()
     mock_store.read.return_value = raw
     monkeypatch.setattr(runner, "RawStore", lambda _: mock_store)
@@ -311,7 +311,7 @@ def test_share_runner_requires_matching_local_publication_and_pins_raw(
     mock_store.read.assert_called_once_with(workable.info["raw_revision_id"])
     assert publish.call_args.args[0] is raw
     monkeypatch.setattr(
-        datasets, "resolve", lambda _: workable.info | {"row_count": -1}
+        datasets, "resolve", lambda _, **kwargs: workable.info | {"row_count": -1}
     )
     with pytest.raises(ValueError, match="Local publication differs"):
         runner.share_run(workable.info["run_id"])

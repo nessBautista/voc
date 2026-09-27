@@ -77,8 +77,7 @@ This diagnostic does not collect or publish datasets.
 ZenML now selects a separate S3 stack at startup while preserving the local stack.
 Set the destination back to `local` and recreate the container to switch back.
 MLflow also selects a new S3 experiment while preserving `voc-datasets` locally.
-Both tools keep their metadata databases in `/data`; shared dataset reads are not
-implemented yet.
+Both tools keep their metadata databases in `/data`; shared dataset reads can be selected independently.
 
 ## Checking MLflow artifact storage
 
@@ -112,7 +111,7 @@ Switching destinations changes new writes, without moving previous runs.
 ## Checking shared dataset publication
 
 Shared exports are an explicit action, separate from personal ZenML/MLflow storage.
-Keep `dataset_source = "local"` until the automatic reader checkpoint is implemented.
+Keep personal or shared reads selected independently with `dataset_source`.
 Rebuild/start using `just up-aws`, then enter with `just shell` and run:
 
 ```bash
@@ -153,3 +152,65 @@ conditional S3 upload. New and reused objects are downloaded for SHA-256 validat
 this favors a verifiable first implementation over minimal transfer. Shared raw
 snapshots are reused by revision ID; different raw revisions are full snapshots.
 These exports do not back up raw revision history or experiment metadata.
+
+
+## Working with notebooks
+
+JupyterLab opens the repository's `notebooks/` directory (`/workspace/notebooks`
+in the container). The repository bind mount makes notebooks saved there visible
+on the host and available to commit. The example is under `templates/`.
+Older notebooks in `/data/notebooks` remain there; they are not moved or deleted.
+After changing the Jupyter root, recreate the container with `just up-aws` and
+reopen JupyterLab's root URL.
+
+
+## Reading shared datasets automatically
+
+First verify the reader using an empty temporary runtime (inside the container):
+
+```bash
+python -m src.mlops.check_shared_reader
+```
+
+This reads shared latest, downloads matching raw/workable exports, validates their
+hashes/schemas, and reloads them with network access disabled. It requires no seed,
+raw database, personal catalog or ZenML/MLflow metadata. It uploads nothing. The
+temporary cache is removed afterward; `/data/checks/shared-reader.json` records
+its result. Expect two initial Parquet downloads and zero on cached rereads.
+
+Use the library in a notebook:
+
+```python
+from voc import collector as co
+
+snapshot = co.get_dataset(source="s3")
+raw = co.get_dataset(source="s3", stage="raw", version=snapshot.info["release_id"])
+pinned = co.get_dataset(source="s3", version=snapshot.info["release_id"])
+assert pinned.data.equals(snapshot.data)
+```
+
+To make shared reads the default, add `VOC_DATASET_SOURCE=s3` to your ignored
+`config/aws.refs.env` and recreate with `just up-aws`. The checked-in default in
+`config/storage.toml` stays `local`. Compose forwards the optional environment
+selection and sets an absolute `VOC_STORAGE_CONFIG` path, so notebooks read the
+same settings even when their working directory is under `notebooks/`.
+
+`co.get_dataset()` and the dataset dashboard then use the shared release. CLI
+commands support the same selection:
+
+```bash
+voc dataset-info --source s3
+voc summary --source s3
+voc dataset-info --source local
+```
+
+Personal lookup remains `co.get_dataset(source="local")`; its artifact bytes may
+still live in personal S3 storage. Direct collector updates and `get_raw_dataset`
+always use the mutable local raw store. The sharing runner and ML verification
+explicitly use the personal catalog even when shared reads are the default.
+
+The cache is under `/data/cache/datasets/`, partitioned by bucket/prefix and file
+identity/checksum. Latest is checked online for each fresh request; an offline
+latest request reports an error. A previously cached pinned release can be read
+offline. Checksums and schema are validated on reuse; corrupt entries are fetched
+again or fail visibly. Metadata-only CLI queries do not download the dataframe.

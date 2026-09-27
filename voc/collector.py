@@ -55,15 +55,23 @@ def get_raw_dataset(store=None, revision="latest"):
     return RawStore(raw_path(store)).read(revision)
 
 
-def get_dataset(stage="prepared", version="latest", *, store=None):
-    """Read raw revisions or published workable snapshots via the configured catalog."""
+def get_dataset(stage="prepared", version="latest", *, source=None, store=None):
+    """Read shared releases or personal snapshots; collection always stays local."""
+    from .datasets import get_dataset as read
+    from .datasets import selected_source
+
+    source = selected_source(source or ("local" if store is not None else None))
+    if stage not in ("raw", "prepared"):
+        raise ValueError("stage must be raw or prepared")
+    if source == "s3":
+        if store is not None:
+            raise ValueError("store selects a raw database; use source='local'")
+        from .shared_reader import SharedDatasetReader
+
+        return SharedDatasetReader().read(version, stage=stage)
     if stage == "raw":
         return get_raw_dataset(store, version)
-    if stage != "prepared":
-        raise ValueError("stage must be raw or prepared")
-    from .datasets import get_dataset as read
-
-    return read(version)
+    return read(version, source="local")
 
 
 @dataclass

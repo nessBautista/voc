@@ -22,7 +22,7 @@ for(const [key,count] of Object.entries(values)){const row=t.insertRow();row.ins
 async function load(){try{let r=await fetch('/summary');let d=await r.json();
 if(!d.info){document.getElementById('status').textContent=d.status;return;}
 document.getElementById('status').textContent=d.info.row_count.toLocaleString()+' reviews · '+d.unknown_dates+' unknown dates';
-document.getElementById('version').textContent=d.info.artifact_id;
+document.getElementById('version').textContent=d.info.release_id || d.info.artifact_id;
 table('sources',d.platform_counts);table('months',d.month_counts);
 }catch(e){document.getElementById('status').textContent='Could not load the dataset overview.';}}load();
 </script></html>"""
@@ -42,7 +42,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 result = summary(get_dataset())
             except LookupError:
-                result = {"status": "No published dataset yet"}
+                result = {"status": "No dataset published in the selected source yet"}
             except Exception:
                 logging.getLogger(__name__).exception("Dataset summary failed")
                 status = 503

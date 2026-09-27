@@ -1,7 +1,6 @@
 """Single-container local service lifecycle, also runnable without Docker."""
 
 import os
-import shutil
 import signal
 import subprocess
 import sys
@@ -27,15 +26,10 @@ def main():
     from .bootstrap import bootstrap
 
     bootstrap()
-    notebooks = root / "notebooks"
-    notebooks.mkdir(exist_ok=True)
-    template = (
-        Path(__file__).resolve().parents[2]
-        / "notebooks/templates/workable-dataset.ipynb"
-    )
-    target = notebooks / template.name
-    if not target.exists():
-        shutil.copyfile(template, target)
+    # The repository is bind-mounted at /workspace; notebook saves reach the host.
+    notebooks = Path(__file__).resolve().parents[2] / "notebooks"
+    notebooks.mkdir(parents=True, exist_ok=True)
+    # The versioned example is already available in notebooks/templates/.
     py = sys.executable
     commands = {
         "zenml": [

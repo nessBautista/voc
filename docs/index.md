@@ -88,5 +88,29 @@ newer result. Local attempt state and exported files remain in
 `/data/shared-publications/`; keep them across container recreation.
 
 Only the explicit share action changes team discovery. Collection, pipeline runs
-and personal catalog publication do not. Automatic shared reads are the next stage;
-`co.get_dataset()` still uses its existing personal catalog at this checkpoint.
+and personal catalog publication do not. Shared reads use the source selected in storage settings, or an explicit
+`source="local"` / `source="s3"` argument.
+
+
+## Shared dataset readers
+
+`co.get_dataset(source="s3", version="latest", stage="prepared")` returns the
+same `Snapshot(data, info)` shape as personal reads. Shared identity is
+`info["release_id"]`; `artifact_id` remains the original producer's provenance.
+Use that release ID for subsequent raw and prepared reads to obtain a matching
+pair. `get_raw_dataset(store, revision)` continues to read the publisher's local
+mutable database and does not use this source setting.
+
+`voc.datasets.resolve(version, source="s3")` retrieves validated metadata without
+downloading Parquet. `SharedDatasetReader` implements release resolution and data
+loading without importing ZenML/MLflow. Its cache records immutable manifests and
+files under a hash of bucket/prefix, preventing collisions across dataset roots.
+A local SQLite lock serializes concurrent cache writers. Downloads are streamed
+into temporary files and only atomically promoted after size, SHA-256, Arrow
+schema, pandas dtype, row-count and workable-content checks.
+
+Latest requests require network access. A pinned cached release needs no network
+or SDK client creation. Corrupt cached files are repaired from the same immutable
+object; failures never switch to personal data or an older latest release. File
+SHA-256 checks detect corruption, not an authenticated publisher signature; AWS
+bucket access still determines who can modify shared objects.

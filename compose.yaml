@@ -16,6 +16,8 @@ services:
     # These override matching Dockerfile ENV defaults; they do not create mounts.
     environment:
       VOC_DATA_DIR: /data
+      # Absolute path keeps config selection consistent from notebook subdirectories.
+      VOC_STORAGE_CONFIG: /workspace/config/storage.toml
       ZENML_CONFIG_PATH: /data/zenml-client
       ZENML_ANALYTICS_OPT_IN: "false"
       MLFLOW_DISABLE_AGENT_HINT: "1"
