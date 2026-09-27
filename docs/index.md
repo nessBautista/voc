@@ -114,3 +114,21 @@ or SDK client creation. Corrupt cached files are repaired from the same immutabl
 object; failures never switch to personal data or an older latest release. File
 SHA-256 checks detect corruption, not an authenticated publisher signature; AWS
 bucket access still determines who can modify shared objects.
+
+
+### Mixed raw metadata in Parquet
+
+Seed metadata can use numeric provider schema versions while subsequent collector
+rows use a textual version such as `unified-update-v1`. Arrow cannot represent
+both in one inferred numeric column. `voc/parquet.py` encodes unsupported mixed
+scalar columns as tagged JSON strings in the physical Parquet file, recording
+`encoding: json-scalar-v1` per column in the release manifest. The shared reader
+restores original scalar values and object dtype before returning the dataframe.
+The source raw database and workable schema are unchanged.
+
+Releases with encoded columns use manifest format **2**. Homogeneous releases
+remain format **1**, and both are readable by the updated reader. The discovery
+pointer format stays at 1. Older readers reject a v2 manifest instead of silently
+exposing encoded strings. Direct Parquet consumers must apply the manifest's
+encoding; use the VOC reader for transparent decoding. Unsupported non-scalar
+mixed values still fail rather than being silently coerced.

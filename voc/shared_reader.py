@@ -13,6 +13,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from botocore.exceptions import ClientError
 
+from .parquet import restore_frame
 from .shared import (
     MAX_JSON_BYTES,
     ReleaseObjects,
@@ -191,7 +192,7 @@ class SharedDatasetReader:
             (c["name"], c["arrow_type"]) for c in item["columns"]
         ]:
             raise ValueError("Dataset Arrow schema differs")
-        frame = pd.read_parquet(path)
+        frame = restore_frame(pd.read_parquet(path), item["columns"])
         if len(frame) != item["row_count"] or [str(d) for d in frame.dtypes] != [
             c["pandas_dtype"] for c in item["columns"]
         ]:

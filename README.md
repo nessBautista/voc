@@ -34,11 +34,11 @@ another reference file with `VOC_AWS_REFS_FILE`.
 From the host, run:
 
 ```bash
-just up-aws
+just up
 just s3-check
 ```
 
-`up-aws` resolves references through `op run`, validates that credentials are
+`up` delegates to `up-aws`, which resolves references through `op run`, validates that credentials are
 present, and applies `compose.aws-credentials.yaml` when creating the container.
 It builds with the updated lock and reuses your current bind directory or named
 volume. `s3-check` runs `src/mlops/check_s3.py` inside that container: it checks
@@ -47,13 +47,14 @@ Expect JSON with `"status": "passed"`; compare its `caller_arn` with your host
 identity. Diagnostic objects remain under `members/<id>/tests/`.
 
 `just shell`, `just down`, `just status`, and `just logs` still work without
-1Password authentication. Use `just up-aws` on subsequent starts to provide AWS
-access. Ordinary `just up` starts without this override, for local work.
+1Password authentication. Use `just up` on subsequent starts to provide AWS
+access. `just up-aws` remains a compatible alias. Use `just up-local` to start
+without credentials and explicitly select local artifact storage and local dataset reads.
 
 Credentials are injected at runtime, never into image build arguments. Docker
 retains them in container metadata: do not share expanded Compose/environment
 or Docker inspection output. Expiring credentials require a fresh credential
-session and container recreation with `just up-aws`; injection does not refresh
+session and container recreation with `just up`; injection does not refresh
 them automatically. Direct field references do not perform a plugin's role
 assumption or MFA flow, so compare host and container identities.
 
@@ -61,7 +62,7 @@ assumption or MFA flow, so compare host and container identities.
 ## Checking ZenML artifact storage
 
 After `just s3-check` passes, set `VOC_ARTIFACT_DESTINATION=s3` in your ignored
-`config/aws.refs.env`, then run `just up-aws` and `just shell`. Inside the container:
+`config/aws.refs.env`, then run `just up` and `just shell`. Inside the container:
 
 ```bash
 python -m src.mlops.check_zenml
@@ -71,7 +72,7 @@ python -m src.mlops.check_zenml --reload
 Expect `status: passed`, `row_count: 2`, and an S3 artifact URI under your personal
 installation's `zenml-artifacts` prefix. The second command reloads the same
 artifact ID recorded in `/data/checks/zenml-s3.json`, without running the pipeline
-again. After `just down` / `just up-aws`, repeat `--reload` to prove persistence.
+again. After `just down` / `just up`, repeat `--reload` to prove persistence.
 This diagnostic does not collect or publish datasets.
 
 ZenML now selects a separate S3 stack at startup while preserving the local stack.
@@ -82,7 +83,7 @@ Both tools keep their metadata databases in `/data`; shared dataset reads can be
 ## Checking MLflow artifact storage
 
 With `VOC_ARTIFACT_DESTINATION=s3` and the rebuilt container started via
-`just up-aws`, run inside the container:
+`just up`, run inside the container:
 
 ```bash
 python -m src.mlops.check_mlflow
@@ -93,7 +94,7 @@ Expect `status: passed`, the experiment `voc-datasets-s3-<installation-id>`, and
 an artifact URI under your personal `mlflow-artifacts` prefix. The check writes
 one tiny text file and downloads it through MLflow to compare its contents.
 The reload uses the same run ID saved in `/data/checks/mlflow-s3.json`.
-After `just down` / `just up-aws`, repeat `--reload` inside the new container.
+After `just down` / `just up`, repeat `--reload` inside the new container.
 
 Open http://127.0.0.1:5000/ and select that experiment, then its
 `artifact-storage-check` run. Its Artifacts tab contains `storage-check.txt`.
@@ -112,7 +113,7 @@ Switching destinations changes new writes, without moving previous runs.
 
 Shared exports are an explicit action, separate from personal ZenML/MLflow storage.
 Keep personal or shared reads selected independently with `dataset_source`.
-Rebuild/start using `just up-aws`, then enter with `just shell` and run:
+Rebuild/start using `just up`, then enter with `just shell` and run:
 
 ```bash
 python -m src.mlops.check_shared
@@ -160,8 +161,42 @@ JupyterLab opens the repository's `notebooks/` directory (`/workspace/notebooks`
 in the container). The repository bind mount makes notebooks saved there visible
 on the host and available to commit. The example is under `templates/`.
 Older notebooks in `/data/notebooks` remain there; they are not moved or deleted.
-After changing the Jupyter root, recreate the container with `just up-aws` and
+After changing the Jupyter root, recreate the container with `just up` and
 reopen JupyterLab's root URL.
+
+
+### Marimo as an alternative
+
+`just up` (or `just up-local`) also starts the Marimo editor at
+<http://127.0.0.1:2718>. Enter the same `JUPYTER_TOKEN` configured in your ignored
+`.env` if prompted. No new dependency installation or separate startup command is
+needed. You can override the host port with `VOC_MARIMO_PORT` in `.env`.
+
+Both editors open `/workspace/notebooks`, backed by the host repo's `notebooks/`.
+Jupyter saves `.ipynb` files; Marimo saves `.py` notebooks. They share the installed
+VOC package, storage configuration and credentials. Marimo runs in the project
+Python environment (`--no-sandbox`). Its generated `__marimo__/` session/cache
+folders are ignored by Git and Docker.
+
+1. Recreate the container with `just up`, then open the Marimo URL.
+2. Open `templates/shared-dataset.py`. The introduction should appear immediately.
+3. Click **Load dataset**. Confirm the snapshot ID and row count match
+   `voc dataset-info` for the configured source.
+4. Create a notebook from the editor's home page and save it under `notebooks/`.
+   Add `print("hello world")` to a cell and run it. Confirm its `.py` file appears
+   on the host and is still available after `just down` / `just up`.
+
+Marimo reruns dependent cells when their inputs change. Keep collection and
+publication operations behind explicit user actions; the starter is read-only.
+The existing update-and-compare Jupyter notebook is unchanged. Marimo does not
+silently convert existing `.ipynb` files into `.py` notebooks.
+
+`services.py` supervises the editor alongside the other tools; Docker checks its
+`/health` endpoint. Editor logs are in `/data/logs/marimo.log` (`just logs`). The
+dataset dashboard remains at port 8050 and Jupyter at port 8888.
+
+See [Marimo's project environment guide](https://docs.marimo.io/guides/package_management/projects/)
+for how directory editing and the shared Python environment work.
 
 
 ## Reading shared datasets automatically
@@ -190,7 +225,7 @@ assert pinned.data.equals(snapshot.data)
 ```
 
 To make shared reads the default, add `VOC_DATASET_SOURCE=s3` to your ignored
-`config/aws.refs.env` and recreate with `just up-aws`. The checked-in default in
+`config/aws.refs.env` and recreate with `just up`. The checked-in default in
 `config/storage.toml` stays `local`. Compose forwards the optional environment
 selection and sets an absolute `VOC_STORAGE_CONFIG` path, so notebooks read the
 same settings even when their working directory is under `notebooks/`.
@@ -214,3 +249,23 @@ identity/checksum. Latest is checked online for each fresh request; an offline
 latest request reports an error. A previously cached pinned release can be read
 offline. Checksums and schema are validated on reuse; corrupt entries are fetched
 again or fail visibly. Metadata-only CLI queries do not download the dataframe.
+
+
+## Updating and comparing releases in a notebook
+
+Open `notebooks/update-and-compare-releases.ipynb` in JupyterLab. This publisher
+walkthrough pins the current shared release, runs the collector update, prepares
+and publishes a new workable snapshot, explicitly shares it, and compares both
+releases. Execute cells in order: update and share are live write operations.
+
+The notebook saves its baseline release, operation ID, raw revision, pipeline run
+and new release under `/data/notebook-checkpoints/update-comparison.json`.
+Keep `START_NEW_COMPARISON = False` to resume, including after restarting the
+kernel/container. Set it to `True` only when starting another update session;
+the notebook archives the previous checkpoint before creating a new one.
+
+Charts show platform totals and added/changed/removed identities separately.
+Edits include rating or other field changes, not only text. Net growth is added
+minus removed; downloaded duplicate observations do not increase the row count.
+Apple's recent-feed limit means the update cannot guarantee complete historical
+coverage. Read the collection report before continuing to preparation/sharing.

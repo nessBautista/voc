@@ -19,6 +19,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from botocore.exceptions import ClientError
 
+from .parquet import ENCODING, prepare_frame, restore_frame
 from .storage import _prefix
 
 MAX_FILE_BYTES = 1024**3  # Single-request uploads for this initial dataset size.
@@ -168,15 +169,23 @@ class ReleaseObjects:
 
 
 def export_frame(frame, path):
-    """Retain retry bytes and prove that Parquet preserves values and dtypes."""
+    """Retain retry bytes and verify original values, including mixed raw scalars."""
+    physical, encodings = prepare_frame(frame)
+    logical_columns = [
+        {
+            "name": name,
+            "pandas_dtype": str(frame[name].dtype),
+            **({"encoding": encodings[name]} if name in encodings else {}),
+        }
+        for name in frame
+    ]
     if not path.exists():
         temporary = path.with_suffix(".tmp")
-        frame.to_parquet(temporary, index=False)
-        pd.testing.assert_frame_equal(
-            frame, pd.read_parquet(temporary), check_exact=True
-        )
+        physical.to_parquet(temporary, index=False)
+        restored = restore_frame(pd.read_parquet(temporary), logical_columns)
+        pd.testing.assert_frame_equal(frame, restored, check_exact=True)
         temporary.replace(path)
-    restored = pd.read_parquet(path)
+    restored = restore_frame(pd.read_parquet(path), logical_columns)
     pd.testing.assert_frame_equal(frame, restored, check_exact=True)
     schema = pq.read_schema(path)
     return {
@@ -184,19 +193,15 @@ def export_frame(frame, path):
         "size_bytes": path.stat().st_size,
         "sha256": file_hash(path),
         "columns": [
-            {
-                "name": field.name,
-                "arrow_type": str(field.type),
-                "pandas_dtype": str(frame[field.name].dtype),
-            }
-            for field in schema
+            column | {"arrow_type": str(field.type)}
+            for column, field in zip(logical_columns, schema, strict=True)
         ],
     }
 
 
 def validate_manifest(manifest, objects):
     """Check this format's required identities, hashes and exact in-root keys."""
-    if manifest["format_version"] != 1:
+    if manifest["format_version"] not in (1, 2):
         raise ValueError("Unsupported release manifest format")
     canonical_id(manifest["release_id"])
     canonical_id(manifest["lineage"]["run_id"])
@@ -219,6 +224,13 @@ def validate_manifest(manifest, objects):
         ):
             raise ValueError("Invalid column schema")
         for column in item["columns"]:
+            if "encoding" in column and (
+                manifest["format_version"] != 2
+                or column["encoding"] != ENCODING
+                or column["pandas_dtype"] != "object"
+                or column["arrow_type"] != "string"
+            ):
+                raise ValueError("Unsupported manifest column encoding")
             if not all(
                 isinstance(column[k], str)
                 for k in ("name", "arrow_type", "pandas_dtype")
@@ -311,8 +323,18 @@ def publish_release(raw, workable, storage, *, client=None):
         workable_meta = export_frame(workable.data, workable_file)
         raw_relative = f"raw/{revision_id}/dataset.parquet"
         workable_relative = f"workable/{artifact_id}/dataset.parquet"
+        # Older readers reject v2 instead of silently returning encoded strings.
+        format_version = (
+            2
+            if any(
+                "encoding" in c
+                for meta in (raw_meta, workable_meta)
+                for c in meta["columns"]
+            )
+            else 1
+        )
         manifest = {
-            "format_version": 1,
+            "format_version": format_version,
             "release_id": release,
             "created_at": intent["created_at"],
             "publisher_id": storage.member_id,

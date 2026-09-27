@@ -2,10 +2,14 @@ set dotenv-load
 mode := env("VOC_STORAGE_MODE", "volume")
 compose := if mode == "bind" { "docker compose -f compose.yaml -f compose.bind.yaml" } else { "docker compose -f compose.yaml" }
 
-up:
+# Default team startup: resolve AWS credentials before creating the container.
+up: up-aws
+
+# Explicit fully local mode, without 1Password or AWS credential injection.
+up-local:
     @test "{{mode}}" = volume -o "{{mode}}" = bind || { echo 'Use volume or bind'; exit 1; }
     mkdir -p data
-    {{compose}} up --build -d --wait
+    VOC_ARTIFACT_DESTINATION=local VOC_DATASET_SOURCE=local {{compose}} up --build -d --wait
 
 down:
     {{compose}} down
@@ -23,7 +27,7 @@ test:
     {{compose}} exec workspace pytest -q
 
 # Host-only: resolve 1Password references, then forward credentials into Docker.
-# `up` stays local; use `up-aws` again after restarting or refreshing credentials.
+# `up` delegates here; `up-aws` remains available for existing instructions.
 up-aws:
     @test "{{mode}}" = volume -o "{{mode}}" = bind || { echo 'Use volume or bind'; exit 1; }
     mkdir -p data

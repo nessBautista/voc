@@ -16,6 +16,8 @@ services:
     # These override matching Dockerfile ENV defaults; they do not create mounts.
     environment:
       VOC_DATA_DIR: /data
+      VOC_ARTIFACT_DESTINATION: ${VOC_ARTIFACT_DESTINATION:-}
+      VOC_DATASET_SOURCE: ${VOC_DATASET_SOURCE:-}
       # Absolute path keeps config selection consistent from notebook subdirectories.
       VOC_STORAGE_CONFIG: /workspace/config/storage.toml
       ZENML_CONFIG_PATH: /data/zenml-client
@@ -57,11 +59,13 @@ services:
       - "127.0.0.1:${VOC_ZENML_PORT:-8237}:8237"
       - "127.0.0.1:${VOC_MLFLOW_PORT:-5000}:5000"
       - "127.0.0.1:${VOC_JUPYTER_PORT:-8888}:8888"
+      # Marimo notebook editor; independent of Jupyter and the dataset dashboard.
+      - "127.0.0.1:${VOC_MARIMO_PORT:-2718}:2718"
       - "127.0.0.1:${VOC_DASHBOARD_PORT:-8050}:8050"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; [urllib.request.urlopen('http://127.0.0.1:'+str(p),timeout=5).close() for p in (8237,5000,8050,8888)]"]
+      test: ["CMD", "python", "-c", "import urllib.request; [urllib.request.urlopen('http://127.0.0.1:'+str(p),timeout=5).close() for p in (8237,5000,8050,8888)]; urllib.request.urlopen('http://127.0.0.1:2718/health',timeout=5).close()"]
       interval: 15s
-      timeout: 25s
+      timeout: 30s
       start_period: 90s
       retries: 5
     # Allow up to 45 seconds for the container to stop before forcibly killing it.

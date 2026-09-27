@@ -19,3 +19,6 @@ ml-project/src
 # Personal credential-reference files; commit only the .example template.
 *.refs.env
 **/*.refs.env
+
+# Marimo session state and cached outputs; notebook .py files remain versioned.
+**/__marimo__

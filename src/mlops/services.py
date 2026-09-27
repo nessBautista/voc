@@ -4,6 +4,7 @@ import os
 import signal
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -44,6 +45,21 @@ def main():
         ],
         "mlflow": server_command(py, load_storage()),
         "dashboard": [py, "-m", "voc.dashboard"],
+        # Edit .py notebooks using the same installed VOC/ML environment as Jupyter.
+        "marimo": [
+            py,
+            "-m",
+            "marimo",
+            "edit",
+            str(notebooks),
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "2718",
+            "--headless",
+            "--no-sandbox",
+            "--skip-update-check",
+        ],
         "jupyter": [
             py,
             "-m",
@@ -77,12 +93,21 @@ def main():
                     ZENML_SERVER_AUTH_SCHEME="NO_AUTH",
                     ZENML_SERVER_AUTO_ACTIVATE="true",
                 )
+            stdin = None
+            if name == "marimo" and env.get("JUPYTER_TOKEN"):
+                # Share the existing login token without putting it in CLI arguments.
+                stdin = tempfile.TemporaryFile(mode="w+")  # noqa: SIM115 - closed in finally
+                files.append(stdin)
+                stdin.write(env["JUPYTER_TOKEN"])
+                stdin.seek(0)
+                command += ["--token-password-file", "-"]
             processes.append(
                 (
                     name,
                     subprocess.Popen(
                         command,
                         env=env,
+                        stdin=stdin,
                         stdout=log,
                         stderr=subprocess.STDOUT,
                         start_new_session=True,
