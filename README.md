@@ -302,9 +302,10 @@ Python environment (`--no-sandbox`). Its generated `__marimo__/` session/cache
 folders are ignored by Git and Docker.
 
 1. Recreate the container with `just up`, then open the Marimo URL.
-2. Open `templates/shared-dataset.py`. The introduction should appear immediately.
-3. Click **Load dataset**. Confirm the snapshot ID and row count match
-   `voc dataset-info` for the configured source.
+2. Open `templates/eda_start.py` for prepared data or
+   `templates/eda_start_raw.py` for raw data. Jupyter equivalents use `.ipynb`.
+3. Run the cells to load the latest dataset and preview its contents. For the
+   prepared starter, confirm the row count matches `voc dataset-info`.
 4. Create a notebook from the editor's home page and save it under `notebooks/`.
    Add `print("hello world")` to a cell and run it. Confirm its `.py` file appears
    on the host and is still available after `just down` / `just up`.

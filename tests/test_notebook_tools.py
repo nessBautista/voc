@@ -28,7 +28,7 @@ def project(tmp_path):
     for name in (
         ".env.example",
         "config/aws.local.env.example",
-        "notebooks/templates/shared-dataset.py",
+        "notebooks/templates/eda_start.py",
     ):
         shutil.copy(ROOT / name, tmp_path / name)
     return tmp_path

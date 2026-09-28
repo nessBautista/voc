@@ -85,7 +85,7 @@ def create_notebook(root, name, kind):
     target, relative = notebook_path(root, name, kind)
     target.parent.mkdir(parents=True, exist_ok=True)
     content = (
-        (root / "templates/shared-dataset.py").read_text()
+        (root / "templates/eda_start.py").read_text()
         if kind == "marimo"
         else jupyter_content()
     )
