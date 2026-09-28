@@ -1,9 +1,10 @@
 set dotenv-load
 compose := "docker compose -f compose.yaml"
 
+# Load the selected credentials before Compose creates the container.
 up:
     mkdir -p data
-    {{compose}} up --build -d --wait
+    sh scripts/start.sh
 
 down:
     {{compose}} down

@@ -1,0 +1,4 @@
+artifact_destination = "s3"
+dataset_source = "s3"
+shared_prefix = "voc/datasets"
+members_prefix = "members"
