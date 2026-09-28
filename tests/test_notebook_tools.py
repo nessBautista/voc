@@ -181,13 +181,14 @@ def test_macos_setup_flow_with_fake_host_tools_preserves_credentials(project):
     binaries.mkdir()
     for name, body in {
         "uname": "echo Darwin",
-        "brew": "exit 0",
-        "open": "exit 0",
+        "brew": "echo Unexpected host installation >&2; exit 99",
+        "just": "exit 0",
+        "open": '[ "$1" = -e ] || exit 99',
     }.items():
         path = binaries / name
         path.write_text("#!/bin/sh\n" + body + "\n")
         path.chmod(0o755)
-    # Bash setup reaches no real package installer or Docker daemon in this test.
+    # Existing Docker-compatible runtime works without Docker.app or a package manager.
     docker = binaries / "docker"
     docker.write_text(
         f"#!{sys.executable}\n"
@@ -217,3 +218,45 @@ def test_macos_setup_flow_with_fake_host_tools_preserves_credentials(project):
         else:
             assert "synthetic-installed-secret" in path.read_text()
             assert "synthetic-installed-secret" not in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("failure", ["missing-just", "stopped-runtime", "missing-compose", "windows-containers"])
+def test_macos_setup_requires_prerequisites_without_installing_or_writing(project, failure):
+    shutil.copytree(ROOT / "scripts", project / "scripts")
+    binaries = project / "prerequisites"
+    binaries.mkdir()
+    # Isolate PATH so a real host executable cannot satisfy a missing prerequisite.
+    (binaries / "dirname").symlink_to(shutil.which("dirname"))
+    bodies = {
+        "uname": "echo Darwin",
+        "git": "exit 0",
+        "brew": "touch SHOULD_NOT_INSTALL; exit 99",
+        "docker": "exit 99",
+    }
+    if failure != "missing-just":
+        bodies["just"] = "exit 0"
+    if failure == "stopped-runtime":
+        bodies["docker"] = "exit 1"
+    elif failure == "missing-compose":
+        bodies["docker"] = '[ "$1" = info ]'
+    elif failure == "windows-containers":
+        bodies["docker"] = 'if [ "$1" = info ]; then echo windows; fi'
+    for name, body in bodies.items():
+        path = binaries / name
+        path.write_text("#!/bin/sh\n" + body + "\n")
+        path.chmod(0o755)
+    result = subprocess.run(
+        [shutil.which("bash"), "scripts/setup.sh"], cwd=project,
+        env=os.environ | {"PATH": str(binaries)}, capture_output=True, text=True,
+    )
+    assert result.returncode != 0
+    expected = {
+        "missing-just": "Missing prerequisite: just",
+        "stopped-runtime": "Container runtime is not ready",
+        "missing-compose": "Docker Compose v2 is required",
+        "windows-containers": "Linux-container runtime",
+    }
+    assert expected[failure] in result.stderr
+    assert not (project / ".env").exists()
+    assert not (project / "config/aws.local.env").exists()
+    assert not (project / "SHOULD_NOT_INSTALL").exists()

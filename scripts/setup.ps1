@@ -1,25 +1,14 @@
-# Windows host setup. Run from PowerShell; use Git Bash for daily just commands.
+# Windows project setup. Host tools must already be installed. Run from PowerShell; use Git Bash for daily just commands.
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 Set-Location (Split-Path -Parent $PSScriptRoot)
 
-function Refresh-Path {
-    $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' +
-        [Environment]::GetEnvironmentVariable('Path', 'User') + ';' + $env:Path
-}
-function Install-Package([string]$Id) {
-    if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        throw 'Install/update App Installer from Microsoft Store (winget), then rerun this script.'
+# Prerequisites are installed separately. Preserve the user's runtime and context.
+foreach ($tool in @('git', 'just', 'docker')) {
+    if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
+        throw "Missing prerequisite: $tool. Install it separately and reopen PowerShell before rerunning setup."
     }
-    Write-Host "Installing $Id. Follow any installer/administrator prompts."
-    & winget install --id $Id --exact --source winget
-    if ($LASTEXITCODE -ne 0) {
-        throw "Installation of $Id did not complete. Finish any requested restart, then rerun this script."
-    }
-    Refresh-Path
 }
-
-if (-not (Get-Command just -ErrorAction SilentlyContinue)) { Install-Package 'Casey.Just' }
 $gitBashCandidates = @(
     "$env:ProgramFiles\Git\bin\bash.exe",
     "$env:LOCALAPPDATA\Programs\Git\bin\bash.exe"
@@ -28,37 +17,25 @@ $gitCommand = Get-Command git -ErrorAction SilentlyContinue
 if ($gitCommand) {
     $gitBashCandidates += Join-Path (Split-Path (Split-Path $gitCommand.Source -Parent) -Parent) 'bin\bash.exe'
 }
-if (-not ($gitBashCandidates | Where-Object { Test-Path $_ })) { Install-Package 'Git.Git' }
-$desktopCandidates = @(
-    "$env:ProgramFiles\Docker\Docker\Docker Desktop.exe",
-    "$env:LOCALAPPDATA\Programs\DockerDesktop\Docker Desktop.exe"
-)
-$desktop = $desktopCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-if (-not $desktop) {
-    Install-Package 'Docker.DockerDesktop'
-    $desktop = $desktopCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+if (-not ($gitBashCandidates | Where-Object { Test-Path $_ })) {
+    throw 'Git Bash is required for daily just commands. Complete Git for Windows setup separately, then rerun.'
 }
-if (-not $desktop) { throw 'Open Docker Desktop manually, then rerun this script.' }
-$env:Path = (Join-Path (Split-Path $desktop -Parent) 'resources\bin') + ';' + $env:Path
-Start-Process $desktop
-Write-Host 'Finish Docker Desktop setup using Linux containers/WSL 2. A Windows restart may be required.'
-Write-Host 'Waiting up to three minutes; rerun this script after any required restart.'
 $ready = $false
-for ($attempt = 0; $attempt -lt 36; $attempt++) {
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-        try {
-            & docker info *> $null
-            if ($LASTEXITCODE -eq 0) { $ready = $true; break }
-        } catch { # Windows PowerShell can throw while the daemon is starting.
-        }
-    }
-    Start-Sleep -Seconds 5
+try {
+    & docker info *> $null
+    $ready = $LASTEXITCODE -eq 0
+} catch { # Windows PowerShell can throw when the daemon is unavailable.
 }
-if (-not $ready) { throw 'Docker is not ready. Finish WSL/Docker setup, restart if requested, and rerun this script.' }
+if (-not $ready) {
+    throw 'Container runtime is not ready. Start your existing runtime with Linux containers, then rerun setup.'
+}
 & docker compose version
-if ($LASTEXITCODE -ne 0) { throw 'Docker Compose v2 is required; finish Docker Desktop installation.' }
+if ($LASTEXITCODE -ne 0) { throw 'Docker Compose v2 is required. Complete runtime setup separately, then rerun.' }
 $osType = & docker info --format '{{.OSType}}'
-if ($osType.Trim() -ne 'linux') { throw 'Switch Docker Desktop to Linux containers and rerun.' }
+if ($LASTEXITCODE -ne 0 -or $osType.Trim() -ne 'linux') {
+    throw 'Use Linux containers before running setup.'
+}
+# Docker may download this Python image; no host software is installed.
 $repo = (Get-Location).Path
 & docker run --rm --mount "type=bind,source=$repo,target=/workspace" `
     --workdir /workspace python:3.12-slim-bookworm `

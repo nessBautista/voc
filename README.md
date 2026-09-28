@@ -3,7 +3,7 @@ hola
 ## Start here for the team session
 
 Use the team setup guide in the Sonar vault (`journal/linear/WOR-200/team-session.md`) to fetch
-`WOR-200-MLOps-infra`, run the Windows/macOS installer, fill your AWS keys,
+`WOR-200-MLOps-infra`, run the Windows/macOS project setup, fill your AWS keys,
 and open your workspace. The setup scripts preserve existing settings.
 
 ```bash
@@ -21,8 +21,10 @@ The guide includes facilitator checkpoints and the later move back to `main`.
 ## Fresh teammate setup (without 1Password)
 
 Use branch `WOR-200-MLOps-infra` while this setup is under review. Install Docker
-Desktop (with Compose v2), Git and `just` on the host. Python, uv, AWS SDKs and the
-notebook tools are installed inside the image. This path needs neither the AWS
+Desktop on Windows or OrbStack on macOS (with Compose v2), Git and `just` on the
+host. The setup scripts check these prerequisites; they do not install host tools
+or switch container runtimes. Python, uv, AWS SDKs and the notebook tools are
+installed inside the image. This path needs neither the AWS
 CLI nor `op`. On Windows, use Git Bash for the current shell recipes; Windows
 execution is still unverified.
 
