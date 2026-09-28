@@ -9,6 +9,20 @@ services:
       # data_root() reads this value to build database, cache and log paths.
       # This variable does not create or mount a directory by itself.
       VOC_DATA_DIR: /workspace/data
+      # Select the shared storage policy read by load_storage().
+      VOC_STORAGE_CONFIG: /workspace/config/storage.toml
+      # Runtime credentials supplied by scripts/start.sh, never image build arguments.
+      # Empty fallbacks let management commands work without loading credentials.
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
+      # Non-secret settings from root .env; region is exposed under both AWS names.
+      AWS_REGION: ${AWS_REGION:-}
+      AWS_DEFAULT_REGION: ${AWS_REGION:-}
+      AWS_BUCKET: ${AWS_BUCKET:-}
+      VOC_MEMBER_ID: ${VOC_MEMBER_ID:-}
+      VOC_DATASET_SOURCE: ${VOC_DATASET_SOURCE:-}
+      VOC_ARTIFACT_DESTINATION: ${VOC_ARTIFACT_DESTINATION:-}
     volumes:
       # Expose the host repository inside the container; edits affect the same files.
       - type: bind
