@@ -1,0 +1,28 @@
+services:
+  workspace:
+    # Build the image using the Dockerfile in this repository.
+    build: .
+    # Add a small init process to forward signals and reap exited child processes.
+    init: true
+    environment:
+      # Tell Python where runtime data lives INSIDE the container.
+      # data_root() reads this value to build database, cache and log paths.
+      # This variable does not create or mount a directory by itself.
+      VOC_DATA_DIR: /workspace/data
+    volumes:
+      # Expose the host repository inside the container; edits affect the same files.
+      - type: bind
+        # Relative to this Compose file: the repository directory on your host.
+        source: .
+        # Container path for the repo. Host data/ therefore appears at /workspace/data.
+        # Files persist on the host after just down; no separate data mount is needed.
+        target: /workspace
+    healthcheck:
+      # For this lesson, healthy means Python can import the VOC package.
+      test: ["CMD", "python", "-c", "import voc"]
+      # Check every 15 seconds; each attempt has a 10-second timeout.
+      interval: 15s
+      timeout: 10s
+      # Mark unhealthy after 12 consecutive failures following the startup grace period.
+      retries: 12
+      start_period: 20s
