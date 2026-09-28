@@ -17,3 +17,18 @@ status:
 
 test:
     {{compose}} exec workspace pytest -q
+
+new-marimo $notebook_name:
+    @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+
+new-notebook $notebook_name:
+    @sh scripts/notebook.sh jupyter create {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+
+marimo:
+    @sh scripts/notebook.sh marimo open {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+
+jupyter:
+    @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+
+logs:
+    {{compose}} exec workspace sh -c 'tail -n 60 /workspace/data/logs/*.log'

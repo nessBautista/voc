@@ -26,6 +26,6 @@ COPY . .
 # --locked fails if the lockfile needs updating; generate it before building.
 RUN uv sync --locked --group ml --group dev
 
-# Default startup command: keep the lesson-01 container alive for just shell.
-# This does not start notebook servers yet; a later lesson adds the service launcher.
-CMD ["sleep", "infinity"]
+# Start and supervise the Jupyter and Marimo servers.
+# If a server exits, the supervisor stops the other server and reports failure.
+CMD ["python", "-m", "voc_dev.services"]
