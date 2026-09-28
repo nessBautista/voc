@@ -1,0 +1,6 @@
+# Windows commonly uses CRLF line endings; macOS and Linux use LF.
+# Keep shell scripts and Justfile on LF to avoid errors in Linux containers,
+# and check out PowerShell scripts with CRLF for Windows.
+*.sh text eol=lf
+Justfile text eol=lf
+*.ps1 text eol=crlf
