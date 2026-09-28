@@ -24,3 +24,12 @@ def storage_info(config, destination):
         raise click.ClickException(str(error)) from error
     # Display configuration and paths; credentials are not part of this report.
     click.echo(json.dumps(settings.describe(), indent=2))
+
+@main.command("s3-check")
+@click.option("--live", is_flag=True)
+def s3_check(live):
+    if not live:
+        raise click.UsageError("Use --live to write a personal test object")
+    import json
+    from voc.storage.diagnostics import check_s3
+    click.echo(json.dumps(check_s3(), indent=2))
