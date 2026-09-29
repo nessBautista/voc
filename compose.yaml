@@ -5,6 +5,11 @@ services:
     # Add a small init process to forward signals and reap exited child processes.
     init: true
     environment:
+      # Keep ZenML configuration and metadata in persistent repo data/.
+      ZENML_CONFIG_PATH: /workspace/data/zenml-client
+      ZENML_CUSTOM_SOURCE_ROOT: /workspace
+      ZENML_ANALYTICS_OPT_IN: "false"
+      MLFLOW_DISABLE_AGENT_HINT: "1"
       # Both notebook editors use this login token from the private root .env.
       JUPYTER_TOKEN: ${JUPYTER_TOKEN:?Set JUPYTER_TOKEN in .env}
       # Tell Python where runtime data lives INSIDE the container.
@@ -33,13 +38,15 @@ services:
         # Container path for the repo. Host data/ therefore appears at /workspace/data.
         # Files persist on the host after just down; no separate data mount is needed.
         target: /workspace
-    # Host browser ports map to the fixed ports used by the notebook servers.
+    # Host browser ports map to the fixed ports used by all four servers.
     ports:
+      - "127.0.0.1:${VOC_ZENML_PORT:-8239}:8237"
+      - "127.0.0.1:${VOC_MLFLOW_PORT:-5002}:5000"
       - "127.0.0.1:${VOC_JUPYTER_PORT:-8890}:8888"
       - "127.0.0.1:${VOC_MARIMO_PORT:-2721}:2718"
     healthcheck:
-      # Healthy means both notebook servers respond to HTTP requests.
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8888/',timeout=5); urllib.request.urlopen('http://127.0.0.1:2718/health',timeout=5)"]
+      # Healthy means ZenML, MLflow, Jupyter, and Marimo respond to HTTP requests.
+      test: ["CMD", "python", "-c", "import urllib.request; [urllib.request.urlopen('http://127.0.0.1:'+str(p)+'/',timeout=5) for p in (8237,5000,8888)]; urllib.request.urlopen('http://127.0.0.1:2718/health',timeout=5)"]
       # Check every 15 seconds; each attempt has a 10-second timeout.
       interval: 15s
       timeout: 10s
