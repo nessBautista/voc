@@ -1,0 +1,13 @@
+.git
+.env
+**/*.local.env
+**/*.refs.env
+data
+.venv
+**/__pycache__
+**/.ipynb_checkpoints
+**/__marimo__
+.pytest_cache
+.ruff_cache
+site
+build
