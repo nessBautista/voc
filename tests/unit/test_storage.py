@@ -34,7 +34,8 @@ def s3_env(monkeypatch):
 
 def test_local_defaults_keep_existing_paths_without_creating_files(tmp_path):
     settings = load_storage()
-    assert settings.artifact_destination == settings.dataset_source == "local"
+    assert settings.artifact_destination == "local"
+    assert settings.dataset_source == "personal"
     assert settings.installation_id is None
     assert settings.zenml_artifact_uri == str(tmp_path / "runtime/zenml-artifacts")
     assert (
@@ -154,3 +155,9 @@ def test_cli_reports_paths_and_explains_missing_settings(s3_env, monkeypatch):
     result = CliRunner().invoke(main, ["storage-info", "--destination", "s3"])
     assert result.exit_code == 1
     assert "Set AWS_BUCKET" in result.output
+
+
+@pytest.mark.parametrize("source", ["personal", "local"])
+def test_personal_source_and_legacy_config(source, monkeypatch):
+    monkeypatch.setenv("VOC_DATASET_SOURCE", source)
+    assert load_storage().dataset_source == "personal"

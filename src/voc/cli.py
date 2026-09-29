@@ -14,7 +14,8 @@ def version():
 
 @main.command("storage-info")
 @click.option("--config", default=None, type=click.Path(exists=True, dir_okay=False))
-@click.option("--destination", type=click.Choice(["local", "s3"]), default=None)
+@click.option("--destination", type=click.Choice(["personal", "s3", "local"]), default=None,
+              help="Personal catalog or shared S3 releases; local is a compatibility alias.")
 def storage_info(config, destination):
     """Inspect intended storage settings; does not reconfigure ZenML or MLflow."""
     import json
@@ -38,7 +39,8 @@ def s3_check(live):
 
 @main.command("dataset-info")
 @click.option("--version", default="latest")
-@click.option("--source", type=click.Choice(["local", "s3"]), default=None)
+@click.option("--source", type=click.Choice(["personal", "s3", "local"]), default=None,
+              help="Personal catalog or shared S3 releases; local is a compatibility alias.")
 def dataset_info(version, source):
     """Read metadata of a published workable dataset."""
     from voc.datasets import resolve
@@ -53,7 +55,8 @@ def dataset_info(version, source):
 
 @main.command()
 @click.option("--version", default="latest")
-@click.option("--source", type=click.Choice(["local", "s3"]), default=None)
+@click.option("--source", type=click.Choice(["personal", "s3", "local"]), default=None,
+              help="Personal catalog or shared S3 releases; local is a compatibility alias.")
 def summary(version, source):
     """Summarize a published workable dataset."""
     from voc.datasets import get_dataset, summary

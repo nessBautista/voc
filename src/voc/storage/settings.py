@@ -14,7 +14,7 @@ from ..paths import data_root
 # Used before applying file settings and overrides.
 DEFAULTS = {
     "artifact_destination": "local",
-    "dataset_source": "local",
+    "dataset_source": "personal",
     "shared_prefix": "voc/datasets",
     "members_prefix": "members",
     "bucket": "",
@@ -114,9 +114,15 @@ def load_storage(path=None, *, destination=None):
     # 5. Validate types and allowed storage modes before creating any files.
     if any(not isinstance(v, str) for v in values.values()):
         raise ValueError("Storage settings must be strings")
-    for key in ("artifact_destination", "dataset_source"):
-        if values[key] not in ("local", "s3"):
-            raise ValueError(f"{key} must be local or s3")
+    # Preserve older configs while naming the dataset source by ownership.
+    if values["dataset_source"] == "local":
+        values["dataset_source"] = "personal"
+    for key, choices in (
+        ("artifact_destination", ("local", "s3")),
+        ("dataset_source", ("personal", "s3")),
+    ):
+        if values[key] not in choices:
+            raise ValueError(f"{key} must be {' or '.join(choices)}")
 
     # Keep shared datasets and personal artifacts in separate S3 prefixes.
     shared = _prefix(values["shared_prefix"], "shared_prefix")
