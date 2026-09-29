@@ -47,6 +47,8 @@ packages = ["src/voc", "src/voc_ml", "src/voc_dev"]
 # Installation creates the voc terminal command, which calls main() in voc/cli.py.
 [project.scripts]
 voc = "voc.cli:main"
+# Separate command for ML setup and dataset pipelines.
+voc-ml = "voc_ml.cli:main"
 
 # pytest reads this section when discovering and running tests.
 [tool.pytest.ini_options]
