@@ -58,3 +58,16 @@ def publish_run(run_id):
     info, _ = validated_run(run_id)
     publish(info)
     return info
+
+def share_run(run_id, *, storage=None):
+    """Share an already-published local result; collection is never invoked here."""
+    from voc.datasets import resolve
+    from voc.datasets.publisher import publish_release
+    from voc.storage import load_storage
+    from voc.collection.store import Snapshot
+
+    info, frame = validated_run(run_id)
+    if resolve(info["artifact_id"], source="personal") != info:
+        raise ValueError("Local publication differs from validated pipeline output")
+    raw = RawStore(info["raw_store_id"]).read(info["raw_revision_id"])
+    return publish_release(raw, Snapshot(frame, info), storage or load_storage())

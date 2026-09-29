@@ -28,6 +28,8 @@ shared release; a pinned version is a release ID.
 | `zenml_reader.py` | Load a personal publication’s dataframe artifact through ZenML. |
 | `shared_reader.py` | Download, verify, and cache shared dataset releases. |
 | `manifest.py` | Handle the shared release metadata contract. |
+| `export.py` | Export snapshots to Parquet and verify exact round-trip values. |
+| `publisher.py` | Upload a matching raw/workable release and conditionally advance shared latest. |
 | `parquet.py` | Convert dataframes to and from the Parquet representation. |
 
 The catalog stores references and metadata, not the dataframe itself.
