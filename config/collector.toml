@@ -1,0 +1,22 @@
+[update]
+mode = "incremental"
+until = "run_start"
+overlap_days = 7
+max_seconds = 300
+max_response_bytes = 2097152
+max_capture_bytes = 104857600
+
+[[sources]]
+provider = "apple_rss"
+app_id = "498483038"
+country = "mx"
+max_requests = 10
+max_items = 500
+
+[[sources]]
+provider = "play"
+app_id = "com.citibanamex.banamexmobile"
+country = "mx"
+lang = "es"
+max_requests = 50
+max_items = 5000

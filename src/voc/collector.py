@@ -1,4 +1,4 @@
-"""Stable notebook entry point; collection is introduced separately."""
+"""Stable entry point for shared dataset reads and local collection."""
 def get_dataset(stage="prepared", version="latest", *, source=None, store=None):
     from .datasets import selected_source, get_dataset as read
     source = selected_source(source or ("local" if store is not None else None))
@@ -10,5 +10,7 @@ def get_dataset(stage="prepared", version="latest", *, source=None, store=None):
         from .datasets.shared_reader import SharedDatasetReader
         return SharedDatasetReader().read(version, stage=stage)
     if stage == "raw":
-        raise LookupError("Raw collection is introduced in lesson 7")
+        return get_raw_dataset(store, version)
     return read(version, source="local")
+
+from .collection.service import UpdateResult, get_raw_dataset, initialize_raw_store, load_config, update
