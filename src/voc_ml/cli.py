@@ -95,7 +95,17 @@ def run(config, rules, refresh, live, operation_id):
     )
     if result is None:
         raise click.ClickException("No completed run returned")
-    click.echo(str(result.id))
+    from .publication import publish_run
+    click.echo(json.dumps(publish_run(str(result.id)), indent=2))
+
+
+@dataset.command("publish")
+@click.argument("run_id")
+def publish(run_id):
+    """Retry publication of an already-completed dataset run."""
+    from .publication import publish_run
+
+    click.echo(json.dumps(publish_run(run_id), indent=2))
 
 
 if __name__ == "__main__":
