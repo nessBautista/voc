@@ -131,3 +131,10 @@ logs/
 tmp/
 temp/
 .cache/
+
+# Rebuild runtime and local configuration
+*.local.env
+*.refs.env
+data/
+site/
+.zen/
