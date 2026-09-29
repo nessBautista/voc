@@ -10,6 +10,7 @@ from pathlib import Path
 
 from voc.paths import data_root
 from voc.storage import load_storage
+from voc_ml.tracking import server_command
 
 
 
@@ -23,12 +24,21 @@ def main():
     )
     os.environ.setdefault("ZENML_ANALYTICS_OPT_IN", "false")
     os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
+    # Configure the stack and experiment before launching their servers.
+    from .bootstrap import bootstrap
+
+    bootstrap()
     # The repository is bind-mounted at /workspace; notebook saves reach the host.
     notebooks = Path(__file__).resolve().parents[2] / "notebooks"
     notebooks.mkdir(parents=True, exist_ok=True)
     # The versioned example is already available in notebooks/templates/.
     py = sys.executable
     commands = {
+        "zenml": [
+            py, "-m", "uvicorn", "zenml.zen_server.zen_server_api:app",
+            "--host", "0.0.0.0", "--port", "8237",
+        ],
+        "mlflow": server_command(py, load_storage()),
         # Edit .py notebooks using the same installed VOC/ML environment as Jupyter.
         "marimo": [
             py,
