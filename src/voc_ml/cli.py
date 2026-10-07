@@ -245,5 +245,24 @@ def embeddings_export(producer_run_id, as_json):
     click.echo(json.dumps(reference, indent=None if as_json else 2))
 
 
+@embeddings.command("publish")
+@click.argument("producer_run_id")
+@click.option("--promote", is_flag=True, help="Make a full release latest for its dataset/profile.")
+@click.option("--json", "as_json", is_flag=True)
+def embeddings_publish(producer_run_id, promote, as_json):
+    """Publish a completed embedding export to S3 without encoding again."""
+    import sys
+    from contextlib import redirect_stdout
+
+    from .embeddings.publish import publish_run
+
+    try:
+        with redirect_stdout(sys.stderr):
+            result = publish_run(producer_run_id, promote=promote)
+    except Exception as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=None if as_json else 2))
+
+
 if __name__ == "__main__":
     main()
