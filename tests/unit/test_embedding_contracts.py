@@ -351,6 +351,7 @@ sys.meta_path.insert(0, NoML())
 from voc.embeddings import resolve_profile
 from voc.embeddings.manifest import validate_manifest
 from voc_ml.embeddings import pin_input
+from voc_ml.features import prepare_frame
 assert resolve_profile().dimensions == 384
 """
     root = Path(__file__).resolve().parents[2]
