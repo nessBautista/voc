@@ -53,6 +53,8 @@ packages = ["src/voc", "src/voc_ml", "src/voc_dev"]
 voc = "voc.cli:main"
 # Separate command for ML setup and dataset pipelines.
 voc-ml = "voc_ml.cli:main"
+# Read-only developer storage diagnostics.
+voc-dev = "voc_dev.cli:main"
 
 # pytest reads this section when discovering and running tests.
 [tool.pytest.ini_options]

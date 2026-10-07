@@ -19,6 +19,7 @@ def isolated_settings(tmp_path, monkeypatch):
         "VOC_STORAGE_CONFIG",
         "VOC_ARTIFACT_DESTINATION",
         "VOC_DATASET_SOURCE",
+        "VOC_EMBEDDINGS_PREFIX",
     ):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.setenv("VOC_DATA_DIR", str(tmp_path / "runtime"))
