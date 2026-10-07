@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # First build stage: get a specific version of the uv tools.
 FROM ghcr.io/astral-sh/uv:0.12.7 AS uv
 
@@ -12,19 +14,28 @@ COPY --from=uv /uv /uvx /usr/local/bin/
 # PATH selects this environment's Python/commands; unbuffered output shows logs promptly.
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv UV_LINK_MODE=copy PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
 
-# Install Git and HTTPS trust certificates; remove package lists to reduce image size.
-RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
+# HDBSCAN needs a compiler when no wheel exists (including Linux ARM on Apple Silicon).
+# Install build tools, Git and HTTPS certificates, then remove package lists.
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential git ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Working directory for subsequent build instructions and the running container.
 WORKDIR /workspace
+
+# Cache third-party dependencies separately from our source code and notebooks.
+# --locked rejects an outdated lockfile; --no-install-project waits for src/ below.
+COPY pyproject.toml uv.lock ./
+# Keep downloaded packages in Docker's build cache, outside the final image.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --group ml --group dev --no-install-project
 
 # Copy the build context (repo files allowed by .dockerignore) into the image.
 # At runtime, Compose's bind mount exposes your live host repo at this same path.
 COPY . .
 
-# Install our package, core dependencies, and the ml/dev groups using uv.lock.
-# --locked fails if the lockfile needs updating; generate it before building.
-RUN uv sync --locked --group ml --group dev
+# Install VOC in editable mode; reuse the dependencies already installed above.
+# Source edits rerun this small step without reinstalling the third-party libraries.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked --group ml --group dev
 
 # Start and supervise the Jupyter and Marimo servers.
 # If a server exits, the supervisor stops the other server and reports failure.

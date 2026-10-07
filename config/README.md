@@ -34,3 +34,20 @@ Built-in defaults → storage.toml → nonempty environment variables → explic
 Later values override earlier ones. The loader returns a `StorageSettings` object; the explicit destination override affects only personal artifacts.
 
 After editing TOML, load the settings again. After changing container environment settings, run `just up` again. Generated databases and caches belong in `data/`, not here.
+
+## Optional OpenRouter access
+
+To request new topic interpretations, add `OPENROUTER_API_KEY` to the ignored
+`config/aws.local.env`, as a key in env-file mode or an `op://...` reference in
+1Password mode. `just up` passes the resolved value to the notebook services.
+Leave it empty to view cached demo answers. Do not put keys in notebook cells.
+
+For a running container, `scripts/load-openrouter-key.py` accepts the key on
+standard input and saves it privately inside the container. A host-side example:
+
+```bash
+op read 'op://VAULT/ITEM/FIELD' | docker compose -f compose.yaml exec -T workspace python scripts/load-openrouter-key.py
+```
+
+This does not send a model request. The temporary key disappears when the
+container is removed, so use the private credential file for future startups.
