@@ -12,7 +12,7 @@ from voc.embeddings.contracts import text_hash
 from voc.embeddings.profiles import resolve_profile
 from voc.models import Snapshot
 from voc_ml.embeddings import InputValidationError, select_snapshot
-from voc_ml.features import (
+from voc_ml.embeddings.features import (
     FeatureConfig,
     prepare_features,
     prepare_frame,
@@ -184,7 +184,7 @@ def test_no_overwrite_or_partial_directory_after_failed_validation(reviews, tmp_
     read_features(saved)
     with (
         patch(
-            "voc_ml.features.read_features",
+            "voc_ml.embeddings.features.read_features",
             side_effect=ValueError("injected round-trip failure"),
         ),
         pytest.raises(ValueError, match="injected"),

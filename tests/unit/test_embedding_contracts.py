@@ -124,7 +124,7 @@ def release_for(pinned):
 
 def test_pin_latest_resolves_once_and_survives_changed_source(snapshot, monkeypatch):
     reader = Mock(return_value=snapshot)
-    monkeypatch.setattr("voc_ml.embeddings.collector.get_dataset", reader)
+    monkeypatch.setattr("voc_ml.embeddings.selection.collector.get_dataset", reader)
     pinned = pin_input()
     expected = pinned.selection.selection_id
     reader.assert_called_once_with(stage="prepared", version="latest", source="s3")
@@ -217,7 +217,7 @@ def test_missing_columns_and_reserved_outputs_rejected(snapshot):
 
 def test_source_and_metadata_required_before_selection(snapshot, monkeypatch):
     reader = Mock()
-    monkeypatch.setattr("voc_ml.embeddings.collector.get_dataset", reader)
+    monkeypatch.setattr("voc_ml.embeddings.selection.collector.get_dataset", reader)
     with pytest.raises(ValueError, match="shared S3"):
         pin_input(source="personal")
     reader.assert_not_called()
@@ -351,7 +351,7 @@ sys.meta_path.insert(0, NoML())
 from voc.embeddings import resolve_profile
 from voc.embeddings.manifest import validate_manifest
 from voc_ml.embeddings import pin_input
-from voc_ml.features import prepare_frame
+from voc_ml.embeddings.features import prepare_frame
 assert resolve_profile().dimensions == 384
 """
     root = Path(__file__).resolve().parents[2]

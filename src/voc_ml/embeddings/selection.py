@@ -1,4 +1,4 @@
-"""Pin existing shared datasets for embedding work; no model or orchestration yet."""
+"""Pin and validate shared dataset selections for embedding work."""
 
 from dataclasses import dataclass
 

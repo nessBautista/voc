@@ -19,7 +19,8 @@ from voc.embeddings.contracts import (
     require_fields,
     text_hash,
 )
-from voc_ml.embeddings import InputValidationError, PinnedInput, validate_reviews
+
+from .selection import InputValidationError, PinnedInput, validate_reviews
 
 SCHEMA_VERSION = "voc-features-v1"
 FEATURE_COLUMNS = ("embedding_text", "source_text_hash", "feature_text_hash")
