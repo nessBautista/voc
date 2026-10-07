@@ -29,19 +29,10 @@ ml = [
     "aws-profile-manager",
     "aiobotocore==3.9.0",
     "jupyterlab>=4,<5",
-    "marimo==0.25.0",  # Matches Studio's supported runtime.
-    "marimo-studio==0.2.3",  # HTML views; no Deno/Node toolchain required.
+    "marimo>=0.15",
     "matplotlib>=3.9",
     "mkdocs>=1.6,<2",
     "mkdocstrings[python]>=0.27",
-    "sentence-transformers==5.1.2",
-    "bertopic==0.17.4",
-    "umap-learn==0.5.12",
-    "hdbscan==0.8.44",
-    "openai>=2,<3",  # OpenRouter-compatible client; no OpenAI account needed.
-    "datasets>=3,<6",  # Avoid old PyArrow-incompatible transitive versions.
-    "pysentimiento==0.7.3",  # Spanish sentiment preprocessing for RoBERTuito.
-    "jsonschema>=4,<5",  # Validate the topic and sentiment artifacts.
 ]
 
 # Tell build tools which backend packages our Python code for installation.

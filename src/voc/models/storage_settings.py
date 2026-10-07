@@ -17,11 +17,6 @@ class StorageSettings:
     shared_prefix: str
     members_prefix: str
     installation_id: str | None
-    demos_prefix: str = "voc/demos"
-
-    @property
-    def demos_uri(self):
-        return f"s3://{self.bucket}/{self.demos_prefix}" if self.bucket else None
 
     @property
     def shared_dataset_uri(self):
@@ -56,7 +51,6 @@ class StorageSettings:
             "member_id": self.member_id,
             "installation_id": self.installation_id,
             "shared_dataset_uri": self.shared_dataset_uri,
-            "demos_uri": self.demos_uri,
             "personal_uri": self.personal_uri,
             "zenml_artifact_uri": self.zenml_artifact_uri,
             "mlflow_artifact_uri": self.mlflow_artifact_uri,

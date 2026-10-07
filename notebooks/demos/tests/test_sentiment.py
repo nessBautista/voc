@@ -3,7 +3,7 @@ from copy import deepcopy
 import pandas as pd
 import pytest
 
-from voc_ml.sentiment import (
+from voc_demo.sentiment import (
     aggregate_sentiment,
     build_topic_objects,
     make_prediction,
@@ -115,7 +115,7 @@ def test_classifier_uses_config_labels_and_records_truncation():
 
     import torch
 
-    from voc_ml.sentiment.robertuito import classify_reviews
+    from voc_demo.sentiment.robertuito import classify_reviews
 
     calls = []
 

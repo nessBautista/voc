@@ -9,10 +9,10 @@ import sys
 import httpx
 import pytest
 
-from voc_ml.llm import create_openrouter_client
-from voc_ml.llm.openrouter import _load_key
+from voc_demo.llm import create_openrouter_client
+from voc_demo.llm.openrouter import _load_key
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(autouse=True)

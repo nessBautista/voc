@@ -11,7 +11,7 @@ credential_file="${VOC_AWS_ENV_FILE:-config/aws.local.env}"
 test -r "$credential_file" || { echo 'Create the credential file from config/aws.local.env.example.' >&2; exit 1; }
 
 # 2. Remove inherited keys so old terminal credentials cannot override our selection.
-unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN OPENROUTER_API_KEY
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
 # 3. Choose a branch, like switch/case. The default mode is env-file.
 # The mode selects the reader; this script does not auto-detect op:// contents.

@@ -138,11 +138,3 @@ temp/
 data/
 site/
 .zen/
-
-# Authored Studio demo source; results and runtime/build state stay untracked.
-!notebooks/demos/__marimo__/
-notebooks/demos/__marimo__/*
-!notebooks/demos/__marimo__/studio/
-notebooks/demos/__marimo__/studio/**/.artifacts/
-notebooks/demos/__marimo__/studio/**/.locks/
-notebooks/demos/snapshot/

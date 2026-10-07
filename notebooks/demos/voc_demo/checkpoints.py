@@ -9,14 +9,14 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from voc.datasets.demos import (
+from voc_demo.datasets.demos import (
     PROTOTYPE_FILES,
     DemoSnapshots,
     atomic_bytes,
     folder_lock,
 )
-from voc.datasets.manifest import json_bytes
-from voc.storage import load_storage
+from voc_demo.datasets.manifest import json_bytes
+from voc_demo.settings import load_settings
 
 FILES = PROTOTYPE_FILES["prototypeV0"]
 SOURCE = "demo-source.json"
@@ -130,9 +130,9 @@ def seed_prototype_cache(
     pinned caches stop with an error instead of mixing files or rerunning models.
     """
     cache = Path(cache)
-    storage = storage or load_storage(destination="local")
+    storage = storage or load_settings()
     if storage.dataset_source != "s3":
-        raise ValueError("The demo requires VOC_DATASET_SOURCE=s3")
+        raise ValueError("The demo requires a shared S3 dataset")
     with folder_lock(cache.parent / ".demo-seed-lock"):
         cache.mkdir(parents=True, exist_ok=True)
         _release_guard(cache, release_id)

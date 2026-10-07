@@ -11,11 +11,11 @@ import pandas as pd
 import pytest
 from botocore.exceptions import ClientError
 
-from voc.datasets.demos import PROTOTYPE_FILES, DemoSnapshots
-from voc.datasets.manifest import json_bytes
-from voc.models import StorageSettings
-from voc.storage.objects import PublicationConflict
-from voc_dev.demos import (
+from voc_demo.datasets.demos import PROTOTYPE_FILES, DemoSnapshots
+from voc_demo.datasets.manifest import json_bytes
+from voc_demo.settings import DemoSettings
+from voc_demo.objects import PublicationConflict
+from voc_demo.checkpoints import (
     publish_prototype_demo,
     seed_prototype_cache,
 )
@@ -109,16 +109,12 @@ class MemoryS3:
 
 @pytest.fixture
 def setup(tmp_path):
-    settings = StorageSettings(
-        "local",
-        "s3",
+    settings = DemoSettings(
         tmp_path / "runtime",
         "team-test-bucket",
         "us-east-2",
         "tester",
         "voc/datasets",
-        "members",
-        None,
     )
     folder = tmp_path / "source"
     folder.mkdir()
@@ -480,7 +476,7 @@ def test_missing_demo_never_generates_replacement_data(
 
 def test_demo_requires_s3_mode(setup, tmp_path, checkpoint):
     demos, client, _ = setup
-    with pytest.raises(ValueError, match="VOC_DATASET_SOURCE=s3"):
+    with pytest.raises(ValueError, match="a shared S3 dataset"):
         seed_prototype_cache(
             tmp_path / "new",
             release_id=RELEASE,
@@ -494,15 +490,8 @@ def test_demo_requires_s3_mode(setup, tmp_path, checkpoint):
     "prefix", ["voc/datasets", "voc/datasets/demo", "members/demo", "voc"]
 )
 def test_demo_prefix_must_not_overlap_other_roots(tmp_path, monkeypatch, prefix):
-    from voc.storage import load_storage
+    from voc_demo.settings import load_settings
 
-    for name in (
-        "VOC_STORAGE_CONFIG",
-        "VOC_ARTIFACT_DESTINATION",
-        "VOC_DATASET_SOURCE",
-    ):
-        monkeypatch.delenv(name, raising=False)
-    path = tmp_path / "storage.toml"
-    path.write_text(f'demos_prefix = "{prefix}"\n')
+    monkeypatch.setenv("DEMO_S3_PREFIX", prefix)
     with pytest.raises(ValueError, match="must not overlap"):
-        load_storage(path)
+        load_settings()

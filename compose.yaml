@@ -23,8 +23,6 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
-      # Optional LLM credential, resolved by the same runtime credential loader.
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
       # Non-secret settings from root .env; region is exposed under both AWS names.
       AWS_REGION: ${AWS_REGION:-}
       AWS_DEFAULT_REGION: ${AWS_REGION:-}

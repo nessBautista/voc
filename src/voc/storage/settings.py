@@ -17,7 +17,6 @@ DEFAULTS = {
     "dataset_source": "personal",
     "shared_prefix": "voc/datasets",
     "members_prefix": "members",
-    "demos_prefix": "voc/demos",
     "bucket": "",
     "region": "",
     "member_id": "",
@@ -128,13 +127,15 @@ def load_storage(path=None, *, destination=None):
     # Keep shared datasets and personal artifacts in separate S3 prefixes.
     shared = _prefix(values["shared_prefix"], "shared_prefix")
     members = _prefix(values["members_prefix"], "members_prefix")
-    demos = _prefix(values["demos_prefix"], "demos_prefix")
-    prefixes = [shared, members, demos]
-    for i, first in enumerate(prefixes):
-        for second in prefixes[i + 1:]:
-            if first == second or first.startswith(second + "/") or second.startswith(first + "/"):
-                raise ValueError("Dataset, demo and personal artifact prefixes must not overlap")
-    values.update(shared_prefix=shared, members_prefix=members, demos_prefix=demos)
+    if (
+        shared == members
+        or shared.startswith(members + "/")
+        or members.startswith(shared + "/")
+    ):
+        raise ValueError(
+            "Shared dataset and personal artifact prefixes must not overlap"
+        )
+    values.update(shared_prefix=shared, members_prefix=members)
 
     # S3 needs a bucket and region; personal S3 artifacts also need a member ID.
     uses_s3 = "s3" in (values["artifact_destination"], values["dataset_source"])

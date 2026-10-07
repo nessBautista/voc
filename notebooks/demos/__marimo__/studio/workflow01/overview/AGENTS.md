@@ -9,7 +9,7 @@ supplied by this starter.
 Overview of the pinned **workable** VOC release for Workflow 01
 (`notebooks/demos/workflow01.py`). Audience: the team confirming which
 dataset a workflow run will use. The notebook loads the release through
-`voc.collector.get_dataset()` and publishes a compact, JSON-compatible
+`voc_demo.reader.get_dataset()` and publishes a compact, JSON-compatible
 `studio_payload` (counts, dates, column names); the page only formats it.
 `DESIGN.md` records the reading order, evidence rules and visual language.
 

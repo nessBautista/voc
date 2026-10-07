@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from jsonschema import Draft202012Validator, ValidationError
 
-from voc_ml.sentiment.contracts import _TOPIC
+from voc_demo.sentiment.contracts import _TOPIC
 
 from .openrouter import create_openrouter_client
 

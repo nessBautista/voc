@@ -5,7 +5,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from voc_ml.llm.openrouter import SESSION_KEY_PATH
+from voc_demo.llm.openrouter import SESSION_KEY_PATH
 
 
 def main():

@@ -6,14 +6,14 @@ import pandas as pd
 import pytest
 from jsonschema import ValidationError
 
-from voc_ml.llm.topic_interpretation import (
+from voc_demo.llm.topic_interpretation import (
     attach_interpretation,
     evidence_request,
     interpreted_topics,
     join_topic_sentiment,
     request_interpretation,
 )
-from voc_ml.sentiment import aggregate_sentiment, build_topic_objects, make_prediction
+from voc_demo.sentiment import aggregate_sentiment, build_topic_objects, make_prediction
 
 
 @pytest.fixture

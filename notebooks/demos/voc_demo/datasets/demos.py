@@ -17,8 +17,8 @@ from pathlib import Path
 
 import boto3
 
-from voc.storage import load_storage
-from voc.storage.objects import PublicationConflict, ReleaseObjects
+from voc_demo.settings import load_settings
+from voc_demo.objects import PublicationConflict, ReleaseObjects
 
 from .manifest import (
     MAX_FILE_BYTES,
@@ -165,7 +165,7 @@ class DemoSnapshots:
         if prototype not in PROTOTYPE_FILES:
             raise ValueError("Only prototypeV0 demo snapshots are supported")
         self.prototype = prototype
-        self.storage = storage or load_storage(destination="local")
+        self.storage = storage or load_settings()
         if not self.storage.bucket or not self.storage.region:
             raise ValueError("Demo snapshots require AWS_BUCKET and AWS_REGION")
         self._client = client
@@ -277,7 +277,7 @@ class DemoSnapshots:
         """
         canonical_id(release_id)
         if not self.storage.member_id:
-            raise ValueError("Set VOC_MEMBER_ID before publishing a demo")
+            raise ValueError("Set DEMO_MEMBER_ID before publishing a demo")
         folder = Path(folder)
         with (
             folder_lock(self.cache),

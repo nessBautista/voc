@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.10,<3.15"
+# requires-python = ">=3.12,<3.13"
 #
 # [tool.marimo-studio]
 # default = "overview"
@@ -26,7 +26,7 @@ def imports():
     import marimo as mo
     import pandas as pd
 
-    from voc import collector as co
+    from voc_demo import reader as co
 
     return Path, base64, co, hashlib, json, mo, pd
 
@@ -193,11 +193,11 @@ def embeddings_section(mo):
 
 @app.cell
 def embeddings_sample(DEMO_VERSION, mo, pd, snapshot, workable):
-    from voc.paths import data_root
-    from voc_dev.demos import seed_prototype_cache
+    from voc_demo.settings import data_root
+    from voc_demo.checkpoints import seed_prototype_cache
 
     SAMPLE_SEED = 42
-    SAMPLE_DIR = data_root() / "demos/workflow01" / DEMO_VERSION
+    SAMPLE_DIR = data_root() / "workflow01" / DEMO_VERSION
     demo_seed = seed_prototype_cache(
         SAMPLE_DIR, release_id=snapshot.info["release_id"],
         workable=workable, version=DEMO_VERSION,
@@ -292,13 +292,14 @@ def embed_section(mo):
 
     The result is a separate matrix `embeddings` with one row per prepared text, aligned with
     `prepared_sample` and `texts`. The text columns are never replaced. The sample and its vectors are
-    saved under `data/demos/workflow01/<snapshot-id>/`; later runs reuse them when the inputs and model match.
+    saved under `.data/workflow01/<snapshot-id>/`; later runs reuse them when the inputs and model match.
     """)
     return
 
 
 @app.cell
 def load_encoder(mo, texts):
+    from voc_demo.settings import model_root as _model_root
     from sentence_transformers import SentenceTransformer
     import numpy as np
 
@@ -308,7 +309,7 @@ def load_encoder(mo, texts):
     encoder = SentenceTransformer(
         MODEL_ID,
         revision=MODEL_REVISION,
-        cache_folder="/workspace/data/models/sentence-transformers",
+        cache_folder=str(_model_root() / "sentence-transformers"),
         device="cpu",
     )
 
@@ -1499,7 +1500,7 @@ def naming_section(mo):
       *excelente excelente* stop crowding the list. We chain it after KeyBERT with 30 candidates.
     - **Text generation**: the only block that produces something new. For each topic it sends the keywords and
       a few representative reviews to a language model and asks for a **label**; the model never sees the whole
-      corpus. We reuse the repository's Spanish prompt (`voc_ml.llm.topic_interpretation`): reviews are
+      corpus. We reuse the demo's Spanish prompt (`voc_demo.llm.topic_interpretation`): reviews are
       declared untrusted data, the answer must be JSON with a proposed feature, a description, the ids of the
       reviews that support it, and an assessment (`single_feature`, `mixed`, `unclear`).
 
@@ -1605,8 +1606,8 @@ def label_evidence(
     topic_info,
     topic_payload,
 ):
-    from voc_ml.llm.topic_interpretation import PROMPT_VERSION, RESPONSE_SCHEMA, SYSTEM_PROMPT, fingerprint
-    from voc_ml.llm.openrouter import create_openrouter_client
+    from voc_demo.llm.topic_interpretation import PROMPT_VERSION, RESPONSE_SCHEMA, SYSTEM_PROMPT, fingerprint
+    from voc_demo.llm.openrouter import create_openrouter_client
     from jsonschema import Draft202012Validator, ValidationError
 
     LABEL_ASPECT = f"mmr_{MMR_DIVERSITIES[0]}"
@@ -1701,7 +1702,7 @@ def label_topics(
 
 
     def request_label(payload):
-        """One explicit request, mirroring voc_ml.llm.topic_interpretation.request_interpretation."""
+        """One explicit request, mirroring voc_demo.llm.topic_interpretation.request_interpretation."""
         attempt = {
             "created_at": pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"),
             "prompt_version": PROMPT_VERSION, "requested_model": LABEL_MODEL,
@@ -1915,7 +1916,8 @@ def classify_sentiment(
     snapshot,
     time,
 ):
-    from voc_ml.sentiment.robertuito import MAX_LENGTH as SENTIMENT_MAX_LENGTH, MODEL_ID as SENTIMENT_MODEL, MODEL_REVISION as SENTIMENT_REVISION, classify_reviews, load_model
+    from voc_demo.settings import model_root as _sentiment_model_root
+    from voc_demo.sentiment.robertuito import MAX_LENGTH as SENTIMENT_MAX_LENGTH, MODEL_ID as SENTIMENT_MODEL, MODEL_REVISION as SENTIMENT_REVISION, classify_reviews, load_model
 
     SENTIMENT_LABELS = ("negative", "neutral", "positive")
     _sentiment_path = SAMPLE_DIR / "sentiment.parquet"
@@ -1931,7 +1933,7 @@ def classify_sentiment(
         _origin = f"loaded from `{_sentiment_path.name}`"
     else:
         _t0 = time.perf_counter()
-        _tokenizer, _model = load_model(Path("/workspace/data/models/sentiment"))
+        _tokenizer, _model = load_model(_sentiment_model_root() / "sentiment")
         _predictions, _diagnostics = classify_reviews(
             prepared_sample[["record_id", "embedding_text"]], _tokenizer, _model,
             sentiment_run_id="prototypeV0-workflow01", dataset_release_id=snapshot.info["release_id"], batch_size=16,
@@ -2193,7 +2195,7 @@ def snapshot_section(mo):
     ## S3 demo checkpoint
 
     This demo loads its pinned snapshot from `voc/demos/prototypeV0` and keeps a
-    working copy under `data/demos/workflow01/<snapshot-id>/`. The repository does
+    working copy under `.data/workflow01/<snapshot-id>/`. The repository does
     not include a snapshot fallback. If S3 cannot provide a verified checkpoint,
     loading stops before the processing stages.
 
@@ -2214,7 +2216,7 @@ def publish_demo_button(mo):
 
 @app.cell
 def publish_demo_result(SAMPLE_DIR, mo, publish_demo, snapshot, workable):
-    from voc_dev.demos import publish_prototype_demo
+    from voc_demo.checkpoints import publish_prototype_demo
 
     mo.stop(not publish_demo.value, mo.md("Publishing is explicit. Press the button after completing the notebook."))
     _id = publish_prototype_demo(

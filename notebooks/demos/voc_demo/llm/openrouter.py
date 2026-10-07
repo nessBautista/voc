@@ -1,4 +1,4 @@
-"""OpenRouter connection, adapted from Sonar's common/model_gateway client.
+"""OpenRouter connection, for the standalone demo.
 
 Creating a client does not send a request. Callers choose the model and explicitly
 request generation. The returned SDK client can also be passed to BERTopic.
@@ -9,7 +9,7 @@ import tempfile
 from pathlib import Path
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-SESSION_KEY_PATH = Path(tempfile.gettempdir()) / "voc-openrouter-api-key"
+SESSION_KEY_PATH = Path(tempfile.gettempdir()) / "voc-demo-openrouter-api-key"
 
 
 def _load_key(api_key=None):
@@ -25,7 +25,7 @@ def _load_key(api_key=None):
     if not key:
         raise ValueError(
             "OPENROUTER_API_KEY is missing. Configure the private credential file "
-            "and run just up later, or use scripts/load-openrouter-key.py for this session."
+            "and recreate the demo container later, or use scripts/load-openrouter-key.py for this session."
         )
     if key.startswith("op://"):
         raise ValueError("Resolve the OpenRouter 1Password reference on the host first.")
@@ -42,7 +42,7 @@ def create_openrouter_client(*, api_key=None, timeout=60.0, max_retries=2):
     Use client.close() (or a with block) when a short-lived client is no longer needed.
     """
     key = _load_key(api_key)
-    # Loading datasets or importing voc_ml.llm does not require the optional SDK.
+    # Loading datasets or importing voc_demo.llm does not require the optional SDK.
     from openai import OpenAI
 
     return OpenAI(

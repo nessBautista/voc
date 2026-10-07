@@ -1,92 +1,96 @@
-# Review topics and sentiment demo
+# Topic modelling and sentiment demo
 
-Open `workflow01.py` to explore the topic-modelling and sentiment pipeline and its
-Studio presentation. It uses a published S3 checkpoint, with no bundled data fallback.
+This directory is a standalone Marimo + Studio project. Its Python package,
+Docker image, dependencies, tests and configuration live here. It does not import
+`voc`, `voc_ml` or `voc_dev`, start ZenML/MLflow, or read the parent application's
+configuration. You can copy this entire directory outside the repository.
 
-## Start
+## Start with Docker
 
-Use the normal VOC setup with S3 read access, `VOC_DATASET_SOURCE=s3`, and your
-bucket and region configured. After pulling this version, rebuild its dependencies:
+Prerequisite: Docker with Compose (Docker Desktop on Windows, or OrbStack/Docker
+Desktop on macOS). Run these commands from the repository root:
 
 ```bash
-just up
-just marimo
+cd notebooks/demos
+cp .env.example .env
 ```
 
-Open `demos/workflow01.py`. Then use Studio's **overview** view, or visit this URL
-with your configured `VOC_MARIMO_PORT` (2721 by default):
+In Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp`.
+Fill this demo's `.env` with the S3 bucket, region and your AWS credentials, then:
 
-```text
-http://127.0.0.1:2721/studio/overview/?file=demos%2Fworkflow01.py
+```bash
+docker compose up --build -d --wait
 ```
 
-The demo pins:
+For 1Password, put `op://` references in the key fields instead and launch with:
 
-- Dataset release: `b7a61a8b-27d8-46a7-b2ce-67d97268b741`.
-- Demo snapshot: `188f1d136ccc01f9` under `voc/demos/prototypeV0/`.
+```bash
+op run --env-file .env -- docker compose up --build -d --wait
+```
 
-`prototypeV0` remains the S3 identifier even though the notebook moved. Both pins
-are visible in the notebook's `load_dataset` cell. The demo will not silently
-follow a newer dataset or substitute local sample files.
+Open the **Studio overview**:
+
+<http://127.0.0.1:2730/studio/overview/?file=workflow01.py>
+
+The notebook editor is at <http://127.0.0.1:2730/>. Change `DEMO_PORT` in `.env`
+if needed. These commands manage the separate `voc-topic-demo` container. The
+parent repository's `just up` continues to manage the main application.
+
+```bash
+docker compose logs --tail=50 demo
+docker compose exec demo pytest -q
+docker compose down
+```
+
+The first build installs ML dependencies and may take several minutes. Later
+builds reuse the dependency layer unless this folder's dependency files change.
+Both credentials and generated data are ignored by Git and excluded from builds.
 
 ## What loads
 
-The first run downloads and verifies the shared dataset and eleven demo files:
-the sample, embeddings, reductions, clusters, keywords, LLM answers and sentiment
-results. A working copy lives in `data/demos/workflow01/<snapshot-id>/`. Verified
-downloads live separately in `data/cache/`.
+The demo pins dataset release `b7a61a8b-27d8-46a7-b2ce-67d97268b741` and demo
+snapshot `188f1d136ccc01f9`. It reads the existing `voc/datasets/` and
+`voc/demos/prototypeV0/` S3 formats, verifies downloaded checksums and seeds a
+working copy with eleven saved result files. No snapshot files are bundled.
 
-Subsequent runs reuse complete caches. Missing credentials, a missing snapshot,
-corruption or a release mismatch stops loading. A partial working cache is not
-silently completed from unrelated files. Select a new empty `SAMPLE_DIR` if you
-need another working copy.
+`prototypeV0` remains the S3 identifier. The notebook's `DEMO_RELEASE_ID` and
+`DEMO_VERSION` select the published versions. Missing remote data stops loading.
+A complete pinned download can subsequently load offline from a verified cache.
 
-The notebook still executes calculations for its illustrations, loads model
-assets where required and builds topic representations. Matching stage manifests
-reuse saved expensive results. The initial model download may require internet
-access. Changing parameters can trigger recalculation. OpenRouter is **optional
-for viewing the published demo**. The naming button explicitly requests new LLM
-answers and requires an OpenRouter key.
+All runtime files stay in **this folder's `.data/`**: download caches, stage
+results and model assets. They survive container recreation. The notebook still
+runs calculations for its illustrations and may download model weights on first
+use. Matching saved stage results are reused. Changes to parameters can trigger
+recalculation.
 
-## Publish a new checkpoint
+OpenRouter is optional for viewing the published results. Set `OPENROUTER_API_KEY`
+only to use the explicit generation button. To publish new results, also set
+`DEMO_MEMBER_ID`, then use **Publish demo to S3**. That action writes a new complete
+checkpoint and advances the shared demo pointer. It does not publish datasets.
+Update the notebook's pins when deliberately distributing a new checkpoint.
 
-After finishing all stages, press **Publish demo to S3**. It uploads a complete
-checkpoint and prints its ID. Publishing unchanged data is idempotent, and an
-old retry cannot replace a newer shared pointer. Dataset releases and personal
-ZenML/MLflow artifacts are unaffected.
+## Layout
 
-To distribute new results, review and update `DEMO_VERSION` and, if applicable,
-`DEMO_RELEASE_ID` in the notebook. Use a new working-cache directory for a different
-pin. A single designated publisher should manage shared demo updates.
+- `workflow01.py`: computation, teaching material and projected result objects.
+- `__marimo__/studio/`: authored presentation view.
+- `voc_demo/`: dataset/cache access, validation, topic interpretation and sentiment.
+- `tests/`: synthetic, offline checks, including independence from VOC packages.
+- `pyproject.toml`, `uv.lock`: independent Python environment.
+- `Dockerfile`, `compose.yaml`, `.env.example`: independent launch configuration.
 
-## Verify a fresh download
+The S3 format helpers were adapted from the working prototype and are maintained
+here for this demo. They share a data contract with VOC, not a Python dependency.
 
-A fresh clone with empty `data/` reproduces a teammate's first run. A new working
-copy in the same installation can still reuse its verified download cache.
-To test S3 reads without deleting existing data, run this **inside the container**:
+## Optional local Python environment
+
+With Python 3.12 and uv installed, run from this directory:
 
 ```bash
-python - <<'PY'
-import tempfile
-from dataclasses import replace
-from pathlib import Path
-from voc.storage import load_storage
-from voc.datasets.shared_reader import SharedDatasetReader
-from voc_dev.demos import seed_prototype_cache
-
-release = "b7a61a8b-27d8-46a7-b2ce-67d97268b741"
-version = "188f1d136ccc01f9"
-root = Path(tempfile.mkdtemp(prefix="voc-demo-reader-"))
-settings = replace(load_storage(destination="local"), runtime_root=root)
-snapshot = SharedDatasetReader(settings).read(release)
-result = seed_prototype_cache(
-    root / "working", release_id=release, version=version,
-    workable=snapshot.data, storage=settings,
-)
-print(result)
-print("Fresh runtime:", root)
-PY
+uv sync --locked --group dev
+uv run --env-file .env marimo edit workflow01.py --port 2730 --no-token
 ```
 
-Expected: `files: 11` and source `S3 demo 188f1d136ccc01f9`.
-The temporary directory can be removed after inspection.
+For 1Password, use `op run --env-file .env -- uv run marimo edit workflow01.py
+--port 2730 --no-token` on one line. The environment and data directories remain
+local to this folder. `DEMO_DATA_DIR` and `DEMO_MODEL_DIR` optionally override the
+data and model-cache locations, respectively.
