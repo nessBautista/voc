@@ -10,6 +10,7 @@ requires-python = ">=3.11,<3.13"  # Python 3.11 or 3.12.
 dependencies = [
     "click>=8.0,<=8.2.1",
     "pandas>=2.2,<3",
+    "numpy>=1.26,<3",  # Portable embedding validation; no model dependencies.
     "pyarrow>=18,<24",
     "google-play-scraper==1.2.7",
     "boto3>=1.35,<2",
@@ -25,7 +26,6 @@ ml = [
     "sentence-transformers==5.1.2",
     "transformers>=4.41,<5",
     "torch>=2.6,<3",
-    "numpy>=1.26,<3",
     "zenml[server]==0.96.4",
     "mlflow==3.16.1",
     "python-rapidjson<1.15",
