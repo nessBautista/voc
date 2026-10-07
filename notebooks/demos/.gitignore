@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+.data/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+snapshot/
+!__marimo__/
+__marimo__/*
+!__marimo__/studio/
+__marimo__/studio/**/.artifacts/
+__marimo__/studio/**/.locks/

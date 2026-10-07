@@ -1,0 +1,13 @@
+.env
+.env.*
+.data
+.venv
+**/__pycache__
+.pytest_cache
+.ruff_cache
+snapshot
+**/.artifacts
+**/.locks
+.git
+build
+dist

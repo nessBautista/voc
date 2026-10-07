@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Workflow 01 · Workable dataset</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div id="app-shell">
+  <nav class="deck-nav" aria-label="Pages">
+    <a class="brand" href="#/overview">VOC<span class="brand-dot" aria-hidden="true">●</span>Workflow 01</a>
+    <ol id="page-tabs" class="page-tabs">
+      <li><a href="#/overview" data-page="overview">Overview</a></li>
+      <li><a href="#/dataset" data-page="dataset">Dataset</a></li>
+      <li><a href="#/embeddings" data-page="embeddings">Embeddings</a></li>
+      <li><a href="#/reduction" data-page="reduction">Reduction</a></li>
+      <li><a href="#/clusters" data-page="clusters">Clusters</a></li>
+      <li><a href="#/topics" data-page="topics">Topics</a></li>
+      <li><a href="#/naming" data-page="naming">Naming</a></li>
+      <li><a href="#/sentiment" data-page="sentiment">Sentiment</a></li>
+      <li><a href="#/dashboard" data-page="dashboard">Dashboard</a></li>
+    </ol>
+    <div class="pager">
+      <button id="prev-page" type="button" aria-label="Previous page">←</button>
+      <span id="page-counter" aria-live="polite">1 / 9</span>
+      <button id="next-page" type="button" aria-label="Next page">→</button>
+    </div>
+  </nav>
+
+  <main id="deck">
+    <span id="payload" hidden mo-value="studio_payload"></span>
+
+    <!-- Page 1: Overview. Title and body come from the notebook's `overview_section` cell. Blank for now. -->
+    <section class="page" id="page-overview" data-page="overview" aria-label="Overview"
+             data-marimo-lens-label="Overview page">
+      <header class="masthead masthead-compact">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 1</p>
+      </header>
+      <div class="band page-body">
+        <marimo-cell name="overview_section"></marimo-cell>
+
+        <section class="pipeline-section" aria-labelledby="pipeline-title"
+                 data-marimo-lens-label="Pipeline overview" data-marimo-lens-detail="Illustrative diagram; no notebook data">
+          <div class="section-heading">
+            <p class="eyebrow">The pipeline</p>
+            <h2 id="pipeline-title">From the workable dataset to a dashboard</h2>
+            <p class="subtle">Each stage transforms the output of the previous one. Results are stored in a database that feeds the dashboard. High-level, and subject to change.</p>
+          </div>
+
+          <ol class="pipeline" aria-label="Processing stages, in order">
+          <li class="stage"><span class="stage-no">1</span><span class="stage-name">Dataset</span><span class="stage-note">workable release</span></li>
+          <li class="stage"><span class="stage-no">2</span><span class="stage-name">Embeddings</span><span class="stage-note">text to vectors</span></li>
+          <li class="stage"><span class="stage-no">3</span><span class="stage-name">Dimensionality reduction</span><span class="stage-note">fewer dimensions</span></li>
+          <li class="stage"><span class="stage-no">4</span><span class="stage-name">Clustering</span><span class="stage-note">groups of similar reviews</span></li>
+          <li class="stage"><span class="stage-no">5</span><span class="stage-name">Topic modelling</span><span class="stage-note">what each group is about</span></li>
+          <li class="stage"><span class="stage-no">6</span><span class="stage-name">Sentiment analysis</span><span class="stage-note">negative · neutral · positive</span></li>
+          </ol>
+
+          <div class="results-flow" aria-label="Where the results go: sentiment analysis writes to the database, the dashboard reads from it">
+            <div class="return-path" aria-hidden="true"><span class="flow-label">results</span></div>
+            <div class="stage stage-store" role="group" aria-label="Database">
+              <svg class="cylinder" viewBox="0 0 64 76" aria-hidden="true" focusable="false">
+                <path class="body" d="M4 14v48a28 10 0 0 0 56 0V14"/>
+                <ellipse class="lid" cx="32" cy="14" rx="28" ry="10"/>
+                <path class="ring" d="M4 30a28 10 0 0 0 56 0"/>
+                <path class="ring" d="M4 46a28 10 0 0 0 56 0"/>
+              </svg>
+              <span class="stage-name">Database</span>
+              <span class="stage-note">topics, sentiment, evidence</span>
+            </div>
+            <div class="flow-arrow" aria-hidden="true"><span class="flow-label">reads</span></div>
+            <div class="stage stage-dashboard" role="group" aria-labelledby="mock-dash-title">
+              <div class="dash-head">
+                <span class="stage-name" id="mock-dash-title">Dashboard</span>
+                <span class="mock-badge">Illustrative · mock values</span>
+              </div>
+              <p class="dash-caption">Topics ranked by negative share</p>
+              <ol class="topic-list">
+              <li class="topic-row" aria-label="Inicio de sesión: 62% negative, 18% neutral, 20% positive (mock values)">
+                <span class="topic-name">Inicio de sesión</span>
+                <span class="topic-bar" aria-hidden="true"><i class="neg" style="flex-basis:62%"></i><i class="neu" style="flex-basis:18%"></i><i class="pos" style="flex-basis:20%"></i></span>
+                <span class="topic-value">62% <small>negative</small></span>
+              </li>
+              <li class="topic-row" aria-label="Actualización de la app: 55% negative, 25% neutral, 20% positive (mock values)">
+                <span class="topic-name">Actualización de la app</span>
+                <span class="topic-bar" aria-hidden="true"><i class="neg" style="flex-basis:55%"></i><i class="neu" style="flex-basis:25%"></i><i class="pos" style="flex-basis:20%"></i></span>
+                <span class="topic-value">55% <small>negative</small></span>
+              </li>
+              <li class="topic-row" aria-label="Atención al cliente: 44% negative, 26% neutral, 30% positive (mock values)">
+                <span class="topic-name">Atención al cliente</span>
+                <span class="topic-bar" aria-hidden="true"><i class="neg" style="flex-basis:44%"></i><i class="neu" style="flex-basis:26%"></i><i class="pos" style="flex-basis:30%"></i></span>
+                <span class="topic-value">44% <small>negative</small></span>
+              </li>
+              <li class="topic-row" aria-label="Transferencias: 38% negative, 27% neutral, 35% positive (mock values)">
+                <span class="topic-name">Transferencias</span>
+                <span class="topic-bar" aria-hidden="true"><i class="neg" style="flex-basis:38%"></i><i class="neu" style="flex-basis:27%"></i><i class="pos" style="flex-basis:35%"></i></span>
+                <span class="topic-value">38% <small>negative</small></span>
+              </li>
+              <li class="topic-row" aria-label="Promociones: 15% negative, 25% neutral, 60% positive (mock values)">
+                <span class="topic-name">Promociones</span>
+                <span class="topic-bar" aria-hidden="true"><i class="neg" style="flex-basis:15%"></i><i class="neu" style="flex-basis:25%"></i><i class="pos" style="flex-basis:60%"></i></span>
+                <span class="topic-value">15% <small>negative</small></span>
+              </li>
+              </ol>
+              <div class="legend sentiment-legend" aria-label="Sentiment"><span><i class="swatch neg"></i>Negative</span><span><i class="swatch neu"></i>Neutral</span><span><i class="swatch pos"></i>Positive</span></div>
+            </div>
+          </div>
+          <p class="subtle diagram-note">The dashboard card shows invented topics and shares to illustrate the shape of the result. Real topics, counts and sentiment come later in the deck.</p>
+        </section>
+      </div>
+    </section>
+
+    <!-- Page 2: the pinned workable dataset, rendered from `studio_payload`. -->
+    <section class="page" id="page-dataset" data-page="dataset" hidden aria-labelledby="dataset-title"
+             aria-busy="true"
+             data-marimo-lens-label="Workable dataset overview"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 2</p>
+        <h1 id="dataset-title">The pinned workable dataset</h1>
+        <p class="lede" id="lede">Waiting for the notebook to load the pinned release…</p>
+      </header>
+      <p id="status" role="status" class="status">Loading the pinned workable release from the notebook…</p>
+
+      <div id="report" hidden>
+        <section id="metrics" class="metrics" aria-label="Dataset at a glance"
+                 data-marimo-lens-inputs="payload" data-marimo-lens-label="Dataset at a glance"></section>
+
+        <section class="band" aria-labelledby="dates-title"
+                 data-marimo-lens-inputs="payload" data-marimo-lens-label="Release and record dates">
+          <div class="section-heading">
+            <p class="eyebrow">01 / When</p>
+            <h2 id="dates-title">Release and record dates</h2>
+            <p class="subtle">Dates come from the release manifest and the <code>record_date</code> column, read in UTC.</p>
+          </div>
+          <dl id="dates" class="dates-grid"></dl>
+        </section>
+
+        <section class="band" aria-labelledby="sources-title"
+                 data-marimo-lens-inputs="payload" data-marimo-lens-label="Records by source">
+          <div class="section-heading">
+            <p class="eyebrow">02 / Where it comes from</p>
+            <h2 id="sources-title">Records by source</h2>
+            <p class="subtle">Share of workable records per platform. Small sources are easier to read in the table beside the ring.</p>
+          </div>
+          <div class="sources-grid">
+            <figure class="donut-figure">
+              <svg id="donut" viewBox="0 0 360 240" role="img" aria-labelledby="donut-title donut-desc">
+                <title id="donut-title">Records by platform</title>
+                <desc id="donut-desc"></desc>
+              </svg>
+              <figcaption id="donut-center"><strong></strong><span>records</span></figcaption>
+            </figure>
+            <table id="source-table" class="data-table">
+              <caption class="visually-hidden">Records per platform</caption>
+              <thead><tr><th scope="col">Platform</th><th scope="col" class="num">Records</th><th scope="col" class="num">Share</th><th scope="col">Providers</th><th scope="col">First record</th><th scope="col">Last record</th><th scope="col" class="num">Mean rating</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="months-title"
+                 data-marimo-lens-inputs="payload" data-marimo-lens-label="Records per month">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">03 / Over time</p>
+              <h2 id="months-title">Records per month</h2>
+              <p class="subtle">Stacked by platform, by record date. Hover or focus a month for its breakdown; totals are labelled on the peak and the latest month.</p>
+            </div>
+            <div id="months-legend" class="legend" aria-label="Platforms"></div>
+          </div>
+          <div id="months-chart" class="months-chart" role="img" aria-label="Records per month, stacked by platform"></div>
+          <details class="table-toggle">
+            <summary>Table view</summary>
+            <table id="months-table" class="data-table">
+              <caption class="visually-hidden">Records per month per platform</caption>
+              <thead></thead><tbody></tbody>
+            </table>
+          </details>
+        </section>
+
+        <section class="band" aria-labelledby="schema-title"
+                 data-marimo-lens-inputs="payload" data-marimo-lens-label="Columns">
+          <div class="section-heading">
+            <p class="eyebrow">04 / What a row holds</p>
+            <h2 id="schema-title">Columns</h2>
+            <p class="subtle" id="schema-note"></p>
+          </div>
+          <table id="schema-table" class="data-table schema-table">
+            <caption class="visually-hidden">Workable columns</caption>
+            <thead><tr><th scope="col">Column</th><th scope="col">Type</th><th scope="col" class="num">Non-null</th><th scope="col">Filled</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="band provenance" aria-labelledby="provenance-title"
+               data-marimo-lens-inputs="payload" data-marimo-lens-label="Provenance">
+        <div class="section-heading">
+          <p class="eyebrow">Provenance</p>
+          <h2 id="provenance-title">Which release is this?</h2>
+        </div>
+        <dl id="identity" class="identity"></dl>
+        <details class="controls">
+          <summary>Reload from the notebook</summary>
+          <p class="subtle">The notebook loads the published release pinned to this demo. Press the button to load it again. Nothing is collected or published.</p>
+          <marimo-cell name="dataset_refresh"></marimo-cell>
+          <marimo-cell name="load_dataset"></marimo-cell>
+        </details>
+      </section>
+    </section>
+
+    <!-- Page 3: the encoder, rendered from `embedding_payload`. -->
+    <section class="page" id="page-embeddings" data-page="embeddings" hidden aria-labelledby="embeddings-title"
+             aria-busy="true"
+             data-marimo-lens-label="Embeddings page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="embedding-payload" hidden mo-value="embedding_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 3</p>
+        <h1 id="embeddings-title">Embeddings: from text to vectors</h1>
+        <p class="lede" id="embeddings-lede">Waiting for the notebook to encode the sample…</p>
+      </header>
+      <p id="embeddings-status" role="status" class="status">Waiting for the notebook's embedding step…</p>
+
+      <div id="embeddings-report" hidden>
+        <section class="band" aria-labelledby="encoder-title"
+                 data-marimo-lens-inputs="embedding-payload" data-marimo-lens-label="The encoder">
+          <div class="section-heading">
+            <p class="eyebrow">01 / The encoder</p>
+            <h2 id="encoder-title">One model, one vector per review</h2>
+            <p class="subtle">A multilingual sentence encoder, chosen because it places Spanish paraphrases close together. Every review becomes a fixed-length list of numbers that later stages can measure distances on.</p>
+          </div>
+          <div class="encoder-grid">
+            <dl id="model-facts" class="facts"></dl>
+            <div id="encoder-stats" class="stat-row" aria-label="Sample statistics"></div>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="transform-title" data-marimo-lens-label="The transformation">
+          <div class="section-heading">
+            <p class="eyebrow">02 / The transformation</p>
+            <h2 id="transform-title">What the notebook does</h2>
+            <p class="subtle">Preparation keeps the text exactly as published; the encoder turns the list of strings into a matrix with one row per review. Condensed from the notebook's <code>prepare_embedding_input</code>, <code>load_encoder</code> and <code>embed_sample</code> cells.</p>
+          </div>
+          <pre class="code-block" tabindex="0"><code># Prepare: plain text, one string per record; row order is the link to the rows
+texts = prepared_sample["embedding_text"].tolist()
+
+# Encode: 1,000 strings in, a 1,000 × 384 matrix out
+encoder = SentenceTransformer(
+    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    revision="e8f8c211…",          # pinned, so the vectors are reproducible
+    device="cpu",
+)
+embeddings = encoder.encode(
+    texts,
+    batch_size=64,
+    normalize_embeddings=True,     # every row has length 1
+    convert_to_numpy=True,
+)
+embeddings.shape                   # (1000, 384)</code></pre>
+        </section>
+
+        <section class="band" aria-labelledby="io-title"
+                 data-marimo-lens-inputs="embedding-payload" data-marimo-lens-label="Input and output explorer">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">03 / What goes in, what comes out</p>
+              <h2 id="io-title">One review, 384 numbers</h2>
+              <p class="subtle">Step through the sample. The left card is the exact text the encoder saw; the right card is its vector, drawn as a 32 × 12 grid of the 384 coordinates.</p>
+            </div>
+            <div class="picker" role="group" aria-label="Choose a review">
+              <button id="review-prev" type="button" aria-label="Previous review">←</button>
+              <label class="picker-field">Review <input id="review-index" type="number" min="1" value="1" inputmode="numeric" aria-describedby="review-total"> <span id="review-total"></span></label>
+              <button id="review-next" type="button" aria-label="Next review">→</button>
+              <button id="review-random" type="button">Random</button>
+            </div>
+          </div>
+          <div class="io-grid">
+            <article class="io-card io-input" aria-labelledby="io-input-title">
+              <p class="eyebrow" id="io-input-title">Input · text</p>
+              <div class="io-meta"><span id="io-platform" class="platform-tag"></span><code id="io-record"></code></div>
+              <blockquote id="io-text" class="io-text" lang="es"></blockquote>
+              <p class="io-foot" id="io-text-foot"></p>
+            </article>
+            <div class="io-arrow" aria-hidden="true"><span>encode</span></div>
+            <article class="io-card io-output" aria-labelledby="io-output-title">
+              <p class="eyebrow" id="io-output-title">Output · vector</p>
+              <div id="vector-grid" class="vector-grid" role="img" aria-label="Vector heat grid"></div>
+              <div class="vector-legend" aria-hidden="true"><i class="neg-end"></i><span>negative</span><i class="zero"></i><span>0</span><i class="pos-end"></i><span>positive</span></div>
+              <ol id="vector-head" class="vector-head" aria-label="First eight coordinates"></ol>
+              <p class="io-foot" id="io-vector-foot"></p>
+            </article>
+          </div>
+          <div class="io-actions">
+            <button id="open-neighbors" type="button" class="primary">Find its nearest neighbours →</button>
+            <span class="subtle">Opens a panel with the five closest vectors and how the similarity is computed.</span>
+          </div>
+        </section>
+      </div>
+
+      <dialog id="neighbors-dialog" class="neighbors-dialog" aria-labelledby="neighbors-title">
+        <div class="dialog-head">
+          <div><p class="eyebrow">Nearest neighbours</p><h2 id="neighbors-title">Which reviews sit closest?</h2></div>
+          <button id="close-neighbors" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="dialog-body">
+          <div class="dialog-picker" role="group" aria-label="Choose a review">
+            <button id="dialog-prev" type="button" aria-label="Previous review">←</button>
+            <span id="dialog-position"></span>
+            <button id="dialog-next" type="button" aria-label="Next review">→</button>
+            <span class="subtle">← → also step while this panel is open · click a neighbour to jump to it</span>
+          </div>
+          <article class="io-card selected-review">
+            <p class="eyebrow">Selected review</p>
+            <div class="io-meta"><span id="dialog-platform" class="platform-tag"></span><code id="dialog-record"></code></div>
+            <blockquote id="dialog-text" class="io-text" lang="es"></blockquote>
+          </article>
+          <ol id="neighbor-list" class="neighbor-list" aria-label="Five nearest reviews"></ol>
+          <section class="cosine-note" aria-labelledby="cosine-title">
+            <p class="eyebrow">How the similarity is computed</p>
+            <h3 id="cosine-title">Cosine similarity</h3>
+            <p>Two vectors are similar when they point in the same direction, whatever their length. The cosine of the angle between them measures exactly that:</p>
+            <p class="formula">cos θ = (a · b) / (‖a‖ · ‖b‖)</p>
+            <p>The encoder normalised every vector to length 1, so the denominator is 1 and the similarity is simply the dot product: 384 multiplications, added up.</p>
+            <p class="formula">similarity = Σ<sub>i = 1…384</sub> a<sub>i</sub> · b<sub>i</sub></p>
+            <p id="cosine-live" class="subtle"></p>
+          </section>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 4: dimensionality reduction, rendered from `reduction_payload` plus the vectors in `embedding_payload`. -->
+    <section class="page" id="page-reduction" data-page="reduction" hidden aria-labelledby="reduction-title"
+             aria-busy="true"
+             data-marimo-lens-label="Dimensionality reduction page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="reduction-payload" hidden mo-value="reduction_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 4</p>
+        <h1 id="reduction-title">Dimensionality reduction: from 384 axes to a few</h1>
+        <p class="lede" id="reduction-lede">Waiting for the notebook's reduction step…</p>
+      </header>
+      <p id="reduction-status" role="status" class="status">Waiting for the notebook's reduction step…</p>
+
+      <div id="reduction-report" hidden>
+        <section class="band" aria-labelledby="problem-title"
+                 data-marimo-lens-inputs="embedding-payload reduction-payload" data-marimo-lens-label="The problem">
+          <div class="section-heading wide">
+            <p class="eyebrow">01 / The problem</p>
+            <h2 id="problem-title">We can measure closeness, but we cannot see it</h2>
+            <p>We now have a way of knowing how close two reviews are: the cosine similarity of their vectors. The next idea follows naturally. If we can find <strong>groups of vectors that sit close together</strong>, those groups should hold reviews about similar subjects, and those subjects are what we want to explore.</p>
+            <p>The obstacle is that every vector has <strong>384 dimensions</strong>, and we can only picture two or three at a time. Pick any two dimensions and a pair of reviews may look close; pick two others and the same pair looks far apart. No single pair of axes tells the truth, because the distance lives in all 384 coordinates at once. Clustering algorithms meet the same problem in another form: with so many dimensions, distances between points become more alike and groups harder to separate.</p>
+            <p>This is where dimensionality reduction helps: it builds a <strong>few new axes</strong> that keep as much of the neighbourhood structure as possible, so that <em>close</em> means close wherever you look.</p>
+          </div>
+
+          <div class="pair-cards" aria-label="Two reviews that are close in all 384 dimensions">
+            <article class="io-card pair-card pair-a"><p class="eyebrow">Review A</p><div class="io-meta"><span id="pair-a-platform" class="platform-tag"></span><code id="pair-a-record"></code></div><blockquote id="pair-a-text" class="io-text" lang="es"></blockquote></article>
+            <div class="pair-link" aria-hidden="true"><span class="pair-sim" id="pair-similarity"></span><span class="pair-sim-label">cosine similarity<br>in 384-D</span></div>
+            <article class="io-card pair-card pair-b"><p class="eyebrow">Review B</p><div class="io-meta"><span id="pair-b-platform" class="platform-tag"></span><code id="pair-b-record"></code></div><blockquote id="pair-b-text" class="io-text" lang="es"></blockquote></article>
+          </div>
+
+          <div class="projection-panels">
+            <figure class="projection-panel"><figcaption><strong>Looks close</strong> <span id="panel-close-caption"></span></figcaption><div id="panel-close" class="scatter-host"></div></figure>
+            <figure class="projection-panel"><figcaption><strong>Looks far</strong> <span id="panel-far-caption"></span></figcaption><div id="panel-far" class="scatter-host"></div></figure>
+            <figure class="projection-panel"><figcaption><strong>Your choice</strong> <span id="panel-choice-caption"></span></figcaption><div id="panel-choice" class="scatter-host"></div></figure>
+          </div>
+          <div class="projection-controls" role="group" aria-label="Choose the two dimensions of the third panel">
+            <label>x axis: dimension <output id="dim-x-value"></output><input id="dim-x" type="range" min="0" max="383" value="0"></label>
+            <label>y axis: dimension <output id="dim-y-value"></output><input id="dim-y" type="range" min="0" max="383" value="1"></label>
+            <button id="dims-coincide" type="button">Where they coincide</button>
+            <button id="dims-diverge" type="button">Where they diverge</button>
+            <button id="dims-random" type="button">Random pair</button>
+          </div>
+          <p class="subtle">Same two reviews, same similarity, three different pictures: the grey cloud is all 1,000 reviews. Two coordinates out of 384 are not evidence of closeness. Dimensionality reduction builds axes in which the first picture is the honest one.</p>
+        </section>
+
+        <section class="band" aria-labelledby="umap-result-title"
+                 data-marimo-lens-inputs="embedding-payload reduction-payload" data-marimo-lens-label="UMAP result">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">02 / The result</p>
+              <h2 id="umap-result-title">The same 1,000 reviews, through UMAP</h2>
+              <p class="subtle">Two reductions from the same vectors: five dimensions for clustering (the next stage) and two for this picture. Colour is the platform, not a topic. Click a review to see where its five nearest neighbours in 384-D landed.</p>
+            </div>
+            <div id="umap-legend" class="legend" aria-label="Platforms"></div>
+          </div>
+          <div class="umap-grid">
+            <div id="umap-map" class="umap-map" role="img" aria-label="UMAP two-dimensional map of the sample"></div>
+            <aside class="umap-aside">
+              <dl id="umap-params" class="facts"></dl>
+              <div id="umap-overlap" class="stat-row" aria-label="Neighbourhood preservation"></div>
+              <div id="umap-selected" class="umap-selected" hidden>
+                <p class="eyebrow">Selected review</p>
+                <blockquote id="umap-selected-text" class="io-text" lang="es"></blockquote>
+                <p class="subtle" id="umap-selected-note"></p>
+                <ol id="umap-neighbors" class="umap-neighbors" aria-label="Its five nearest neighbours in 384-D"></ol>
+              </div>
+              <p class="subtle" id="umap-hint">Hover a point for its text; click to select it.</p>
+            </aside>
+          </div>
+          <div class="io-actions">
+            <button id="open-umap" type="button" class="primary">How UMAP works →</button>
+            <button id="open-pca" type="button">And PCA, the classic alternative →</button>
+            <span class="subtle">Each opens a panel with a short explanation and a small interactive illustration on mock data.</span>
+          </div>
+        </section>
+      </div>
+
+      <dialog id="umap-dialog" class="neighbors-dialog modal" aria-labelledby="umap-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Algorithm</p><h2 id="umap-dialog-title">UMAP · keep each point's neighbours as its neighbours</h2></div><button type="button" class="dialog-close" data-close="umap-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p><strong>Uniform Manifold Approximation and Projection</strong> (McInnes, Healy &amp; Melville, 2018) works in two steps. <strong>Build a graph</strong>: every point is linked to its <code>n_neighbors</code> nearest points in the original space, with a weight that fades with distance, so the graph records who is near whom. <strong>Lay the graph out</strong>: points get positions in the small space and are moved, step by step, so that linked points are pulled together and unlinked points are pushed apart, until the neighbourhoods in the new space match the graph as well as possible. <code>n_neighbors</code> decides whether the picture respects local detail (small) or global shape (large); <code>min_dist</code> sets how tightly neighbours may pack.</p>
+          <p class="subtle">Below, 42 mock points in two groups and one curved strand are reduced from two dimensions to one. The right strip is the layout; a well-separated band per group means the structure survived. This is a simplified re-enactment of the idea, not the production algorithm.</p>
+          <div class="demo-grid">
+            <figure class="demo-panel"><figcaption>Original space · the neighbour graph</figcaption><div id="umap-demo-graph" class="scatter-host"></div></figure>
+            <figure class="demo-panel"><figcaption>Reduced to one dimension · the layout</figcaption><div id="umap-demo-layout" class="strip-host"></div></figure>
+          </div>
+          <div class="demo-controls" role="group" aria-label="UMAP demo controls">
+            <label>n_neighbors <output id="umap-k-value"></output><input id="umap-k" type="range" min="2" max="20" value="6"></label>
+            <label>min_dist <output id="umap-mindist-value"></output><input id="umap-mindist" type="range" min="0" max="1" step="0.05" value="0.1"></label>
+            <button id="umap-run" type="button" class="primary">Run layout</button>
+            <button id="umap-reset" type="button">Reset</button>
+            <span id="umap-demo-note" class="subtle"></span>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog id="pca-dialog" class="neighbors-dialog modal" aria-labelledby="pca-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Algorithm</p><h2 id="pca-dialog-title">PCA · keep the directions where the data varies most</h2></div><button type="button" class="dialog-close" data-close="pca-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p><strong>Principal Component Analysis</strong> finds new axes, one at a time: the first is the straight line through the data's centre along which the points spread out the most; the second is perpendicular to it and captures the most of what remains, and so on. Keeping the first <em>k</em> axes and dropping the rest is the reduction. It is linear (every new coordinate is a weighted sum of the old ones), fast, and tells you exactly how much variance you kept. Its limit is also its definition: a curved or clustered structure that no straight axis captures is flattened, which is why the book prefers UMAP for clustering text embeddings.</p>
+          <p class="subtle">Below, 80 mock points in two dimensions are reduced to one by projecting them onto a line through their centre. Turn the line and watch how much of the spread survives; "Snap to PC1" jumps to the direction PCA would choose.</p>
+          <div class="demo-grid">
+            <figure class="demo-panel"><figcaption>Original space · the projection line</figcaption><div id="pca-demo-plane" class="scatter-host"></div></figure>
+            <figure class="demo-panel"><figcaption>Reduced to one dimension · positions along the line</figcaption><div id="pca-demo-strip" class="strip-host"></div></figure>
+          </div>
+          <div class="demo-controls" role="group" aria-label="PCA demo controls">
+            <label>line angle <output id="pca-angle-value"></output><input id="pca-angle" type="range" min="0" max="179" value="20"></label>
+            <label>data shape <output id="pca-shape-value"></output><input id="pca-shape" type="range" min="0" max="1" step="0.05" value="0.75"></label>
+            <button id="pca-snap" type="button" class="primary">Snap to PC1</button>
+            <span id="pca-demo-note" class="subtle"></span>
+          </div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 5: clustering, rendered from `cluster_payload` plus the texts and 2-D coordinates of the earlier payloads. -->
+    <section class="page" id="page-clusters" data-page="clusters" hidden aria-labelledby="clusters-title"
+             aria-busy="true"
+             data-marimo-lens-label="Clustering page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="cluster-payload" hidden mo-value="cluster_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 5</p>
+        <h1 id="clusters-title">Clustering: groups in the small space</h1>
+        <p class="lede" id="clusters-lede">Waiting for the notebook's clustering step…</p>
+      </header>
+      <p id="clusters-status" role="status" class="status">Waiting for the notebook's clustering step…</p>
+
+      <div id="clusters-report" hidden>
+        <section class="band" aria-labelledby="cluster-idea-title" data-marimo-lens-label="The idea">
+          <div class="section-heading wide">
+            <p class="eyebrow">01 / The idea</p>
+            <h2 id="cluster-idea-title">Dense regions are candidate subjects</h2>
+            <p>Each review is now a point in five dimensions whose distances mean something, so we can look for <strong>groups</strong>: regions where points are packed more tightly than their surroundings. A tight group of vectors is a set of reviews that say similar things, so every group is a <em>candidate subject</em>. A group gets a number, not a name; naming it is the next stage.</p>
+            <p>The common choice, <strong>k-means</strong>, needs the number of groups in advance, and we do not know it. We use <strong>HDBSCAN</strong> instead, as the book does: a density-based method that discovers how many groups the data supports and leaves points that sit in no dense region <strong>unassigned</strong> rather than forcing them into a group. Its knobs are the smallest group it may report and how strict its density estimate is.</p>
+            <p>Two cautions for reading what follows: group numbers are identifiers, not ranks, and a group is a candidate topic, not a topic yet.</p>
+          </div>
+          <div class="io-actions">
+            <button id="open-hdbscan" type="button" class="primary">How HDBSCAN works →</button>
+            <button id="open-kmeans" type="button">How k-means works →</button>
+            <span class="subtle">Each opens a panel with a short explanation and a small interactive illustration on mock data.</span>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="cluster-result-title"
+                 data-marimo-lens-inputs="cluster-payload reduction-payload embedding-payload" data-marimo-lens-label="Clustering result">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">02 / The result</p>
+              <h2 id="cluster-result-title">The sample, grouped</h2>
+              <p class="subtle" id="cluster-result-note"></p>
+            </div>
+            <div class="map-toggle" role="group" aria-label="Which clustering to draw">
+              <button id="show-hdbscan" type="button" class="is-active" aria-pressed="true">HDBSCAN</button>
+              <button id="show-kmeans" type="button" aria-pressed="false">k-means, same k</button>
+            </div>
+          </div>
+          <div id="cluster-legend" class="legend" aria-label="Map colours"></div>
+          <div class="clusters-grid">
+            <div id="cluster-map" class="umap-map" role="img" aria-label="Two-dimensional map of the sample coloured by group"></div>
+            <aside class="group-aside">
+              <p class="eyebrow">Groups by size</p>
+              <ol id="group-list" class="group-list" aria-label="Groups, largest first"></ol>
+            </aside>
+          </div>
+
+          <div id="group-panel" class="group-panel" hidden>
+            <div class="section-top">
+              <div><p class="eyebrow" id="group-panel-eyebrow"></p><h3 id="group-panel-title"></h3><p class="subtle" id="group-panel-meta"></p></div>
+              <label class="search-field">Search <input id="group-search" type="search" placeholder="filter these reviews…"></label>
+            </div>
+            <ol id="group-reviews" class="group-reviews" aria-label="Reviews in this group, firmest members first"></ol>
+            <div class="pagination"><button id="group-prev" type="button">← Previous</button><span id="group-page"></span><button id="group-next" type="button">Next →</button></div>
+          </div>
+
+          <div class="cluster-facts">
+            <dl id="cluster-params" class="facts"></dl>
+            <table id="cluster-comparison" class="data-table">
+              <caption class="visually-hidden">HDBSCAN and k-means on the same five-dimensional points</caption>
+              <thead><tr><th scope="col">Method</th><th scope="col" class="num">Groups</th><th scope="col" class="num">Unassigned</th><th scope="col" class="num">Silhouette</th><th scope="col">Computed over</th><th scope="col" class="num">Smallest</th><th scope="col" class="num">Largest</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="subtle">k-means was told to find as many groups as HDBSCAN discovered. It assigns every review and draws straight boundaries through the dense mass of short praise; HDBSCAN draws around dense regions and leaves the odd reviews out. The silhouettes are not directly comparable: HDBSCAN's is computed only on the points it chose to assign.</p>
+        </section>
+      </div>
+
+      <dialog id="hdbscan-dialog" class="neighbors-dialog modal" aria-labelledby="hdbscan-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Algorithm</p><h2 id="hdbscan-dialog-title">HDBSCAN · groups are regions that stay dense</h2></div><button type="button" class="dialog-close" data-close="hdbscan-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>A point is <strong>dense</strong> when it has at least <code>min_samples</code> neighbours within some reach. Dense points that can reach each other form a group; non-dense points within reach of a group are its border; everything else is noise. That is one reach. HDBSCAN looks at <em>every</em> reach at once: as the reach grows, groups appear, grow and merge, forming a hierarchy. It then keeps the groups that <strong>persist over the widest range of reaches</strong> (the "excess of mass" rule), discards anything smaller than <code>min_cluster_size</code>, and reports points that never belong to a persistent group as unassigned. Each member also gets a probability for how firmly it belongs.</p>
+          <p class="subtle">Below, 70 mock points: three blobs of different density and some scattered noise. Move the reach to see the single-threshold picture, or sweep it to watch groups appear and merge; the strip records how many groups exist at each reach, which is what HDBSCAN reads the persistent ones from.</p>
+          <div class="demo-grid">
+            <figure class="demo-panel"><figcaption>Filled: dense (core) · hollow: border · ×: noise</figcaption><div id="hdbscan-demo-plane" class="scatter-host"></div></figure>
+            <figure class="demo-panel"><figcaption>Groups found as the reach grows</figcaption><div id="hdbscan-demo-strip" class="strip-host"></div></figure>
+          </div>
+          <div class="demo-controls" role="group" aria-label="HDBSCAN demo controls">
+            <label>min_samples <output id="hdbscan-k-value"></output><input id="hdbscan-k" type="range" min="2" max="8" value="4"></label>
+            <label>reach <output id="hdbscan-reach-value"></output><input id="hdbscan-reach" type="range" min="0.03" max="0.30" step="0.005" value="0.09"></label>
+            <button id="hdbscan-sweep" type="button" class="primary">Sweep the reach</button>
+            <span id="hdbscan-demo-note" class="subtle"></span>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog id="kmeans-dialog" class="neighbors-dialog modal" aria-labelledby="kmeans-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Algorithm</p><h2 id="kmeans-dialog-title">k-means · k centres, everything assigned</h2></div><button type="button" class="dialog-close" data-close="kmeans-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p><strong>k-means</strong> starts with <em>k</em> centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes. It is fast and the groups are tidy, but it must be told <em>k</em>, its boundaries are straight lines between centres whatever shape the data has, and it assigns every point, including the odd ones. That is why the book prefers a density method for reviews, where the number of subjects is unknown and much of the text is noise.</p>
+          <p class="subtle">Same 70 mock points. Choose k, then step or run the iterations; diamonds are the centres. Compare the noise: here it always ends up inside a group.</p>
+          <div class="demo-grid">
+            <figure class="demo-panel"><figcaption>Points coloured by their nearest centre</figcaption><div id="kmeans-demo-plane" class="scatter-host"></div></figure>
+            <figure class="demo-panel"><figcaption>Total distance to the centres, by iteration</figcaption><div id="kmeans-demo-strip" class="strip-host"></div></figure>
+          </div>
+          <div class="demo-controls" role="group" aria-label="k-means demo controls">
+            <label>k <output id="kmeans-k-value"></output><input id="kmeans-k" type="range" min="1" max="8" value="3"></label>
+            <button id="kmeans-step" type="button">Step</button>
+            <button id="kmeans-run" type="button" class="primary">Run</button>
+            <button id="kmeans-reseed" type="button">New start</button>
+            <span id="kmeans-demo-note" class="subtle"></span>
+          </div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 6: topic keywords (c-TF-IDF), rendered from `topic_payload` plus the texts and cluster strengths. -->
+    <section class="page" id="page-topics" data-page="topics" hidden aria-labelledby="topics-title"
+             aria-busy="true"
+             data-marimo-lens-label="Topics page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="topic-payload" hidden mo-value="topic_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 6</p>
+        <h1 id="topics-title">Topic modelling: the words that set a group apart</h1>
+        <p class="lede" id="topics-lede">Waiting for the notebook's topic step…</p>
+      </header>
+      <p id="topics-status" role="status" class="status">Waiting for the notebook's topic step…</p>
+
+      <div id="topics-report" hidden>
+        <section class="band" aria-labelledby="topics-idea-title" data-marimo-lens-inputs="topic-payload" data-marimo-lens-label="From groups to keywords">
+          <div class="section-heading wide">
+            <p class="eyebrow">01 / From groups to keywords</p>
+            <h2 id="topics-idea-title">Keywords are evidence, not names</h2>
+            <p>A group is a set of reviews that say similar things, but reading forty reviews to learn what they share does not scale. <strong>Topic modelling</strong> describes each group with a handful of <strong>keywords</strong>: the words that characterise it against the rest of the collection. Keywords are not a label; they are the evidence from which a person, or later a language model, names the topic.</p>
+            <p><strong>BERTopic</strong> is a modular framework with two halves. The first is exactly what we did: embed, reduce, cluster. The second turns every cluster into a topic representation, and each half is a replaceable block. We feed it our saved vectors and groups, so its topics <em>are</em> our groups, renumbered by size: topic 0 is the largest group, topic −1 the unassigned reviews.</p>
+            <p>The basic representation block is a <strong>bag of words per group</strong> weighted by a <strong>class-based TF-IDF</strong>. Two vocabulary choices shape it: a short Spanish stop-word list (<span id="stop-word-count"></span> words; negations such as <em>no</em> are kept, because <em>no abre</em> is a different complaint from <em>abre</em>) and <strong>bigrams</strong>, so a two-word phrase can be a keyword in its own right.</p>
+          </div>
+          <div class="io-actions">
+            <button id="open-vectorizer" type="button" class="primary">What the vectorizer sees →</button>
+            <button id="open-ctfidf" type="button">c-TF-IDF versus the classic TF-IDF →</button>
+            <span class="subtle">Each opens a panel with a short explanation and a small interactive illustration.</span>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="walk-title" data-marimo-lens-inputs="topic-payload" data-marimo-lens-label="The formula with real numbers">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">02 / The formula, with real numbers</p>
+              <h2 id="walk-title">Three operations turn counts into keywords</h2>
+              <p class="subtle">Pick a topic and follow its top terms through the three steps. The last column is BERTopic's ranking; the arrows show how far each term moved from the raw count ranking.</p>
+            </div>
+            <div class="picker" role="group" aria-label="Choose a topic">
+              <label class="picker-field">Topic <select id="walk-topic"></select></label>
+              <label class="check-field"><input id="walk-sqrt" type="checkbox" checked> square root (reduce_frequent_words)</label>
+            </div>
+          </div>
+          <div class="formula-strip" aria-label="The c-TF-IDF formula">
+            <span class="formula-part" data-step="count">c-TF<sub>t,c</sub></span><span class="formula-op">=</span>
+            <span class="formula-part" data-step="tf">√( tf<sub>t,c</sub> / words<sub>c</sub> )</span><span class="formula-op">×</span>
+            <span class="formula-part" data-step="idf">log( 1 + A / f<sub>t</sub> )</span>
+            <span class="formula-note" id="formula-note"></span>
+          </div>
+          <div id="walk-table" class="walk-table" role="table" aria-label="Terms of the chosen topic through the three steps"></div>
+          <p class="subtle" id="walk-note"></p>
+        </section>
+
+        <section class="band" aria-labelledby="topics-result-title" data-marimo-lens-inputs="topic-payload embedding-payload cluster-payload" data-marimo-lens-label="Topics result">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">03 / The result</p>
+              <h2 id="topics-result-title">Every group, described</h2>
+              <p class="subtle">Click a topic to read its keywords, the reviews BERTopic calls representative, and every review in it. The search filters topics by keyword, the browser version of the book's <code>find_topics</code>.</p>
+            </div>
+            <label class="search-field">Find a keyword <input id="topic-search" type="search" placeholder="e.g. transferencia"></label>
+          </div>
+          <div class="topics-grid">
+            <ol id="topic-list" class="topic-list" aria-label="Topics, largest first"></ol>
+            <div id="topic-panel" class="group-panel topic-panel" hidden>
+              <div class="section-top">
+                <div><p class="eyebrow" id="topic-panel-eyebrow"></p><h3 id="topic-panel-title"></h3><p class="subtle" id="topic-panel-meta"></p></div>
+                <label class="search-field">Search <input id="topic-review-search" type="search" placeholder="filter these reviews…"></label>
+              </div>
+              <div class="topic-panel-grid">
+                <div><p class="eyebrow">Ten keywords by c-TF-IDF</p><ol id="topic-keywords" class="keyword-bars" aria-label="Keywords and weights"></ol></div>
+                <div><p class="eyebrow">Representative reviews</p><ol id="topic-representative" class="rep-list" aria-label="Reviews closest to the topic's word profile"></ol></div>
+              </div>
+              <ol id="topic-reviews" class="group-reviews" aria-label="Reviews in this topic, firmest members first"></ol>
+              <div class="pagination"><button id="topic-prev" type="button">← Previous</button><span id="topic-page"></span><button id="topic-next" type="button">Next →</button></div>
+            </div>
+          </div>
+          <p class="subtle">Where keywords fall short: groups of one-word reviews yield oddities such as <em>excelente excelente</em>, and a bag of words cannot tell <em>no abre</em> from <em>abre</em> unless the bigram survives. The next page refines these representations with KeyBERT-inspired reranking, maximal marginal relevance and a language-model label.</p>
+        </section>
+      </div>
+
+      <dialog id="vectorizer-dialog" class="neighbors-dialog modal" aria-labelledby="vectorizer-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Block</p><h2 id="vectorizer-dialog-title">The vectorizer · what counts as a word</h2></div><button type="button" class="dialog-close" data-close="vectorizer-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>Before anything is weighed, every review is lowercased and split into <strong>tokens</strong> of two or more letters or digits (scikit-learn's default rule: accents are kept, punctuation and single characters are dropped). Tokens on the <strong>stop-word list</strong> are removed, then <strong>bigrams</strong> are formed from what remains. Each cluster's bag of words is the count of these unigrams and bigrams over all its reviews.</p>
+          <textarea id="vectorizer-input" rows="3" aria-label="Review text to tokenise"></textarea>
+          <div class="demo-controls"><button id="vectorizer-next" type="button">Another review from this topic</button><span id="vectorizer-note" class="subtle"></span></div>
+          <div class="token-section"><p class="eyebrow">Tokens · struck through = stop word</p><div id="vectorizer-tokens" class="chips"></div></div>
+          <div class="token-section"><p class="eyebrow">Bigrams · formed after stop words are removed</p><div id="vectorizer-bigrams" class="chips"></div></div>
+        </div>
+      </dialog>
+
+      <dialog id="ctfidf-dialog" class="neighbors-dialog modal" aria-labelledby="ctfidf-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Block</p><h2 id="ctfidf-dialog-title">c-TF-IDF · the class is the document</h2></div><button type="button" class="dialog-close" data-close="ctfidf-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>Classic <strong>TF-IDF</strong> asks, for a word, <em>in how many reviews does it appear?</em> and penalises it with log(N / df). <strong>c-TF-IDF</strong> joins each group into one document and asks instead <em>how much does it appear across the groups?</em>, weighting by log(1 + A / f<sub>t</sub>), where A is the average words per group and f<sub>t</sub> the word's total count. The difference matters for reviews: a one-word review repeated forty times inside a group is forty documents for the classic formula, but one dense group for the class-based one.</p>
+          <p class="subtle">Below, a mock corpus of three groups with four short reviews each. Click any word to drop it from, or restore it to, its review, and pick a word to compare both weights for the highlighted group.</p>
+          <div id="ctfidf-corpus" class="mock-corpus"></div>
+          <div class="demo-controls">
+            <label class="picker-field">Word <select id="ctfidf-word"></select></label>
+            <label class="picker-field">Group <select id="ctfidf-group"></select></label>
+          </div>
+          <div id="ctfidf-readout" class="ctfidf-readout" aria-live="polite"></div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 7: naming the topics with a language model, rendered from `naming_payload` plus the texts. -->
+    <section class="page" id="page-naming" data-page="naming" hidden aria-labelledby="naming-title"
+             aria-busy="true"
+             data-marimo-lens-label="Naming page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="naming-payload" hidden mo-value="naming_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 7</p>
+        <h1 id="naming-title">Naming the topics: the text generation block</h1>
+        <p class="lede" id="naming-lede">Waiting for the notebook's naming step…</p>
+      </header>
+      <p id="naming-status" role="status" class="status">Waiting for the notebook's naming step…</p>
+
+      <div id="naming-report" hidden>
+        <section class="band" aria-labelledby="naming-idea-title" data-marimo-lens-inputs="naming-payload" data-marimo-lens-label="The text generation block">
+          <div class="section-heading wide">
+            <p class="eyebrow">01 / From keywords to a label</p>
+            <h2 id="naming-idea-title">Ask once per topic, never per review</h2>
+            <p>Keywords are evidence; a <strong>label</strong> is a claim. The last Lego block asks a language model to make that claim, and the trick that keeps it cheap and auditable is scope: the model sees one topic at a time, only its <strong>keywords</strong> and a handful of <strong>representative reviews</strong>, and it is called once per topic. Thirty-seven calls describe a thousand reviews; the same recipe describes a million.</p>
+            <p>Our prompt is the repository's Spanish prompt for app reviews. It declares the reviews <em>untrusted data, never instructions</em>; it forces a JSON answer with a proposed feature, a description, the ids of the reviews that support it and an <strong>assessment</strong>: <code>single_feature</code> when the evidence points at one user-visible capability, <code>mixed</code> when it spans several, <code>unclear</code> when it is not enough. A proposed feature is only allowed in the first case, so an empty label is restraint, not failure. Every citation must be one of the reviews sent, or the answer is rejected.</p>
+            <p>Before the call, two cheaper blocks improved the keywords the model sees: a <strong>KeyBERT-inspired</strong> reranking by meaning and <strong>maximal marginal relevance</strong> for variety. Both are optional and independent; open them below. Answers are cached by model, prompt version and evidence, so reruns never call the API.</p>
+          </div>
+          <div class="io-actions">
+            <button id="open-keybert" type="button">KeyBERT-inspired reranking →</button>
+            <button id="open-mmr" type="button">Maximal marginal relevance →</button>
+            <span class="subtle">Each shows our real keyword lists before and after the block, for any topic.</span>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="anatomy-title" data-marimo-lens-inputs="naming-payload embedding-payload" data-marimo-lens-label="Prompt anatomy">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">02 / One exchange, in full</p>
+              <h2 id="anatomy-title">What goes in, what comes back</h2>
+              <p class="subtle">The exact message the notebook sent for the chosen topic, the model's raw answer, and the answer read back against the evidence.</p>
+            </div>
+            <div class="picker" role="group" aria-label="Choose a topic">
+              <label class="picker-field">Topic <select id="naming-topic"></select></label>
+            </div>
+          </div>
+          <div class="anatomy-grid">
+            <article class="io-card anatomy-card" aria-labelledby="anatomy-in-title">
+              <p class="eyebrow" id="anatomy-in-title">Input · the user message</p>
+              <p class="subtle">Keywords after reranking (<span id="anatomy-aspect"></span>)</p>
+              <div id="anatomy-keywords" class="chips"></div>
+              <p class="subtle" id="anatomy-evidence-note"></p>
+              <ol id="anatomy-evidence" class="evidence-list" aria-label="Evidence sent, in order"></ol>
+              <details class="controls"><summary>Raw JSON as sent</summary><pre class="code-block" tabindex="0"><code id="anatomy-request"></code></pre></details>
+            </article>
+            <div class="anatomy-model" aria-label="The model and its instructions">
+              <div class="model-pill"><span class="eyebrow">Model</span><strong id="anatomy-model"></strong><span class="subtle" id="anatomy-params"></span></div>
+              <details class="controls"><summary>System prompt, shared by every call</summary><pre class="code-block" tabindex="0"><code id="anatomy-system"></code></pre></details>
+            </div>
+            <article class="io-card anatomy-card anatomy-out" aria-labelledby="anatomy-out-title">
+              <p class="eyebrow" id="anatomy-out-title">Output · the answer, read back</p>
+              <div class="answer-head"><span id="anatomy-assessment" class="assessment"></span><span class="subtle" id="anatomy-meta"></span></div>
+              <h3 id="anatomy-feature"></h3>
+              <p id="anatomy-description" class="answer-description" lang="es"></p>
+              <p class="subtle" id="anatomy-cited"></p>
+              <details class="controls"><summary>Raw JSON as received</summary><pre class="code-block" tabindex="0"><code id="anatomy-response"></code></pre></details>
+            </article>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="naming-result-title" data-marimo-lens-inputs="naming-payload" data-marimo-lens-label="Naming result">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">03 / The result</p>
+              <h2 id="naming-result-title">Thirty-seven answers, read with their assessment</h2>
+              <p class="subtle">A feature headline appears only where the model judged the evidence to point at one capability; everywhere else the description is the summary. Click a row to open its exchange above.</p>
+            </div>
+            <div class="map-toggle" role="group" aria-label="Filter by assessment">
+              <button type="button" data-filter="all" class="is-active" aria-pressed="true">All</button>
+              <button type="button" data-filter="single_feature" aria-pressed="false">Single feature</button>
+              <button type="button" data-filter="mixed" aria-pressed="false">Mixed</button>
+              <button type="button" data-filter="unclear" aria-pressed="false">Unclear</button>
+            </div>
+          </div>
+          <div id="naming-tiles" class="stat-row stat-row-4" aria-label="Answers by assessment"></div>
+          <ol id="naming-list" class="naming-list" aria-label="Topics with their answers"></ol>
+          <p class="subtle">Reading the pattern: the large praise groups (<em>excelente</em>, <em>muy buena</em>) come back <em>unclear</em> because they carry sentiment, not a feature. That is a finding, not a defect: topics and sentiment are different axes, which is why the next stage measures sentiment on its own.</p>
+        </section>
+      </div>
+
+      <dialog id="keybert-dialog" class="neighbors-dialog modal" aria-labelledby="keybert-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Block</p><h2 id="keybert-dialog-title">KeyBERT-inspired · rerank by meaning</h2></div><button type="button" class="dialog-close" data-close="keybert-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>c-TF-IDF ranks words by counts. The KeyBERT-inspired block takes the top candidates of each topic, embeds them with the same sentence encoder we used for the reviews, embeds the topic's representative reviews, and reorders the candidates by cosine similarity to the topic. Nothing new is added; words that <em>mean</em> what the group is about move up, and typos or fragments that merely occur often move down. It costs one small embedding batch per topic.</p>
+          <div class="demo-controls"><label class="picker-field">Topic <select id="keybert-topic"></select></label><span id="keybert-note" class="subtle"></span></div>
+          <div id="keybert-compare" class="compare-grid"></div>
+        </div>
+      </dialog>
+
+      <dialog id="mmr-dialog" class="neighbors-dialog modal" aria-labelledby="mmr-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Block</p><h2 id="mmr-dialog-title">Maximal marginal relevance · rerank for variety</h2></div><button type="button" class="dialog-close" data-close="mmr-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>A list of ten keywords that are all variants of one word tells you one thing ten times. MMR builds the list one word at a time: each pick maximises <em>similarity to the topic</em> minus <code>diversity</code> × <em>similarity to the words already picked</em>. At diversity 0 it is plain relevance; at 1 it only cares about being different. We chain it after the KeyBERT block with thirty candidates, so it has something to choose from.</p>
+          <div class="demo-controls"><label class="picker-field">Topic <select id="mmr-topic"></select></label><label class="picker-field">diversity <select id="mmr-diversity"></select></label><span id="mmr-note" class="subtle"></span></div>
+          <div id="mmr-compare" class="compare-grid"></div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 8: sentiment per review and per topic, rendered from `sentiment_payload` plus texts and labels. -->
+    <section class="page" id="page-sentiment" data-page="sentiment" hidden aria-labelledby="sentiment-title"
+             aria-busy="true"
+             data-marimo-lens-label="Sentiment page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"view.js"}'>
+      <span id="sentiment-payload" hidden mo-value="sentiment_payload"></span>
+      <header class="masthead">
+        <p class="eyebrow">Voice of the customer · Workflow 01 · Page 8</p>
+        <h1 id="sentiment-title">Sentiment: how people feel, topic by topic</h1>
+        <p class="lede" id="sentiment-lede">Waiting for the notebook's sentiment step…</p>
+      </header>
+      <p id="sentiment-status" role="status" class="status">Waiting for the notebook's sentiment step…</p>
+
+      <div id="sentiment-report" hidden>
+        <section class="band" aria-labelledby="sentiment-idea-title" data-marimo-lens-inputs="sentiment-payload" data-marimo-lens-label="What we measure">
+          <div class="section-heading wide">
+            <p class="eyebrow">01 / What we measure</p>
+            <h2 id="sentiment-idea-title">One label per review, then counted per topic</h2>
+            <p>Topics say <strong>what</strong> people talk about; sentiment says <strong>how they feel</strong> while saying it. Each review is classified as a whole into <strong>negative, neutral or positive</strong> by RoBERTuito, a Spanish RoBERTa fine-tuned for sentiment by the pysentimiento project, pinned to one revision and run on CPU. The review goes through the model authors' Spanish preprocessing, is truncated at 128 tokens, and comes back as three probabilities; the label is the largest. Only the text enters the classifier, never the topic's keywords or its generated label.</p>
+            <p>A topic's sentiment is the <strong>mix of its reviews</strong>, each counted once. It is not a judgement about the label: a single-feature topic can be mostly negative (a complaint) or mostly positive (praise). The probabilities are not calibrated, so we report counts and shares rather than averages of confidence. And this is whole-review sentiment, not aspect-based: a review that praises transfers and curses the login gets one label.</p>
+          </div>
+          <div class="io-actions">
+            <button id="open-classifier" type="button" class="primary">How the classifier decides →</button>
+            <span class="subtle">A panel with the model, a review's three probabilities, and a softmax you can push around.</span>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="sentiment-result-title" data-marimo-lens-inputs="sentiment-payload embedding-payload topic-payload" data-marimo-lens-label="Sentiment per topic">
+          <div class="section-top">
+            <div class="section-heading">
+              <p class="eyebrow">02 / The result</p>
+              <h2 id="sentiment-result-title">Every topic, by how its reviews feel</h2>
+              <p class="subtle">Bar length is the topic's size; colour is the predicted sentiment of its reviews. Click a bar to read the reviews behind it. This is the shape the dashboard will take.</p>
+            </div>
+            <div class="map-toggle" role="group" aria-label="Sort topics">
+              <button type="button" data-sort="negative" class="is-active" aria-pressed="true">Most negative first</button>
+              <button type="button" data-sort="size" aria-pressed="false">Largest first</button>
+              <button type="button" data-sort="positive" aria-pressed="false">Most positive first</button>
+            </div>
+          </div>
+          <div id="sentiment-tiles" class="stat-row stat-row-4" aria-label="Overall sentiment"></div>
+          <div class="legend sentiment-legend" aria-label="Sentiment"><span><i class="swatch neg"></i>Negative</span><span><i class="swatch neu"></i>Neutral</span><span><i class="swatch pos"></i>Positive</span></div>
+          <ol id="sentiment-bars" class="sentiment-bars" aria-label="Topics with their sentiment mix"></ol>
+
+          <div id="sentiment-panel" class="group-panel" hidden>
+            <div class="section-top">
+              <div><p class="eyebrow" id="sentiment-panel-eyebrow"></p><h3 id="sentiment-panel-title"></h3><p class="subtle" id="sentiment-panel-meta"></p></div>
+              <div class="panel-controls">
+                <div class="map-toggle" role="group" aria-label="Filter by sentiment">
+                  <button type="button" data-label="all" class="is-active" aria-pressed="true">All</button>
+                  <button type="button" data-label="negative" aria-pressed="false">Negative</button>
+                  <button type="button" data-label="neutral" aria-pressed="false">Neutral</button>
+                  <button type="button" data-label="positive" aria-pressed="false">Positive</button>
+                </div>
+                <label class="search-field">Search <input id="sentiment-search" type="search" placeholder="filter these reviews…"></label>
+              </div>
+            </div>
+            <ol id="sentiment-reviews" class="group-reviews" aria-label="Reviews with their predicted sentiment"></ol>
+            <div class="pagination"><button id="sentiment-prev" type="button">← Previous</button><span id="sentiment-page"></span><button id="sentiment-next" type="button">Next →</button></div>
+          </div>
+        </section>
+
+        <section class="band" aria-labelledby="rating-title" data-marimo-lens-inputs="sentiment-payload embedding-payload" data-marimo-lens-label="Rating check">
+          <div class="section-heading">
+            <p class="eyebrow">03 / A built-in check</p>
+            <h2 id="rating-title">Stars the classifier never saw</h2>
+            <p class="subtle" id="rating-note"></p>
+          </div>
+          <div class="rating-grid">
+            <div id="rating-chart" class="rating-chart" role="img" aria-label="Predicted sentiment by star rating"></div>
+            <div>
+              <table id="rating-table" class="data-table"><caption class="visually-hidden">Counts by rating and predicted label</caption><thead><tr><th scope="col">Rating</th><th scope="col" class="num">Negative</th><th scope="col" class="num">Neutral</th><th scope="col" class="num">Positive</th></tr></thead><tbody></tbody></table>
+              <p class="subtle" id="rating-disagreement"></p>
+              <ul id="rating-examples" class="example-list" aria-label="Examples of five-star reviews predicted neutral"></ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <dialog id="classifier-dialog" class="neighbors-dialog modal" aria-labelledby="classifier-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Model</p><h2 id="classifier-dialog-title">RoBERTuito · three numbers per review</h2></div><button type="button" class="dialog-close" data-close="classifier-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>The classifier is a RoBERTa-style transformer pre-trained on Spanish tweets and fine-tuned to predict sentiment. A review is tokenised, read by the network, and reduced to <strong>three scores</strong>, one per class. A <strong>softmax</strong> turns the scores into probabilities that sum to one, and the largest wins. The probabilities say which class the model prefers and by how much, not how often it is right; that is what "uncalibrated" means.</p>
+          <div class="demo-grid">
+            <figure class="demo-panel"><figcaption>A real review and its three probabilities</figcaption>
+              <div class="demo-controls"><button id="classifier-prev" type="button" aria-label="Previous review">←</button><span id="classifier-position" class="subtle"></span><button id="classifier-next" type="button" aria-label="Next review">→</button></div>
+              <blockquote id="classifier-text" class="io-text" lang="es"></blockquote>
+              <div id="classifier-probs" class="prob-bars"></div>
+              <p id="classifier-note" class="subtle"></p>
+            </figure>
+            <figure class="demo-panel"><figcaption>Softmax, by hand · push the three scores</figcaption>
+              <div class="demo-controls softmax-controls">
+                <label>negative score <output id="logit-neg-value"></output><input id="logit-neg" type="range" min="-4" max="4" step="0.1" value="0.5"></label>
+                <label>neutral score <output id="logit-neu-value"></output><input id="logit-neu" type="range" min="-4" max="4" step="0.1" value="0"></label>
+                <label>positive score <output id="logit-pos-value"></output><input id="logit-pos" type="range" min="-4" max="4" step="0.1" value="-1"></label>
+              </div>
+              <div id="softmax-bars" class="prob-bars"></div>
+              <p id="softmax-note" class="subtle"></p>
+            </figure>
+          </div>
+        </div>
+      </dialog>
+    </section>
+
+    <!-- Page 9: the store and the dashboard, assembled in the browser from every earlier payload plus `dashboard_payload`. -->
+    <section class="page page-dashboard" id="page-dashboard" data-page="dashboard" hidden aria-labelledby="dashboard-title"
+             aria-busy="true"
+             data-marimo-lens-label="Dashboard page"
+             data-marimo-lens-context="true"
+             data-marimo-lens-render-source='{"path":"dashboard.js"}'>
+      <span id="dashboard-payload" hidden mo-value="dashboard_payload"></span>
+      <p id="dashboard-status" role="status" class="status">Waiting for every stage of the notebook…</p>
+      <div id="dashboard-report" class="dash" hidden data-marimo-lens-inputs="dashboard-payload sentiment-payload naming-payload topic-payload embedding-payload payload">
+        <header class="dash-header">
+          <div>
+            <p class="eyebrow">Voice of the customer · Workflow 01 · Page 9 · Database and dashboard</p>
+            <h1 id="dashboard-title">Customer voice dashboard</h1>
+            <p class="subtle" id="dash-subtitle"></p>
+          </div>
+          <div class="dash-store-badge" role="group" aria-label="Where this dashboard reads from">
+            <svg class="cylinder cylinder-small" viewBox="0 0 64 76" aria-hidden="true" focusable="false"><path class="body" d="M4 14v48a28 10 0 0 0 56 0V14"/><ellipse class="lid" cx="32" cy="14" rx="28" ry="10"/><path class="ring" d="M4 30a28 10 0 0 0 56 0"/><path class="ring" d="M4 46a28 10 0 0 0 56 0"/></svg>
+            <div><strong>Reads from the store</strong><span id="dash-store-line" class="subtle"></span></div>
+            <button id="dash-open-store" type="button">What is stored →</button>
+          </div>
+        </header>
+
+        <div class="dash-filters" role="group" aria-label="Filters">
+          <div class="filter-group"><span class="filter-label">Platform</span><div id="filter-platform" class="chip-row"></div></div>
+          <div class="filter-group"><span class="filter-label">Sentiment</span><div id="filter-sentiment" class="chip-row"></div></div>
+          <div class="filter-group"><span class="filter-label">Assessment</span><div id="filter-assessment" class="chip-row"></div></div>
+          <div class="filter-group filter-months"><span class="filter-label">Months</span><label>from <select id="filter-from"></select></label><label>to <select id="filter-to"></select></label></div>
+          <div class="filter-group filter-search"><label class="search-field">Search <input id="filter-search" type="search" placeholder="text in reviews…"></label><button id="filter-reset" type="button">Reset</button></div>
+        </div>
+
+        <div id="dash-kpis" class="dash-kpis" aria-label="Key figures for the current selection"></div>
+
+        <div class="dash-grid">
+          <section class="dash-card dash-main" aria-labelledby="dash-topics-title">
+            <div class="dash-card-head"><h2 id="dash-topics-title">Topics by volume and sentiment</h2>
+              <div class="map-toggle" role="group" aria-label="Sort topics"><button type="button" data-dsort="volume" class="is-active" aria-pressed="true">Volume</button><button type="button" data-dsort="negative" aria-pressed="false">Negative</button><button type="button" data-dsort="positive" aria-pressed="false">Positive</button></div>
+            </div>
+            <div class="legend sentiment-legend" aria-label="Sentiment"><span><i class="swatch neg"></i>Negative</span><span><i class="swatch neu"></i>Neutral</span><span><i class="swatch pos"></i>Positive</span><span class="subtle">· click a topic to drill down</span></div>
+            <ol id="dash-topics" class="sentiment-bars dash-topic-list" aria-label="Topics in the current selection"></ol>
+          </section>
+
+          <aside class="dash-side">
+            <section class="dash-card" aria-labelledby="dash-trend-title"><h2 id="dash-trend-title">Sentiment over time</h2><div id="dash-trend" class="dash-trend" role="img" aria-label="Reviews per month by sentiment"></div><p class="subtle" id="dash-trend-note"></p></section>
+            <section class="dash-card" aria-labelledby="dash-platform-title"><h2 id="dash-platform-title">By platform</h2><ol id="dash-platforms" class="dash-platforms" aria-label="Reviews per platform by sentiment"></ol></section>
+            <section class="dash-card" aria-labelledby="dash-overall-title"><h2 id="dash-overall-title">Overall mood</h2><div id="dash-overall" class="dash-overall"></div></section>
+          </aside>
+        </div>
+
+        <section id="dash-detail" class="dash-card dash-detail" hidden aria-labelledby="dash-detail-title">
+          <div class="dash-card-head">
+            <div><p class="eyebrow" id="dash-detail-eyebrow"></p><h2 id="dash-detail-title"></h2><p class="subtle" id="dash-detail-meta"></p></div>
+            <button id="dash-detail-close" type="button">Close</button>
+          </div>
+          <div class="dash-detail-grid">
+            <div>
+              <p class="subtle" id="dash-detail-description" lang="es"></p>
+              <div id="dash-detail-keywords" class="chips"></div>
+              <div id="dash-detail-mix" class="prob-bars"></div>
+            </div>
+            <div><p class="eyebrow">This topic over time</p><div id="dash-detail-trend" class="dash-trend" role="img" aria-label="This topic's reviews per month by sentiment"></div></div>
+          </div>
+          <ol id="dash-detail-reviews" class="group-reviews" aria-label="Reviews in this topic matching the filters"></ol>
+          <div class="pagination"><button id="dash-detail-prev" type="button">← Previous</button><span id="dash-detail-page"></span><button id="dash-detail-next" type="button">Next →</button></div>
+        </section>
+
+        <footer class="dash-foot subtle">Counts describe this 1,000-review prototype sample, not the whole dataset. Topics are machine-found groups with model-proposed labels; sentiment is whole-review and uncalibrated. Everything shown is read from the cached artifacts of the earlier stages.</footer>
+      </div>
+
+      <dialog id="store-dialog" class="neighbors-dialog modal" aria-labelledby="store-dialog-title">
+        <div class="dialog-head"><div><p class="eyebrow">Database</p><h2 id="store-dialog-title">What the store holds</h2></div><button type="button" class="dialog-close" data-close="store-dialog" aria-label="Close">×</button></div>
+        <div class="dialog-body">
+          <p>Every stage wrote its result beside the sample, each with a small manifest that records what produced it (model, revision, parameters) and a fingerprint of its inputs. A rerun compares the manifest and loads the file instead of recomputing; a changed input invalidates only the stages downstream of it. In the prototype this is a folder of files; in the product it is the database the dashboard reads from.</p>
+          <div class="store-schema" aria-label="How the records relate">
+            <span class="schema-box">review<small>record_id · text · platform · date · rating</small></span><span class="schema-arrow">→</span>
+            <span class="schema-box">vector<small>384 floats</small></span><span class="schema-arrow">→</span>
+            <span class="schema-box">group<small>HDBSCAN label · strength</small></span><span class="schema-arrow">→</span>
+            <span class="schema-box">topic<small>keywords · label · assessment</small></span>
+            <span class="schema-plus">+</span>
+            <span class="schema-box">sentiment<small>label · 3 probabilities</small></span>
+          </div>
+          <table id="store-table" class="data-table"><caption class="visually-hidden">Stored artifacts</caption><thead><tr><th scope="col">File</th><th scope="col">Holds</th><th scope="col" class="num">Size</th><th scope="col">Manifest</th></tr></thead><tbody></tbody></table>
+          <p class="subtle" id="store-note"></p>
+        </div>
+      </dialog>
+    </section>
+  </main>
+
+  <footer><strong>VOC / Workflow 01</strong><span>Counts and dates only. Review text stays in the notebook.</span><span class="hint">← → move between pages</span></footer>
+</div>
+<script type="module" src="./reduction.js"></script>
+<script type="module" src="./clusters.js"></script>
+<script type="module" src="./topics.js"></script>
+<script type="module" src="./naming.js"></script>
+<script type="module" src="./sentiment.js"></script>
+<script type="module" src="./dashboard.js"></script>
+<script type="module" src="./view.js"></script>
+</body>
+</html>

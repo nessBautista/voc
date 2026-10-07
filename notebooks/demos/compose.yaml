@@ -1,0 +1,28 @@
+name: voc-topic-demo
+services:
+  demo:
+    build: .
+    init: true
+    working_dir: /demo
+    environment:
+      DEMO_DATA_DIR: /demo/.data
+      DEMO_MEMBER_ID: ${DEMO_MEMBER_ID:-}
+      AWS_BUCKET: ${AWS_BUCKET:?Set AWS_BUCKET in notebooks/demos/.env}
+      AWS_REGION: ${AWS_REGION:?Set AWS_REGION in notebooks/demos/.env}
+      AWS_DEFAULT_REGION: ${AWS_REGION}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?Set AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?Set AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+    volumes:
+      - type: bind
+        source: .
+        target: /demo
+    ports:
+      - "127.0.0.1:${DEMO_PORT:-2730}:2718"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:2718/health', timeout=5)"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 30s
