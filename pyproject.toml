@@ -22,6 +22,10 @@ dev = ["pytest>=8,<10", "ruff>=0.12", "nbformat>=5,<6"]
 # Orchestration, tracking, S3 access, notebooks, plotting and documentation.
 # Brackets inside a package string, e.g. zenml[server], request its optional extras.
 ml = [
+    "sentence-transformers==5.1.2",
+    "transformers>=4.41,<5",
+    "torch>=2.6,<3",
+    "numpy>=1.26,<3",
     "zenml[server]==0.96.4",
     "mlflow==3.16.1",
     "python-rapidjson<1.15",
@@ -57,3 +61,12 @@ pythonpath = ["src", "."]  # Make source packages and repo helpers importable in
 # Register the label used by tests needing AWS or running services.
 # tests/conftest.py handles skipping them unless explicitly enabled.
 markers = ["live: explicit AWS or running-service acceptance check"]
+
+# Local NLP inference uses CPU wheels; keep other packages on PyPI.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]
