@@ -19,7 +19,19 @@ def experiment_name(storage):
 
 def ensure_experiment(client, storage):
     """Create or reuse the intended experiment; never repoint an existing one."""
-    name = experiment_name(storage)
+    return _ensure_experiment(client, storage, experiment_name(storage))
+
+
+def embedding_experiment_name(storage):
+    return experiment_name(storage).replace("voc-datasets", "voc-embeddings", 1)
+
+
+def ensure_embedding_experiment(client, storage):
+    """Embedding reports use their own experiment, with the configured artifact root."""
+    return _ensure_experiment(client, storage, embedding_experiment_name(storage))
+
+
+def _ensure_experiment(client, storage, name):
     experiment = client.get_experiment_by_name(name)
     if experiment is None:
         return client.create_experiment(
