@@ -3805,6 +3805,8 @@ dependencies = [
     { name = "boto3" },
     { name = "click" },
     { name = "google-play-scraper" },
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "pandas" },
     { name = "pyarrow" },
 ]
@@ -3824,8 +3826,6 @@ ml = [
     { name = "mkdocs" },
     { name = "mkdocstrings", extra = ["python"] },
     { name = "mlflow" },
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "python-rapidjson" },
     { name = "s3fs" },
     { name = "sentence-transformers" },
@@ -3840,6 +3840,7 @@ requires-dist = [
     { name = "boto3", specifier = ">=1.35,<2" },
     { name = "click", specifier = ">=8.0,<=8.2.1" },
     { name = "google-play-scraper", specifier = "==1.2.7" },
+    { name = "numpy", specifier = ">=1.26,<3" },
     { name = "pandas", specifier = ">=2.2,<3" },
     { name = "pyarrow", specifier = ">=18,<24" },
 ]
@@ -3859,7 +3860,6 @@ ml = [
     { name = "mkdocs", specifier = ">=1.6,<2" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.27" },
     { name = "mlflow", specifier = "==3.16.1" },
-    { name = "numpy", specifier = ">=1.26,<3" },
     { name = "python-rapidjson", specifier = "<1.15" },
     { name = "s3fs", specifier = ">2022.3.0,!=2025.3.1" },
     { name = "sentence-transformers", specifier = "==5.1.2" },

@@ -227,5 +227,23 @@ def embeddings_inspect(producer_run_id, as_json):
         sys.exit(1)
 
 
+@embeddings.command("export")
+@click.argument("producer_run_id")
+@click.option("--json", "as_json", is_flag=True)
+def embeddings_export(producer_run_id, as_json):
+    """Prepare a portable local release from a completed run; no publication."""
+    import sys
+    from contextlib import redirect_stdout
+
+    from .embeddings.export import export_run
+
+    try:
+        with redirect_stdout(sys.stderr):
+            reference = export_run(producer_run_id)
+    except Exception as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(reference, indent=None if as_json else 2))
+
+
 if __name__ == "__main__":
     main()
