@@ -74,7 +74,7 @@ class SentenceEncoder:
         self.model.eval()
         self.model.default_prompt_name = None
         self.model.max_seq_length = profile.max_length
-        if self.model.get_sentence_embedding_dimension() != profile.dimensions:
+        if self.model.get_embedding_dimension() != profile.dimensions:
             raise ValueError("Model dimensions differ from profile")
         if self.model.max_seq_length != profile.max_length:
             raise ValueError("Model truncation length differs from profile")
