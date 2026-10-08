@@ -23,6 +23,14 @@ dev = ["pytest>=8,<10", "ruff>=0.12", "nbformat>=5,<6"]
 # Orchestration, tracking, S3 access, notebooks, plotting and documentation.
 # Brackets inside a package string, e.g. zenml[server], request its optional extras.
 ml = [
+    # Topic discovery and dimensionality reduction used by the BERTopic notebook.
+    "bertopic==0.17.4",
+    "umap-learn==0.5.12",
+    "hdbscan==0.8.44",
+    "openai>=1.60,<3",  # Optional OpenRouter client in the teaching notebook.
+    "jsonschema>=4,<5",  # Check the optional structured topic interpretation.
+    "pysentimiento==0.7.3",  # RoBERTuito Spanish text preprocessing in notebooks.
+    "datasets>=3,<6",  # Avoid legacy datasets 2.x APIs removed by current PyArrow.
     "sentence-transformers==5.1.2",
     "transformers>=4.41,<5",
     "torch>=2.6,<3",
@@ -33,7 +41,8 @@ ml = [
     "aws-profile-manager",
     "aiobotocore==3.9.0",
     "jupyterlab>=4,<5",
-    "marimo>=0.15",
+    "marimo==0.25.0",  # Runtime compatible with the Studio extension.
+    "marimo-studio==0.2.3",  # HTML presentation views on the existing Marimo server.
     "matplotlib>=3.9",
     "mkdocs>=1.6,<2",
     "mkdocstrings[python]>=0.27",
