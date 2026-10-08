@@ -31,8 +31,8 @@ ml = [
     "jsonschema>=4,<5",  # Check the optional structured topic interpretation.
     "pysentimiento==0.7.3",  # RoBERTuito Spanish text preprocessing in notebooks.
     "datasets>=3,<6",  # Avoid legacy datasets 2.x APIs removed by current PyArrow.
-    "sentence-transformers==5.1.2",
-    "transformers>=4.41,<5",
+    "sentence-transformers==6.0.0",  # Enforce trust_remote_code=False for local models.
+    "transformers>=5.10,<6",
     "torch>=2.6,<3",
     "zenml[server]==0.96.4",
     "mlflow==3.16.1",
