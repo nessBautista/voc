@@ -17,6 +17,7 @@ DEFAULTS = {
     "dataset_source": "personal",
     "shared_prefix": "voc/datasets",
     "members_prefix": "members",
+    "embeddings_prefix": "voc/embeddings",
     "bucket": "",
     "region": "",
     "member_id": "",
@@ -47,7 +48,22 @@ def installation_id(root):
         finally:
             if temporary is not None:
                 temporary.unlink(missing_ok=True)
-    value = path.read_text().strip()
+    return read_installation_id(root)
+
+
+def read_installation_id(root):
+    """Read an existing identity without creating runtime folders or files."""
+    path = Path(root) / "storage/installation-id"
+    try:
+        with path.open() as stream:
+            raw = stream.read(257)
+            if len(raw) > 256:
+                raise ValueError(
+                    f"Invalid installation ID at {path}; exceeds size limit"
+                )
+            value = raw.strip()
+    except FileNotFoundError:
+        return None
     try:
         parsed = uuid.UUID(value)
         if str(parsed) != value or parsed.version != 4:
@@ -69,6 +85,28 @@ def _prefix(value, name):
     ):
         raise ValueError(f"{name} must contain ordinary slash-separated key segments")
     return value
+
+
+def validate_prefixes(shared, members, embeddings):
+    """Normalize three roots and reject equal or nested namespaces."""
+    prefixes = tuple(
+        _prefix(value, name)
+        for value, name in zip(
+            (shared, members, embeddings),
+            ("shared_prefix", "members_prefix", "embeddings_prefix"),
+        )
+    )
+    for index, left in enumerate(prefixes):
+        for right in prefixes[index + 1 :]:
+            if (
+                left == right
+                or left.startswith(right + "/")
+                or right.startswith(left + "/")
+            ):
+                raise ValueError(
+                    "Shared dataset, embedding and personal artifact prefixes must not overlap"
+                )
+    return prefixes
 
 
 # --- Main configuration loader ---
@@ -101,6 +139,7 @@ def load_storage(path=None, *, destination=None):
         "bucket": "AWS_BUCKET",
         "region": "AWS_REGION",
         "member_id": "VOC_MEMBER_ID",
+        "embeddings_prefix": "VOC_EMBEDDINGS_PREFIX",
         "artifact_destination": "VOC_ARTIFACT_DESTINATION",
         "dataset_source": "VOC_DATASET_SOURCE",
     }.items():
@@ -124,18 +163,13 @@ def load_storage(path=None, *, destination=None):
         if values[key] not in choices:
             raise ValueError(f"{key} must be {' or '.join(choices)}")
 
-    # Keep shared datasets and personal artifacts in separate S3 prefixes.
-    shared = _prefix(values["shared_prefix"], "shared_prefix")
-    members = _prefix(values["members_prefix"], "members_prefix")
-    if (
-        shared == members
-        or shared.startswith(members + "/")
-        or members.startswith(shared + "/")
-    ):
-        raise ValueError(
-            "Shared dataset and personal artifact prefixes must not overlap"
-        )
-    values.update(shared_prefix=shared, members_prefix=members)
+    # Shared datasets, embeddings and personal artifacts have disjoint roots.
+    shared, members, embeddings = validate_prefixes(
+        values["shared_prefix"], values["members_prefix"], values["embeddings_prefix"]
+    )
+    values.update(
+        shared_prefix=shared, members_prefix=members, embeddings_prefix=embeddings
+    )
 
     # S3 needs a bucket and region; personal S3 artifacts also need a member ID.
     uses_s3 = "s3" in (values["artifact_destination"], values["dataset_source"])

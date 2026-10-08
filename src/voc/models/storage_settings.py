@@ -17,10 +17,15 @@ class StorageSettings:
     shared_prefix: str
     members_prefix: str
     installation_id: str | None
+    embeddings_prefix: str = "voc/embeddings"
 
     @property
     def shared_dataset_uri(self):
         return f"s3://{self.bucket}/{self.shared_prefix}" if self.bucket else None
+
+    @property
+    def shared_embedding_uri(self):
+        return f"s3://{self.bucket}/{self.embeddings_prefix}" if self.bucket else None
 
     @property
     def personal_uri(self):
@@ -51,6 +56,8 @@ class StorageSettings:
             "member_id": self.member_id,
             "installation_id": self.installation_id,
             "shared_dataset_uri": self.shared_dataset_uri,
+            "embeddings_prefix": self.embeddings_prefix,
+            "shared_embedding_uri": self.shared_embedding_uri,
             "personal_uri": self.personal_uri,
             "zenml_artifact_uri": self.zenml_artifact_uri,
             "mlflow_artifact_uri": self.mlflow_artifact_uri,

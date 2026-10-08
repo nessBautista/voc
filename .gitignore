@@ -63,6 +63,7 @@ htmlcov/
 */.ipynb_checkpoints/*
 __marimo__/
 *.marimo.cache
+notebooks/nb
 
 # --- MLflow / experimentos / modelos ---
 mlruns/

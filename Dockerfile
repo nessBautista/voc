@@ -12,8 +12,11 @@ COPY --from=uv /uv /uvx /usr/local/bin/
 # PATH selects this environment's Python/commands; unbuffered output shows logs promptly.
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv UV_LINK_MODE=copy PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
 
+# HDBSCAN may build from source on ARM, so include C/C++ build tools.
 # Install Git and HTTPS trust certificates; remove package lists to reduce image size.
-RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git ca-certificates build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 # Working directory for subsequent build instructions and the running container.
 WORKDIR /workspace
