@@ -24,6 +24,8 @@ def main():
     )
     os.environ.setdefault("ZENML_ANALYTICS_OPT_IN", "false")
     os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
+    # Preserve the notebook editor at / and serve Studio views under /studio/.
+    os.environ.setdefault("MARIMO_STUDIO_EDIT_ROOT", "marimo")
     # Configure the stack and experiment before launching their servers.
     from .bootstrap import bootstrap
 

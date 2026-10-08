@@ -10,6 +10,7 @@ requires-python = ">=3.11,<3.13"  # Python 3.11 or 3.12.
 dependencies = [
     "click>=8.0,<=8.2.1",
     "pandas>=2.2,<3",
+    "numpy>=1.26,<3",  # Portable embedding validation; no model dependencies.
     "pyarrow>=18,<24",
     "google-play-scraper==1.2.7",
     "boto3>=1.35,<2",
@@ -22,6 +23,17 @@ dev = ["pytest>=8,<10", "ruff>=0.12", "nbformat>=5,<6"]
 # Orchestration, tracking, S3 access, notebooks, plotting and documentation.
 # Brackets inside a package string, e.g. zenml[server], request its optional extras.
 ml = [
+    # Topic discovery and dimensionality reduction used by the BERTopic notebook.
+    "bertopic==0.17.4",
+    "umap-learn==0.5.12",
+    "hdbscan==0.8.44",
+    "openai>=1.60,<3",  # Optional OpenRouter client in the teaching notebook.
+    "jsonschema>=4,<5",  # Check the optional structured topic interpretation.
+    "pysentimiento==0.7.3",  # RoBERTuito Spanish text preprocessing in notebooks.
+    "datasets>=3,<6",  # Avoid legacy datasets 2.x APIs removed by current PyArrow.
+    "sentence-transformers==6.0.0",  # Enforce trust_remote_code=False for local models.
+    "transformers>=5.10,<6",
+    "torch>=2.6,<3",
     "zenml[server]==0.96.4",
     "mlflow==3.16.1",
     "python-rapidjson<1.15",
@@ -29,7 +41,8 @@ ml = [
     "aws-profile-manager",
     "aiobotocore==3.9.0",
     "jupyterlab>=4,<5",
-    "marimo>=0.15",
+    "marimo==0.25.0",  # Runtime compatible with the Studio extension.
+    "marimo-studio==0.2.3",  # HTML presentation views on the existing Marimo server.
     "matplotlib>=3.9",
     "mkdocs>=1.6,<2",
     "mkdocstrings[python]>=0.27",
@@ -49,6 +62,8 @@ packages = ["src/voc", "src/voc_ml", "src/voc_dev"]
 voc = "voc.cli:main"
 # Separate command for ML setup and dataset pipelines.
 voc-ml = "voc_ml.cli:main"
+# Read-only developer storage diagnostics.
+voc-dev = "voc_dev.cli:main"
 
 # pytest reads this section when discovering and running tests.
 [tool.pytest.ini_options]
@@ -57,3 +72,12 @@ pythonpath = ["src", "."]  # Make source packages and repo helpers importable in
 # Register the label used by tests needing AWS or running services.
 # tests/conftest.py handles skipping them unless explicitly enabled.
 markers = ["live: explicit AWS or running-service acceptance check"]
+
+# Local NLP inference uses CPU wheels; keep other packages on PyPI.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]

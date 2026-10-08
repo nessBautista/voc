@@ -80,8 +80,8 @@ def run(config, rules, refresh, live, operation_id):
         raise click.UsageError("Use --refresh --live to make store requests")
     from voc.collector import load_config
 
-    from .pipelines.dataset import dataset_pipeline
     from .identity import code_identity
+    from .pipelines.dataset import dataset_pipeline
 
     cfg = load_config(config)
     with open(rules, "rb") as f:
@@ -96,6 +96,7 @@ def run(config, rules, refresh, live, operation_id):
     if result is None:
         raise click.ClickException("No completed run returned")
     from .publication import publish_run
+
     click.echo(json.dumps(publish_run(str(result.id)), indent=2))
 
 
@@ -128,6 +129,139 @@ def share(run_id):
     ) as error:
         raise click.ClickException(str(error)) from error
     click.echo(json.dumps(result, indent=2))
+
+
+class EmbeddingCommands(click.Group):
+    """Return JSON for argument errors too, before allocating a producer run."""
+
+    def parse_args(self, ctx, args):
+        ctx.meta["embedding_args"] = list(args)
+        return super().parse_args(ctx, args)
+
+    def invoke(self, ctx):
+        import sys
+
+        args = ctx.meta["embedding_args"]
+        wants_json = "--json" in args
+        try:
+            for option in (
+                "--dataset-version",
+                "--source",
+                "--profile",
+                "--limit",
+                "--batch-size",
+            ):
+                if sum(arg.split("=", 1)[0] == option for arg in args) > 1:
+                    raise click.UsageError(f"Specify {option} only once")
+            return super().invoke(ctx)
+        except click.ClickException as error:
+            if not wants_json:
+                raise
+            click.echo(json.dumps({"state": "error", "error": error.format_message()}))
+            click.echo(error.format_message(), err=True)
+            sys.exit(error.exit_code)
+
+
+@main.group(cls=EmbeddingCommands)
+def embeddings():
+    """Produce and inspect local embedding runs."""
+
+
+@embeddings.command("workflow")
+@click.option("--dataset-version", default="latest", show_default=True)
+@click.option("--source", type=click.Choice(["s3"]), default="s3")
+@click.option("--profile", default="minilm-verbatim-v1", show_default=True)
+@click.option("--limit", type=click.IntRange(min=1), default=None)
+@click.option("--batch-size", type=click.IntRange(min=1), default=32, show_default=True)
+@click.option(
+    "--local-files-only", is_flag=True, help="Use an already downloaded encoder model."
+)
+@click.option(
+    "--json", "as_json", is_flag=True, help="One JSON result on stdout; logs on stderr."
+)
+def embeddings_workflow(
+    dataset_version, source, profile, limit, batch_size, local_files_only, as_json
+):
+    import sys
+    from contextlib import redirect_stdout
+
+    from .embeddings.producer import create_run, execute_run
+
+    try:
+        state = create_run(
+            dataset_version=dataset_version,
+            source=source,
+            profile=profile,
+            limit=limit,
+            batch_size=batch_size,
+            local_files_only=local_files_only,
+        )
+    except (ValueError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo("Embedding producer: " + state["producer_run_id"], err=True)
+    # Import/run orchestration inside redirection: ZenML initializes its loggers here.
+    with redirect_stdout(sys.stderr):
+        state = execute_run(state["producer_run_id"])
+    click.echo(json.dumps(state, indent=None if as_json else 2))
+    if state["state"] != "completed":
+        click.echo(
+            state.get("error", {}).get("message", "Producer did not complete"), err=True
+        )
+        sys.exit(1)
+
+
+@embeddings.command("inspect")
+@click.argument("producer_run_id")
+@click.option("--json", "as_json", is_flag=True)
+def embeddings_inspect(producer_run_id, as_json):
+    import sys
+
+    from .embeddings.producer import inspect_run
+
+    try:
+        state = inspect_run(producer_run_id)
+    except (ValueError, OSError, KeyError, TypeError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(state, indent=None if as_json else 2))
+    if state["state"] != "completed":
+        sys.exit(1)
+
+
+@embeddings.command("export")
+@click.argument("producer_run_id")
+@click.option("--json", "as_json", is_flag=True)
+def embeddings_export(producer_run_id, as_json):
+    """Prepare a portable local release from a completed run; no publication."""
+    import sys
+    from contextlib import redirect_stdout
+
+    from .embeddings.export import export_run
+
+    try:
+        with redirect_stdout(sys.stderr):
+            reference = export_run(producer_run_id)
+    except Exception as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(reference, indent=None if as_json else 2))
+
+
+@embeddings.command("publish")
+@click.argument("producer_run_id")
+@click.option("--promote", is_flag=True, help="Make a full release latest for its dataset/profile.")
+@click.option("--json", "as_json", is_flag=True)
+def embeddings_publish(producer_run_id, promote, as_json):
+    """Publish a completed embedding export to S3 without encoding again."""
+    import sys
+    from contextlib import redirect_stdout
+
+    from .embeddings.publish import publish_run
+
+    try:
+        with redirect_stdout(sys.stderr):
+            result = publish_run(producer_run_id, promote=promote)
+    except Exception as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=None if as_json else 2))
 
 
 if __name__ == "__main__":
