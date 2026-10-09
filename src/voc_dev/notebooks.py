@@ -116,15 +116,37 @@ def editor_url(kind, port, relative=None, token=""):
     return f"http://127.0.0.1:{port}{path}" + ("?" + urlencode(query) if query else "")
 
 
+def reports_directory(root):
+    """Expose the repo reports directory through the existing Jupyter root."""
+    reports = root.parent / "reports"
+    link = root / "reports"
+    # Never replace an existing directory or a link pointing somewhere else.
+    if link.is_symlink():
+        if link.resolve() != reports.resolve():
+            raise ValueError("notebooks/reports already points to another location")
+    elif link.exists():
+        raise ValueError("notebooks/reports already exists and is not a reports link")
+    root.mkdir(parents=True, exist_ok=True)
+    reports.mkdir(parents=True, exist_ok=True)
+    if not link.is_symlink():
+        link.symlink_to("../reports", target_is_directory=True)
+    return "reports"
+
+
 @click.command()
 @click.argument("kind", type=click.Choice(["marimo", "jupyter"]))
 @click.option(
     "--name", default=None, help="Create or reuse this relative notebook path."
 )
 @click.option("--port", required=True, type=click.IntRange(1, 65535))
-def main(kind, name, port):
+@click.option("--reports", is_flag=True, help="Open the repository reports directory in Jupyter.")
+def main(kind, name, port, reports):
     relative = None
     try:
+        if reports:
+            if kind != "jupyter" or name is not None:
+                raise ValueError("--reports opens Jupyter and cannot be combined with --name")
+            relative = reports_directory(NOTEBOOKS)
         if name is not None:
             relative, created = create_notebook(NOTEBOOKS, name, kind)
             print(
