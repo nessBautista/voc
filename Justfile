@@ -30,5 +30,8 @@ marimo:
 jupyter:
     @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
 
+jupyter-reports:
+    @sh scripts/notebook.sh jupyter reports {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+
 logs:
     {{compose}} exec workspace sh -c 'tail -n 60 /workspace/data/logs/*.log'
