@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VOC sentiment artifacts v1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/reviewPrediction"
+    },
+    {
+      "$ref": "#/$defs/topicSummary"
+    }
+  ],
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fraction": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "label": {
+      "enum": [
+        "negative",
+        "neutral",
+        "positive"
+      ]
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "properties": {
+        "negative": {
+          "$ref": "#/$defs/fraction"
+        },
+        "neutral": {
+          "$ref": "#/$defs/fraction"
+        },
+        "positive": {
+          "$ref": "#/$defs/fraction"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "properties": {
+        "negative": {
+          "$ref": "#/$defs/count"
+        },
+        "neutral": {
+          "$ref": "#/$defs/count"
+        },
+        "positive": {
+          "$ref": "#/$defs/count"
+        }
+      }
+    },
+    "reviewPrediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "sentiment_run_id",
+        "dataset_release_id",
+        "run_manifest_ref",
+        "record_id",
+        "input_hash",
+        "status",
+        "label",
+        "probabilities",
+        "reason"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "voc-review-sentiment-v1"
+        },
+        "sentiment_run_id": {
+          "$ref": "#/$defs/text"
+        },
+        "dataset_release_id": {
+          "$ref": "#/$defs/text"
+        },
+        "run_manifest_ref": {
+          "$ref": "#/$defs/text"
+        },
+        "record_id": {
+          "$ref": "#/$defs/text"
+        },
+        "input_hash": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/hash"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "classified",
+            "abstained",
+            "failed",
+            "excluded"
+          ]
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/label"
+            }
+          ]
+        },
+        "probabilities": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/distribution"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "classified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input_hash": {
+                "$ref": "#/$defs/hash"
+              },
+              "label": {
+                "$ref": "#/$defs/label"
+              },
+              "probabilities": {
+                "$ref": "#/$defs/distribution"
+              },
+              "reason": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "label": {
+                "type": "null"
+              },
+              "reason": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "abstained"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input_hash": {
+                "$ref": "#/$defs/hash"
+              },
+              "probabilities": {
+                "$ref": "#/$defs/distribution"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "failed",
+                  "excluded"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "probabilities": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "topicSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "sentiment_run_id",
+        "topic_run_id",
+        "topic_id",
+        "dataset_release_id",
+        "run_manifest_ref",
+        "predictions_ref",
+        "scope",
+        "coverage",
+        "label_counts",
+        "label_proportions",
+        "net_sentiment",
+        "aggregation_method"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "voc-topic-sentiment-v1"
+        },
+        "sentiment_run_id": {
+          "$ref": "#/$defs/text"
+        },
+        "topic_run_id": {
+          "$ref": "#/$defs/text"
+        },
+        "topic_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dataset_release_id": {
+          "$ref": "#/$defs/text"
+        },
+        "run_manifest_ref": {
+          "$ref": "#/$defs/text"
+        },
+        "predictions_ref": {
+          "$ref": "#/$defs/text"
+        },
+        "scope": {
+          "const": "whole_review"
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "assigned_reviews",
+            "classified_reviews",
+            "abstained_reviews",
+            "failed_reviews",
+            "excluded_reviews",
+            "classified_fraction"
+          ],
+          "properties": {
+            "assigned_reviews": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "classified_reviews": {
+              "$ref": "#/$defs/count"
+            },
+            "abstained_reviews": {
+              "$ref": "#/$defs/count"
+            },
+            "failed_reviews": {
+              "$ref": "#/$defs/count"
+            },
+            "excluded_reviews": {
+              "$ref": "#/$defs/count"
+            },
+            "classified_fraction": {
+              "$ref": "#/$defs/fraction"
+            }
+          }
+        },
+        "label_counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "label_proportions": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/distribution"
+            }
+          ]
+        },
+        "net_sentiment": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -1,
+          "maximum": 1
+        },
+        "aggregation_method": {
+          "const": "equal_weight_per_classified_review_v1"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "coverage": {
+                "properties": {
+                  "classified_reviews": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "label_proportions": {
+                "type": "null"
+              },
+              "net_sentiment": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "label_proportions": {
+                "$ref": "#/$defs/distribution"
+              },
+              "net_sentiment": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
