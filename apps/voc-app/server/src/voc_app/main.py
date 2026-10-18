@@ -1,12 +1,19 @@
 """Read-only publication API and compiled web application."""
 
 import logging
+import sqlite3
+from contextlib import asynccontextmanager
 
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
+from .agent.planner import Planner
+from .chat_api import router as chat_router
+from .client import PublicationClient
+from .conversations import Conversations
 from .data_api import read_current, router
 from .settings import Settings
 from .web import mount_web
@@ -22,17 +29,47 @@ def error_response(status, code, message, headers=None):
     )
 
 
-def create_app(settings=None):
+def create_app(settings=None, *, data_transport=None, planner=None):
     """Construct an app without requiring an active publication at startup."""
+    selected = settings if settings is not None else Settings.from_env()
+
+    @asynccontextmanager
+    async def lifespan(application):
+        async with httpx.AsyncClient(
+            base_url=selected.internal_api_url,
+            transport=data_transport,
+            timeout=10,
+            trust_env=False,
+            follow_redirects=False,
+        ) as http:
+            conversations = Conversations(
+                selected, PublicationClient(http), planner or Planner(selected)
+            )
+            application.state.conversations = None
+            try:
+                conversations.start()
+            except (OSError, ValueError, sqlite3.Error):
+                # Publication browsing remains usable when chat storage is unavailable.
+                logger.error(
+                    "Conversation storage is unavailable; check state permissions or another running worker."
+                )
+            else:
+                application.state.conversations = conversations
+            try:
+                yield
+            finally:
+                await conversations.close()
+
     application = FastAPI(
         title="VOC data-state API",
         version="0.1.0",
         redoc_url=None,
+        lifespan=lifespan,
     )
-    application.state.settings = (
-        settings if settings is not None else Settings.from_env()
-    )
+    application.state.settings = selected
+    application.state.conversations = None
     application.include_router(router)
+    application.include_router(chat_router)
 
     @application.middleware("http")
     async def prevent_stale_selection(request, call_next):

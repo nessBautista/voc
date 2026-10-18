@@ -1,0 +1,104 @@
+{
+  "schema_version": "voc-conversation-v1",
+  "conversation_id": "00000000-0000-4000-8000-000000000070",
+  "publication_id": "43c82e43-da02-4803-8208-ac788524cfd9",
+  "created_at": "2026-01-01T00:00:00Z",
+  "turns": [
+    {
+      "request_id": "00000000-0000-4000-8000-000000000071",
+      "question": "¿Cuántos registros tenemos de Google Play?",
+      "status": "completed",
+      "planner_mode": "fixture",
+      "answer": {
+        "schema_version": "voc-answer-v1",
+        "publication_id": "43c82e43-da02-4803-8208-ac788524cfd9",
+        "plan": {
+          "intent": "sources",
+          "platform": "google_play"
+        },
+        "text": "La publicación consultada contiene 8 registros de Google Play.",
+        "results": [
+          {
+            "schema_version": "voc-data-query-v1",
+            "publication_id": "43c82e43-da02-4803-8208-ac788524cfd9",
+            "kind": "sources",
+            "data": [
+              {
+                "platform": "app_store",
+                "record_count": 4,
+                "unknown_dates": 0,
+                "collection_state": "unknown",
+                "latest_collection_at": null,
+                "collection_evidence_id": null
+              },
+              {
+                "platform": "google_play",
+                "record_count": 8,
+                "unknown_dates": 1,
+                "collection_state": "verified",
+                "latest_collection_at": "2026-10-15T12:00:00Z",
+                "collection_evidence_id": "fixture-a-google-play-collection"
+              }
+            ],
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "embeddings_not_reported",
+                "message": "Embedding information was not supplied; existence is unknown."
+              },
+              {
+                "code": "record_dates_missing",
+                "message": "Records without dates remain in the total, outside monthly counts."
+              }
+            ],
+            "result_id": "1510062e80c6de59e5274e0d41e271d4413d72e6472d8811e4a15f1a420346c5"
+          }
+        ],
+        "views": [
+          {
+            "component": "sources",
+            "result_ids": [
+              "1510062e80c6de59e5274e0d41e271d4413d72e6472d8811e4a15f1a420346c5"
+            ]
+          }
+        ],
+        "warnings": [
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for app_store."
+          },
+          {
+            "code": "embeddings_not_reported",
+            "message": "Embedding information was not supplied; existence is unknown."
+          },
+          {
+            "code": "record_dates_missing",
+            "message": "Records without dates remain in the total, outside monthly counts."
+          }
+        ],
+        "trace": [
+          {
+            "operation": "sources",
+            "publication_id": "43c82e43-da02-4803-8208-ac788524cfd9",
+            "result_id": "1510062e80c6de59e5274e0d41e271d4413d72e6472d8811e4a15f1a420346c5",
+            "duration_ms": 1
+          }
+        ],
+        "usage": {
+          "mode": "fixture",
+          "model": null,
+          "requests": 0,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "duration_ms": 0
+        }
+      },
+      "error": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "finished_at": "2026-01-01T00:00:01Z"
+    }
+  ]
+}

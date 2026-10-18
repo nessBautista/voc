@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Chat } from "./Chat";
 import { DataError, loadDashboard } from "./api";
 import type { Selection, Snapshot } from "./types";
 import { dashboardViews, View } from "./components/registry";
@@ -183,6 +184,7 @@ export function Dashboard() {
             )}
           </>
         )}
+        <Chat />
         <footer className="page-footer">
           <span>VOC · Información con contexto</span>
           <span>Las cifras corresponden a una publicación guardada.</span>
