@@ -1,5 +1,5 @@
 set dotenv-load
-compose := "docker compose -f compose.yaml"
+compose := "docker compose --project-directory . --env-file .env -f docker/operator/compose.yaml"
 
 # Load the selected credentials before Compose creates the container.
 up:

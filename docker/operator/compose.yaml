@@ -1,7 +1,9 @@
 services:
   workspace:
-    # Build the image using the Dockerfile in this repository.
-    build: .
+    # Launch from the repo root with --project-directory . to retain that context.
+    build:
+      context: .
+      dockerfile: docker/operator/Dockerfile
     # Add a small init process to forward signals and reap exited child processes.
     init: true
     environment:
@@ -36,7 +38,7 @@ services:
     volumes:
       # Expose the host repository inside the container; edits affect the same files.
       - type: bind
-        # Relative to this Compose file: the repository directory on your host.
+        # Relative to --project-directory: the repository directory on your host.
         source: .
         # Container path for the repo. Host data/ therefore appears at /workspace/data.
         # Files persist on the host after just down; no separate data mount is needed.
