@@ -42,10 +42,13 @@ La configuración del contenedor está organizada así:
 
 ```text
 voc/
+├── pyproject.toml               # Biblioteca compartida VOC
 ├── docker/
 │   └── operator/
 │       ├── Dockerfile
-│       └── compose.yaml
+│       ├── compose.yaml
+│       ├── pyproject.toml       # Dependencias del Operador
+│       └── uv.lock              # Versiones resueltas de ese entorno
 ├── scripts/
 │   ├── setup.sh
 │   ├── setup.ps1
@@ -57,6 +60,18 @@ voc/
 ```
 
 **Ejecuta los comandos de esta guía desde la raíz del repositorio**, donde está el `Justfile`. Los comandos `just` seleccionan el Compose del Operador y conservan la raíz como contexto de construcción y montaje. No necesitas entrar en `docker/operator/`.
+
+El `pyproject.toml` de la raíz define la biblioteca reutilizable VOC y sus extras, como `publications` para DuckDB. El de `docker/operator/` instala esa biblioteca desde `../..` y añade los grupos `ml` y `dev`; su `uv.lock` fija las versiones. Ambos grupos se incluyen por defecto en el proyecto del Operador. No hay un lock duplicado en la raíz.
+
+Si necesitas gestionar dependencias manualmente dentro de **`just shell`**, desde `/workspace`, selecciona ese proyecto:
+
+```sh
+uv sync --project docker/operator --locked
+```
+
+Esto sincroniza `/opt/venv` con el lock del Operador. Al cambiar una dependencia, actualiza primero `docker/operator/uv.lock` con `uv lock --project docker/operator`; después reconstruye desde el Mac con `just up`. Para agregar herramientas exclusivas del Operador, usa `uv add --project docker/operator --group dev NOMBRE_DEL_PAQUETE` (o `--group ml`).
+
+> **Nota:** evita `uv sync` sin `--project docker/operator` desde la raíz: seleccionaría la biblioteca compartida y podría retirar las herramientas del entorno `/opt/venv`. Los comandos `just` y el Dockerfile ya seleccionan el entorno correcto. La futura aplicación tendrá su propio proyecto y lock en `apps/voc-app/server/`.
 
 **Comprobación:** `just --list` muestra `up`, `status`, `marimo` y `jupyter`.
 
@@ -225,7 +240,7 @@ Estos comandos consultan el proyecto sin iniciarlo. Usa `just up` para el arranq
 ## Puntos clave
 
 - **Entorno:** este recorrido instala el workspace del Operador.
-- **Ubicación:** la configuración Docker está en `docker/operator/`; ejecutas los comandos desde la raíz de VOC.
+- **Ubicación:** Docker y las dependencias del Operador están en `docker/operator/`; ejecutas los comandos desde la raíz de VOC.
 - **Credenciales:** `.env` y `config/aws.local.env` son privados y se conservan entre arranques.
 - **Datos:** consultar una publicación compartida no requiere producir otro dataset.
 - **Persistencia:** tus notebooks y datos bajo `/workspace` permanecen en el checkout del host.

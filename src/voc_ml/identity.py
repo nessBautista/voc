@@ -8,7 +8,12 @@ def code_identity():
     for path in sorted((root / "src").rglob("*.py")):
         h.update(str(path.relative_to(root)).encode())
         h.update(path.read_bytes())
-    for name in ("pyproject.toml", "uv.lock"):
+    # Include the shared package contract and the Operator's resolved environment.
+    for name in (
+        "pyproject.toml",
+        "docker/operator/pyproject.toml",
+        "docker/operator/uv.lock",
+    ):
         path = root / name
         h.update(name.encode())
         h.update(path.read_bytes())
