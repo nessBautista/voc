@@ -9,6 +9,7 @@ from pathlib import Path
 class Settings:
     publications_dir: Path
     state_dir: Path
+    web_dir: Path | None = None
 
     @classmethod
     def from_env(cls):
@@ -26,4 +27,8 @@ class Settings:
             if not value or "://" in value or not Path(value).is_absolute():
                 raise ValueError(f"{name} must be an absolute local directory")
             locations.append(Path(value))
-        return cls(*locations)
+        # API-only development remains possible when no web build is configured.
+        web = os.environ.get("VOC_WEB_DIR")
+        if web is not None and (not web or "://" in web or not Path(web).is_absolute()):
+            raise ValueError("VOC_WEB_DIR must be an absolute local directory")
+        return cls(*locations, web_dir=Path(web) if web is not None else None)

@@ -1,0 +1,212 @@
+{
+  "selection": {
+    "activated_at": "2026-10-18T19:46:58.189040Z",
+    "manifest_sha256": "f4973d6b5e5ad5f6345ef50c96f4a6156583f54e6d232636aea3fbc8d6f6ea4e",
+    "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+    "schema_version": "voc-data-state-v1",
+    "dataset_id": "fixture-data-state-b",
+    "capabilities": [
+      "overview",
+      "sources",
+      "coverage",
+      "freshness",
+      "embeddings"
+    ],
+    "warnings": [
+      {
+        "code": "collection_date_unknown",
+        "message": "Collection date is unknown for app_store."
+      },
+      {
+        "code": "embeddings_not_reported",
+        "message": "Embedding information was not supplied; existence is unknown."
+      },
+      {
+        "code": "record_dates_missing",
+        "message": "Records without dates remain in the total, outside monthly counts."
+      }
+    ]
+  },
+  "results": [
+    {
+      "schema_version": "voc-data-query-v1",
+      "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+      "kind": "overview",
+      "data": {
+        "dataset_id": "fixture-data-state-b",
+        "source_kind": "fixture",
+        "source_version": "example-b-v1",
+        "row_count": 13,
+        "unknown_dates": 1,
+        "record_start": "2026-07-03T12:00:00Z",
+        "record_end": "2026-09-28T12:00:00Z"
+      },
+      "warnings": [
+        {
+          "code": "collection_date_unknown",
+          "message": "Collection date is unknown for app_store."
+        },
+        {
+          "code": "embeddings_not_reported",
+          "message": "Embedding information was not supplied; existence is unknown."
+        },
+        {
+          "code": "record_dates_missing",
+          "message": "Records without dates remain in the total, outside monthly counts."
+        }
+      ],
+      "result_id": "2d4388a3fd5c1d72c2c34415bdb67ef5b354536b3afbf5f9678f00f3a57a001e"
+    },
+    {
+      "schema_version": "voc-data-query-v1",
+      "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+      "kind": "sources",
+      "data": [
+        {
+          "platform": "app_store",
+          "record_count": 5,
+          "unknown_dates": 0,
+          "collection_state": "unknown",
+          "latest_collection_at": null,
+          "collection_evidence_id": null
+        },
+        {
+          "platform": "google_play",
+          "record_count": 8,
+          "unknown_dates": 1,
+          "collection_state": "verified",
+          "latest_collection_at": "2026-10-15T12:00:00Z",
+          "collection_evidence_id": "fixture-b-google-play-collection"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "collection_date_unknown",
+          "message": "Collection date is unknown for app_store."
+        },
+        {
+          "code": "embeddings_not_reported",
+          "message": "Embedding information was not supplied; existence is unknown."
+        },
+        {
+          "code": "record_dates_missing",
+          "message": "Records without dates remain in the total, outside monthly counts."
+        }
+      ],
+      "result_id": "502587fab7afafbc9a2badca1487048e42723bcd43cf60ddcf3278102093aa3d"
+    },
+    {
+      "schema_version": "voc-data-query-v1",
+      "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+      "kind": "coverage",
+      "data": {
+        "months": [
+          {
+            "month": "2026-07",
+            "record_count": 4
+          },
+          {
+            "month": "2026-08",
+            "record_count": 4
+          },
+          {
+            "month": "2026-09",
+            "record_count": 4
+          }
+        ],
+        "unknown_dates": 1
+      },
+      "warnings": [
+        {
+          "code": "collection_date_unknown",
+          "message": "Collection date is unknown for app_store."
+        },
+        {
+          "code": "embeddings_not_reported",
+          "message": "Embedding information was not supplied; existence is unknown."
+        },
+        {
+          "code": "record_dates_missing",
+          "message": "Records without dates remain in the total, outside monthly counts."
+        }
+      ],
+      "result_id": "0d6063041f821a3340d95d734e337433ef8dc3aec55a4af567ff2f8d804f467e"
+    },
+    {
+      "schema_version": "voc-data-query-v1",
+      "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+      "kind": "freshness",
+      "data": {
+        "dataset_id": "fixture-data-state-b",
+        "prepared_at": null,
+        "publication_created_at": "2026-10-18T19:46:58.030409Z",
+        "sources": [
+          {
+            "platform": "app_store",
+            "collection_state": "unknown",
+            "latest_collection_at": null,
+            "collection_evidence_id": null
+          },
+          {
+            "platform": "google_play",
+            "collection_state": "verified",
+            "latest_collection_at": "2026-10-15T12:00:00Z",
+            "collection_evidence_id": "fixture-b-google-play-collection"
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "fixture-b-google-play-collection",
+            "kind": "collection",
+            "evidence_ref": "fixture:example-b/google-play-collection",
+            "description": "Fictional Google Play collection on 2026-10-15, declared for tutorial tests; not a real collection."
+          }
+        ]
+      },
+      "warnings": [
+        {
+          "code": "collection_date_unknown",
+          "message": "Collection date is unknown for app_store."
+        },
+        {
+          "code": "embeddings_not_reported",
+          "message": "Embedding information was not supplied; existence is unknown."
+        },
+        {
+          "code": "record_dates_missing",
+          "message": "Records without dates remain in the total, outside monthly counts."
+        }
+      ],
+      "result_id": "340d78b57ec0ee92192eabd464804d58a803a3f2d2448bd8d1359b37267219b9"
+    },
+    {
+      "schema_version": "voc-data-query-v1",
+      "publication_id": "ec033a25-18fb-4f15-a1de-3b5b3c10e9fb",
+      "kind": "embeddings",
+      "data": {
+        "dataset_id": "fixture-data-state-b",
+        "state": "not_reported",
+        "release_id": null,
+        "model": null,
+        "covered_rows": null,
+        "verification_evidence_id": null,
+        "evidence": []
+      },
+      "warnings": [
+        {
+          "code": "collection_date_unknown",
+          "message": "Collection date is unknown for app_store."
+        },
+        {
+          "code": "embeddings_not_reported",
+          "message": "Embedding information was not supplied; existence is unknown."
+        },
+        {
+          "code": "record_dates_missing",
+          "message": "Records without dates remain in the total, outside monthly counts."
+        }
+      ],
+      "result_id": "ea87803ee3e314db45e9c2c3595f7f4146b83d4e20dc4d8ec44df2c3e22e786a"
+    }
+  ]
+}
