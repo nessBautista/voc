@@ -1,0 +1,37 @@
+# Always launched from the repository root with --project-directory .
+name: voc-state-app
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    init: true
+    ports:
+      - "127.0.0.1:${VOC_APP_PORT:-8091}:8000"
+    environment:
+      VOC_PUBLICATIONS_DIR: /app/catalog
+      VOC_APP_STATE_DIR: /app/state
+    volumes:
+      - type: bind
+        source: ./data/voc-app/catalog
+        target: /app/catalog
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./data/voc-app/state
+        target: /app/state
+        bind:
+          create_host_path: false
+    # Application code and dependencies stay immutable; only app state is writable.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5).close()"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
