@@ -147,7 +147,16 @@ test("rejects mixed publications without displaying cards", async ({
   await serve(page, { mismatch: true });
   await page.goto("/");
   await expect(page.getByRole("alert")).toBeVisible();
-  await expect(page.getByRole("region")).toHaveCount(0);
+  for (const name of [
+    "Una vista del dataset",
+    "De dónde vienen",
+    "Cómo se distribuyen en el tiempo",
+    "Qué sabemos de su preparación",
+  ]) {
+    await expect(page.getByRole("region", { name, exact: true })).toHaveCount(
+      0,
+    );
+  }
 });
 
 test("zero rows is a valid dataset, distinct from missing dates and errors", async ({

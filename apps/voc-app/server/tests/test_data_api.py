@@ -31,12 +31,13 @@ def file_bytes(root):
     }
 
 
-def test_liveness_without_a_publication_does_not_create_storage(client, settings):
+def test_liveness_without_a_publication_does_not_create_catalog(client, settings):
     assert client.get("/health/live").json() == {"status": "alive"}
     for path in ("/health/ready", "/api/v1/publications/current"):
         error_code(client.get(path), 503, "no_active_publication")
     assert not settings.publications_dir.exists()
-    assert not settings.state_dir.exists()
+    assert not (settings.state_dir / "active.json").exists()
+    assert (settings.state_dir / "conversations.sqlite3").is_file()
 
 
 def test_current_validates_selection_and_reports_capabilities(client, active):

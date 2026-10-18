@@ -54,7 +54,16 @@ def test_container_mounts_only_public_catalog_and_state():
     app = compose["services"]["app"]
     assert app["ports"] == ["127.0.0.1:${VOC_APP_PORT:-8091}:8000"]
     assert "env_file" not in app
-    assert set(app["environment"]) == {"VOC_PUBLICATIONS_DIR", "VOC_APP_STATE_DIR"}
+    assert set(app["environment"]) == {
+        "VOC_PUBLICATIONS_DIR",
+        "VOC_APP_STATE_DIR",
+        "VOC_PLANNER_MODE",
+        "VOC_LLM_BASE_URL",
+        "VOC_LLM_MODEL",
+        "VOC_LLM_API_KEY",
+        "VOC_TURN_TIMEOUT_SECONDS",
+    }
+    assert not any(key.startswith("AWS_") for key in app["environment"])
     assert {mount["source"] for mount in app["volumes"]} == {
         "./data/voc-app/catalog",
         "./data/voc-app/state",

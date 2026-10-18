@@ -11,6 +11,12 @@ services:
     environment:
       VOC_PUBLICATIONS_DIR: /app/catalog
       VOC_APP_STATE_DIR: /app/state
+      VOC_PLANNER_MODE: ${VOC_PLANNER_MODE:-fixture}
+      VOC_LLM_BASE_URL: ${VOC_LLM_BASE_URL:-https://openrouter.ai/api/v1}
+      VOC_LLM_MODEL: ${VOC_LLM_MODEL:-anthropic/claude-sonnet-5.5}
+      # Reuse the private OpenRouter credential; no AWS keys enter this container.
+      VOC_LLM_API_KEY: ${VOC_LLM_API_KEY:-${OPENROUTER_API_KEY:-}}
+      VOC_TURN_TIMEOUT_SECONDS: ${VOC_TURN_TIMEOUT_SECONDS:-45}
     volumes:
       - type: bind
         source: ./data/voc-app/catalog

@@ -566,3 +566,120 @@ details[open] > summary {
     border: 0;
   }
 }
+
+/* Conversation cards reuse the dashboard renderer without owning its selection. */
+.chat {
+  margin-top: 3rem;
+  padding: 2rem;
+  border: 1px solid #cfdad4;
+  border-radius: 1rem;
+  background: #fdfefc;
+}
+.chat-heading,
+.chat-submit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.chat-heading h2 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+.chat-identity {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  overflow-wrap: anywhere;
+}
+.chat-identity button {
+  justify-self: start;
+}
+.suggestions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+.suggestions button {
+  white-space: normal;
+  text-align: left;
+  font-size: 0.85rem;
+}
+.chat-turn {
+  border-top: 1px solid #dce4de;
+  padding: 1.5rem 0;
+}
+.chat-question {
+  padding: 1rem;
+  background: #edf3ee;
+  border-radius: 0.6rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chat-question span {
+  display: block;
+  font-size: 0.75rem;
+  color: #557368;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.chat-mode,
+.chat-submit span {
+  color: #5a6e64;
+  font-size: 0.8rem;
+}
+.chat-answer {
+  font-size: 1.05rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chat-views {
+  margin: 1.2rem 0;
+}
+.chat details {
+  margin-top: 0.8rem;
+}
+.chat-trace li {
+  overflow-wrap: anywhere;
+}
+.chat form {
+  margin-top: 1.5rem;
+}
+.chat label {
+  display: block;
+  font-weight: 650;
+  margin-bottom: 0.5rem;
+}
+.chat textarea {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+  padding: 0.85rem;
+  border: 1px solid #8fa89b;
+  border-radius: 0.6rem;
+  box-sizing: border-box;
+}
+.chat-submit {
+  margin-top: 0.7rem;
+}
+.chat-error,
+.pending-request {
+  background: #fff3e2;
+  padding: 1rem;
+  border-radius: 0.6rem;
+}
+.pending-request button {
+  margin: 0.3rem;
+  white-space: normal;
+}
+@media (max-width: 650px) {
+  .chat {
+    padding: 1rem;
+  }
+  .chat-heading,
+  .chat-submit {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
