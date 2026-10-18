@@ -36,7 +36,7 @@ def fixture_plan(question, history):
         if unicodedata.category(c) != "Mn"
     )
     if re.search(
-        r"sentim|temas?|topics?|comentarios individuales|ejemplos|individual reviews|umap|cluster|pipeline|experimen|sql|borra|elimina|entrena|compara|versus|20\d{2}|ultimos? \w+ meses|last \w+ months|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre",
+        r"recalcul|regenera|recompute|recalculate|rerun|sentim|temas?|topics?|comentarios individuales|ejemplos|individual reviews|umap|cluster|pipeline|experimen|sql|borra|elimina|entrena|compara|versus|20\d{2}|ultimos? \w+ meses|last \w+ months|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre",
         text,
     ):
         return Plan(intent="unsupported", platform=None)
