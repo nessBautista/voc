@@ -18,7 +18,36 @@ class Settings:
     internal_api_url: str = "http://127.0.0.1:8000"
     turn_timeout_seconds: float = 45
 
+    mcp_enabled: bool = False
+    mcp_token: str = field(default="", repr=False)
+    mcp_allowed_hosts: tuple[str, ...] = (
+        "127.0.0.1:8091",
+        "localhost:8091",
+        "host.docker.internal:8091",
+        "127.0.0.1:8000",
+    )
+    mcp_allowed_origins: tuple[str, ...] = (
+        "http://127.0.0.1:8091",
+        "http://localhost:8091",
+    )
+
     def __post_init__(self):
+        # An enabled transport must never fall back to anonymous access.
+        if self.mcp_enabled and (
+            not 32 <= len(self.mcp_token) <= 512
+            or any(not 33 <= ord(character) <= 126 for character in self.mcp_token)
+            or self.mcp_token.startswith("op://")
+            or self.mcp_token == self.llm_api_key
+        ):
+            raise ValueError(
+                "MCP requires a separate resolved token of 32–512 ASCII characters"
+            )
+        for values in (self.mcp_allowed_hosts, self.mcp_allowed_origins):
+            if not values or any(not value or "*" in value for value in values):
+                raise ValueError(
+                    "MCP allowlists must contain explicit hosts and origins"
+                )
+
         if self.planner_mode not in ("fixture", "model"):
             raise ValueError("VOC_PLANNER_MODE must be fixture or model")
         if not 1 <= self.turn_timeout_seconds <= 120:
@@ -60,8 +89,25 @@ class Settings:
         web = os.environ.get("VOC_WEB_DIR")
         if web is not None and (not web or "://" in web or not Path(web).is_absolute()):
             raise ValueError("VOC_WEB_DIR must be an absolute local directory")
+        enabled = os.environ.get("VOC_MCP_ENABLED", "false")
+        if enabled not in ("true", "false"):
+            raise ValueError("VOC_MCP_ENABLED must be true or false")
         return cls(
             *locations,
+            mcp_enabled=enabled == "true",
+            mcp_token=os.environ.get("VOC_MCP_TOKEN", ""),
+            mcp_allowed_hosts=tuple(
+                value.strip()
+                for value in os.environ.get(
+                    "VOC_MCP_ALLOWED_HOSTS", ",".join(cls.mcp_allowed_hosts)
+                ).split(",")
+            ),
+            mcp_allowed_origins=tuple(
+                value.strip()
+                for value in os.environ.get(
+                    "VOC_MCP_ALLOWED_ORIGINS", ",".join(cls.mcp_allowed_origins)
+                ).split(",")
+            ),
             web_dir=Path(web) if web is not None else None,
             planner_mode=os.environ.get("VOC_PLANNER_MODE", "fixture"),
             llm_base_url=os.environ.get(

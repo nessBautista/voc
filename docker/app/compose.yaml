@@ -16,6 +16,10 @@ services:
       VOC_LLM_MODEL: ${VOC_LLM_MODEL:-anthropic/claude-sonnet-5.5}
       # Reuse the private OpenRouter credential; no AWS keys enter this container.
       VOC_LLM_API_KEY: ${VOC_LLM_API_KEY:-${OPENROUTER_API_KEY:-}}
+      VOC_MCP_ENABLED: ${VOC_MCP_ENABLED:-false}
+      VOC_MCP_TOKEN: ${VOC_MCP_TOKEN:-}
+      VOC_MCP_ALLOWED_HOSTS: ${VOC_MCP_ALLOWED_HOSTS:-127.0.0.1:${VOC_APP_PORT:-8091},localhost:${VOC_APP_PORT:-8091},host.docker.internal:${VOC_APP_PORT:-8091},127.0.0.1:8000}
+      VOC_MCP_ALLOWED_ORIGINS: ${VOC_MCP_ALLOWED_ORIGINS:-http://127.0.0.1:${VOC_APP_PORT:-8091},http://localhost:${VOC_APP_PORT:-8091}}
       VOC_TURN_TIMEOUT_SECONDS: ${VOC_TURN_TIMEOUT_SECONDS:-45}
     volumes:
       - type: bind

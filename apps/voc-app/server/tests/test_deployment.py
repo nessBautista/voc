@@ -62,6 +62,10 @@ def test_container_mounts_only_public_catalog_and_state():
         "VOC_LLM_MODEL",
         "VOC_LLM_API_KEY",
         "VOC_TURN_TIMEOUT_SECONDS",
+        "VOC_MCP_ENABLED",
+        "VOC_MCP_TOKEN",
+        "VOC_MCP_ALLOWED_HOSTS",
+        "VOC_MCP_ALLOWED_ORIGINS",
     }
     assert not any(key.startswith("AWS_") for key in app["environment"])
     assert {mount["source"] for mount in app["volumes"]} == {

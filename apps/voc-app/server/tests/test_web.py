@@ -61,7 +61,9 @@ def test_unknown_routes_are_errors_not_html(web_settings, path):
     with TestClient(create_app(web_settings)) as client:
         response = client.get("/" + path)
         assert response.status_code == 404
-        assert response.json()["error"]["code"] == "route_not_found"
+        assert response.json()["error"]["code"] == (
+            "mcp_disabled" if path == "mcp" else "route_not_found"
+        )
 
 
 def test_static_files_cannot_escape_the_build_directory(web_settings, tmp_path):

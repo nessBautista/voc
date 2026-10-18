@@ -16,6 +16,7 @@ from .client import PublicationClient
 from .conversations import Conversations
 from .data_api import read_current, router
 from .settings import Settings
+from .transports.mcp import mount_mcp
 from .web import mount_web
 
 logger = logging.getLogger(__name__)
@@ -56,7 +57,8 @@ def create_app(settings=None, *, data_transport=None, planner=None):
             else:
                 application.state.conversations = conversations
             try:
-                yield
+                async with mcp.session_manager.run():
+                    yield
             finally:
                 await conversations.close()
 
@@ -135,7 +137,9 @@ def create_app(settings=None, *, data_transport=None, planner=None):
         selected = read_current(request.app.state.settings)
         return {"status": "ready", "publication_id": selected["publication_id"]}
 
-    # Register future API/MCP routes before this final static mount.
+    mcp = mount_mcp(application, selected)
+
+    # Keep the static fallback after all API and MCP routes.
     mount_web(
         application,
         application.state.settings.web_dir,

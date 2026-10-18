@@ -3,15 +3,15 @@
 # -e stops on unhandled command failures; -u rejects unset variables without defaults.
 set -eu
 
-# Application fixture mode has no credential requirement.
+# Fixture mode without MCP has no credential requirement.
 target="${1:-operator}"
 case "$target" in
   operator) compose_file=docker/operator/compose.yaml ;;
   app)
     compose_file=docker/app/compose.yaml
-    if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ]; then
+    if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ] && [ "${VOC_MCP_ENABLED:-false}" = false ]; then
       # Explicit empty values prevent inherited provider keys entering fixture mode.
-      export VOC_LLM_API_KEY='' OPENROUTER_API_KEY=''
+      export VOC_LLM_API_KEY='' OPENROUTER_API_KEY='' VOC_MCP_TOKEN=''
       exec docker compose --project-directory . -p voc-state-app --env-file .env -f "$compose_file" up --build -d --wait
     fi
     ;;
@@ -26,10 +26,14 @@ credential_file="${VOC_AWS_ENV_FILE:-config/aws.local.env}"
 test -r "$credential_file" || { echo 'Create the credential file from config/aws.local.env.example.' >&2; exit 1; }
 
 # 2. Remove inherited keys so old terminal credentials cannot override our selection.
-unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN OPENROUTER_API_KEY VOC_LLM_API_KEY
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN OPENROUTER_API_KEY VOC_LLM_API_KEY VOC_MCP_TOKEN
 
 if [ "$target" = app ]; then
   export COMPOSE_PROJECT_NAME=voc-state-app
+  if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ]; then
+    # Explicit environment values override provider keys from a literal env file.
+    export VOC_LLM_API_KEY='' OPENROUTER_API_KEY=''
+  fi
 fi
 
 # 3. Choose a branch, like switch/case. The default mode is env-file.
@@ -47,6 +51,15 @@ case "${VOC_AWS_AUTH_MODE:-env-file}" in
     command -v op >/dev/null 2>&1 || { echo '1Password CLI is required for this selected mode.' >&2; exit 1; }
     # op run resolves secret references and gives Compose the resulting environment.
     # The -- separates op options from the command it should run.
+    if [ "$target" = app ]; then
+      # Clear provider keys AFTER op resolves them when only MCP needs a secret.
+      exec op run --env-file "$credential_file" -- sh -c '
+        if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ]; then
+          export VOC_LLM_API_KEY="" OPENROUTER_API_KEY=""
+        fi
+        exec docker compose --project-directory . --env-file .env -f "$1" up --build -d --wait
+      ' sh "$compose_file"
+    fi
     exec op run --env-file "$credential_file" -- docker compose --project-directory . --env-file .env -f "$compose_file" up --build -d --wait
     ;;
   # * matches any unsupported mode, like a switch statement's default branch.
