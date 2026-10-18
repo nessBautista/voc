@@ -1,4 +1,4 @@
-"""Operator commands for building local data-state publications."""
+"""Build, activate and query local data-state publications."""
 
 import json
 from pathlib import Path
@@ -9,7 +9,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 @click.group()
 def publication():
-    """Build portable packages from existing datasets."""
+    """Build, activate and query portable dataset-state packages."""
     # Keep publication operations separate from dataset/model producers.
 
 
@@ -99,6 +99,134 @@ def build(source, dataset_version, output):
                 "destination": str(bundle),
                 "warnings": validate_description(description),
             },
+            indent=2,
+        )
+    )
+
+
+@publication.command("activate")
+@click.option(
+    "--bundle",
+    required=True,
+    type=click.Path(
+        file_okay=False,
+        path_type=Path,
+    ),
+)
+@click.option(
+    "--catalog",
+    required=True,
+    type=click.Path(
+        file_okay=False,
+        path_type=Path,
+    ),
+)
+@click.option(
+    "--state",
+    required=True,
+    type=click.Path(
+        file_okay=False,
+        path_type=Path,
+    ),
+)
+def activate(bundle, catalog, state):
+    """Install a validated copy and select it without changing previous versions."""
+    try:
+        import duckdb
+
+        from .store import activate_bundle
+    except ImportError as error:
+        raise click.ClickException(
+            "Install voc[publications] to activate a package"
+        ) from error
+    try:
+        # Select only after the independent catalog copy passes validation.
+        result = activate_bundle(
+            bundle,
+            catalog,
+            state,
+        )
+    except (LookupError, ValueError, OSError, duckdb.Error) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(
+        json.dumps(
+            result,
+            indent=2,
+        )
+    )
+
+
+@publication.command("current")
+@click.option(
+    "--state",
+    required=True,
+    type=click.Path(
+        file_okay=False,
+        path_type=Path,
+    ),
+)
+def current(state):
+    """Read selection metadata; does not create storage or select a default."""
+    try:
+        from .store import current_publication
+    except ImportError as error:
+        raise click.ClickException(
+            "Install voc[publications] to read publications"
+        ) from error
+    try:
+        # A missing pointer is an error, not an empty dataset.
+        result = current_publication(state)
+    except (LookupError, ValueError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(
+        json.dumps(
+            result,
+            indent=2,
+        )
+    )
+
+
+@publication.command("query")
+@click.option(
+    "--catalog",
+    required=True,
+    type=click.Path(
+        file_okay=False,
+        path_type=Path,
+    ),
+)
+@click.option(
+    "--publication-id",
+    required=True,
+    help="Explicit installed publication UUID.",
+)
+@click.option(
+    "--kind",
+    required=True,
+    type=click.Choice(["overview", "sources", "coverage", "freshness", "embeddings"]),
+)
+def query_publication(catalog, publication_id, kind):
+    """Read a named result for one fixed publication, with its evidence reference."""
+    try:
+        import duckdb
+
+        from .queries import query
+    except ImportError as error:
+        raise click.ClickException(
+            "Install voc[publications] to query publications"
+        ) from error
+    try:
+        # Shared query functions own SQL, warnings and stable result identifiers.
+        result = query(
+            catalog,
+            publication_id,
+            kind,
+        )
+    except (LookupError, ValueError, OSError, duckdb.Error) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(
+        json.dumps(
+            result,
             indent=2,
         )
     )
