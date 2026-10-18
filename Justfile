@@ -1,4 +1,5 @@
 set dotenv-load
+app_compose := "docker compose --project-directory . -p voc-state-app -f docker/app/compose.yaml"
 compose := "docker compose --project-directory . --env-file .env -f docker/operator/compose.yaml"
 
 # Load the selected credentials before Compose creates the container.
@@ -35,3 +36,17 @@ jupyter-reports:
 
 logs:
     {{compose}} exec workspace sh -c 'tail -n 60 /workspace/data/logs/*.log'
+
+# The end-user application has its own project and no Operator credential loader.
+app-up:
+    mkdir -p data/voc-app/catalog data/voc-app/state
+    {{app_compose}} up --build -d --wait
+
+app-status:
+    {{app_compose}} ps
+
+app-stop:
+    {{app_compose}} down
+
+app-logs:
+    {{app_compose}} logs --tail 80 app
