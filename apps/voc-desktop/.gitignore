@@ -1,0 +1,5 @@
+.runtime/
+DerivedData/
+.build/
+*.xcuserstate
+xcuserdata/
