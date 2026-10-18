@@ -50,3 +50,7 @@ app-stop:
 
 app-logs:
     {{app_compose}} logs --tail 80 app
+
+# Exercise the built app with isolated synthetic publications; run on the Mac.
+app-cycle action:
+    python3 tests/acceptance/data_state_cycle/cycle.py {{quote(action)}}

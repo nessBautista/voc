@@ -1,0 +1,36 @@
+# Acceptance environment: reuse the exact built app image with disposable state.
+name: voc-state-cycle
+services:
+  app:
+    image: ${VOC_CYCLE_IMAGE:?Run through just app-cycle up}
+    init: true
+    ports: ["127.0.0.1:8092:8000"]
+    environment:
+      VOC_PUBLICATIONS_DIR: /app/catalog
+      VOC_APP_STATE_DIR: /app/state
+      VOC_PLANNER_MODE: fixture
+      VOC_LLM_API_KEY: ""
+      VOC_MCP_ENABLED: "true"
+      VOC_MCP_ALLOWED_HOSTS: 127.0.0.1:8092,localhost:8092,host.docker.internal:8092,127.0.0.1:8000
+      VOC_MCP_ALLOWED_ORIGINS: http://127.0.0.1:8092,http://localhost:8092
+    env_file: ${VOC_CYCLE_PRIVATE_FILE:?Run through just app-cycle up}
+    volumes:
+      - type: bind
+        source: ./data/app-cycle/catalog
+        target: /app/catalog
+        read_only: true
+        bind: {create_host_path: false}
+      - type: bind
+        source: ./data/app-cycle/state
+        target: /app/state
+        bind: {create_host_path: false}
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5).close()"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
