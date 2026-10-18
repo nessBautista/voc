@@ -1,3 +1,12 @@
+# Compile the browser application; Node is only a build tool.
+FROM node:22-bookworm-slim AS web-build
+WORKDIR /build/web
+COPY apps/voc-app/web/package.json apps/voc-app/web/package-lock.json ./
+RUN npm ci --no-fund --no-audit
+COPY apps/voc-app/web/index.html apps/voc-app/web/tsconfig.json apps/voc-app/web/vite.config.ts ./
+COPY apps/voc-app/web/src ./src
+RUN npm run build
+
 # Use the same uv version as the Operator, with an independent dependency lock.
 FROM ghcr.io/astral-sh/uv:0.12.7 AS uv
 FROM python:3.12-slim-bookworm AS build
@@ -14,10 +23,11 @@ RUN uv sync --project apps/voc-app/server --locked --no-dev --no-editable --no-c
 
 FROM python:3.12-slim-bookworm
 ENV PATH="/opt/app-venv/bin:$PATH" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
-    VOC_PUBLICATIONS_DIR=/app/catalog VOC_APP_STATE_DIR=/app/state
+    VOC_PUBLICATIONS_DIR=/app/catalog VOC_APP_STATE_DIR=/app/state VOC_WEB_DIR=/app/web
 
 # Install only the resolved runtime environment; no checkout or Operator tooling.
 COPY --from=build /opt/app-venv /opt/app-venv
+COPY --from=web-build /build/web/dist /app/web
 RUN groupadd --gid 10001 vocapp \
     && useradd --uid 10001 --gid vocapp --no-create-home --home-dir /app vocapp \
     && mkdir -p /app/catalog /app/state \

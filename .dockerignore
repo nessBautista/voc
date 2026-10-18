@@ -12,3 +12,8 @@ data
 .ruff_cache
 site
 build
+
+**/node_modules
+**/dist
+**/test-results
+**/playwright-report

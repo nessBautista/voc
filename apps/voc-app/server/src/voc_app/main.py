@@ -1,4 +1,4 @@
-"""Read-only data API; later increments add the web UI and conversation layer."""
+"""Read-only publication API and compiled web application."""
 
 import logging
 
@@ -9,6 +9,7 @@ from starlette.exceptions import HTTPException
 
 from .data_api import read_current, router
 from .settings import Settings
+from .web import mount_web
 
 logger = logging.getLogger(__name__)
 
@@ -97,6 +98,11 @@ def create_app(settings=None):
         selected = read_current(request.app.state.settings)
         return {"status": "ready", "publication_id": selected["publication_id"]}
 
+    # Register future API/MCP routes before this final static mount.
+    mount_web(
+        application,
+        application.state.settings.web_dir,
+    )
     return application
 
 
