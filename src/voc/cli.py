@@ -4,6 +4,7 @@ import click
 from botocore.exceptions import BotoCoreError, ClientError
 
 from voc import __version__
+from voc.publications.cli import publication
 
 
 @click.group()
@@ -300,6 +301,10 @@ def embeddings_inspect(
             indent=None if as_json else 2,
         )
     )
+
+
+# Register portable publication commands alongside the existing dataset tools.
+main.add_command(publication)
 
 
 if __name__ == "__main__":

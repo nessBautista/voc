@@ -138,6 +138,7 @@ temp/
 # Rebuild runtime and local configuration
 *.local.env
 *.refs.env
+# Ignore all runtime data, including publication manifests and staging directories.
 data/
 site/
 .zen/
