@@ -77,7 +77,7 @@ struct WebWorkspace: NSViewRepresentable {
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             guard self.navigation === navigation, let command else { return }
-            model.loaded(commandID: command.id)
+            model.loaded(commandID: command.id, url: webView.url)
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

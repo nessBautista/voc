@@ -46,12 +46,17 @@ def configurations(settings):
     )
 
 
-# Source lists stay explicit so entry points never leak into the unhosted tests.
-app_files = sorted(ROOT.glob("Sources/**/*.swift"))
-core_files = [
-    path
-    for path in app_files
-    if path.name in ("ConnectionProfile.swift", "ConnectionModel.swift")
+# Each executable has its own entry point; the handoff core is compiled into both.
+shared_files = sorted(ROOT.glob("Sources/DesktopCore/*.swift")) + [
+    ROOT / "Sources/VOCDataState/ConnectionProfile.swift"
+]
+app_files = sorted(ROOT.glob("Sources/VOCDataState/*.swift")) + [
+    path for path in shared_files if path.name != "ConnectionProfile.swift"
+]
+bridge_files = shared_files + sorted(ROOT.glob("Sources/DesktopBridge/*.swift"))
+core_files = shared_files + [
+    ROOT / "Sources/VOCDataState/ConnectionModel.swift",
+    ROOT / "Sources/VOCDataState/HandoffController.swift",
 ]
 test_files = sorted(ROOT.glob("Tests/*.swift"))
 references = {
@@ -61,21 +66,22 @@ references = {
         path=str(path.relative_to(ROOT)),
         sourceTree="<group>",
     )
-    for path in app_files + test_files
+    for path in sorted(set(app_files + bridge_files + test_files))
 }
 products = []
 targets = []
 for name, extension, kind, files in (
     ("VOCDataState", "app", "application", app_files),
     ("VOCDataStateTests", "xctest", "bundle.unit-test", core_files + test_files),
+    ("VOCDesktopBridge", "", "tool", bridge_files),
 ):
     product = add(
         "PBXFileReference",
         includeInIndex=0,
-        path=f"{name}.{extension}",
+        path=f"{name}.{extension}" if extension else name,
         explicitFileType="wrapper.application"
         if extension == "app"
-        else "wrapper.cfbundle",
+        else ("wrapper.cfbundle" if extension else "compiled.mach-o.executable"),
         sourceTree="BUILT_PRODUCTS_DIR",
     )
     products.append(product)
@@ -95,13 +101,13 @@ for name, extension, kind, files in (
         "PRODUCT_NAME": "$(TARGET_NAME)",
         "PRODUCT_BUNDLE_IDENTIFIER": "dev.voc.data-state"
         + (".tests" if extension == "xctest" else ""),
-        "GENERATE_INFOPLIST_FILE": "NO" if extension == "app" else "YES",
+        "GENERATE_INFOPLIST_FILE": "YES" if extension == "xctest" else "NO",
     }
     if extension == "app":
         settings.update(
             INFOPLIST_FILE="Resources/Info.plist",
             CODE_SIGN_ENTITLEMENTS="Resources/VOCDataState.entitlements",
-            ENABLE_APP_SANDBOX="YES",
+            ENABLE_APP_SANDBOX="NO",
         )
     targets.append(
         add(
@@ -116,6 +122,18 @@ for name, extension, kind, files in (
             dependencies=[],
         )
     )
+
+# Bundle the helper so it always resolves its own known application, not a PATH command.
+objects[targets[0]]["dependencies"].append(add("PBXTargetDependency", target=targets[2]))
+objects[targets[0]]["buildPhases"].append(add(
+    "PBXCopyFilesBuildPhase",
+    buildActionMask=2147483647,
+    dstPath="Contents/Helpers",
+    dstSubfolderSpec=1,
+    files=[add("PBXBuildFile", fileRef=products[2], settings={"ATTRIBUTES": ["CodeSignOnCopy"]})],
+    name="Embed desktop helper",
+    runOnlyForDeploymentPostprocessing=0,
+))
 
 products_group = add(
     "PBXGroup", children=products, name="Products", sourceTree="<group>"
@@ -134,6 +152,7 @@ project = add(
             "MACOSX_DEPLOYMENT_TARGET": "15.0",
             "SWIFT_VERSION": "5.0",
             "CLANG_ENABLE_MODULES": "YES",
+            "OTHER_LDFLAGS": ["$(inherited)", "-lsqlite3"],
             "CODE_SIGN_IDENTITY": "-",
             "CODE_SIGN_STYLE": "Manual",
             "ENABLE_HARDENED_RUNTIME": "YES",
