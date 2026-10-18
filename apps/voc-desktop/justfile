@@ -1,0 +1,15 @@
+# Run these recipes on the Mac; the Python/Node environments are not required.
+derived := env_var_or_default("VOC_DATA_STATE_DERIVED_DATA", env_var("HOME") + "/Library/Developer/VOCDataState-DerivedData")
+architecture := `uname -m`
+
+project:
+    python3 scripts/generate-project.py
+
+build:
+    xcodebuild build -project VOCDataState.xcodeproj -scheme VOCDataState -configuration Debug -destination 'platform=macOS,arch={{architecture}}' -derivedDataPath '{{derived}}'
+
+test:
+    xcodebuild test -project VOCDataState.xcodeproj -scheme VOCDataState -configuration Debug -destination 'platform=macOS,arch={{architecture}}' -derivedDataPath '{{derived}}'
+
+open:
+    open '{{derived}}/Build/Products/Debug/VOCDataState.app'

@@ -17,3 +17,5 @@ build
 **/dist
 **/test-results
 **/playwright-report
+
+apps/voc-desktop
