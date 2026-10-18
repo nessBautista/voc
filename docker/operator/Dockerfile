@@ -25,9 +25,10 @@ WORKDIR /workspace
 # At runtime, Compose's bind mount exposes your live host repo at this same path.
 COPY . .
 
-# Install our package, core dependencies, and the ml/dev groups using uv.lock.
+# Select the Operator project and its lockfile; it installs local voc[publications].
+# Its default groups retain ML and development tools in /opt/venv.
 # --locked fails if the lockfile needs updating; generate it before building.
-RUN uv sync --locked --group ml --group dev
+RUN uv sync --project docker/operator --locked
 
 # Start and supervise the Jupyter and Marimo servers.
 # If a server exits, the supervisor stops the other server and reports failure.
