@@ -13,3 +13,10 @@ test:
 
 open:
     open '{{derived}}/Build/Products/Debug/VOCDataState.app'
+
+# Read {"request_id":"UUID","question":"..."} from stdin and open the bundled app.
+handoff:
+    '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' submit
+
+handoff-status work_id:
+    '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' status '{{work_id}}'

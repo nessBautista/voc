@@ -2,7 +2,25 @@ import SwiftUI
 
 @main
 struct VOCDataStateApp: App {
-    @StateObject private var connection = ConnectionModel()
+    @StateObject private var connection: ConnectionModel
+    @StateObject private var handoff: HandoffController
+
+    init() {
+        let store: HandoffStore?
+        let startupError: String?
+        do {
+            store = try HandoffStore(directory: DesktopFiles.directory())
+            startupError = nil
+        } catch {
+            store = nil
+            startupError = error.localizedDescription
+        }
+        let connection = ConnectionModel(handoffStore: store)
+        _connection = StateObject(wrappedValue: connection)
+        _handoff = StateObject(wrappedValue: HandoffController(
+            connection: connection, store: store, startupError: startupError
+        ))
+    }
 
     var body: some Scene {
         Window("VOC · Estado de los datos", id: "workspace") {
@@ -14,8 +32,10 @@ struct VOCDataStateApp: App {
                             .textFieldStyle(.roundedBorder)
                             .onSubmit { connection.connect() }
                             .accessibilityIdentifier("server-address")
+                            .disabled(handoff.isDelivering)
                         Button("Conectar") { connection.connect() }
                             .accessibilityIdentifier("connect-server")
+                            .disabled(handoff.isDelivering)
                     }
                     HStack {
                         Text("Conversación").frame(width: 95, alignment: .leading)
@@ -23,8 +43,9 @@ struct VOCDataStateApp: App {
                             .textFieldStyle(.roundedBorder)
                             .onSubmit { connection.connect() }
                             .accessibilityIdentifier("conversation-id")
+                            .disabled(handoff.isDelivering)
                         Button("Reintentar / Recargar") { connection.reload() }
-                            .disabled(connection.command == nil)
+                            .disabled(connection.command == nil || handoff.isDelivering)
                             .accessibilityIdentifier("reload-workspace")
                     }
                     HStack(spacing: 8) {
@@ -37,10 +58,28 @@ struct VOCDataStateApp: App {
                     }
                 }
                 .padding(14)
+                if !handoff.message.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(handoff.message).font(.callout).textSelection(.enabled)
+                        if let work = handoff.work {
+                            Text("Trabajo \(work.workID) · \(work.state.rawValue)")
+                                .font(.caption).textSelection(.enabled)
+                            HStack {
+                                Button("Recuperar entrega") { handoff.recover() }
+                                    .disabled(handoff.isDelivering || [.abandoned, .expired].contains(work.state))
+                                Button("Abandonar trabajo") { handoff.abandon() }
+                                    .disabled(work.state == .abandoned || work.state == .expired)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 14).padding(.bottom, 10)
+                }
                 Divider()
                 WebWorkspace(model: connection)
             }
             .frame(minWidth: 760, minHeight: 600)
+            .onOpenURL { handoff.receive($0) }
             .onAppear {
                 if connection.command == nil { connection.connect() }
             }
