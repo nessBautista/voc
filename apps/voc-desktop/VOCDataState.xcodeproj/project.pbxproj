@@ -303,6 +303,7 @@
         "INFOPLIST_FILE" = "Resources/Info.plist";
         "CODE_SIGN_ENTITLEMENTS" = "Resources/VOCDataState.entitlements";
         "ENABLE_APP_SANDBOX" = "NO";
+        "LD_RUNPATH_SEARCH_PATHS" = ("$(inherited)", "@executable_path/../Frameworks");
         "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
         "ENABLE_TESTABILITY" = "YES";
         "ONLY_ACTIVE_ARCH" = "YES";
@@ -318,6 +319,7 @@
         "INFOPLIST_FILE" = "Resources/Info.plist";
         "CODE_SIGN_ENTITLEMENTS" = "Resources/VOCDataState.entitlements";
         "ENABLE_APP_SANDBOX" = "NO";
+        "LD_RUNPATH_SEARCH_PATHS" = ("$(inherited)", "@executable_path/../Frameworks");
       };
     };
     "000000000000000000000038" = {
@@ -654,6 +656,7 @@
         "PRODUCT_NAME" = "$(TARGET_NAME)";
         "PRODUCT_BUNDLE_IDENTIFIER" = "dev.voc.data-state";
         "GENERATE_INFOPLIST_FILE" = "NO";
+        "LD_RUNPATH_SEARCH_PATHS" = ("$(inherited)", "@executable_path/../Frameworks");
         "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
         "ENABLE_TESTABILITY" = "YES";
         "ONLY_ACTIVE_ARCH" = "YES";
@@ -666,6 +669,7 @@
         "PRODUCT_NAME" = "$(TARGET_NAME)";
         "PRODUCT_BUNDLE_IDENTIFIER" = "dev.voc.data-state";
         "GENERATE_INFOPLIST_FILE" = "NO";
+        "LD_RUNPATH_SEARCH_PATHS" = ("$(inherited)", "@executable_path/../Frameworks");
       };
     };
     "00000000000000000000007E" = {

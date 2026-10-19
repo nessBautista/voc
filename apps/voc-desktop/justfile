@@ -1,4 +1,4 @@
-# Run these recipes on the Mac; the Python/Node environments are not required.
+# Run these recipes on the Mac. Python is needed for project/package tooling, not app execution.
 derived := env_var_or_default("VOC_DATA_STATE_DERIVED_DATA", env_var("HOME") + "/Library/Developer/VOCDataState-DerivedData")
 architecture := `uname -m`
 
@@ -32,3 +32,21 @@ mcp-stdio:
 # Optional foreground transport for container clients. Uses a separate 1Password credential.
 mcp-http:
     bash scripts/start-mcp-http.sh '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge'
+
+# Create a verified private ZIP without installing it or touching running builds.
+package: package-tests
+    python3 scripts/package.py
+
+package-tests:
+    python3 -m unittest discover -s Tests -p test_packaging.py
+
+# Resolve supplied paths from the caller's directory, even with --justfile.
+[no-cd]
+verify-installed manifest app="/Applications/VOCDataState.app":
+    python3 '{{justfile_directory()}}/scripts/verify-installed.py' '{{app}}' --manifest '{{manifest}}'
+
+installed-claude-config:
+    '/Applications/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' --claude-config
+
+installed-mcp-http:
+    bash scripts/start-mcp-http.sh '/Applications/VOCDataState.app/Contents/Helpers/VOCDesktopBridge'
