@@ -20,3 +20,11 @@ handoff:
 
 handoff-status work_id:
     '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' status '{{work_id}}'
+
+# Print the actual helper path for Claude; this does not edit its configuration.
+claude-config:
+    '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' --claude-config
+
+# Protocol-only stdout; normally Claude launches the helper directly.
+mcp-stdio:
+    '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' --stdio

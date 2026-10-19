@@ -38,15 +38,40 @@ struct NativeHandoffOpening: HandoffOpening {
     }
 
     func open(_ work: HandoffWork) async throws {
+        // The long-lived helper must never create its own Dock icon or become the foreground app.
+        NSApplication.shared.setActivationPolicy(.prohibited)
         let configuration = NSWorkspace.OpenConfiguration()
         // The GUI activates itself after accepting a new, unexpired delivery.
         configuration.activates = false
         configuration.createsNewApplicationInstance = false
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            let attempt = OpeningAttempt(continuation: continuation)
+            attempt.timeout = Task { @MainActor in
+                do { try await Task.sleep(for: .seconds(10)) }
+                catch { return }
+                attempt.finish(HandoffError("launch_failed"))
+            }
             NSWorkspace.shared.open([work.link], withApplicationAt: application, configuration: configuration) { _, error in
-                if let error { continuation.resume(throwing: error) }
-                else { continuation.resume() }
+                Task { @MainActor in attempt.finish(error) }
             }
         }
+    }
+}
+
+/// A late Launch Services callback cannot resume a timed-out MCP request twice.
+@MainActor
+final class OpeningAttempt {
+    private var continuation: CheckedContinuation<Void, Error>?
+    var timeout: Task<Void, Never>?
+
+    init(continuation: CheckedContinuation<Void, Error>) { self.continuation = continuation }
+
+    func finish(_ error: Error?) {
+        guard let continuation else { return }
+        self.continuation = nil
+        timeout?.cancel()
+        timeout = nil
+        if let error { continuation.resume(throwing: error) }
+        else { continuation.resume() }
     }
 }

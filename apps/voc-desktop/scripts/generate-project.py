@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the small, dependency-free Xcode project deterministically."""
+"""Generate the native targets and their pinned MCP SDK dependency deterministically."""
 
 import json
 from pathlib import Path
@@ -30,7 +30,7 @@ def encode(value, depth=0):
 def configurations(settings):
     children = []
     for name in ("Debug", "Release"):
-        debug = {"SWIFT_OPTIMIZATION_LEVEL": "-Onone", "ENABLE_TESTABILITY": "YES"}
+        debug = {"SWIFT_OPTIMIZATION_LEVEL": "-Onone", "ENABLE_TESTABILITY": "YES", "ONLY_ACTIVE_ARCH": "YES"}
         children.append(
             add(
                 "XCBuildConfiguration",
@@ -53,8 +53,9 @@ shared_files = sorted(ROOT.glob("Sources/DesktopCore/*.swift")) + [
 app_files = sorted(ROOT.glob("Sources/VOCDataState/*.swift")) + [
     path for path in shared_files if path.name != "ConnectionProfile.swift"
 ]
-bridge_files = shared_files + sorted(ROOT.glob("Sources/DesktopBridge/*.swift"))
-core_files = shared_files + [
+mcp_files = sorted(ROOT.glob("Sources/DesktopMCP/*.swift"))
+bridge_files = shared_files + mcp_files + sorted(ROOT.glob("Sources/DesktopBridge/*.swift"))
+core_files = shared_files + mcp_files + [
     ROOT / "Sources/VOCDataState/ConnectionModel.swift",
     ROOT / "Sources/VOCDataState/HandoffController.swift",
 ]
@@ -68,6 +69,11 @@ references = {
     )
     for path in sorted(set(app_files + bridge_files + test_files))
 }
+mcp_package = add(
+    "XCRemoteSwiftPackageReference",
+    repositoryURL="https://github.com/modelcontextprotocol/swift-sdk.git",
+    requirement={"kind": "exactVersion", "version": "0.12.1"},
+)
 products = []
 targets = []
 for name, extension, kind, files in (
@@ -109,6 +115,11 @@ for name, extension, kind, files in (
             CODE_SIGN_ENTITLEMENTS="Resources/VOCDataState.entitlements",
             ENABLE_APP_SANDBOX="NO",
         )
+    package_products = []
+    if name in ("VOCDesktopBridge", "VOCDataStateTests"):
+        dependency = add("XCSwiftPackageProductDependency", package=mcp_package, productName="MCP")
+        package_products.append(dependency)
+        objects[frameworks]["files"].append(add("PBXBuildFile", productRef=dependency))
     targets.append(
         add(
             "PBXNativeTarget",
@@ -120,6 +131,7 @@ for name, extension, kind, files in (
             buildPhases=[sources, frameworks],
             buildRules=[],
             dependencies=[],
+            packageProductDependencies=package_products,
         )
     )
 
@@ -166,6 +178,7 @@ project = add(
     projectDirPath="",
     projectRoot="",
     targets=targets,
+    packageReferences=[mcp_package],
 )
 PROJECT.mkdir(exist_ok=True)
 (PROJECT / "project.pbxproj").write_text(
