@@ -9,9 +9,10 @@ protocol HandoffOpening {
 struct HandoffLauncher {
     let store: HandoffStore
     let opener: any HandoffOpening
+    var presentation: HandoffPresentation? = nil
 
     func submit(_ input: HandoffInput) async throws -> HandoffWork {
-        let result = try store.submit(input)
+        let result = try store.submit(input, presentation: presentation)
         if result.shouldOpen {
             do { try await opener.open(result.work) }
             catch { try store.fail(result.work.workID, owner: nil, code: "launch_failed") }

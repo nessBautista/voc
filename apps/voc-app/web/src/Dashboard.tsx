@@ -97,7 +97,22 @@ export function Dashboard() {
           VOC<span className="brand-divider">/</span>
           <span className="brand-context">Explorador de datos</span>
         </a>
-        <span className="badge">Datos publicados</span>
+        <nav
+          className="workspace-navigation"
+          aria-label="Navegación del espacio"
+        >
+          <span className="badge">Datos publicados</span>
+          <button
+            type="button"
+            onClick={() => {
+              const question = document.getElementById("chat-question");
+              question?.scrollIntoView({ block: "center" });
+              question?.focus({ preventScroll: true });
+            }}
+          >
+            Ir al chat
+          </button>
+        </nav>
       </header>
       <main id="content">
         <div className="page-heading">

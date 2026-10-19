@@ -83,7 +83,7 @@ final class DesktopHTTPSessions {
         defer { pending -= 1 }
         let id = UUID().uuidString.lowercased()
         let transport = StatefulHTTPServerTransport(sessionIDGenerator: Identity(value: id), validationPipeline: validation)
-        let server = await DesktopMCP.make(store: store, opener: opener)
+        let server = await DesktopMCP.make(store: store, opener: opener, presentation: .http)
         do {
             try await server.start(transport: transport)
             guard !stopped else {
