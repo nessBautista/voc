@@ -14,6 +14,9 @@ final class HandoffController: ObservableObject {
     private var lease: DesktopLease?
     private var task: Task<Void, Never>?
     private var navigationID: UUID?
+    private var presentation: HandoffPresentation?
+    private var layoutTask: Task<Void, Never>?
+    var onPresentation: (@MainActor (HandoffPresentation) async -> HandoffLayoutResult)?
 
     init(connection: ConnectionModel, store: HandoffStore?, client: any HandoffTransport = HandoffClient(), startupError: String? = nil) {
         self.connection = connection
@@ -47,6 +50,8 @@ final class HandoffController: ObservableObject {
         do {
             try store.abandon(work.workID)
             task?.cancel()
+            layoutTask?.cancel()
+            presentation = nil
             navigationID = nil
             isDelivering = false
             refresh()
@@ -63,6 +68,7 @@ final class HandoffController: ObservableObject {
                 return
             }
             work = claimed
+            presentation = recover ? nil : claimed.presentation
             navigationID = nil
             isDelivering = true
             message = "Entregando la pregunta al servidor…"
@@ -104,12 +110,24 @@ final class HandoffController: ObservableObject {
         do {
             self.work = try store.opened(work.workID, owner: owner, url: url)
             message = description(self.work!)
+            if let presentation, let onPresentation,
+               (try? store.reserveLayout(work.workID, owner: owner)) == true {
+                layoutTask = Task { [weak self] in
+                    let result = await onPresentation(presentation)
+                    guard let self, !Task.isCancelled else { return }
+                    do {
+                        try store.finishLayout(work.workID, owner: self.owner, result: result)
+                        self.refresh()
+                    } catch { self.message = "La conversación está abierta, pero no se guardó el estado de distribución." }
+                }
+            }
         } catch {
             try? store.fail(work.workID, owner: owner, code: "navigation_failed")
             refresh()
         }
         isDelivering = false
         navigationID = nil
+        presentation = nil
     }
 
     private func navigationFailed(id: UUID) {

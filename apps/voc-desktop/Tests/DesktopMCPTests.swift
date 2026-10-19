@@ -87,6 +87,8 @@ final class DesktopMCPTests: XCTestCase {
         let replay = try payload(await link.call("voc_open", arguments))
         XCTAssertEqual(first, replay)
         XCTAssertEqual(first["opening_status"], "opening")
+        XCTAssertEqual(first["layout_status"], "not_requested")
+        XCTAssertEqual(try store.read(first["work_id"]!.stringValue!).presentation, .stdio)
         XCTAssertEqual(opener.calls, 1)
         let conflict = try payload(await link.call("voc_open", ["request_id": .string(id), "question": "Otra"]))
         XCTAssertEqual(conflict["error_code"], "request_conflict")
@@ -110,6 +112,8 @@ final class DesktopMCPTests: XCTestCase {
             ("voc_open", ["request_id": id, "question": .string(String(repeating: "a", count: 1001))]),
             ("voc_open", ["request_id": "F0000000-0000-4000-8000-000000000001", "question": "Fuentes"]),
             ("voc_open", ["request_id": id, "question": "Fuentes", "server": "https://example.com"]),
+            ("voc_open", ["request_id": id, "question": "Fuentes", "presentation": "http"]),
+            ("voc_open", ["request_id": id, "question": "Fuentes", "window_id": 42]),
             ("voc_read_result", ["work_id": id, "report_id": "not-implemented"]),
             ("voc_read_result", ["work_id": "not-an-id"]),
         ]
@@ -136,11 +140,15 @@ final class DesktopMCPTests: XCTestCase {
         _ = try store.received(id, owner: "gui", receipt: receipt)
         let profile = try ConnectionProfile(server: "http://127.0.0.1:8091", conversation: receipt.conversationID)
         _ = try store.opened(id, owner: "gui", url: profile.workspaceURL)
+        XCTAssertTrue(try store.reserveLayout(id, owner: "gui"))
+        try store.finishLayout(id, owner: "gui", result: .init(status: .applied, message: "Observed geometry"))
         await link.close()
 
         let reconnected = try await session(HandoffStore(directory: directory), opener)
         let read = try payload(await reconnected.call("voc_read_result", ["work_id": .string(id)]))
         XCTAssertEqual(read["opening_status"], "opened")
+        XCTAssertEqual(read["layout_status"], "applied")
+        XCTAssertEqual(read["layout_message"], "Observed geometry")
         XCTAssertEqual(read["conversation_id"], .string(receipt.conversationID))
         XCTAssertEqual(read["publication_id"], .string(receipt.publicationID))
         XCTAssertEqual(read["result_status"], "not_ready")

@@ -150,3 +150,45 @@ test("rejects mismatched conversation evidence without rendering a false card", 
     chat.getByRole("region", { name: "De dónde vienen" }),
   ).toHaveCount(0);
 });
+
+for (const width of [560, 742]) {
+  test(`half-screen conversation stays usable at ${width} points`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 650 });
+    await dashboard(page);
+    const current = structuredClone(saved);
+    await page.route("**/api/v1/conversations/*", (route) =>
+      route.fulfill({ json: current }),
+    );
+    await page.route("**/api/v1/ask", (route) => {
+      const payload = route.request().postDataJSON();
+      const turn = structuredClone(current.turns[0]);
+      turn.request_id = payload.request_id;
+      turn.question = payload.question;
+      turn.answer.text =
+        "La publicación consultada contiene 4 registros de App Store.";
+      current.turns.push(turn);
+      return route.fulfill({ json: current });
+    });
+    await page.goto(`/?conversation=${saved.conversation_id}`);
+    const chat = page.getByRole("region", { name: "Conversa con los datos" });
+    await expect(chat.getByText(/8 registros de Google Play/)).toBeVisible();
+    await page.getByRole("button", { name: "Ir al chat", exact: true }).click();
+    await expect(chat.getByLabel("Tu pregunta")).toBeFocused();
+    await chat.getByLabel("Tu pregunta").fill("¿y de App Store?");
+    await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
+    await expect(chat.getByText(/4 registros de App Store/)).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width);
+    const table = chat.getByRole("row", { name: "Google Play 8 1" }).first();
+    await table.scrollIntoViewIfNeeded();
+    await expect(table).toBeVisible();
+    await page.reload();
+    await expect(chat.getByText(/4 registros de App Store/)).toBeVisible();
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(width);
+  });
+}

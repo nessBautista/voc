@@ -683,3 +683,20 @@ details[open] > summary {
     flex-direction: column;
   }
 }
+
+/* Keep the conversation reachable while the native client occupies half a screen. */
+.workspace-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.workspace-navigation button {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.78rem;
+}
+.page-heading > div,
+.chat-heading > div {
+  min-width: 0;
+}

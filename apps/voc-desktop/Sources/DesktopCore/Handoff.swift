@@ -19,6 +19,10 @@ struct HandoffWork: Codable, Equatable {
     var publicationID: String?
     var turnStatus: String?
     var errorCode: String?
+    // Optional fields preserve records created before local layout existed.
+    var presentation: HandoffPresentation?
+    var layoutAttempted: Bool?
+    var layoutResult: HandoffLayoutResult?
 
     var link: URL { URL(string: "voc-data-state://handoff/\(workID)")! }
 

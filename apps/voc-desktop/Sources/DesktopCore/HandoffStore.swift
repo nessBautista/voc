@@ -59,7 +59,7 @@ final class HandoffStore {
         }
     }
 
-    func submit(_ input: HandoffInput, now: Double = Date().timeIntervalSince1970) throws -> (work: HandoffWork, shouldOpen: Bool) {
+    func submit(_ input: HandoffInput, presentation: HandoffPresentation? = nil, now: Double = Date().timeIntervalSince1970) throws -> (work: HandoffWork, shouldOpen: Bool) {
         try transaction {
             if let existing = try record("SELECT record FROM works WHERE request_id=?", [input.requestID]) {
                 guard existing.question == input.question else { throw HandoffError("request_conflict") }
@@ -73,11 +73,12 @@ final class HandoffStore {
                 throw HandoffError("not_configured")
             }
             let profile = try ConnectionProfile(server: origin)
-            let work = HandoffWork(
+            var work = HandoffWork(
                 workID: UUID().uuidString.lowercased(), requestID: input.requestID,
                 question: input.question, serverOrigin: profile.origin.absoluteString,
                 requestBody: input.body, createdAt: now, expiresAt: now + 60, updatedAt: now
             )
+            work.presentation = presentation
             // Persist opening before the sole dispatcher calls Launch Services.
             try execute("INSERT INTO works VALUES (?, ?, 1, ?)", [work.workID, work.requestID, try encode(work)])
             return (work, true)
@@ -147,6 +148,31 @@ final class HandoffStore {
             work.updatedAt = Date().timeIntervalSince1970
             try save(work)
             return work
+        }
+    }
+
+    /// Reserve once before any window effect; a crash or a retry cannot reapply it.
+    func reserveLayout(_ id: String, owner: String) throws -> Bool {
+        try transaction {
+            var work = try required(id)
+            guard work.active, work.state == .opened, work.claimedBy == owner,
+                  work.presentation != nil, work.layoutAttempted != true else { return false }
+            work.layoutAttempted = true
+            work.layoutResult = HandoffLayoutResult(status: .skipped,
+                message: "La distribución aún no se ha confirmado; no se repetirá automáticamente.")
+            try save(work)
+            return true
+        }
+    }
+
+    func finishLayout(_ id: String, owner: String, result: HandoffLayoutResult) throws {
+        try transaction {
+            var work = try required(id)
+            guard work.active, work.state == .opened, work.claimedBy == owner,
+                  work.layoutAttempted == true else { return }
+            work.layoutResult = result
+            work.updatedAt = Date().timeIntervalSince1970
+            try save(work)
         }
     }
 

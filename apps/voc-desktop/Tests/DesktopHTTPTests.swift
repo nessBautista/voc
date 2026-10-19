@@ -215,6 +215,7 @@ final class DesktopHTTPTests: XCTestCase {
         let arguments: [String: Value] = ["request_id": .string(UUID().uuidString.lowercased()), "question": "Fuentes"]
         let first = try await call(client, "voc_open", arguments)
         let id = try XCTUnwrap(first.structuredContent?.objectValue?["work_id"]?.stringValue)
+        XCTAssertEqual(try running.store.read(id).presentation, .http)
         // A second server instance (as stdio uses) opens the same database, not a new work registry.
         let other = try await DesktopMCPTests().session(HandoffStore(directory: running.directory), running.opener)
         let replay = try await other.call("voc_open", arguments)

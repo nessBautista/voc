@@ -4,13 +4,15 @@ import MCP
 /// Transport adapters share these tools; the native handoff remains the only dispatcher.
 @MainActor
 enum DesktopMCP {
-    static let version = "0.3.0"
+    static let version = "0.4.0"
     static let instructions = """
     Use VOC Desktop when the user asks to open VOC and continue exploring its published data there.
     voc_open opens a native Mac window and hands the initial question to the configured VOC server.
     Keep the returned work_id. Reuse the same request_id and question only to retry that handoff.
     Wait for the user to return before reading a result; do not repeatedly poll for a report.
-    This version returns opening status only. Markdown reports and automatic window layout are not yet available.
+    A new handoff can arrange VOC with a window the user selected in local settings.
+    layout_status is separate from opening_status; applied confirms measured geometry, not answer completion.
+    Markdown reports are not yet available.
     The current VOC server answers questions about data sources, record counts, dates, coverage and preparation metadata.
     """
 
@@ -26,7 +28,8 @@ enum DesktopMCP {
             A retry with the same question returns the same work without sending or focusing again.
             Another active work returns busy; the user can finish or abandon it inside VOC.
             Retain work_id and conversation_id. opening means navigation is pending; opened confirms navigation,
-            not answer completion. This version does not rearrange windows or generate reports.
+            not answer completion. With the user's local layout preference enabled, a new handoff may move
+            VOC and the selected agent window. Read layout_status separately. Reports are not implemented.
             """,
             inputSchema: .object([
                 "type": "object",
@@ -64,14 +67,14 @@ enum DesktopMCP {
         "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
     ])
 
-    static func make(store: HandoffStore, opener: any HandoffOpening) async -> Server {
+    static func make(store: HandoffStore, opener: any HandoffOpening, presentation: HandoffPresentation = .stdio) async -> Server {
         let server = Server(
             name: "voc-desktop", version: version, title: "VOC Desktop",
             instructions: instructions,
             capabilities: .init(tools: .init(listChanged: false)),
             configuration: .strict
         )
-        let launcher = HandoffLauncher(store: store, opener: opener)
+        let launcher = HandoffLauncher(store: store, opener: opener, presentation: presentation)
         await server.withMethodHandler(ListTools.self) { parameters in
             guard parameters.cursor == nil else { throw MCPError.invalidParams("This tool list has no pagination.") }
             return await ListTools.Result(tools: tools)
@@ -146,13 +149,15 @@ enum DesktopMCP {
             "work_id": .string(work.workID),
             "request_id": .string(work.requestID),
             "opening_status": .string(work.state.rawValue),
+            "layout_status": .string((work.layoutResult ?? .notRequested).status.rawValue),
+            "layout_message": .string((work.layoutResult ?? .notRequested).message),
             "active": .bool(work.active),
             "conversation_id": work.conversationID.map(Value.string) ?? .null,
             "publication_id": work.publicationID.map(Value.string) ?? .null,
             "result_status": "not_ready",
             "result_reason": "report_unavailable",
             "report": .null,
-            "capabilities": .object(["markdown_export": false, "window_layout": false]),
+            "capabilities": .object(["markdown_export": false, "window_layout": true]),
             "error_code": work.errorCode.map(Value.string) ?? .null,
             "message": .string(message),
         ]), isError: unsuccessful)
