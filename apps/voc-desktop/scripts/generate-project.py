@@ -122,6 +122,9 @@ for name, extension, kind, files in (
             CODE_SIGN_ENTITLEMENTS="Resources/VOCDataState.entitlements",
             ENABLE_APP_SANDBOX="NO",
         )
+    if extension in ("app", ""):
+        # Both executables resolve packaged compatibility libraries beside their folders.
+        settings["LD_RUNPATH_SEARCH_PATHS"] = ["$(inherited)", "@executable_path/../Frameworks"]
     package_products = []
     if name in ("VOCDesktopBridge", "VOCDataStateTests"):
         for package, product_name in [(mcp_package, "MCP")] + [
