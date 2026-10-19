@@ -59,6 +59,7 @@ bridge_files = shared_files + mcp_files + sorted(ROOT.glob("Sources/DesktopBridg
 core_files = shared_files + mcp_files + [path for path in layout_files if path.name != "WindowLayoutPanel.swift"] + [
     ROOT / "Sources/VOCDataState/ConnectionModel.swift",
     ROOT / "Sources/VOCDataState/HandoffController.swift",
+    ROOT / "Sources/VOCDataState/ReportController.swift",
 ]
 test_files = sorted(ROOT.glob("Tests/*.swift"))
 references = {

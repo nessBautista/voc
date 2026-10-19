@@ -15,6 +15,8 @@ from .chat_api import router as chat_router
 from .client import PublicationClient
 from .conversations import Conversations
 from .data_api import read_current, router
+from .report_api import router as report_router
+from .reports import Reports
 from .settings import Settings
 from .transports.mcp import mount_mcp
 from .web import mount_web
@@ -46,6 +48,7 @@ def create_app(settings=None, *, data_transport=None, planner=None):
             conversations = Conversations(
                 selected, PublicationClient(http), planner or Planner(selected)
             )
+            application.state.reports = None
             application.state.conversations = None
             try:
                 conversations.start()
@@ -56,6 +59,15 @@ def create_app(settings=None, *, data_transport=None, planner=None):
                 )
             else:
                 application.state.conversations = conversations
+                reports = Reports(selected.state_dir, conversations)
+                try:
+                    reports.start()
+                except (OSError, ValueError, sqlite3.Error):
+                    logger.error(
+                        "Report storage is unavailable; chat remains available."
+                    )
+                else:
+                    application.state.reports = reports
             try:
                 async with mcp.session_manager.run():
                     yield
@@ -70,8 +82,10 @@ def create_app(settings=None, *, data_transport=None, planner=None):
     )
     application.state.settings = selected
     application.state.conversations = None
+    application.state.reports = None
     application.include_router(router)
     application.include_router(chat_router)
+    application.include_router(report_router)
 
     @application.middleware("http")
     async def prevent_stale_selection(request, call_next):
