@@ -28,7 +28,7 @@ def imports():
 
     from voc_demo import reader as co
 
-    return Path, base64, co, hashlib, json, mo, pd
+    return base64, co, hashlib, json, mo, pd
 
 
 @app.cell(hide_code=True)
@@ -219,11 +219,7 @@ def embeddings_sample(DEMO_VERSION, mo, pd, snapshot, workable):
             ),
         ]
     )
-    return (
-        SAMPLE_DIR,
-        SAMPLE_SEED,
-        embeddings_sample,
-    )
+    return SAMPLE_DIR, SAMPLE_SEED, embeddings_sample
 
 
 @app.cell(hide_code=True)
@@ -1882,7 +1878,9 @@ def sentiment_section(mo):
 
     Topics say **what** people talk about; sentiment says **how they feel** while saying it. We classify each
     review as a whole into **negative, neutral or positive** with RoBERTuito, a Spanish RoBERTa fine-tuned for
-    sentiment by the pysentimiento project, pinned to one revision and run on CPU. Reviews pass through the
+    sentiment by the pysentimiento project, or an existing domain-adapted checkpoint selected below.
+    Training and held-out evaluation are handled separately in `workflow04_transfer_learning.py.
+    This notebook performs inference on CPU. Reviews pass through the
     model authors' Spanish preprocessing and are truncated at 128 tokens; the model's output is three
     probabilities and the label is their argmax. Only the review text enters the classifier: never the topic's
     keywords or the generated label.
@@ -1897,33 +1895,79 @@ def sentiment_section(mo):
 
     ### A built-in check
 
-    Store reviews carry a star rating the classifier never sees. Where a rating exists, we compare: one and two
+    Store reviews carry a star rating that is not an input at inference time. Where a rating exists, we compare: one and two
     stars should lean negative, four and five positive. Agreement there is evidence the classifier reads
-    Spanish app reviews sensibly; disagreement shows where the two signals differ.
+    Spanish app reviews sensibly; disagreement shows where the two signals differ. For a store adapter
+    trained with star-derived labels, this agreement is not an independent evaluation: use its held-out
+    test report instead.
     """)
     return
 
 
 @app.cell
+def sentiment_model_catalog(mo):
+    refresh_sentiment_models = mo.ui.run_button(label="Refresh available models")
+    refresh_sentiment_models
+    return (refresh_sentiment_models,)
+
+
+@app.cell
+def sentiment_model_selection(mo, refresh_sentiment_models):
+    from voc_demo.sentiment.model_selection import available_models
+    from voc_demo.settings import data_root as _selection_data_root
+
+    _ = refresh_sentiment_models.value
+    sentiment_model_options = {
+        _domain: available_models(_selection_data_root() / "sentiment", _domain)
+        for _domain in ("stores", "social")
+    }
+    stores_sentiment_model = mo.ui.dropdown(options=list(sentiment_model_options["stores"]), value="Original RoBERTuito", label="Stores model · App Store / Google Play")
+    social_sentiment_model = mo.ui.dropdown(options=list(sentiment_model_options["social"]), value="Original RoBERTuito", label="Social model · X / YouTube")
+    mo.vstack([
+        mo.md("### Choose sentiment models\nSelect an existing checkpoint for each domain. Local models appear after training completes; press **Refresh available models** to update the list. Hugging Face versions require access to the private repositories through the environment's Hugging Face login. Training and evaluation are in `workflow04_transfer_learning.py`."),
+        stores_sentiment_model, social_sentiment_model,
+    ])
+    return (
+        sentiment_model_options,
+        social_sentiment_model,
+        stores_sentiment_model,
+    )
+
+
+@app.cell
 def classify_sentiment(
-    Path,
     SAMPLE_DIR,
     hashlib,
     json,
     mo,
     pd,
     prepared_sample,
+    sentiment_model_options,
     snapshot,
+    social_sentiment_model,
+    stores_sentiment_model,
     time,
 ):
+    from huggingface_hub.errors import HfHubHTTPError as _HubError
+
+    from voc_demo.sentiment.model_selection import classify_selected_models, resolve_models
+    from voc_demo.sentiment.robertuito import MAX_LENGTH as SENTIMENT_MAX_LENGTH
     from voc_demo.settings import model_root as _sentiment_model_root
-    from voc_demo.sentiment.robertuito import MAX_LENGTH as SENTIMENT_MAX_LENGTH, MODEL_ID as SENTIMENT_MODEL, MODEL_REVISION as SENTIMENT_REVISION, classify_reviews, load_model
 
     SENTIMENT_LABELS = ("negative", "neutral", "positive")
+    _selected = {
+        "stores": sentiment_model_options["stores"][stores_sentiment_model.value],
+        "social": sentiment_model_options["social"][social_sentiment_model.value],
+    }
+    try:
+        _resolved, SENTIMENT_REVISION = resolve_models(_selected)
+    except (OSError, ValueError, _HubError) as _error:
+        mo.stop(True, mo.callout(f"Cannot access the selected model. Check the checkpoint and Hugging Face login. {_error}", kind="warn"))
+    SENTIMENT_MODEL = f"Stores: {stores_sentiment_model.value} · Social: {social_sentiment_model.value}"
     _sentiment_path = SAMPLE_DIR / "sentiment.parquet"
     _sentiment_manifest = SAMPLE_DIR / "sentiment.json"
     _expected_sentiment = {
-        "inputs_sha256": hashlib.sha256("".join(prepared_sample["input_hash"]).encode("utf-8")).hexdigest(),
+        "inputs_sha256": hashlib.sha256(prepared_sample[["record_id", "input_hash", "platform"]].to_json(orient="records").encode("utf-8")).hexdigest(),
         "model": SENTIMENT_MODEL, "revision": SENTIMENT_REVISION, "max_length": SENTIMENT_MAX_LENGTH,
         "preprocessing": "pysentimiento.preprocess_tweet(lang='es')", "label_policy": "argmax; ties negative, neutral, positive",
     }
@@ -1933,11 +1977,12 @@ def classify_sentiment(
         _origin = f"loaded from `{_sentiment_path.name}`"
     else:
         _t0 = time.perf_counter()
-        _tokenizer, _model = load_model(_sentiment_model_root() / "sentiment")
-        _predictions, _diagnostics = classify_reviews(
-            prepared_sample[["record_id", "embedding_text"]], _tokenizer, _model,
-            sentiment_run_id="prototypeV0-workflow01", dataset_release_id=snapshot.info["release_id"], batch_size=16,
-        )
+        with mo.status.spinner(title="Classifying reviews with the selected models…"):
+            _predictions, _diagnostics = classify_selected_models(
+                prepared_sample[["record_id", "embedding_text", "platform"]], _resolved,
+                _sentiment_model_root() / "sentiment",
+                sentiment_run_id="prototypeV0-workflow01", dataset_release_id=snapshot.info["release_id"],
+            )
         _truncated = {d["record_id"]: bool(d["truncated"]) for d in _diagnostics}
         sentiment = pd.DataFrame(
             [
@@ -2100,6 +2145,52 @@ def sentiment_detail(SENTIMENT_LABELS, mo, reviewed, sentiment_choice):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## GENERAL CONCLUSIONS
+
+    The project demostrates the factability of analyzing customer reviews for App Store, Google Play, X, and Youtube to create recurring topics and sentiment summaries, that support the identification of customer concerns.
+
+    The pipeline combines semantic embeddings, dimensionality reduction, clustering, topic interpretation and supervised sentiment clasification.
+
+    ### What algorithms can serve as baselines for the project?
+
+    ####Review grouping
+
+    HBDSCAN, KMEANS
+
+    #### Topic Representation
+
+    FT-IDF, BERTopic
+
+    #### Sentiment clasification
+
+    RoBERTuito, modified-RoBERTuito (Transfer learning)
+
+    ### Can feature importance be determined?
+
+    It depends on the component, BERTopic's representative words and reviews help explain what characterized a determined topic, however the do not establish the features that cause a sentient prediction.
+
+    ### Is the project underfiting or overtifing
+
+    There is no single conclusion for the entire pipeline, topic modelling needs a check for excessive fragmentation, broad groups, outliers and stability, and in the sentiment analysis part both models didn't show strong evidence of overfitting.
+
+    ### Whats metrics are appropiate for the bussines problem?
+
+    Evaluation should combine
+
+    #### Topics: human assessment of coherence and relevance
+    #### Clustering: silhouette, cluster stability
+    #### Sentiment: f1, presicion, recall
+
+    ###Whats minimum performance should be achieved?
+
+    Topics should demostrate coherent, relevant groups, based on human-review criteria, a sentiment target is f1 ≥ 0.65 and per-class F1 ≥ 0.50
+    """)
+    return
+
+
 @app.cell
 def sentiment_payload(
     SENTIMENT_LABELS,
@@ -2223,6 +2314,14 @@ def publish_demo_result(SAMPLE_DIR, mo, publish_demo, snapshot, workable):
         SAMPLE_DIR, release_id=snapshot.info["release_id"], workable=workable,
     )
     mo.md(f"**Demo published:** `{_id}`. Teammates with an empty cache can load it from S3.")
+    return
+
+
+@app.cell(hide_code=True)
+def transfer_learning_report(mo):
+    from voc_demo.sentiment.transfer_report import stores_v3_report
+    transfer_learning_payload = stores_v3_report()
+    mo.md("Published stores v3 transfer-learning report ready for the Studio Sentiment page.")
     return
 
 

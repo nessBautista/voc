@@ -8,9 +8,11 @@ shift 3
 # Git Bash must not translate container arguments such as /workspace into C: paths.
 export MSYS_NO_PATHCONV=1
 if [ "$operation" = create ]; then
-  url=$("$@" exec -T workspace python -m src.mlops.notebooks "$kind" --port "$port" --name "$notebook_name")
+  url=$("$@" exec -T workspace python -m voc_dev.notebooks "$kind" --port "$port" --name "$notebook_name")
+elif [ "$operation" = reports ]; then
+  url=$("$@" exec -T workspace python -m voc_dev.notebooks "$kind" --port "$port" --reports)
 else
-  url=$("$@" exec -T workspace python -m src.mlops.notebooks "$kind" --port "$port")
+  url=$("$@" exec -T workspace python -m voc_dev.notebooks "$kind" --port "$port")
 fi
 case "$url" in
   http://127.0.0.1:*) ;;

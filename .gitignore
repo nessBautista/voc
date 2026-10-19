@@ -1,23 +1,143 @@
-.venv/
+# --- Secretos y credenciales (nunca al repositorio) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+credentials.json
+service-account*.json
+token.json
+*.token
+secrets/
+.secrets/
+.netrc
+.aws/
+.gcloud/
+.azure/
+.huggingface/
+.hf_token
+.ollama/
+
+# --- Python ---
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+.installed.cfg
+MANIFEST
+
+# --- uv / entornos virtuales ---
+.venv/
+venv/
+env/
+ENV/
+.python-version.local
+uv.lock.bak
+
+# --- Herramientas de calidad y pruebas ---
 .pytest_cache/
 .ruff_cache/
-*.egg-info/
-data/
-out/
-.zen/
-.env
-site/
-build/
+.mypy_cache/
+.pyre/
+.pytype/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# --- Notebooks ---
 .ipynb_checkpoints/
-# setuptools sdist staging for the local ML workspace helper
-/ml-project/src/
-
-# Personal credential-reference files; commit only the .example template.
-*.refs.env
-
-# Marimo session state and cached outputs; notebook .py files remain versioned.
+*/.ipynb_checkpoints/*
 __marimo__/
+*.marimo.cache
+notebooks/nb
+# Created by just jupyter-reports to expose reports in the existing server.
+notebooks/reports
 
-# Plaintext credential files: only *.local.env.example templates are tracked.
+# --- MLflow / experimentos / modelos ---
+mlruns/
+mlartifacts/
+mlflow.db
+outputs/
+wandb/
+*.ckpt
+*.pt
+*.pth
+*.h5
+*.joblib
+*.pkl
+*.pickle
+*.safetensors
+*.onnx
+models/**
+!models/.gitkeep
+!models/README.md
+
+# --- Datos (se conservan en almacenamiento externo) ---
+data/**
+!data/.gitkeep
+!data/README.md
+!data/**/*.py
+!data/**/*.md
+!data/**/*.json
+!data/**/*.yaml
+!data/**/*.yml
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.arrow
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+*.duckdb
+*.duckdb.wal
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# --- Docker ---
+docker-compose.override.yml
+*.env.docker
+.dockerignore.local
+
+# --- Editores y sistema ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
+.mcp.json
+
+# --- Logs y temporales ---
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Rebuild runtime and local configuration
 *.local.env
+*.refs.env
+data/
+site/
+.zen/

@@ -192,3 +192,16 @@ preview with a real browser, wait for `data-marimo-studio-state="ready"`, then
 check: the lede and KPI numbers agree with the notebook output, the ring labels
 do not collide, the monthly table matches the bars, the tooltip opens on hover
 and on keyboard focus, and the layout holds at 700 px.
+
+## Published stores-v3 transfer-learning appendix
+
+The bottom of Sentiment explains Workflow 04's partial fine-tuning and compares
+original RoBERTuito with the published stores v3 checkpoint. It is an independent
+historical experiment, never a claim about the active dashboard classifier or
+the social model. All numbers and analytical prose originate in
+`transfer_learning_payload`, produced from the aggregate-only, versioned
+`stores_v3_evaluation.json` evidence. No review text or storage URI is added.
+Use the existing bands, stat tiles, rules, type scale and theme tokens. Frozen
+and trainable layer cards explain the method; zero-based comparison bars have
+metric buttons and an accessible table. Per-class scores and a labeled v3
+confusion matrix expose minority-class performance alongside overall accuracy.

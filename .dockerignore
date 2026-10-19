@@ -1,28 +1,13 @@
-.venv
 .git
-.zen
-__pycache__
+.env
+**/*.local.env
+**/*.refs.env
+data
+.venv
+**/__pycache__
+**/.ipynb_checkpoints
+**/__marimo__
 .pytest_cache
 .ruff_cache
-*.egg-info
-data
-out
-.env
 site
-**/__pycache__
-**/data
-**/build
-**/*.egg-info
-**/.ipynb_checkpoints
-ml-project/src
-
-# Personal credential-reference files; commit only the .example template.
-*.refs.env
-**/*.refs.env
-
-# Marimo session state and cached outputs; notebook .py files remain versioned.
-**/__marimo__
-
-# Plaintext credential files: only *.local.env.example templates are tracked.
-*.local.env
-**/*.local.env
+build

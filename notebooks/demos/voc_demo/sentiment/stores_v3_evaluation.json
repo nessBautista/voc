@@ -1,0 +1,214 @@
+{
+  "training_mode": "last_n",
+  "encoder_blocks_trained": 1,
+  "total_parameters": 108791043,
+  "trainable_parameters": 7680771,
+  "trainable_percent": 7.060113395548566,
+  "trainable_parameter_names": [
+    "roberta.encoder.layer.11.attention.self.query.weight",
+    "roberta.encoder.layer.11.attention.self.query.bias",
+    "roberta.encoder.layer.11.attention.self.key.weight",
+    "roberta.encoder.layer.11.attention.self.key.bias",
+    "roberta.encoder.layer.11.attention.self.value.weight",
+    "roberta.encoder.layer.11.attention.self.value.bias",
+    "roberta.encoder.layer.11.attention.output.dense.weight",
+    "roberta.encoder.layer.11.attention.output.dense.bias",
+    "roberta.encoder.layer.11.attention.output.LayerNorm.weight",
+    "roberta.encoder.layer.11.attention.output.LayerNorm.bias",
+    "roberta.encoder.layer.11.intermediate.dense.weight",
+    "roberta.encoder.layer.11.intermediate.dense.bias",
+    "roberta.encoder.layer.11.output.dense.weight",
+    "roberta.encoder.layer.11.output.dense.bias",
+    "roberta.encoder.layer.11.output.LayerNorm.weight",
+    "roberta.encoder.layer.11.output.LayerNorm.bias",
+    "classifier.dense.weight",
+    "classifier.dense.bias",
+    "classifier.out_proj.weight",
+    "classifier.out_proj.bias"
+  ],
+  "source_model": "pysentimiento/robertuito-sentiment-analysis",
+  "source_revision": "a2cc0f67ebd705c55191e25a05ba23d885fcc09b",
+  "seed": 42,
+  "epochs": 3,
+  "batch_size": 8,
+  "learning_rate": 2e-05,
+  "max_length": 128,
+  "device": "cpu",
+  "best_epoch": 3,
+  "validation_macro_f1": 0.6819151884346804,
+  "baseline_validation_macro_f1": 0.5183151992256371,
+  "baseline_test_macro_f1": 0.5707639292332404,
+  "baseline_test": {
+    "negative": {
+      "precision": 0.6751548520302821,
+      "recall": 0.9088943792464484,
+      "f1-score": 0.7747795182308806,
+      "support": 3238.0
+    },
+    "neutral": {
+      "precision": 0.07556037599421547,
+      "recall": 0.2232905982905983,
+      "f1-score": 0.1129119394921664,
+      "support": 936.0
+    },
+    "positive": {
+      "precision": 0.9909749760700123,
+      "recall": 0.7060600155884645,
+      "f1-score": 0.8246003299766741,
+      "support": 10264.0
+    },
+    "accuracy": 0.720252112480953,
+    "macro avg": {
+      "precision": 0.5805634013648366,
+      "recall": 0.612748331041837,
+      "f1-score": 0.5707639292332404,
+      "support": 14438.0
+    },
+    "weighted avg": {
+      "precision": 0.8608008780431671,
+      "recall": 0.720252112480953,
+      "f1-score": 0.7672890595842112,
+      "support": 14438.0
+    }
+  },
+  "test": {
+    "negative": {
+      "precision": 0.774331550802139,
+      "recall": 0.8943792464484249,
+      "f1-score": 0.8300372599598739,
+      "support": 3238.0
+    },
+    "neutral": {
+      "precision": 0.3562231759656652,
+      "recall": 0.17735042735042736,
+      "f1-score": 0.23680456490727533,
+      "support": 936.0
+    },
+    "positive": {
+      "precision": 0.9579749804534793,
+      "recall": 0.9549883086515978,
+      "f1-score": 0.9564793130366901,
+      "support": 10264.0
+    },
+    "accuracy": 0.8909821304889874,
+    "macro avg": {
+      "precision": 0.6961765690737612,
+      "recall": 0.6755726608168167,
+      "f1-score": 0.6744403793012798,
+      "support": 14438.0
+    },
+    "weighted avg": {
+      "precision": 0.8777784771835226,
+      "recall": 0.8909821304889874,
+      "f1-score": 0.8814665043296763,
+      "support": 14438.0
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 0.33505319755688334,
+      "validation_macro_f1": 0.6756001792533244
+    },
+    {
+      "epoch": 2,
+      "loss": 0.3104418397351997,
+      "validation_macro_f1": 0.6584346691434063
+    },
+    {
+      "epoch": 3,
+      "loss": 0.3005751873294329,
+      "validation_macro_f1": 0.6819151884346804
+    }
+  ],
+  "confusion_matrix": [
+    [
+      2896,
+      169,
+      173
+    ],
+    [
+      513,
+      166,
+      257
+    ],
+    [
+      331,
+      131,
+      9802
+    ]
+  ],
+  "label_order": [
+    "negative",
+    "neutral",
+    "positive"
+  ],
+  "data_sha256": "e8bc49e6767d6e5335c4d58699ee0231999205138f7f277f93f62a929461b926",
+  "dataset": {
+    "partitions": {
+      "train": {
+        "rows": 43312,
+        "class_counts": {
+          "positive": 30790,
+          "negative": 9712,
+          "neutral": 2810
+        }
+      },
+      "validation": {
+        "rows": 14437,
+        "class_counts": {
+          "positive": 10263,
+          "negative": 3237,
+          "neutral": 937
+        }
+      },
+      "test": {
+        "rows": 14438,
+        "class_counts": {
+          "positive": 10264,
+          "negative": 3238,
+          "neutral": 936
+        }
+      }
+    },
+    "percentages": [
+      60.0,
+      20.0,
+      20.0
+    ],
+    "split_seed": 42,
+    "source_sha256": "08b6ab88d5c2068971bd623957474205c804efc6b4cd91e2502fe61e79f0e843",
+    "language_audit": {
+      "detector": "langdetect",
+      "version": "1.0.9",
+      "seed": 0,
+      "sampling_seed": 42,
+      "threshold": 0.8,
+      "min_letters": 20,
+      "full_audit": false,
+      "source_rows": 72187,
+      "audited_rows": 500,
+      "source_sha256": "953efbb84723a30a35874d139ba79e834fa073a9d1aa39cc6afd9927d85ddf54",
+      "audited_ids_sha256": "ad341ed39537659bc2b2ab7d9f036fb53e02b1c6837abc818ab0e2cacad46b07",
+      "status_counts": {
+        "spanish": 263,
+        "short_text": 225,
+        "uncertain": 8,
+        "other_language": 4
+      },
+      "policy": "keep_all",
+      "retained_rows": 72187,
+      "excluded_rows": 0
+    }
+  },
+  "tracking": {
+    "mlflow_run_id": "1d849e8c6bfe44c9b257b7268e1aebf8",
+    "zenml_run_id": "65973d47-1506-4e19-81c1-8f219b0ead13"
+  },
+  "publication": {
+    "repo_id": "Banamex-voc-sentiment/voc-robertuito-sentiment-stores-es",
+    "revision": "v3",
+    "commit": "ff48c25f016499fc40d910f2a2a50072c706cdee"
+  },
+  "encoder_blocks_total": 12
+}

@@ -236,3 +236,15 @@ secrets. Keep authored source, dependency manifests, and lockfiles tracked.
 Studio supplies workspace rules for its own artifacts and locks. Check
 `git status --short --ignored` after running new tooling and update the view's
 ignore rules before committing.
+
+## Published stores v3 evidence
+
+`transfer.js` is a self-contained leaf renderer for the Sentiment appendix. Its
+only kernel input is `transfer_learning_payload`; the new section renders
+independently of the active classifier and topic/dashboard projections. The
+notebook producer reads the versioned, aggregate-only stores-v3 evaluation
+record through `voc_demo.sentiment.transfer_report`. Keep analytical values and
+claims in that producer. Preserve the distinction between historical stores
+holdout evaluation and current sample inference; this appendix covers no social
+experiment and never changes the selected models. Metric buttons are browser-only
+presentation controls. Keep the source-linked host and region metadata intact.

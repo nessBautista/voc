@@ -27,11 +27,7 @@ def configure(root, member):
         "JUPYTER_TOKEN=\n", "JUPYTER_TOKEN=" + secrets.token_hex(24) + "\n"
     )
     credentials = (root / "config/aws.local.env.example").read_text()
-    credentials = credentials.replace("VOC_MEMBER_ID=''", f"VOC_MEMBER_ID='{member}'")
-    # Team defaults are non-secret. The teammate only fills the supplied AWS keys.
-    credentials = credentials.replace(
-        "AWS_BUCKET=''", "AWS_BUCKET='itesm-mna-datos-equipo14-voc'"
-    )
+    env = env.replace("VOC_MEMBER_ID=ness-rebuild", f"VOC_MEMBER_ID={member}")
     result = {}
     for relative, content in ((".env", env), ("config/aws.local.env", credentials)):
         result[relative] = create_private(root / relative, content)

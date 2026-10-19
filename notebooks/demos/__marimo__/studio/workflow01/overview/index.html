@@ -851,6 +851,49 @@ embeddings.shape                   # (1000, 384)</code></pre>
         </section>
       </div>
 
+      <section id="transfer-learning-section" aria-labelledby="transfer-title"
+               data-marimo-lens-label="Published stores v3 transfer learning"
+               data-marimo-lens-inputs="transfer-learning-payload"
+               data-marimo-lens-context="true"
+               data-marimo-lens-render-source='{"path":"transfer.js"}'>
+        <span id="transfer-learning-payload" hidden mo-value="transfer_learning_payload"></span>
+        <p id="transfer-status" class="status" role="status">Waiting for the published transfer-learning report…</p>
+        <div id="transfer-report" hidden aria-busy="true">
+          <section class="band" aria-labelledby="transfer-title">
+            <div class="section-heading wide">
+              <p class="eyebrow">04 / Transfer learning · stores v3</p>
+              <h2 id="transfer-title"></h2>
+              <p id="transfer-intro"></p>
+            </div>
+            <div class="transfer-flow" aria-label="Layers frozen and trained in the published v3 experiment">
+              <article class="transfer-stage"><p class="eyebrow">01 / Frozen</p><h3 id="transfer-frozen-title"></h3><p id="transfer-frozen"></p></article>
+              <article class="transfer-stage is-trained"><p class="eyebrow">02 / Trainable</p><h3 id="transfer-trained-title"></h3><p id="transfer-trained"></p></article>
+              <article class="transfer-stage is-trained"><p class="eyebrow">03 / Trainable</p><h3>Classification head</h3><p id="transfer-head"></p></article>
+            </div>
+            <dl id="transfer-settings" class="dates-grid transfer-settings" aria-label="Training configuration"></dl>
+            <p id="transfer-selection" class="subtle"></p>
+            <p id="transfer-language" class="subtle"></p>
+          </section>
+          <section class="band" aria-labelledby="transfer-comparison-title">
+            <div class="section-top">
+              <div class="section-heading"><p class="eyebrow">05 / Held-out evaluation</p><h2 id="transfer-comparison-title">Original RoBERTuito versus stores v3</h2><p id="transfer-scope" class="subtle"></p></div>
+              <div id="transfer-metric-controls" class="map-toggle" role="group" aria-label="Comparison metric"></div>
+            </div>
+            <div id="transfer-kpis" class="stat-row stat-row-4"></div>
+            <div id="transfer-bars" class="transfer-bars" role="img" aria-label="Original and v3 comparison on a zero-to-one scale"></div>
+            <p id="transfer-delta" class="subtle"></p>
+            <div class="transfer-table-wrap"><table class="data-table"><caption>Same test reviews · higher is better</caption><thead><tr><th scope="col">Metric</th><th scope="col" class="num">Original</th><th scope="col" class="num">v3</th><th scope="col" class="num">Change</th></tr></thead><tbody id="transfer-metrics-table"></tbody></table></div>
+            <p id="transfer-interpretation" class="subtle transfer-note"></p>
+            <div class="transfer-table-wrap"><table class="data-table"><caption>F1 by class · the test set retains the source imbalance</caption><thead><tr><th scope="col">Class</th><th scope="col" class="num">Original F1</th><th scope="col" class="num">v3 F1</th><th scope="col" class="num">Test reviews</th></tr></thead><tbody id="transfer-classes-table"></tbody></table></div>
+            <div class="transfer-evidence">
+              <div id="transfer-matrix" class="transfer-table-wrap"></div>
+              <aside class="transfer-limit"><p class="eyebrow">Read the minority class</p><h3 id="transfer-neutral-title"></h3><p id="transfer-neutral"></p><p id="transfer-limits" class="subtle"></p></aside>
+            </div>
+            <p id="transfer-provenance" class="subtle"></p>
+          </section>
+        </div>
+      </section>
+
       <dialog id="classifier-dialog" class="neighbors-dialog modal" aria-labelledby="classifier-dialog-title">
         <div class="dialog-head"><div><p class="eyebrow">Model</p><h2 id="classifier-dialog-title">RoBERTuito · three numbers per review</h2></div><button type="button" class="dialog-close" data-close="classifier-dialog" aria-label="Close">×</button></div>
         <div class="dialog-body">
@@ -971,6 +1014,7 @@ embeddings.shape                   # (1000, 384)</code></pre>
 <script type="module" src="./naming.js"></script>
 <script type="module" src="./sentiment.js"></script>
 <script type="module" src="./dashboard.js"></script>
+<script type="module" src="./transfer.js"></script>
 <script type="module" src="./view.js"></script>
 </body>
 </html>

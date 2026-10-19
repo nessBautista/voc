@@ -123,7 +123,16 @@ def predict(frame, tokenizer, model, batch_size=8):
     return pd.DataFrame(rows)
 
 
-def adapt(splits, output, cache, epochs=3, batch_size=8, learning_rate=2e-5, seed=42):
+def adapt(
+    splits,
+    output,
+    cache,
+    epochs=3,
+    batch_size=8,
+    learning_rate=2e-5,
+    seed=42,
+    on_epoch=None,
+):
     """Fine-tune, select by validation macro F1, then evaluate held-out test data."""
     import pandas as pd
     import torch
@@ -204,6 +213,8 @@ def adapt(splits, output, cache, epochs=3, batch_size=8, learning_rate=2e-5, see
             best_score, best_epoch = validation_f1, epoch
             model.save_pretrained(output / "model", safe_serialization=True)
             tokenizer.save_pretrained(output / "model")
+        if on_epoch is not None:
+            on_epoch(history[-1])
 
     del optimizer, model
     adapted = (

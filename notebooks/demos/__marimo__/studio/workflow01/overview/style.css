@@ -184,6 +184,7 @@ footer { padding: 1.6rem 6vw; display: flex; justify-content: space-between; gap
 footer .hint { margin-left: auto; opacity: .8; }
 @media (max-width: 700px) {
   .deck-nav { flex-wrap: wrap; gap: .6rem; }
+  .page-tabs { min-width: 0; max-width: 100%; overflow-x: auto; flex: 1 1 100%; }
   .brand { display: none; }
   footer .hint { display: none; }
 }
@@ -702,4 +703,33 @@ textarea#vectorizer-input { width: 100%; padding: .6rem .8rem; border: 1px solid
   .dash-topic-list .sentiment-row { grid-template-columns: 1fr 60px; }
   .dash-topic-list .sentiment-track { grid-column: 1 / -1; }
   .dash-platform-row { grid-template-columns: 80px 1fr 60px; }
+}
+
+/* Published transfer-learning evidence, independent of the dashboard's classifier. */
+.transfer-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.7rem 0; }
+.transfer-stage { border: 1px solid var(--rule); border-top: 3px solid var(--muted); padding: 1.2rem; background: var(--surface-1); }
+.transfer-stage.is-trained { border-top-color: var(--series-1); }
+.transfer-stage h3 { margin: .55rem 0; font-size: 1.1rem; letter-spacing: -.025em; }
+.transfer-stage p:not(.eyebrow) { font-size: .85rem; line-height: 1.65; margin-bottom: 0; }
+.transfer-settings { margin: 1.5rem 0; }
+.transfer-settings dd { font-size: 1rem; }
+.transfer-bars { display: grid; gap: 1rem; margin: 1.8rem 0 1rem; }
+.transfer-bar-row { display: grid; grid-template-columns: 155px minmax(0, 1fr) 65px; align-items: center; gap: .8rem; font-size: .85rem; }
+.transfer-bar-row strong { text-align: right; font-variant-numeric: tabular-nums; }
+.transfer-track { display: block; height: 22px; background: var(--grid); }
+.transfer-fill { display: block; height: 100%; background: var(--muted); }
+.transfer-fill.adapted { background: var(--series-1); }
+.transfer-table-wrap { overflow-x: auto; }
+.transfer-table-wrap caption { text-align: left; font-size: .8rem; color: var(--muted); padding: .8rem 0; }
+.transfer-note { margin-top: 1rem; }
+.transfer-evidence { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2rem; margin: 2rem 0; }
+.transfer-confusion .is-correct { background: color-mix(in srgb, var(--series-1) 14%, var(--paper)); font-weight: 750; }
+.transfer-limit { padding-left: 1.2rem; border-left: 3px solid var(--accent); font-size: .9rem; line-height: 1.7; }
+.transfer-limit h3 { margin: .4rem 0; }
+#transfer-provenance { overflow-wrap: anywhere; }
+#transfer-provenance a { color: var(--ink); text-underline-offset: .2em; }
+@media (max-width: 700px) {
+  .transfer-flow, .transfer-evidence { grid-template-columns: 1fr; }
+  .transfer-bar-row { grid-template-columns: 106px minmax(0, 1fr) 55px; gap: .45rem; font-size: .75rem; }
+  #transfer-kpis .stat strong { font-size: 1.35rem; }
 }

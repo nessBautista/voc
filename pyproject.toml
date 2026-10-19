@@ -1,87 +1,84 @@
-# Standard Python project metadata. Packaging tools use this to identify VOC
-# and determine which Python versions and runtime dependencies it requires.
+# Python project configuration, read by uv, the package builder and pytest.
+# [section] groups settings; name = value assigns a setting; # starts a comment.
+
+# Package identity, supported Python versions and core runtime dependencies.
 [project]
-# Distribution name used when installing the package; voc/ contains its code.
 name = "voc"
 version = "0.1.0"
-description = "VOC development environment"
-# Supported Python range: 3.11 and 3.12. The Dockerfile selects Python 3.12.
-requires-python = ">=3.11,<3.13"
-# Dependencies installed with VOC, including when someone installs its wheel.
-# click: command-line interfaces; pandas: dataframes; pyarrow: Arrow/Parquet data;
-# google-play-scraper: fetching reviews from Google Play.
-# >= and < express allowed ranges; == pins one version. uv.lock records the
-# exact resolved versions, including dependencies of these dependencies.
+requires-python = ">=3.11,<3.13"  # Python 3.11 or 3.12.
+# Version constraints allow ranges (>=, <) or pin one version (==).
 dependencies = [
-  "click>=8.0,<=8.2.1", "pandas>=2.2,<3", "pyarrow>=18,<24",
-  "google-play-scraper==1.2.7",
-  # AWS SDK used by S3 access checks and the upcoming shared dataset reader.
-  "boto3>=1.35,<2",
+    "click>=8.0,<=8.2.1",
+    "pandas>=2.2,<3",
+    "numpy>=1.26,<3",  # Portable embedding validation; no model dependencies.
+    "pyarrow>=18,<24",
+    "google-play-scraper==1.2.7",
+    "boto3>=1.35,<2",
 ]
 
-# Additional dependencies for working in this repository. These groups are
-# not declared as runtime requirements of the distributed VOC library.
-# Our Docker build selects both with: uv sync --locked --group ml --group dev
+# Extra dependency groups selected with uv sync --group dev --group ml.
 [dependency-groups]
-# pytest runs tests; ruff checks code style and common programming mistakes.
-dev = ["pytest>=8,<10", "ruff>=0.12"]
-# The ML development environment: orchestration, tracking, notebooks, plots,
-# and documentation tools. The name "ml" is a grouping chosen by this project.
-# zenml[server] includes the server. Version 0.96.4 has no s3 extra;
-# s3fs and aws-profile-manager below complete its S3 integration (plus boto3).
-# python-rapidjson has a compatibility bound inherited from the prototype.
-# mkdocs builds documentation; mkdocstrings[python] documents Python APIs.
-# voc-ml installs our local ML code and its CLI when the ml group is selected.
-# The workspace/source settings below tell uv where to find that package.
+# Testing, code checks and notebook-format tools.
+dev = ["pytest>=8,<10", "ruff>=0.12", "nbformat>=5,<6"]
+# Orchestration, tracking, S3 access, notebooks, plotting and documentation.
+# Brackets inside a package string, e.g. zenml[server], request its optional extras.
 ml = [
-  "zenml[server]==0.96.4", "mlflow==3.16.1", "python-rapidjson<1.15",
-  "s3fs>2022.3.0,!=2025.3.1", "aws-profile-manager",
-  # 3.9.1 races when ZenML finalizers close one HTTP session concurrently.
-  # Keep this pin until tests/test_s3_shutdown.py passes with a newer release.
-  "aiobotocore==3.9.0",
-  "jupyterlab>=4,<5", "marimo>=0.15", "matplotlib>=3.9",
-  "mkdocs>=1.6,<2", "mkdocstrings[python]>=0.27", "voc-ml"
+    # Topic discovery and dimensionality reduction used by the BERTopic notebook.
+    "bertopic==0.17.4",
+    "umap-learn==0.5.12",
+    "hdbscan==0.8.44",
+    "openai>=1.60,<3",  # Optional OpenRouter client in the teaching notebook.
+    "jsonschema>=4,<5",  # Check the optional structured topic interpretation.
+    "langdetect==1.0.9",  # Language audit in the transfer-learning notebook.
+    "pysentimiento==0.7.3",  # RoBERTuito Spanish text preprocessing in notebooks.
+    "datasets>=3,<6",  # Avoid legacy datasets 2.x APIs removed by current PyArrow.
+    "sentence-transformers==6.0.0",  # Enforce trust_remote_code=False for local models.
+    "transformers>=5.10,<6",
+    "torch>=2.6,<3",
+    "zenml[server]==0.96.4",
+    "mlflow==3.16.1",
+    "python-rapidjson<1.15",
+    "s3fs>2022.3.0,!=2025.3.1",
+    "aws-profile-manager",
+    "aiobotocore==3.9.0",
+    "jupyterlab>=4,<5",
+    "marimo==0.25.0",  # Runtime compatible with the Studio extension.
+    "marimo-studio==0.2.3",  # HTML presentation views on the existing Marimo server.
+    "matplotlib>=3.9",
+    "mkdocs>=1.6,<2",
+    "mkdocstrings[python]>=0.27",
 ]
 
-# Tell packaging tools how to build VOC for installation.
-# Hatchling is a build backend, not the Python interpreter or a dependency manager.
-# uv supplies these build requirements in an isolated build environment by default.
+# Tell build tools which backend packages our Python code for installation.
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling"]  # Dependency needed to build this project.
 build-backend = "hatchling.build"
 
-# Hatchling-specific settings: include voc/ in the installable .whl package.
-# The separate ML code in src/ is not included by this package selection.
-# During development, uv sync normally installs the project in editable mode,
-# so imports use the source files rather than a separately copied code tree.
+# Hatchling configuration: include these three packages in the installable wheel.
 [tool.hatch.build.targets.wheel]
-packages = ["voc"]
+packages = ["src/voc", "src/voc_ml", "src/voc_dev"]
 
-# pytest-specific settings; these configure tests, not package installation.
-[tool.pytest.ini_options]
-# Look here when pytest is run without explicit test paths.
-testpaths = ["tests"]
-# Add the project root to Python's import search path for the test session.
-# This helps tests import local code; it does not install that code.
-pythonpath = ["."]
-
-
-# Console entry points: installing the package creates these shell commands.
-# Left side: command name (voc). Right side: Python module:callable.
-# "voc.cli:main" loads voc/cli/__init__.py and calls its main Click group,
-# which dispatches subcommands such as "voc version" and "voc dataset-info".
-# In this container, uv sync installs the launcher into /opt/venv/bin (on PATH).
-# After changing entry points, run uv sync to regenerate the installed commands.
+# Installation creates the voc terminal command, which calls main() in voc/cli.py.
 [project.scripts]
 voc = "voc.cli:main"
+# Separate command for ML setup and dataset pipelines.
+voc-ml = "voc_ml.cli:main"
+# Read-only developer storage diagnostics.
+voc-dev = "voc_dev.cli:main"
 
+# pytest reads this section when discovering and running tests.
+[tool.pytest.ini_options]
+testpaths = ["tests"]  # Look for tests here when no test path is specified.
+pythonpath = ["src", "."]  # Make source packages and repo helpers importable in tests.
+# Register the label used by tests needing AWS or running services.
+# tests/conftest.py handles skipping them unless explicitly enabled.
+markers = ["live: explicit AWS or running-service acceptance check"]
 
-# Manage the root VOC package and the ML package together, sharing uv.lock.
-# This directory holds the second pyproject.toml; the ML source stays in src/.
-[tool.uv.workspace]
-members = ["ml-project"]
+# Local NLP inference uses CPU wheels; keep other packages on PyPI.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
-# Resolve the voc-ml dependency from a local workspace member, not PyPI.
-# uv matches this name to the project name in ml-project/pyproject.toml.
 [tool.uv.sources]
-voc-ml = { workspace = true }
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }]

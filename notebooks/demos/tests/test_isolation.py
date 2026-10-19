@@ -1,4 +1,4 @@
-"""Prove the copied demo does not depend on the application's Python packages."""
+"""Keep standalone analysis isolated; tracked training uses explicit bridges."""
 import ast
 from pathlib import Path
 
@@ -11,7 +11,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_no_application_imports():
     forbidden = {'voc', 'voc_ml', 'voc_dev'}
-    paths = [ROOT / 'workflow01.py', *(ROOT / 'voc_demo').rglob('*.py')]
+    # Workflows 03/04 intentionally connect to the main workspace through these
+    # two modules. The rest of the demo, including Workflows 01/02, stays portable.
+    tracking_bridges = {
+        ROOT / 'voc_demo/sentiment/tracked_training.py',
+        ROOT / 'voc_demo/sentiment/transfer_training.py',
+    }
+    paths = [ROOT / 'workflow01.py', ROOT / 'workflow02_sentiment.py',
+             *(path for path in (ROOT / 'voc_demo').rglob('*.py')
+               if path not in tracking_bridges)]
     for path in paths:
         for node in ast.walk(ast.parse(path.read_text())):
             if isinstance(node, ast.Import):

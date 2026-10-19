@@ -22,18 +22,29 @@ def text_keys(texts):
     )
 
 
-def assign_rating_splits(frame, seed=42):
+def assign_rating_splits(frame, seed=42, train_fraction=0.6, validation_fraction=0.2):
     """Keep all rows, stratify labels and keep equivalent texts in the same split.
 
     Allocate repeated-text groups first, then fill exact per-class quotas with
     singleton texts. Stop if the quotas cannot accommodate a complete group.
     """
+    test_fraction = round(1 - train_fraction - validation_fraction, 12)
+    if min(train_fraction, validation_fraction, test_fraction) <= 0:
+        raise ValueError(
+            "Train, validation and test fractions must be positive and sum to 1."
+        )
     rng = np.random.default_rng(seed)
     train, held = train_test_split(
-        frame, test_size=0.4, stratify=frame.label, random_state=seed
+        frame,
+        test_size=round(1 - train_fraction, 12),
+        stratify=frame.label,
+        random_state=seed,
     )
     validation, test = train_test_split(
-        held, test_size=0.5, stratify=held.label, random_state=seed
+        held,
+        test_size=round(test_fraction / (1 - train_fraction), 12),
+        stratify=held.label,
+        random_state=seed,
     )
     targets = np.array(
         [
