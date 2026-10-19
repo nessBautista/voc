@@ -4,7 +4,7 @@ import MCP
 /// Transport adapters share these tools; the native handoff remains the only dispatcher.
 @MainActor
 enum DesktopMCP {
-    static let version = "0.2.0"
+    static let version = "0.3.0"
     static let instructions = """
     Use VOC Desktop when the user asks to open VOC and continue exploring its published data there.
     voc_open opens a native Mac window and hands the initial question to the configured VOC server.

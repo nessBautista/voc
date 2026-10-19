@@ -28,3 +28,7 @@ claude-config:
 # Protocol-only stdout; normally Claude launches the helper directly.
 mcp-stdio:
     '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge' --stdio
+
+# Optional foreground transport for container clients. Uses a separate 1Password credential.
+mcp-http:
+    bash scripts/start-mcp-http.sh '{{derived}}/Build/Products/Debug/VOCDataState.app/Contents/Helpers/VOCDesktopBridge'
