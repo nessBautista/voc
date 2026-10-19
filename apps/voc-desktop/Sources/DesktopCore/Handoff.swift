@@ -74,6 +74,8 @@ struct HandoffError: LocalizedError {
 
     var errorDescription: String? {
         switch code {
+        case "http_token_required": return "Configura VOC_DESKTOP_MCP_TOKEN con una credencial privada de 32 a 512 caracteres ASCII sin espacios."
+        case "http_bind_failed": return "No se pudo escuchar en 127.0.0.1:8766. Comprueba si el puerto está ocupado; no se detuvo ningún proceso."
         case "invalid_id", "invalid_link": return "La entrega necesita un identificador UUID válido y un enlace sin parámetros."
         case "invalid_question": return "Escribe una pregunta de entre 1 y 1.000 caracteres."
         case "request_conflict": return "Ese identificador ya pertenece a otra pregunta."

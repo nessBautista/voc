@@ -74,6 +74,11 @@ mcp_package = add(
     repositoryURL="https://github.com/modelcontextprotocol/swift-sdk.git",
     requirement={"kind": "exactVersion", "version": "0.12.1"},
 )
+nio_package = add(
+    "XCRemoteSwiftPackageReference",
+    repositoryURL="https://github.com/apple/swift-nio.git",
+    requirement={"kind": "exactVersion", "version": "2.104.0"},
+)
 products = []
 targets = []
 for name, extension, kind, files in (
@@ -117,9 +122,12 @@ for name, extension, kind, files in (
         )
     package_products = []
     if name in ("VOCDesktopBridge", "VOCDataStateTests"):
-        dependency = add("XCSwiftPackageProductDependency", package=mcp_package, productName="MCP")
-        package_products.append(dependency)
-        objects[frameworks]["files"].append(add("PBXBuildFile", productRef=dependency))
+        for package, product_name in [(mcp_package, "MCP")] + [
+            (nio_package, product) for product in ("NIOCore", "NIOHTTP1", "NIOPosix")
+        ]:
+            dependency = add("XCSwiftPackageProductDependency", package=package, productName=product_name)
+            package_products.append(dependency)
+            objects[frameworks]["files"].append(add("PBXBuildFile", productRef=dependency))
     targets.append(
         add(
             "PBXNativeTarget",
@@ -178,7 +186,7 @@ project = add(
     projectDirPath="",
     projectRoot="",
     targets=targets,
-    packageReferences=[mcp_package],
+    packageReferences=[mcp_package, nio_package],
 )
 PROJECT.mkdir(exist_ok=True)
 (PROJECT / "project.pbxproj").write_text(

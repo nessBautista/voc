@@ -1,6 +1,6 @@
 import AppKit
 
-/// MCP stdio and the development probe reuse one durable handoff service.
+/// MCP transports and the development probe reuse one durable handoff service.
 @main
 struct BridgeCommand {
     @MainActor
@@ -19,6 +19,21 @@ struct BridgeCommand {
                 FileHandle.standardOutput.write(data + Data("\n".utf8))
                 return
             }
+            if arguments == ["--http"] {
+                signal(SIGPIPE, SIG_IGN)
+                let application = try NativeHandoffOpening.bundledApplication(
+                    executable: URL(fileURLWithPath: CommandLine.arguments[0])
+                )
+                let token = ProcessInfo.processInfo.environment["VOC_DESKTOP_MCP_TOKEN"]
+                _ = try DesktopHTTPPolicy(token: token)
+                let store = try HandoffStore(directory: DesktopFiles.directory())
+                let server = try DesktopHTTPServer(token: token, store: store,
+                                                  opener: NativeHandoffOpening(application: application))
+                _ = try await server.start()
+                FileHandle.standardError.write(Data("VOC Desktop MCP: http://127.0.0.1:8766/mcp (foreground; Ctrl+C to stop)\n".utf8))
+                await server.waitForSignal()
+                return
+            }
             if arguments == ["--stdio"] {
                 signal(SIGPIPE, SIG_IGN)
                 let application = try NativeHandoffOpening.bundledApplication(
@@ -29,7 +44,7 @@ struct BridgeCommand {
                 return
             }
             guard let verb = arguments.first, ["submit", "status"].contains(verb) else {
-                throw HandoffError("usage_stdio_config_submit_or_status")
+                throw HandoffError("usage_stdio_http_config_submit_or_status")
             }
             let store = try HandoffStore(directory: DesktopFiles.directory())
             let work: HandoffWork
