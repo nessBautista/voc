@@ -89,6 +89,8 @@ class Conversations:
 
     def read_conversation(self, identity):
         with self.database() as db:
+            # Keep the header and turns in one snapshot, including report creation.
+            db.execute("BEGIN")
             row = db.execute(
                 "SELECT * FROM conversations WHERE id=?", (identity,)
             ).fetchone()

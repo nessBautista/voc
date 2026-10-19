@@ -23,6 +23,8 @@ struct HandoffWork: Codable, Equatable {
     var presentation: HandoffPresentation?
     var layoutAttempted: Bool?
     var layoutResult: HandoffLayoutResult?
+    var reports: [HandoffReport]?
+    var reportRequestID: String?
 
     var link: URL { URL(string: "voc-data-state://handoff/\(workID)")! }
 
@@ -78,6 +80,15 @@ struct HandoffError: LocalizedError {
 
     var errorDescription: String? {
         switch code {
+        case "report_not_ready": return "Espera a que termine la pregunta y pulsa Preparar resultado para el agente."
+        case "report_not_prepared": return "El usuario todavía no preparó un resultado. Continúa en VOC; no hace falta sondear."
+        case "report_not_found", "report_not_associated": return "Ese informe no pertenece a este trabajo o ya no está disponible."
+        case "invalid_report", "report_integrity_error", "report_publication_mismatch": return "No se pudo verificar la identidad o los bytes del informe. No se guardó un resultado incorrecto."
+        case "invalid_report_offset": return "La posición de lectura debe estar dentro del informe preparado."
+        case "report_too_large": return "El informe supera el límite de 8 MiB. No se publicó un archivo parcial."
+        case "report_request_conflict": return "Esa petición ya corresponde a otra exportación."
+        case "report_transport_failed": return "No se pudo recuperar el informe del servidor. Reintenta la misma operación cuando esté disponible."
+
         case "http_token_required": return "Configura VOC_DESKTOP_MCP_TOKEN con una credencial privada de 32 a 512 caracteres ASCII sin espacios."
         case "http_bind_failed": return "No se pudo escuchar en 127.0.0.1:8766. Comprueba si el puerto está ocupado; no se detuvo ningún proceso."
         case "invalid_id", "invalid_link": return "La entrega necesita un identificador UUID válido y un enlace sin parámetros."

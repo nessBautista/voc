@@ -29,9 +29,9 @@ final class DesktopMCPTests: XCTestCase {
         }
     }
 
-    func session(_ store: HandoffStore, _ opener: Opener) async throws -> Session {
+    func session(_ store: HandoffStore, _ opener: Opener, reports: any HandoffReportTransport = HandoffReportClient()) async throws -> Session {
         let transports = await InMemoryTransport.createConnectedPair()
-        let server = await DesktopMCP.make(store: store, opener: opener)
+        let server = await DesktopMCP.make(store: store, opener: opener, reports: reports)
         try await server.start(transport: transports.server)
         let client = Client(name: "voc-native-test", version: "1")
         let initialized = try await client.connect(transport: transports.client)
@@ -66,7 +66,7 @@ final class DesktopMCPTests: XCTestCase {
         XCTAssertEqual(tools.map(\.name), ["voc_open", "voc_read_result"])
         XCTAssertNil(cursor)
         XCTAssertEqual(link.initialized.serverInfo.name, "voc-desktop")
-        XCTAssertTrue(link.initialized.instructions?.contains("not yet available") == true)
+        XCTAssertTrue(link.initialized.instructions?.contains("Pin report_id") == true)
         XCTAssertEqual(opener.calls, 0)
         for tool in tools { XCTAssertEqual(tool.inputSchema.objectValue?["additionalProperties"], false) }
         XCTAssertEqual(tools[0].annotations.readOnlyHint, false)
@@ -152,7 +152,7 @@ final class DesktopMCPTests: XCTestCase {
         XCTAssertEqual(read["conversation_id"], .string(receipt.conversationID))
         XCTAssertEqual(read["publication_id"], .string(receipt.publicationID))
         XCTAssertEqual(read["result_status"], "not_ready")
-        XCTAssertEqual(read["result_reason"], "report_unavailable")
+        XCTAssertEqual(read["result_reason"], "report_not_prepared")
         XCTAssertEqual(read["report"], .null)
         for key in ["question", "request_body", "server_origin", "claimed_by", "turn_status", "answer"] {
             XCTAssertNil(read[key])

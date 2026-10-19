@@ -102,7 +102,7 @@ final class HandoffStore {
         try transaction {
             var work = try expire(required(id), now: now)
             guard work.state != .expired else { return nil }
-            guard work.state != .abandoned else { return nil }
+            guard work.state != .abandoned, work.reports?.isEmpty != false else { return nil }
             guard work.serverOrigin == origin,
                   try scalar("SELECT value FROM settings WHERE name='origin'") == work.serverOrigin else {
                 throw HandoffError("origin_changed")
@@ -174,6 +174,59 @@ final class HandoffStore {
             work.updatedAt = Date().timeIntervalSince1970
             try save(work)
         }
+    }
+
+    /// Keep the preparation identity across a lost response; do not release work early.
+    func reserveReport(_ id: String, origin: String) throws -> (work: HandoffWork, requestID: String) {
+        try transaction {
+            var work = try required(id)
+            guard work.state == .opened, work.conversationID != nil, work.publicationID != nil else {
+                throw HandoffError("report_not_ready")
+            }
+            guard origin == work.serverOrigin,
+                  try scalar("SELECT value FROM settings WHERE name='origin'") == work.serverOrigin else {
+                throw HandoffError("origin_changed")
+            }
+            if let other = try record("SELECT record FROM works WHERE active=1"), other.workID != id {
+                throw HandoffError("busy")
+            }
+            work.reportRequestID = work.reportRequestID ?? UUID().uuidString.lowercased()
+            work.active = true
+            try save(work)
+            return (work, work.reportRequestID!)
+        }
+    }
+
+    func preparedReport(_ id: String, requestID: String, report: HandoffReport) throws -> HandoffWork {
+        try transaction {
+            var work = try required(id)
+            guard work.active, work.state == .opened, work.reportRequestID == requestID else {
+                throw HandoffError("inactive")
+            }
+            try report.validate(for: work)
+            var reports = work.reports ?? []
+            if let previous = reports.first(where: { $0.reportID == report.reportID }), previous != report {
+                throw HandoffError("invalid_report")
+            }
+            reports.removeAll { $0.reportID == report.reportID }
+            reports.append(report)
+            work.reports = reports
+            work.reportRequestID = nil
+            work.active = false
+            work.updatedAt = Date().timeIntervalSince1970
+            try save(work)
+            return work
+        }
+    }
+
+    func report(_ id: String, reportID: String?) throws -> (work: HandoffWork, report: HandoffReport?) {
+        let work = try read(id)
+        guard let reportID else { return (work, work.reports?.last) }
+        _ = try HandoffInput.identity(reportID)
+        guard let report = work.reports?.first(where: { $0.reportID == reportID }) else {
+            throw HandoffError("report_not_associated")
+        }
+        return (work, report)
     }
 
     func fail(_ id: String, owner: String?, code: String) throws {

@@ -4,6 +4,7 @@ import SwiftUI
 struct VOCDataStateApp: App {
     @StateObject private var connection: ConnectionModel
     @StateObject private var handoff: HandoffController
+    @StateObject private var reports: ReportController
     @StateObject private var layout = WindowLayoutModel()
     @State private var showLayout = false
     @State private var showConnection = true
@@ -20,6 +21,7 @@ struct VOCDataStateApp: App {
         }
         let connection = ConnectionModel(handoffStore: store)
         _connection = StateObject(wrappedValue: connection)
+        _reports = StateObject(wrappedValue: ReportController(store: store))
         _handoff = StateObject(wrappedValue: HandoffController(
             connection: connection, store: store, startupError: startupError
         ))
@@ -41,10 +43,10 @@ struct VOCDataStateApp: App {
                                 .textFieldStyle(.roundedBorder)
                                 .onSubmit { connection.connect() }
                                 .accessibilityIdentifier("server-address")
-                                .disabled(handoff.isDelivering)
+                                .disabled(handoff.isDelivering || reports.busy)
                             Button("Conectar") { connection.connect() }
                                 .accessibilityIdentifier("connect-server")
-                                .disabled(handoff.isDelivering)
+                                .disabled(handoff.isDelivering || reports.busy)
                         }
                         HStack {
                             Text("Conversación").frame(width: 95, alignment: .leading)
@@ -52,7 +54,7 @@ struct VOCDataStateApp: App {
                                 .textFieldStyle(.roundedBorder)
                                 .onSubmit { connection.connect() }
                                 .accessibilityIdentifier("conversation-id")
-                                .disabled(handoff.isDelivering)
+                                .disabled(handoff.isDelivering || reports.busy)
                             Button("Reintentar / Recargar") { connection.reload() }
                                 .disabled(connection.command == nil || handoff.isDelivering)
                                 .accessibilityIdentifier("reload-workspace")
@@ -76,11 +78,34 @@ struct VOCDataStateApp: App {
                             if let result = work.layoutResult {
                                 Text(result.message).font(.caption).textSelection(.enabled)
                             }
+                            if let conversation = work.conversationID {
+                                DisclosureGroup("Resultado para el agente") {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text("Se exportará la conversación del trabajo: \(conversation)")
+                                            .font(.caption).textSelection(.enabled)
+                                        Text("Si navegaste a otra conversación, este botón conserva la del trabajo.")
+                                            .font(.caption).foregroundStyle(.secondary)
+                                        Button("Preparar resultado para el agente") {
+                                            Task { await reports.prepare(work, origin: connection.command?.profile.origin.absoluteString ?? "") }
+                                        }
+                                        .disabled(handoff.isDelivering || reports.busy || work.state != .opened)
+                                        .accessibilityIdentifier("prepare-handoff-report")
+                                        if let report = work.reports?.last {
+                                            Text("Informe \(report.reportID) · \(report.turnCount) turnos · \(report.byteLength) bytes")
+                                                .font(.caption).textSelection(.enabled)
+                                            Button("Guardar Markdown…") { Task { await reports.save(work) } }
+                                                .disabled(reports.busy).accessibilityIdentifier("save-handoff-report")
+                                        }
+                                        if reports.busy { ProgressView().controlSize(.small) }
+                                        if !reports.message.isEmpty { Text(reports.message).font(.callout).textSelection(.enabled) }
+                                    }.frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
                             HStack {
                                 Button("Recuperar entrega") { handoff.recover() }
-                                    .disabled(handoff.isDelivering || [.abandoned, .expired].contains(work.state))
+                                    .disabled(handoff.isDelivering || reports.busy || work.reports?.isEmpty == false || [.abandoned, .expired].contains(work.state))
                                 Button("Abandonar trabajo") { handoff.abandon() }
-                                    .disabled(work.state == .abandoned || work.state == .expired)
+                                    .disabled(reports.busy || !work.active)
                             }
                         }
                     }
@@ -95,6 +120,7 @@ struct VOCDataStateApp: App {
             .sheet(isPresented: $showLayout) { WindowLayoutPanel(model: layout) }
             .onOpenURL { handoff.receive($0) }
             .onAppear {
+                reports.onChange = { handoff.refresh() }
                 handoff.onPresentation = { profile in
                     showConnection = false
                     return await layout.automatic(profile)

@@ -139,9 +139,12 @@ final class HandoffController: ObservableObject {
     }
 
     private func description(_ work: HandoffWork) -> String {
+        if work.reports?.isEmpty == false && !work.active {
+            return "Resultado preparado para el agente. La conversación se conserva y puedes iniciar otro trabajo."
+        }
         switch work.state {
         case .opening: return "Entrega pendiente. Recuperar continúa el mismo trabajo; no crea otra pregunta."
-        case .opened: return "Conversación abierta. Continúa en el chat; abandona este trabajo cuando termines."
+        case .opened: return "Conversación abierta. Continúa en el chat y prepara el resultado para el agente cuando termines."
         case .failed: return HandoffError(work.errorCode ?? "transport_failed").localizedDescription
         case .expired: return HandoffError("expired").localizedDescription
         case .abandoned: return HandoffError("abandoned").localizedDescription
