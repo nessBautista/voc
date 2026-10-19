@@ -1,14 +1,35 @@
 import AppKit
 
-/// Increment 11's local probe. MCP transports will call the same launcher later.
+/// MCP stdio and the development probe reuse one durable handoff service.
 @main
 struct BridgeCommand {
     @MainActor
     static func main() async {
         do {
             let arguments = Array(CommandLine.arguments.dropFirst())
+            if arguments == ["--claude-config"] {
+                let application = try NativeHandoffOpening.bundledApplication(
+                    executable: URL(fileURLWithPath: CommandLine.arguments[0])
+                )
+                let configuration = ["mcpServers": ["voc-desktop": [
+                    "command": application.appendingPathComponent("Contents/Helpers/VOCDesktopBridge").path,
+                    "args": ["--stdio"],
+                ]]]
+                let data = try JSONSerialization.data(withJSONObject: configuration, options: [.prettyPrinted, .sortedKeys])
+                FileHandle.standardOutput.write(data + Data("\n".utf8))
+                return
+            }
+            if arguments == ["--stdio"] {
+                signal(SIGPIPE, SIG_IGN)
+                let application = try NativeHandoffOpening.bundledApplication(
+                    executable: URL(fileURLWithPath: CommandLine.arguments[0])
+                )
+                let store = try HandoffStore(directory: DesktopFiles.directory())
+                try await DesktopMCP.serveStdio(store: store, opener: NativeHandoffOpening(application: application))
+                return
+            }
             guard let verb = arguments.first, ["submit", "status"].contains(verb) else {
-                throw HandoffError("usage_submit_or_status")
+                throw HandoffError("usage_stdio_config_submit_or_status")
             }
             let store = try HandoffStore(directory: DesktopFiles.directory())
             let work: HandoffWork
@@ -25,7 +46,6 @@ struct BridgeCommand {
                 let application = try NativeHandoffOpening.bundledApplication(
                     executable: URL(fileURLWithPath: CommandLine.arguments[0])
                 )
-                _ = NSApplication.shared
                 let launcher = HandoffLauncher(store: store, opener: NativeHandoffOpening(application: application))
                 work = try await launcher.submit(input)
             } else {
