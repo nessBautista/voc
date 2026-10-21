@@ -7,6 +7,7 @@ under deployments/<release-id>/ and refuses to overwrite an existing release.
 """
 
 import argparse
+import gzip
 import hashlib
 import io
 import json
@@ -42,7 +43,13 @@ def build(release_id, image_digest, out):
     }
     encoded = json.dumps(manifest, indent=2, sort_keys=True).encode() + b"\n"
     buffer = io.BytesIO()
-    with tarfile.open(fileobj=buffer, mode="w:gz", compresslevel=9) as tar:
+    # A fixed gzip timestamp keeps the archive bytes identical across machines and days.
+    with (
+        gzip.GzipFile(
+            fileobj=buffer, mode="wb", compresslevel=9, mtime=0
+        ) as compressed,
+        tarfile.open(fileobj=compressed, mode="w") as tar,
+    ):
         for name, data in [*sorted(contents.items()), ("manifest.json", encoded)]:
             info = tarfile.TarInfo(name)
             info.size = len(data)
@@ -104,7 +111,9 @@ def main(argv=None):
     parser.add_argument("--out", default="dist/aws")
     arguments = parser.parse_args(argv)
     if arguments.action == "build":
-        if not arguments.image_digest or not arguments.image_digest.startswith("sha256:"):
+        if not arguments.image_digest or not arguments.image_digest.startswith(
+            "sha256:"
+        ):
             parser.error("--image-digest must be the ECR sha256 digest")
         result = build(arguments.release_id, arguments.image_digest, arguments.out)
     else:
