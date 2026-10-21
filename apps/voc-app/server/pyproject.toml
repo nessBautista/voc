@@ -11,6 +11,7 @@ dependencies = [
     "langgraph>=1,<2",
     "pydantic>=2.12,<3",
     "mcp==2.3.0",
+    "pyjwt[crypto]>=2.10,<3",
 ]
 
 # Test tools are excluded from the application image.

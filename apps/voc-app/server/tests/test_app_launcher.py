@@ -85,3 +85,58 @@ os.execvp(args[0],args)
             assert called["provider_present"] == (target != "app" or planner == "model")
             assert called["mcp"] == "synthetic-mcp"
             assert str(credential) not in called["args"]
+
+
+@pytest.mark.parametrize(
+    "mode,auth,mcp,expect_secret",
+    [
+        ("env-file", "cognito", "false", None),  # unset; Compose reads the file as data
+        ("1password", "cognito", "false", "synthetic-cognito"),
+        ("env-file", "local", "true", ""),
+        ("1password", "local", "true", ""),
+    ],
+)
+def test_launcher_passes_the_cognito_secret_only_in_cognito_mode(
+    tmp_path, mode, auth, mcp, expect_secret
+):
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    docker = bin_dir / "docker"
+    docker.write_text("""#!/usr/bin/env python3
+import json, os, sys
+print(json.dumps({"args":sys.argv[1:], "secret":os.getenv("VOC_COGNITO_WEB_CLIENT_SECRET"), "mcp":os.getenv("VOC_MCP_TOKEN")}))
+""")
+    docker.chmod(0o755)
+    op = bin_dir / "op"
+    op.write_text("""#!/usr/bin/env python3
+import os, sys
+args=sys.argv[sys.argv.index("--")+1:]
+os.environ["VOC_COGNITO_WEB_CLIENT_SECRET"]="synthetic-cognito"
+os.environ["VOC_MCP_TOKEN"]="synthetic-mcp"
+os.execvp(args[0],args)
+""")
+    op.chmod(0o755)
+    credential = tmp_path / "credential.env"
+    credential.write_text("VOC_COGNITO_WEB_CLIENT_SECRET='synthetic-cognito'\n")
+    (tmp_path / ".env").write_text("")
+    result = subprocess.run(
+        ["sh", str(REPO / "scripts/start.sh"), "app"],
+        cwd=tmp_path,
+        env={
+            "PATH": str(bin_dir) + os.pathsep + os.environ["PATH"],
+            "VOC_AWS_ENV_FILE": str(credential),
+            "VOC_AWS_AUTH_MODE": mode,
+            "VOC_PLANNER_MODE": "fixture",
+            "VOC_MCP_ENABLED": mcp,
+            "VOC_AUTH_MODE": auth,
+            "VOC_COGNITO_WEB_CLIENT_SECRET": "stale-secret",
+        },
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    called = json.loads(result.stdout)
+    # Cognito mode always loads the credential file, even in fixture mode without MCP.
+    assert (str(credential) in called["args"]) == (mode == "env-file")
+    assert called["secret"] == expect_secret
+    assert called["secret"] != "stale-secret"

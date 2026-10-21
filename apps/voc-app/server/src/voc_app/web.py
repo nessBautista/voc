@@ -7,7 +7,14 @@ from starlette.exceptions import HTTPException
 class WebFiles(StaticFiles):
     async def get_response(self, path, scope):
         # Reserve these namespaces even if a build accidentally contains matching files.
-        if path.split("/", 1)[0] in {"api", "health", "mcp", "docs", "openapi.json"}:
+        if path.split("/", 1)[0] in {
+            "api",
+            "auth",
+            "health",
+            "mcp",
+            "docs",
+            "openapi.json",
+        }:
             raise HTTPException(status_code=404)
         return await super().get_response(path, scope)
 

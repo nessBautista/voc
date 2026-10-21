@@ -40,7 +40,8 @@ async def run(action):
         "This probe requires fixture mode",
     )
     require(not os.environ.get("VOC_LLM_API_KEY"), "Provider key must be absent")
-    origin = os.environ.get("VOC_INTERNAL_API_URL", "http://127.0.0.1:8000")
+    # Where the acceptance server listens; this probe runs against local mode only.
+    origin = os.environ.get("VOC_ACCEPTANCE_ORIGIN", "http://127.0.0.1:8000")
     evidence_file = state / "cycle-evidence.json"
     evidence = (
         json.loads(evidence_file.read_text())
@@ -73,9 +74,13 @@ async def run(action):
     async with httpx2.AsyncClient(trust_env=False, timeout=15) as http:
         response = await http.get(origin + "/health/ready")
         response.raise_for_status()
+        require(response.json() == {"status": "ready"}, "Server is not ready")
+        # Readiness names no publication; the signed-in data route does.
+        response = await http.get(origin + "/api/v1/publications/current")
+        response.raise_for_status()
         require(
             response.json()["publication_id"] == selected_id,
-            "Readiness selected another publication",
+            "The server selected another publication",
         )
         # A missing credential must fail even though this test endpoint is loopback-only.
         require(

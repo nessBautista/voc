@@ -4,15 +4,16 @@ import logging
 import sqlite3
 from contextlib import asynccontextmanager
 
-import httpx
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
 from .agent.planner import Planner
+from .auth import Auth
+from .auth_api import router as auth_router
 from .chat_api import router as chat_router
-from .client import PublicationClient
+from .client import PublicationService
 from .conversations import Conversations
 from .data_api import read_current, router
 from .report_api import router as report_router
@@ -32,60 +33,63 @@ def error_response(status, code, message, headers=None):
     )
 
 
-def create_app(settings=None, *, data_transport=None, planner=None):
+def create_app(settings=None, *, planner=None, oidc_transport=None):
     """Construct an app without requiring an active publication at startup."""
     selected = settings if settings is not None else Settings.from_env()
+    # Sign-in exists only in cognito mode; tests answer Cognito through oidc_transport.
+    auth = Auth(selected, oidc_transport) if selected.auth_mode == "cognito" else None
 
     @asynccontextmanager
     async def lifespan(application):
-        async with httpx.AsyncClient(
-            base_url=selected.internal_api_url,
-            transport=data_transport,
-            timeout=10,
-            trust_env=False,
-            follow_redirects=False,
-        ) as http:
-            conversations = Conversations(
-                selected, PublicationClient(http), planner or Planner(selected)
+        if auth is not None:
+            # Sessions are required for login; a cloud app must not start without them.
+            auth.sessions.start()
+        conversations = Conversations(
+            selected, PublicationService(selected), planner or Planner(selected)
+        )
+        application.state.reports = None
+        application.state.conversations = None
+        try:
+            conversations.start()
+        except (OSError, ValueError, sqlite3.Error):
+            # Publication browsing remains usable when chat storage is unavailable.
+            logger.error(
+                "Conversation storage is unavailable; check state permissions or another running worker."
             )
-            application.state.reports = None
-            application.state.conversations = None
+        else:
+            application.state.conversations = conversations
+            reports = Reports(selected.state_dir, conversations)
             try:
-                conversations.start()
+                reports.start()
             except (OSError, ValueError, sqlite3.Error):
-                # Publication browsing remains usable when chat storage is unavailable.
-                logger.error(
-                    "Conversation storage is unavailable; check state permissions or another running worker."
-                )
+                logger.error("Report storage is unavailable; chat remains available.")
             else:
-                application.state.conversations = conversations
-                reports = Reports(selected.state_dir, conversations)
-                try:
-                    reports.start()
-                except (OSError, ValueError, sqlite3.Error):
-                    logger.error(
-                        "Report storage is unavailable; chat remains available."
-                    )
-                else:
-                    application.state.reports = reports
-            try:
-                async with mcp.session_manager.run():
-                    yield
-            finally:
-                await conversations.close()
+                application.state.reports = reports
+        try:
+            async with mcp.session_manager.run():
+                yield
+        finally:
+            await conversations.close()
+            if auth is not None:
+                auth.close()
 
     application = FastAPI(
         title="VOC data-state API",
         version="0.1.0",
         redoc_url=None,
+        # Interactive documentation stays a local development tool.
+        docs_url=None if auth is not None else "/docs",
+        openapi_url=None if auth is not None else "/openapi.json",
         lifespan=lifespan,
     )
     application.state.settings = selected
+    application.state.auth = auth
     application.state.conversations = None
     application.state.reports = None
     application.include_router(router)
     application.include_router(chat_router)
     application.include_router(report_router)
+    application.include_router(auth_router)
 
     @application.middleware("http")
     async def prevent_stale_selection(request, call_next):
@@ -148,8 +152,9 @@ def create_app(settings=None, *, data_transport=None, planner=None):
     )
     def ready(request: Request):
         """Confirm the active package is readable and compatible right now."""
-        selected = read_current(request.app.state.settings)
-        return {"status": "ready", "publication_id": selected["publication_id"]}
+        # Anyone may ask whether the server is ready; which publication is private.
+        read_current(request.app.state.settings)
+        return {"status": "ready"}
 
     mcp = mount_mcp(application, selected)
 

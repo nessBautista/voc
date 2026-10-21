@@ -89,8 +89,9 @@ def wait_ready():
 def check(config):
     assert_owned(config)
     assert_same_binaries(config)
-    ready = json.loads(read_url("/health/ready"))
-    if ready["publication_id"] != config["publication_id"]:
+    wait_ready()
+    selected = json.loads(read_url("/api/v1/publications/current"))
+    if selected["publication_id"] != config["publication_id"]:
         raise ValueError("Unexpected publication in acceptance server.")
     html = read_url("/")
     marker = f"Prueba web · versión {config['revision']} · mismo cliente Mac".encode()

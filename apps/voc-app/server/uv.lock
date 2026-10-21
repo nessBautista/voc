@@ -1340,6 +1340,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "mcp" },
     { name = "pydantic" },
+    { name = "pyjwt", extra = ["crypto"] },
     { name = "uvicorn" },
     { name = "voc", extra = ["publications"] },
 ]
@@ -1358,6 +1359,7 @@ requires-dist = [
     { name = "langgraph", specifier = ">=1,<2" },
     { name = "mcp", specifier = "==2.3.0" },
     { name = "pydantic", specifier = ">=2.12,<3" },
+    { name = "pyjwt", extras = ["crypto"], specifier = ">=2.10,<3" },
     { name = "uvicorn", specifier = ">=0.34,<1" },
     { name = "voc", extras = ["publications"], editable = "../../../" },
 ]
