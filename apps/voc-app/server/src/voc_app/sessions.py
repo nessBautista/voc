@@ -94,9 +94,14 @@ class Sessions:
         return dict(row)
 
     def create(self, subject, email, client_id, tokens):
-        """Store the tokens and return the cookie value; only its hash is kept."""
+        """Store the tokens and return the cookie value; only its hash is kept.
+
+        Without a refresh token the session ends when the access token does.
+        """
         value = secrets.token_urlsafe(32)
         created = now()
+        access_expiry = created + timedelta(seconds=tokens["expires_in"])
+        refresh = tokens.get("refresh_token") or ""
         with self.database() as db:
             db.execute(
                 "INSERT INTO sessions VALUES (?,?,?,?,?,?,?,?,?)",
@@ -106,9 +111,9 @@ class Sessions:
                     email,
                     client_id,
                     tokens["access_token"],
-                    tokens["refresh_token"],
-                    stamp(created + timedelta(seconds=tokens["expires_in"])),
-                    stamp(created + SESSION_TTL),
+                    refresh,
+                    stamp(access_expiry),
+                    stamp(created + SESSION_TTL if refresh else access_expiry),
                     stamp(created),
                 ),
             )

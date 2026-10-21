@@ -22,7 +22,6 @@ from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
-
 from voc.publications import queries
 
 from ..agent.contracts import AgentError, Ask, Contract
