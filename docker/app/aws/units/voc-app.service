@@ -1,0 +1,15 @@
+[Unit]
+Description=VOC: the application on the data volume behind the closed security group
+Requires=docker.service voc-secrets.service
+After=docker.service voc-secrets.service network-online.target
+RequiresMountsFor=/srv/voc
+ConditionPathIsMountPoint=/srv/voc
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/voc-host app-up
+ExecStop=/usr/local/sbin/voc-host app-down
+
+[Install]
+WantedBy=multi-user.target

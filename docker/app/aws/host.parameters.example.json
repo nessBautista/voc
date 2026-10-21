@@ -1,0 +1,21 @@
+[
+  { "ParameterKey": "Environment", "ParameterValue": "pilot" },
+  { "ParameterKey": "ReleaseId", "ParameterValue": "REPLACE_12_HEX_RELEASE_ID" },
+  { "ParameterKey": "ImageDigest", "ParameterValue": "sha256:REPLACE_64_HEX_IMAGE_DIGEST" },
+  { "ParameterKey": "DeploymentBundleKey", "ParameterValue": "deployments/REPLACE_12_HEX_RELEASE_ID/bundle.tar.gz" },
+  { "ParameterKey": "DeploymentBundleSha256", "ParameterValue": "REPLACE_64_HEX_BUNDLE_SHA256" },
+  { "ParameterKey": "PublicationId", "ParameterValue": "REPLACE_PUBLICATION_UUID" },
+  { "ParameterKey": "PublicationManifestSha256", "ParameterValue": "REPLACE_64_HEX_MANIFEST_SHA256" },
+  { "ParameterKey": "CognitoIssuer", "ParameterValue": "https://cognito-idp.us-east-2.amazonaws.com/REPLACE_POOL_ID" },
+  { "ParameterKey": "CognitoDomain", "ParameterValue": "https://REPLACE_PREFIX.auth.us-east-2.amazoncognito.com" },
+  { "ParameterKey": "CognitoWebClientId", "ParameterValue": "REPLACE_WEB_CLIENT_ID" },
+  { "ParameterKey": "CognitoNativeClientId", "ParameterValue": "REPLACE_NATIVE_CLIENT_ID" },
+  { "ParameterKey": "PublicOrigin", "ParameterValue": "http://localhost:8091" },
+  { "ParameterKey": "PlannerMode", "ParameterValue": "fixture" },
+  { "ParameterKey": "InstanceType", "ParameterValue": "t4g.medium" },
+  { "ParameterKey": "AmiId", "ParameterValue": "ami-REPLACE_FROM_SSM_PARAMETER" },
+  { "ParameterKey": "AvailabilityZone", "ParameterValue": "us-east-2a" },
+  { "ParameterKey": "DataVolumeSizeGiB", "ParameterValue": "40" },
+  { "ParameterKey": "DemoFrontDoor", "ParameterValue": "false" },
+  { "ParameterKey": "CloudFrontPrefixListId", "ParameterValue": "" }
+]

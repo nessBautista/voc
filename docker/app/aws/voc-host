@@ -1,0 +1,253 @@
+#!/bin/bash
+# voc-host: install, configure and operate the VOC pilot host. Every command is
+# safe to rerun. Paths honour VOC_ROOT so tests can run against a temporary tree;
+# external commands are resolved through PATH so tests can stand them in.
+set -euo pipefail
+
+ROOT="${VOC_ROOT:-}"
+ETC="$ROOT/etc/voc"
+SRV="$ROOT/srv/voc"
+RUN="$ROOT/run/voc"
+RELEASES="$ROOT/opt/voc/releases"
+RELEASE_ENV="$ETC/release.env"
+APP_ENV="$ETC/app.env"
+SECRET_ENV="$RUN/app.secret.env"
+APP_UID=10001
+
+# Docker Compose is not packaged by Amazon Linux 2023; pin a reviewed release.
+COMPOSE_VERSION=v5.6.0
+COMPOSE_SHA256=733ec76717ceb59052a9609b9dadfb523b2df8eab57a54212872d10a58078ea2
+COMPOSE_URL="https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-linux-aarch64"
+
+# Runtime settings the app may read; everything else in release.env stays out.
+APP_KEYS="VOC_IMAGE VOC_AWS_REGION VOC_LOG_GROUP VOC_RELEASE_ID VOC_AUTH_MODE VOC_PUBLIC_ORIGIN VOC_COGNITO_ISSUER VOC_COGNITO_DOMAIN VOC_COGNITO_WEB_CLIENT_ID VOC_COGNITO_NATIVE_CLIENT_ID VOC_COGNITO_SCOPES VOC_PLANNER_MODE VOC_MCP_ENABLED"
+SETTABLE_KEYS="VOC_PLANNER_MODE VOC_LLM_BASE_URL VOC_LLM_MODEL VOC_TURN_TIMEOUT_SECONDS"
+
+log() { printf 'voc-host: %s\n' "$*" >&2; }
+die() { log "$*"; exit 1; }
+
+load_release() {
+  [ -r "$RELEASE_ENV" ] || die "missing $RELEASE_ENV"
+  set -a
+  # shellcheck disable=SC1090
+  . "$RELEASE_ENV"
+  set +a
+  : "${VOC_RELEASE_ID:?}" "${VOC_IMAGE:?}" "${VOC_AWS_REGION:?}" "${VOC_DATA_VOLUME_ID:?}"
+}
+
+load_app() {
+  [ -r "$APP_ENV" ] || die "missing $APP_ENV; run voc-host configure"
+  set -a
+  # shellcheck disable=SC1090
+  . "$APP_ENV"
+  set +a
+}
+
+release_dir() { printf '%s/%s' "$RELEASES" "$VOC_RELEASE_ID"; }
+
+packages() {
+  if ! command -v docker >/dev/null 2>&1; then
+    dnf install -y docker xfsprogs
+  fi
+  local plugin="$ROOT/usr/local/lib/docker/cli-plugins/docker-compose"
+  if [ ! -x "$plugin" ]; then
+    mkdir -p "$(dirname "$plugin")"
+    curl -fsSL "$COMPOSE_URL" -o "$plugin.tmp"
+    echo "$COMPOSE_SHA256  $plugin.tmp" | sha256sum -c - >/dev/null
+    chmod 0755 "$plugin.tmp"
+    mv "$plugin.tmp" "$plugin"
+  fi
+  systemctl enable --now docker
+}
+
+storage() {
+  # The NVMe serial is the volume ID without its hyphen; device names are not stable.
+  local serial="${VOC_DATA_VOLUME_ID//-/}" name device fstype uuid
+  name=$(lsblk -dno NAME,SERIAL | awk -v s="$serial" '$2 == s { print $1; exit }')
+  [ -n "$name" ] || die "data volume $VOC_DATA_VOLUME_ID is not attached"
+  device="/dev/$name"
+  fstype=$(blkid -o value -s TYPE "$device" || true)
+  if [ -z "$fstype" ]; then
+    # Format only a disk that carries no signature at all; a rerun never gets here twice.
+    [ -z "$(wipefs -n "$device")" ] || die "$device carries signatures; refusing to format"
+    log "formatting blank data volume $device"
+    mkfs.xfs -L voc-data "$device"
+  elif [ "$fstype" != xfs ]; then
+    die "$device has a $fstype filesystem; expected xfs"
+  fi
+  uuid=$(blkid -o value -s UUID "$device")
+  [ -n "$uuid" ] || die "no filesystem UUID on $device"
+  mkdir -p "$SRV" "$ROOT/etc"
+  if ! grep -qs "^UUID=$uuid " "$ROOT/etc/fstab"; then
+    printf 'UUID=%s /srv/voc xfs defaults,noatime,nofail 0 2\n' "$uuid" >> "$ROOT/etc/fstab"
+  fi
+  findmnt -n "$SRV" >/dev/null 2>&1 || mount "$SRV"
+  findmnt -n "$SRV" >/dev/null 2>&1 || die "/srv/voc is not mounted"
+  local directory
+  for directory in catalog state incoming; do
+    mkdir -p "$SRV/$directory"
+    chown "$APP_UID:$APP_UID" "$SRV/$directory"
+    chmod 0750 "$SRV/$directory"
+  done
+}
+
+configure() {
+  # Written once from the release facts; later changes go through `set`.
+  [ -f "$APP_ENV" ] && return 0
+  mkdir -p "$ETC"
+  local key
+  # Single quotes keep values with spaces intact for both bash and Compose.
+  {
+    for key in $APP_KEYS; do
+      printf "%s='%s'\n" "$key" "${!key:-}"
+    done
+    printf "VOC_LLM_BASE_URL='https://openrouter.ai/api/v1'\n"
+    printf "VOC_LLM_MODEL='anthropic/claude-sonnet-5.5'\n"
+    printf "VOC_TURN_TIMEOUT_SECONDS='45'\n"
+  } > "$APP_ENV.tmp"
+  chmod 0644 "$APP_ENV.tmp"
+  mv "$APP_ENV.tmp" "$APP_ENV"
+}
+
+set_value() {
+  local assignment="$1" key value
+  key="${assignment%%=*}"
+  value="${assignment#*=}"
+  case " $SETTABLE_KEYS " in
+    *" $key "*) ;;
+    *) die "$key is not a runtime setting; secrets never go here" ;;
+  esac
+  case "$value" in *"'"*) die "values may not contain single quotes" ;; esac
+  [ -f "$APP_ENV" ] || die "missing $APP_ENV"
+  grep -v "^$key=" "$APP_ENV" > "$APP_ENV.tmp" || true
+  printf "%s='%s'\n" "$key" "$value" >> "$APP_ENV.tmp"
+  chmod 0644 "$APP_ENV.tmp"
+  mv "$APP_ENV.tmp" "$APP_ENV"
+  systemctl restart voc-secrets.service voc-app.service
+}
+
+fetch_secret() {
+  # $1 secret ARN, $2 JSON key, $3 variable name. The value is never logged.
+  local value
+  value=$(aws secretsmanager get-secret-value --region "$VOC_AWS_REGION" \
+    --secret-id "$1" --query SecretString --output text 2>/dev/null \
+    | python3 -c 'import json, sys; value = json.load(sys.stdin).get(sys.argv[1], ""); print(value if isinstance(value, str) else "")' "$2") \
+    || die "cannot read secret $1"
+  [ -n "$value" ] || die "secret $1 has no value for $2"
+  printf '%s=%s\n' "$3" "$value"
+}
+
+secrets() {
+  load_release
+  load_app
+  mkdir -p "$RUN"
+  chmod 0700 "$RUN"
+  : > "$SECRET_ENV.tmp"
+  chmod 0600 "$SECRET_ENV.tmp"
+  fetch_secret "${VOC_WEB_AUTH_SECRET_ARN:?}" client_secret VOC_COGNITO_WEB_CLIENT_SECRET >> "$SECRET_ENV.tmp" \
+    || { rm -f "$SECRET_ENV.tmp"; exit 1; }
+  if [ "${VOC_PLANNER_MODE:-fixture}" = model ]; then
+    fetch_secret "${VOC_MODEL_PROVIDER_SECRET_ARN:?}" api_key VOC_LLM_API_KEY >> "$SECRET_ENV.tmp" \
+      || { rm -f "$SECRET_ENV.tmp"; exit 1; }
+  fi
+  mv "$SECRET_ENV.tmp" "$SECRET_ENV"
+  log "secrets ready in $SECRET_ENV"
+}
+
+ecr_login() {
+  local registry="${VOC_IMAGE%%/*}"
+  aws ecr get-login-password --region "$VOC_AWS_REGION" \
+    | docker login --username AWS --password-stdin "$registry" >/dev/null
+}
+
+active_publication() {
+  python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["publication_id"])' "$SRV/state/active.json" 2>/dev/null || true
+}
+
+install_publication() {
+  load_release
+  local id="${1:-${VOC_PUBLICATION_ID:?}}" expected="${2:-${VOC_PUBLICATION_MANIFEST_SHA256:?}}"
+  if [ "$(active_publication)" = "$id" ] \
+    && echo "$expected  $SRV/catalog/$id/manifest.json" | sha256sum -c - >/dev/null 2>&1; then
+    log "publication $id is already active"
+    return 0
+  fi
+  local staging="$SRV/incoming/$id.$(date +%s)"
+  mkdir -p "$staging"
+  aws s3 cp "s3://${VOC_PUBLICATIONS_BUCKET:?}/publications/$id/publication.duckdb" "$staging/publication.duckdb" --region "$VOC_AWS_REGION"
+  aws s3 cp "s3://$VOC_PUBLICATIONS_BUCKET/publications/$id/manifest.json" "$staging/manifest.json" --region "$VOC_AWS_REGION"
+  if ! echo "$expected  $staging/manifest.json" | sha256sum -c - >/dev/null 2>&1; then
+    rm -rf "$staging"
+    die "manifest digest for $id does not match the expected value; nothing activated"
+  fi
+  chown -R "$APP_UID:$APP_UID" "$staging"
+  ecr_login
+  # The image's own CLI validates and installs; the serving container stays read-only.
+  docker run --rm --network none --user "$APP_UID:$APP_UID" \
+    --mount "type=bind,source=$staging,target=/input,readonly" \
+    --mount "type=bind,source=$SRV/catalog,target=/app/catalog" \
+    --mount "type=bind,source=$SRV/state,target=/app/state" \
+    "$VOC_IMAGE" voc publication activate --bundle /input --catalog /app/catalog --state /app/state
+  rm -rf "$staging"
+  log "publication $id active"
+}
+
+app_up() {
+  load_release
+  load_app
+  findmnt -n "$SRV" >/dev/null 2>&1 || die "/srv/voc is not mounted; refusing to start on the root disk"
+  [ -r "$SECRET_ENV" ] || die "missing $SECRET_ENV; start voc-secrets.service first"
+  ecr_login
+  docker compose --project-directory "$(release_dir)" --env-file "$APP_ENV" \
+    -f "$(release_dir)/compose.yaml" up --detach --wait
+}
+
+app_down() {
+  load_release
+  docker compose --project-directory "$(release_dir)" --env-file "$APP_ENV" \
+    -f "$(release_dir)/compose.yaml" down
+}
+
+units() {
+  local unit
+  mkdir -p "$ROOT/etc/systemd/system"
+  for unit in voc-secrets.service voc-app.service; do
+    install -m 0644 "$(release_dir)/units/$unit" "$ROOT/etc/systemd/system/$unit"
+  done
+  systemctl daemon-reload
+  systemctl enable voc-secrets.service voc-app.service
+}
+
+bootstrap() {
+  load_release
+  packages
+  storage
+  configure
+  units
+  install_publication
+  systemctl start voc-secrets.service
+  systemctl start voc-app.service
+  log "bootstrap complete for release $VOC_RELEASE_ID"
+}
+
+status() {
+  load_release
+  findmnt "$SRV" || log "/srv/voc is not mounted"
+  docker compose --project-directory "$(release_dir)" --env-file "$APP_ENV" -f "$(release_dir)/compose.yaml" ps
+  curl --fail --silent http://127.0.0.1:8091/health/ready && echo
+}
+
+case "${1:-}" in
+  bootstrap) bootstrap ;;
+  packages) packages ;;
+  storage) load_release; storage ;;
+  configure) load_release; configure ;;
+  set) load_release; set_value "${2:?usage: voc-host set KEY=VALUE}" ;;
+  secrets) secrets ;;
+  install-publication) install_publication "${2:-}" "${3:-}" ;;
+  app-up) app_up ;;
+  app-down) app_down ;;
+  units) load_release; units ;;
+  status) status ;;
+  *) die "usage: voc-host {bootstrap|packages|storage|configure|set KEY=VALUE|secrets|install-publication [ID SHA256]|app-up|app-down|units|status}" ;;
+esac
