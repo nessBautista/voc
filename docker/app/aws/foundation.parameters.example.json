@@ -1,0 +1,6 @@
+[
+  { "ParameterKey": "Environment", "ParameterValue": "pilot" },
+  { "ParameterKey": "LogRetentionDays", "ParameterValue": "14" },
+  { "ParameterKey": "BackupRetentionDays", "ParameterValue": "30" },
+  { "ParameterKey": "ReleaseImagesToKeep", "ParameterValue": "5" }
+]

@@ -1,0 +1,232 @@
+# VOC pilot foundation. Plain YAML on purpose: the long-form intrinsic
+# functions (Fn::Sub, Ref, Fn::GetAtt) let an ordinary YAML parser read it,
+# so the repository's tests can check it without CloudFormation.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  VOC pilot foundation: a private image repository, a publications bucket, a
+  backup bucket, the host log group and two empty secrets. No compute, no
+  users and no secret values live here; the host stack and the console add
+  those.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: pilot
+    AllowedPattern: "^[a-z][a-z0-9-]{1,19}$"
+    Description: Short lowercase label used in resource names and export names.
+  LogRetentionDays:
+    Type: Number
+    Default: 14
+    AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365]
+    Description: How long CloudWatch keeps host logs.
+  BackupRetentionDays:
+    Type: Number
+    Default: 30
+    MinValue: 7
+    MaxValue: 365
+    Description: Days before a backup object and its noncurrent versions expire.
+  ReleaseImagesToKeep:
+    Type: Number
+    Default: 5
+    MinValue: 2
+    MaxValue: 20
+    Description: Newest release images kept in ECR; current and rollback stay within this count.
+
+Resources:
+  Repository:
+    Type: AWS::ECR::Repository
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      RepositoryName: { "Fn::Sub": "voc-${Environment}-app" }
+      ImageTagMutability: IMMUTABLE
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      EncryptionConfiguration:
+        EncryptionType: AES256
+      EmptyOnDelete: false
+      LifecyclePolicy:
+        LifecyclePolicyText:
+          Fn::Sub: >-
+            {"rules":[{"rulePriority":1,"description":"Keep only the newest release images",
+            "selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":${ReleaseImagesToKeep}},
+            "action":{"type":"expire"}}]}
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  PublicationsBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: { "Fn::Sub": "voc-${Environment}-publications-${AWS::AccountId}" }
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: abandon-incomplete-uploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  PublicationsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: PublicationsBucket }
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: RequireTls
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - { "Fn::GetAtt": [PublicationsBucket, Arn] }
+              - { "Fn::Sub": "${PublicationsBucket.Arn}/*" }
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+
+  BackupBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: { "Fn::Sub": "voc-${Environment}-backups-${AWS::AccountId}" }
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          # Retention: a backup and every version of it disappear after the window.
+          - Id: expire-backups
+            Status: Enabled
+            Prefix: backups/
+            ExpirationInDays: { Ref: BackupRetentionDays }
+            NoncurrentVersionExpiration:
+              NoncurrentDays: { Ref: BackupRetentionDays }
+          - Id: remove-expired-delete-markers
+            Status: Enabled
+            ExpiredObjectDeleteMarker: true
+          - Id: abandon-incomplete-uploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  BackupBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: BackupBucket }
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: RequireTls
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - { "Fn::GetAtt": [BackupBucket, Arn] }
+              - { "Fn::Sub": "${BackupBucket.Arn}/*" }
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+
+  HostLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: { "Fn::Sub": "/voc/${Environment}/host" }
+      RetentionInDays: { Ref: LogRetentionDays }
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  # Both secrets are created empty. Their values are set in the console and
+  # read only by the host role; nothing in this template ever sees them.
+  WebAuthSecret:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: { "Fn::Sub": "voc/${Environment}/web-auth" }
+      Description: 'Cognito web client secret, stored as {"client_secret": "..."}. Set the value in the console.'
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  ModelProviderSecret:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: { "Fn::Sub": "voc/${Environment}/model-provider" }
+      Description: 'Model provider API key, stored as {"api_key": "..."}. Set the value in the console (guide 07).'
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+Outputs:
+  RepositoryName:
+    Value: { Ref: Repository }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-RepositoryName" } }
+  RepositoryUri:
+    Value: { "Fn::GetAtt": [Repository, RepositoryUri] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-RepositoryUri" } }
+  RepositoryArn:
+    Value: { "Fn::GetAtt": [Repository, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-RepositoryArn" } }
+  PublicationsBucketName:
+    Value: { Ref: PublicationsBucket }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-PublicationsBucketName" } }
+  PublicationsBucketArn:
+    Value: { "Fn::GetAtt": [PublicationsBucket, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-PublicationsBucketArn" } }
+  BackupBucketName:
+    Value: { Ref: BackupBucket }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-BackupBucketName" } }
+  BackupBucketArn:
+    Value: { "Fn::GetAtt": [BackupBucket, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-BackupBucketArn" } }
+  HostLogGroupName:
+    Value: { Ref: HostLogGroup }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-HostLogGroupName" } }
+  HostLogGroupArn:
+    Value: { "Fn::GetAtt": [HostLogGroup, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-HostLogGroupArn" } }
+  WebAuthSecretArn:
+    Value: { Ref: WebAuthSecret }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-WebAuthSecretArn" } }
+  ModelProviderSecretArn:
+    Value: { Ref: ModelProviderSecret }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-ModelProviderSecretArn" } }
