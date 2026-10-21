@@ -43,6 +43,10 @@ def test_build_is_deterministic(tmp_path):
     first = bundle["build"](RELEASE, DIGEST, tmp_path / "a")
     second = bundle["build"](RELEASE, DIGEST, tmp_path / "b")
     assert first["sha256"] == second["sha256"]
+    # The gzip header carries no timestamp, so another day or machine yields the same bytes.
+    assert (tmp_path / "a" / RELEASE / "bundle.tar.gz").read_bytes()[
+        4:8
+    ] == b"\x00\x00\x00\x00"
 
 
 def test_host_files_contain_no_credentials_or_identifiers():
