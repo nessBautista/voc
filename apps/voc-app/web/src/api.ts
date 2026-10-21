@@ -1,3 +1,4 @@
+import { announceSessionEnded } from "./auth";
 import {
   kinds,
   parseResult,
@@ -23,6 +24,13 @@ async function readJSON(path: string, signal: AbortSignal): Promise<unknown> {
     cache: "no-store",
     headers: { Accept: "application/json" },
   });
+  if (response.status === 401) {
+    announceSessionEnded();
+    throw new DataError(
+      "Tu sesión terminó. Inicia sesión de nuevo.",
+      "session_ended",
+    );
+  }
   if (!response.ok) {
     const body = await response.json().catch(() => null);
     const noSelection =
