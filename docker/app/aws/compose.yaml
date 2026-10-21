@@ -1,0 +1,44 @@
+# Cloud Compose contract: one worker, read-only application filesystem, read-only
+# catalog, writable state. Started by voc-app.service with /etc/voc/app.env as the
+# interpolation source; the container reads that file and the private secret file.
+name: voc-app
+services:
+  app:
+    image: ${VOC_IMAGE:?set in /etc/voc/app.env}
+    init: true
+    restart: unless-stopped
+    # Every interface on purpose: the security group is the gate, not the bind.
+    ports:
+      - "0.0.0.0:8091:8000"
+    env_file:
+      - /etc/voc/app.env
+      - /run/voc/app.secret.env
+    volumes:
+      - type: bind
+        source: /srv/voc/catalog
+        target: /app/catalog
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /srv/voc/state
+        target: /app/state
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: ${VOC_AWS_REGION:?}
+        awslogs-group: ${VOC_LOG_GROUP:?}
+        awslogs-stream: app-${VOC_RELEASE_ID:?}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5).close()"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

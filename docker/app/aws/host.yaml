@@ -1,0 +1,454 @@
+# VOC pilot host. One private EC2 instance with no inbound rules, reached only
+# through Systems Manager. Plain YAML with long-form intrinsic functions so the
+# repository's tests can read it. Imports the foundation stack's exports.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  VOC pilot host: a VPC with one public subnet, a security group with no inbound
+  rules, one arm64 instance with IMDSv2, a retained encrypted data volume, an
+  Elastic IP, and the instance role that may pull the release image, read the
+  publication and deployment prefixes, write backups, read the two secrets and
+  ship logs. A CloudFront front door exists only while DemoFrontDoor is true.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: pilot
+    AllowedPattern: "^[a-z][a-z0-9-]{1,19}$"
+    Description: Must match the foundation stack's Environment; its exports are imported by this name.
+  ReleaseId:
+    Type: String
+    AllowedPattern: "^[0-9a-f]{12}$"
+    Description: Git commit prefix of the release; also the ECR tag and the deployment prefix.
+  ImageDigest:
+    Type: String
+    AllowedPattern: "^sha256:[0-9a-f]{64}$"
+    Description: ECR digest the host pulls. Never a mutable tag.
+  DeploymentBundleKey:
+    Type: String
+    AllowedPattern: "^deployments/[0-9a-f]{12}/bundle\\.tar\\.gz$"
+  DeploymentBundleSha256:
+    Type: String
+    AllowedPattern: "^[0-9a-f]{64}$"
+  PublicationId:
+    Type: String
+    AllowedPattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+  PublicationManifestSha256:
+    Type: String
+    AllowedPattern: "^[0-9a-f]{64}$"
+  CognitoIssuer:
+    Type: String
+    AllowedPattern: "^https://cognito-idp\\.[a-z0-9-]+\\.amazonaws\\.com/[A-Za-z0-9_-]+$"
+  CognitoDomain:
+    Type: String
+    AllowedPattern: "^https://[a-z0-9.-]+$"
+  CognitoWebClientId:
+    Type: String
+    AllowedPattern: "^[a-z0-9]{20,}$"
+  CognitoNativeClientId:
+    Type: String
+    AllowedPattern: "^[a-z0-9]{20,}$"
+  PublicOrigin:
+    Type: String
+    Default: http://localhost:8091
+    AllowedPattern: "^(http://localhost(:[0-9]+)?|https://[a-z0-9.-]+)$"
+    Description: What people type in a browser. Stays localhost while access is through tunnels.
+  PlannerMode:
+    Type: String
+    Default: fixture
+    AllowedValues: [fixture, model]
+    Description: fixture answers without a model provider; model needs the provider secret (guide 07).
+  InstanceType:
+    Type: String
+    Default: t4g.medium
+    AllowedValues: [t4g.small, t4g.medium, t4g.large]
+  AmiId:
+    Type: AWS::EC2::Image::Id
+    Description: Amazon Linux 2023 arm64 image resolved from the public SSM parameter and recorded in the worksheet.
+  AvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: The data volume and the instance must share this zone.
+  DataVolumeSizeGiB:
+    Type: Number
+    Default: 40
+    MinValue: 20
+    MaxValue: 200
+  DemoFrontDoor:
+    Type: String
+    Default: "false"
+    AllowedValues: ["false", "true"]
+    Description: Guide 10 only. true adds a CloudFront distribution and one inbound rule from CloudFront's prefix list.
+  CloudFrontPrefixListId:
+    Type: String
+    Default: ""
+    AllowedPattern: "^(pl-[0-9a-f]+)?$"
+    Description: Guide 10 only. The com.amazonaws.global.cloudfront.origin-facing prefix list in this Region.
+
+Conditions:
+  DemoOpen:
+    Fn::And:
+      - { "Fn::Equals": [{ Ref: DemoFrontDoor }, "true"] }
+      - Fn::Not: [{ "Fn::Equals": [{ Ref: CloudFrontPrefixListId }, ""] }]
+
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.42.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}" } }
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}" } }
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: { Ref: Vpc }
+      InternetGatewayId: { Ref: InternetGateway }
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: { Ref: Vpc }
+      CidrBlock: 10.42.0.0/24
+      AvailabilityZone: { Ref: AvailabilityZone }
+      MapPublicIpOnLaunch: false
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-public" } }
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: { Ref: Vpc }
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-public" } }
+
+  DefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: { Ref: RouteTable }
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: { Ref: InternetGateway }
+
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: { Ref: PublicSubnet }
+      RouteTableId: { Ref: RouteTable }
+
+  # No inbound rules, ever. Session Manager needs none. Outbound is what the
+  # host needs to reach AWS, package repositories and the model provider.
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: VOC host; administration and team access through Systems Manager only
+      VpcId: { Ref: Vpc }
+      SecurityGroupEgress:
+        - Description: HTTPS to AWS APIs, package repositories and the model provider
+          IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - Description: DNS to the VPC resolver
+          IpProtocol: udp
+          FromPort: 53
+          ToPort: 53
+          CidrIp: 10.42.0.0/16
+        - Description: DNS to the VPC resolver over TCP
+          IpProtocol: tcp
+          FromPort: 53
+          ToPort: 53
+          CidrIp: 10.42.0.0/16
+        - Description: Amazon Time Sync
+          IpProtocol: udp
+          FromPort: 123
+          ToPort: 123
+          CidrIp: 169.254.169.123/32
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-host" } }
+
+  DemoFrontDoorIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: DemoOpen
+    Properties:
+      GroupId: { Ref: SecurityGroup }
+      Description: Demo window only; CloudFront origin-facing addresses to the app port
+      IpProtocol: tcp
+      FromPort: 8091
+      ToPort: 8091
+      SourcePrefixListId: { Ref: CloudFrontPrefixListId }
+
+  HostRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: { "Fn::Sub": "voc-${Environment}-host" }
+      Path: /voc/
+      Description: What the VOC host may touch; separate from any person's permissions.
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: ec2.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+        - PolicyName: voc-host-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: EcrLogin
+                Effect: Allow
+                Action: ecr:GetAuthorizationToken
+                Resource: "*"
+              - Sid: EcrPullRelease
+                Effect: Allow
+                Action:
+                  - ecr:BatchCheckLayerAvailability
+                  - ecr:BatchGetImage
+                  - ecr:GetDownloadUrlForLayer
+                Resource: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-RepositoryArn" } }
+              - Sid: ReadPublicationsAndDeployments
+                Effect: Allow
+                Action: s3:GetObject
+                Resource:
+                  - Fn::Sub:
+                      - "${Bucket}/publications/*"
+                      - Bucket: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-PublicationsBucketArn" } }
+                  - Fn::Sub:
+                      - "${Bucket}/deployments/*"
+                      - Bucket: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-PublicationsBucketArn" } }
+              - Sid: ListPublicationsAndDeployments
+                Effect: Allow
+                Action: s3:ListBucket
+                Resource: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-PublicationsBucketArn" } }
+                Condition:
+                  StringLike:
+                    s3:prefix: ["publications/*", "deployments/*"]
+              - Sid: WriteBackups
+                Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:AbortMultipartUpload
+                Resource:
+                  Fn::Sub:
+                    - "${Bucket}/backups/*"
+                    - Bucket: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-BackupBucketArn" } }
+              - Sid: ListBackups
+                Effect: Allow
+                Action: s3:ListBucket
+                Resource: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-BackupBucketArn" } }
+                Condition:
+                  StringLike:
+                    s3:prefix: ["backups/*"]
+              - Sid: ReadOwnSecrets
+                Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource:
+                  - { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-WebAuthSecretArn" } }
+                  - { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-ModelProviderSecretArn" } }
+              - Sid: ShipLogs
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogStreams
+                Resource: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-HostLogGroupArn" } }
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /voc/
+      Roles: [{ Ref: HostRole }]
+
+  # The data volume outlives the instance and the stack.
+  DataVolume:
+    Type: AWS::EC2::Volume
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AvailabilityZone: { Ref: AvailabilityZone }
+      Size: { Ref: DataVolumeSizeGiB }
+      VolumeType: gp3
+      Encrypted: true
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-data" } }
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: { "Fn::Sub": "voc-${Environment}-host" }
+      LaunchTemplateData:
+        MetadataOptions:
+          HttpEndpoint: enabled
+          HttpTokens: required
+          # One hop: the host can read its role credentials, containers cannot.
+          HttpPutResponseHopLimit: 1
+        BlockDeviceMappings:
+          - DeviceName: /dev/xvda
+            Ebs:
+              VolumeSize: 16
+              VolumeType: gp3
+              Encrypted: true
+              DeleteOnTermination: true
+        Monitoring: { Enabled: false }
+
+  Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: DefaultRoute
+    Properties:
+      LaunchTemplate:
+        LaunchTemplateId: { Ref: LaunchTemplate }
+        Version: { "Fn::GetAtt": [LaunchTemplate, LatestVersionNumber] }
+      ImageId: { Ref: AmiId }
+      InstanceType: { Ref: InstanceType }
+      SubnetId: { Ref: PublicSubnet }
+      SecurityGroupIds: [{ Ref: SecurityGroup }]
+      IamInstanceProfile: { Ref: InstanceProfile }
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-host" } }
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+      # First boot only: record the nonsecret release facts, fetch the verified
+      # deployment bundle and hand over to its host script. No secret values here.
+      UserData:
+        Fn::Base64:
+          Fn::Sub:
+            - |
+              #!/bin/bash
+              set -euo pipefail
+              exec > >(tee -a /var/log/voc-bootstrap.log) 2>&1
+              mkdir -p /etc/voc
+              cat > /etc/voc/release.env <<'ENV'
+              VOC_ENVIRONMENT=${Environment}
+              VOC_RELEASE_ID=${ReleaseId}
+              VOC_IMAGE=${RepositoryUri}@${ImageDigest}
+              VOC_AWS_REGION=${AWS::Region}
+              VOC_PUBLICATIONS_BUCKET=${PublicationsBucket}
+              VOC_BACKUP_BUCKET=${BackupBucket}
+              VOC_LOG_GROUP=${LogGroup}
+              VOC_DATA_VOLUME_ID=${DataVolume}
+              VOC_DEPLOYMENT_BUNDLE_OBJECT=${DeploymentBundleKey}
+              VOC_DEPLOYMENT_BUNDLE_SHA256=${DeploymentBundleSha256}
+              VOC_PUBLICATION_ID=${PublicationId}
+              VOC_PUBLICATION_MANIFEST_SHA256=${PublicationManifestSha256}
+              VOC_WEB_AUTH_SECRET_ARN=${WebAuthSecretArn}
+              VOC_MODEL_PROVIDER_SECRET_ARN=${ModelProviderSecretArn}
+              VOC_AUTH_MODE=cognito
+              VOC_PUBLIC_ORIGIN=${PublicOrigin}
+              VOC_COGNITO_ISSUER=${CognitoIssuer}
+              VOC_COGNITO_DOMAIN=${CognitoDomain}
+              VOC_COGNITO_WEB_CLIENT_ID=${CognitoWebClientId}
+              VOC_COGNITO_NATIVE_CLIENT_ID=${CognitoNativeClientId}
+              VOC_COGNITO_SCOPES='openid email voc-api/access'
+              VOC_PLANNER_MODE=${PlannerMode}
+              VOC_MCP_ENABLED=false
+              ENV
+              chmod 0644 /etc/voc/release.env
+              release=/opt/voc/releases/${ReleaseId}
+              mkdir -p "$release"
+              aws s3 cp "s3://${PublicationsBucket}/${DeploymentBundleKey}" /root/bundle.tar.gz --region ${AWS::Region}
+              echo "${DeploymentBundleSha256}  /root/bundle.tar.gz" | sha256sum -c -
+              tar -xzf /root/bundle.tar.gz -C "$release"
+              rm -f /root/bundle.tar.gz
+              install -m 0755 "$release/voc-host" /usr/local/sbin/voc-host
+              /usr/local/sbin/voc-host bootstrap
+            - RepositoryUri: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-RepositoryUri" } }
+              PublicationsBucket: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-PublicationsBucketName" } }
+              BackupBucket: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-BackupBucketName" } }
+              LogGroup: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-HostLogGroupName" } }
+              WebAuthSecretArn: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-WebAuthSecretArn" } }
+              ModelProviderSecretArn: { "Fn::ImportValue": { "Fn::Sub": "voc-${Environment}-ModelProviderSecretArn" } }
+
+  DataVolumeAttachment:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      Device: /dev/sdf
+      InstanceId: { Ref: Instance }
+      VolumeId: { Ref: DataVolume }
+
+  ElasticIp:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - { Key: Name, Value: { "Fn::Sub": "voc-${Environment}-host" } }
+
+  ElasticIpAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      AllocationId: { "Fn::GetAtt": [ElasticIp, AllocationId] }
+      InstanceId: { Ref: Instance }
+
+  # Guide 10 only: a temporary HTTPS front door for stakeholders.
+  DemoDistribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: DemoOpen
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: { "Fn::Sub": "VOC ${Environment} demo window" }
+        PriceClass: PriceClass_100
+        HttpVersion: http2
+        Origins:
+          - Id: voc-host
+            DomainName:
+              Fn::Sub:
+                - "ec2-${Dashed}.${AWS::Region}.compute.amazonaws.com"
+                - Dashed:
+                    Fn::Join: ["-", { "Fn::Split": [".", { "Fn::GetAtt": [ElasticIp, PublicIp] }] }]
+            CustomOriginConfig:
+              HTTPPort: 8091
+              OriginProtocolPolicy: http-only
+              OriginReadTimeout: 60
+              OriginKeepaliveTimeout: 5
+        DefaultCacheBehavior:
+          TargetOriginId: voc-host
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+          CachedMethods: [GET, HEAD]
+          Compress: true
+          # Managed policies: CachingDisabled and AllViewer.
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+          OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+Outputs:
+  InstanceId:
+    Value: { Ref: Instance }
+  AvailabilityZone:
+    Value: { Ref: AvailabilityZone }
+  DataVolumeId:
+    Value: { Ref: DataVolume }
+  ElasticIp:
+    Value: { "Fn::GetAtt": [ElasticIp, PublicIp] }
+  SecurityGroupId:
+    Value: { Ref: SecurityGroup }
+  VpcId:
+    Value: { Ref: Vpc }
+  SubnetId:
+    Value: { Ref: PublicSubnet }
+  HostRoleArn:
+    Value: { "Fn::GetAtt": [HostRole, Arn] }
+  DemoDomain:
+    Condition: DemoOpen
+    Description: The https address to share during a demo window
+    Value: { "Fn::GetAtt": [DemoDistribution, DomainName] }
