@@ -3,32 +3,20 @@
 from uuid import UUID
 
 import duckdb
-from fastapi import APIRouter, HTTPException, Request
-
+from fastapi import APIRouter, Depends, Request
 from voc.publications import queries, store
 
+from .auth import current_user
+from .errors import failure, reject_query_parameters
+
+__all__ = ["failure", "read_current", "reject_query_parameters", "router"]
+
+# Every publication read requires a recognised caller.
 router = APIRouter(
     prefix="/api/v1/publications",
     tags=["Publications"],
+    dependencies=[Depends(current_user)],
 )
-
-
-def failure(status, code, message):
-    # Public errors describe recovery without exposing internal paths or traces.
-    return HTTPException(
-        status_code=status,
-        detail={"code": code, "message": message},
-    )
-
-
-def reject_query_parameters(request):
-    # Do not silently ignore filters that this first API cannot apply.
-    if request.query_params:
-        raise failure(
-            422,
-            "invalid_request",
-            "This endpoint does not accept query parameters.",
-        )
 
 
 def read_current(settings):

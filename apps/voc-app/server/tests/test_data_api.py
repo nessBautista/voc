@@ -50,10 +50,8 @@ def test_current_validates_selection_and_reports_capabilities(client, active):
     assert result["capabilities"] == list(store.CAPABILITIES)
     assert result["warnings"]
     assert response.headers["cache-control"] == "no-store"
-    assert client.get("/health/ready").json() == {
-        "status": "ready",
-        "publication_id": active["publication_id"],
-    }
+    # Readiness no longer names the publication; that is signed-in information.
+    assert client.get("/health/ready").json() == {"status": "ready"}
 
 
 @pytest.mark.parametrize("kind", store.CAPABILITIES)

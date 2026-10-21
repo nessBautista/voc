@@ -75,7 +75,7 @@ def test_cli_http_mcp_cycle_survives_restart_and_restores_real_copy(tmp_path):
         VOC_APP_STATE_DIR=str(root / "state"),
         VOC_PLANNER_MODE="fixture",
         VOC_LLM_API_KEY="",
-        VOC_INTERNAL_API_URL=origin,
+        VOC_ACCEPTANCE_ORIGIN=origin,
         VOC_MCP_ENABLED="true",
         VOC_MCP_TOKEN="acceptance-test-only-not-a-real-secret-00001",
         VOC_MCP_ALLOWED_HOSTS=f"127.0.0.1:{port}",

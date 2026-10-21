@@ -66,7 +66,21 @@ def test_container_mounts_only_public_catalog_and_state():
         "VOC_MCP_TOKEN",
         "VOC_MCP_ALLOWED_HOSTS",
         "VOC_MCP_ALLOWED_ORIGINS",
+        "VOC_AUTH_MODE",
+        "VOC_PUBLIC_ORIGIN",
+        "VOC_COGNITO_ISSUER",
+        "VOC_COGNITO_DOMAIN",
+        "VOC_COGNITO_WEB_CLIENT_ID",
+        "VOC_COGNITO_NATIVE_CLIENT_ID",
+        "VOC_COGNITO_WEB_CLIENT_SECRET",
+        "VOC_COGNITO_SCOPES",
     }
+    # The secret has no literal default; local mode is the default login mode.
+    assert (
+        app["environment"]["VOC_COGNITO_WEB_CLIENT_SECRET"]
+        == "${VOC_COGNITO_WEB_CLIENT_SECRET:-}"
+    )
+    assert app["environment"]["VOC_AUTH_MODE"] == "${VOC_AUTH_MODE:-local}"
     assert not any(key.startswith("AWS_") for key in app["environment"])
     assert {mount["source"] for mount in app["volumes"]} == {
         "./data/voc-app/catalog",

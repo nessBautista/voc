@@ -39,7 +39,6 @@ app = create_app(settings, planner=SlowPlanner(settings))
     env.update(
         VOC_PUBLICATIONS_DIR=str(settings.publications_dir),
         VOC_APP_STATE_DIR=str(settings.state_dir),
-        VOC_INTERNAL_API_URL=origin,
         PYTHONPATH=str(tmp_path),
     )
 

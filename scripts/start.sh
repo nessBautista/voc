@@ -3,15 +3,15 @@
 # -e stops on unhandled command failures; -u rejects unset variables without defaults.
 set -eu
 
-# Fixture mode without MCP has no credential requirement.
+# Fixture mode without MCP or Cognito login has no credential requirement.
 target="${1:-operator}"
 case "$target" in
   operator) compose_file=docker/operator/compose.yaml ;;
   app)
     compose_file=docker/app/compose.yaml
-    if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ] && [ "${VOC_MCP_ENABLED:-false}" = false ]; then
+    if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ] && [ "${VOC_MCP_ENABLED:-false}" = false ] && [ "${VOC_AUTH_MODE:-local}" = local ]; then
       # Explicit empty values prevent inherited provider keys entering fixture mode.
-      export VOC_LLM_API_KEY='' OPENROUTER_API_KEY='' VOC_MCP_TOKEN=''
+      export VOC_LLM_API_KEY='' OPENROUTER_API_KEY='' VOC_MCP_TOKEN='' VOC_COGNITO_WEB_CLIENT_SECRET=''
       exec docker compose --project-directory . -p voc-state-app --env-file .env -f "$compose_file" up --build -d --wait
     fi
     ;;
@@ -26,13 +26,17 @@ credential_file="${VOC_AWS_ENV_FILE:-config/aws.local.env}"
 test -r "$credential_file" || { echo 'Create the credential file from config/aws.local.env.example.' >&2; exit 1; }
 
 # 2. Remove inherited keys so old terminal credentials cannot override our selection.
-unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN OPENROUTER_API_KEY VOC_LLM_API_KEY VOC_MCP_TOKEN
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN OPENROUTER_API_KEY VOC_LLM_API_KEY VOC_MCP_TOKEN VOC_COGNITO_WEB_CLIENT_SECRET
 
 if [ "$target" = app ]; then
   export COMPOSE_PROJECT_NAME=voc-state-app
   if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ]; then
     # Explicit environment values override provider keys from a literal env file.
     export VOC_LLM_API_KEY='' OPENROUTER_API_KEY=''
+  fi
+  if [ "${VOC_AUTH_MODE:-local}" = local ]; then
+    # Local mode never needs the Cognito secret, even when the file holds one.
+    export VOC_COGNITO_WEB_CLIENT_SECRET=''
   fi
 fi
 
@@ -56,6 +60,9 @@ case "${VOC_AWS_AUTH_MODE:-env-file}" in
       exec op run --env-file "$credential_file" -- sh -c '
         if [ "${VOC_PLANNER_MODE:-fixture}" = fixture ]; then
           export VOC_LLM_API_KEY="" OPENROUTER_API_KEY=""
+        fi
+        if [ "${VOC_AUTH_MODE:-local}" = local ]; then
+          export VOC_COGNITO_WEB_CLIENT_SECRET=""
         fi
         exec docker compose --project-directory . --env-file .env -f "$1" up --build -d --wait
       ' sh "$compose_file"

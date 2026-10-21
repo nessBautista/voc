@@ -21,6 +21,15 @@ services:
       VOC_MCP_ALLOWED_HOSTS: ${VOC_MCP_ALLOWED_HOSTS:-127.0.0.1:${VOC_APP_PORT:-8091},localhost:${VOC_APP_PORT:-8091},host.docker.internal:${VOC_APP_PORT:-8091},127.0.0.1:8000}
       VOC_MCP_ALLOWED_ORIGINS: ${VOC_MCP_ALLOWED_ORIGINS:-http://127.0.0.1:${VOC_APP_PORT:-8091},http://localhost:${VOC_APP_PORT:-8091}}
       VOC_TURN_TIMEOUT_SECONDS: ${VOC_TURN_TIMEOUT_SECONDS:-45}
+      # Login contract from guide 03; the secret arrives through the private loader only.
+      VOC_AUTH_MODE: ${VOC_AUTH_MODE:-local}
+      VOC_PUBLIC_ORIGIN: ${VOC_PUBLIC_ORIGIN:-http://localhost:${VOC_APP_PORT:-8091}}
+      VOC_COGNITO_ISSUER: ${VOC_COGNITO_ISSUER:-}
+      VOC_COGNITO_DOMAIN: ${VOC_COGNITO_DOMAIN:-}
+      VOC_COGNITO_WEB_CLIENT_ID: ${VOC_COGNITO_WEB_CLIENT_ID:-}
+      VOC_COGNITO_NATIVE_CLIENT_ID: ${VOC_COGNITO_NATIVE_CLIENT_ID:-}
+      VOC_COGNITO_WEB_CLIENT_SECRET: ${VOC_COGNITO_WEB_CLIENT_SECRET:-}
+      VOC_COGNITO_SCOPES: ${VOC_COGNITO_SCOPES:-openid email voc-api/access}
     volumes:
       - type: bind
         source: ./data/voc-app/catalog

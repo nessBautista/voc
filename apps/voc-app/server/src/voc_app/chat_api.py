@@ -1,16 +1,18 @@
 """Expose conversation services; the same services can later support MCP."""
 
-from urllib.parse import urlsplit
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
 from .agent.contracts import AgentError, Ask
+from .auth import Identity, current_user, require_same_origin
 from .conversations import ConversationError
 from .data_api import failure, reject_query_parameters
 
 router = APIRouter(prefix="/api/v1", tags=["Conversations"])
+Caller = Annotated[Identity, Depends(current_user)]
 
 
 def service(request):
@@ -25,17 +27,10 @@ def service(request):
 
 
 @router.post("/ask")
-async def ask(payload: Ask, request: Request):
+async def ask(payload: Ask, request: Request, caller: Caller):
     reject_query_parameters(request)
-    # Prevent another website from spending model calls through a local browser.
-    origin = request.headers.get("origin")
-    if origin and (
-        urlsplit(origin).scheme not in ("http", "https")
-        or urlsplit(origin).netloc != request.headers.get("host")
-    ):
-        raise failure(
-            403, "origin_not_allowed", "Envía preguntas desde la aplicación VOC."
-        )
+    # Prevent another website from spending model calls through a signed-in browser.
+    require_same_origin(request, caller, "Envía preguntas desde la aplicación VOC.")
     try:
         conversation = await service(request).ask(payload)
         turn = next(
@@ -53,7 +48,7 @@ async def ask(payload: Ask, request: Request):
 
 
 @router.get("/conversations/{conversation_id}")
-def read_conversation(conversation_id: str, request: Request):
+def read_conversation(conversation_id: str, request: Request, caller: Caller):
     reject_query_parameters(request)
     try:
         if str(UUID(conversation_id)) != conversation_id:

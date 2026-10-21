@@ -1,16 +1,18 @@
 """Create and retrieve frozen conversation reports without invoking the agent."""
 
-from urllib.parse import urlsplit
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Depends, Query, Request
 from pydantic import field_validator
 
 from .agent.contracts import Contract
+from .auth import Identity, current_user, require_same_origin
 from .conversations import ConversationError
 from .data_api import failure, reject_query_parameters
 
 router = APIRouter(prefix="/api/v1", tags=["Reports"])
+Caller = Annotated[Identity, Depends(current_user)]
 
 
 def identity(value):
@@ -48,17 +50,12 @@ def service(request):
 
 
 @router.post("/conversations/{conversation_id}/reports")
-def prepare(conversation_id: str, payload: PrepareReport, request: Request):
+def prepare(
+    conversation_id: str, payload: PrepareReport, request: Request, caller: Caller
+):
     reject_query_parameters(request)
-    # Match the conversation API's local-origin boundary for state-changing requests.
-    origin = request.headers.get("origin")
-    if origin and (
-        urlsplit(origin).scheme not in ("http", "https")
-        or urlsplit(origin).netloc != request.headers.get("host")
-    ):
-        raise failure(
-            403, "origin_not_allowed", "Prepara el informe desde la aplicación VOC."
-        )
+    # Match the conversation API's origin boundary for state-changing requests.
+    require_same_origin(request, caller, "Prepara el informe desde la aplicación VOC.")
     try:
         return service(request).prepare(
             identity(conversation_id), payload.request_id, payload.publication_id
@@ -68,7 +65,7 @@ def prepare(conversation_id: str, payload: PrepareReport, request: Request):
 
 
 @router.get("/reports/{report_id}")
-def read(report_id: str, request: Request):
+def read(report_id: str, request: Request, caller: Caller):
     reject_query_parameters(request)
     try:
         return service(request).read(identity(report_id))
@@ -77,7 +74,12 @@ def read(report_id: str, request: Request):
 
 
 @router.get("/reports/{report_id}/chunks")
-def chunk(report_id: str, request: Request, offset: int = Query(default=0, ge=0)):
+def chunk(
+    report_id: str,
+    request: Request,
+    caller: Caller,
+    offset: int = Query(default=0, ge=0),
+):
     if (
         set(request.query_params) - {"offset"}
         or len(request.query_params.getlist("offset")) > 1

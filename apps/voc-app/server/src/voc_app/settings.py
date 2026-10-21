@@ -15,8 +15,17 @@ class Settings:
     llm_base_url: str = "https://openrouter.ai/api/v1"
     llm_model: str = "anthropic/claude-sonnet-5.5"
     llm_api_key: str = field(default="", repr=False)
-    internal_api_url: str = "http://127.0.0.1:8000"
     turn_timeout_seconds: float = 45
+
+    # Who may call the API: a fixed local developer, or people signed in through Cognito.
+    auth_mode: str = "local"
+    public_origin: str = "http://localhost:8091"
+    cognito_issuer: str = ""
+    cognito_domain: str = ""
+    cognito_web_client_id: str = ""
+    cognito_native_client_id: str = ""
+    cognito_web_client_secret: str = field(default="", repr=False)
+    cognito_scopes: str = "openid email voc-api/access"
 
     mcp_enabled: bool = False
     mcp_token: str = field(default="", repr=False)
@@ -50,24 +59,60 @@ class Settings:
 
         if self.planner_mode not in ("fixture", "model"):
             raise ValueError("VOC_PLANNER_MODE must be fixture or model")
+
+        # A cloud configuration must fail here rather than start without login.
+        if self.auth_mode not in ("local", "cognito"):
+            raise ValueError("VOC_AUTH_MODE must be local or cognito")
+        origin = urlsplit(self.public_origin)
+        if (
+            origin.scheme not in ("http", "https")
+            or not origin.hostname
+            or origin.path not in ("", "/")
+            or origin.username
+            or origin.query
+            or origin.fragment
+            or (origin.scheme == "http" and origin.hostname != "localhost")
+        ):
+            raise ValueError(
+                "VOC_PUBLIC_ORIGIN must be http://localhost or an https origin"
+            )
+        if self.auth_mode == "cognito":
+            if self.mcp_enabled:
+                # The hosted MCP route stays disabled; Claude uses the local desktop MCP.
+                raise ValueError("VOC_MCP_ENABLED must be false in cognito mode")
+            issuer = urlsplit(self.cognito_issuer)
+            host = issuer.hostname or ""
+            if (
+                issuer.scheme != "https"
+                or not host.startswith("cognito-idp.")
+                or not host.endswith(".amazonaws.com")
+                or issuer.path.count("/") != 1
+                or len(issuer.path) < 2
+            ):
+                raise ValueError("VOC_COGNITO_ISSUER must be the pool's issuer URL")
+            domain = urlsplit(self.cognito_domain)
+            if (
+                domain.scheme != "https"
+                or not domain.hostname
+                or domain.path not in ("", "/")
+            ):
+                raise ValueError("VOC_COGNITO_DOMAIN must be an https login domain")
+            if not self.cognito_web_client_id or not self.cognito_native_client_id:
+                raise ValueError("Cognito mode requires both app client IDs")
+            if (
+                not self.cognito_web_client_secret
+                or self.cognito_web_client_secret.startswith("op://")
+            ):
+                raise ValueError("Cognito mode requires a resolved web client secret")
+            if "voc-api/access" not in self.cognito_scopes.split():
+                raise ValueError("VOC_COGNITO_SCOPES must include voc-api/access")
         if not 1 <= self.turn_timeout_seconds <= 120:
             raise ValueError("VOC_TURN_TIMEOUT_SECONDS must be between 1 and 120")
-        for value, internal in (
-            (self.internal_api_url, True),
-            (self.llm_base_url, False),
-        ):
-            parsed = urlsplit(value)
-            if parsed.username or parsed.password or parsed.query or parsed.fragment:
-                raise ValueError("Service URLs must not contain credentials or queries")
-            if internal:
-                if (
-                    parsed.scheme != "http"
-                    or parsed.hostname not in ("127.0.0.1", "localhost", "::1")
-                    or parsed.path not in ("", "/")
-                ):
-                    raise ValueError("Internal API must use a loopback HTTP origin")
-            elif parsed.scheme != "https" or not parsed.hostname:
-                raise ValueError("Model provider must use HTTPS")
+        parsed = urlsplit(self.llm_base_url)
+        if parsed.username or parsed.password or parsed.query or parsed.fragment:
+            raise ValueError("Service URLs must not contain credentials or queries")
+        if parsed.scheme != "https" or not parsed.hostname:
+            raise ValueError("Model provider must use HTTPS")
 
     @classmethod
     def from_env(cls):
@@ -115,10 +160,19 @@ class Settings:
             ),
             llm_model=os.environ.get("VOC_LLM_MODEL", "anthropic/claude-sonnet-5.5"),
             llm_api_key=os.environ.get("VOC_LLM_API_KEY", ""),
-            internal_api_url=os.environ.get(
-                "VOC_INTERNAL_API_URL", "http://127.0.0.1:8000"
-            ),
             turn_timeout_seconds=float(
                 os.environ.get("VOC_TURN_TIMEOUT_SECONDS", "45")
+            ),
+            auth_mode=os.environ.get("VOC_AUTH_MODE", "local"),
+            public_origin=os.environ.get("VOC_PUBLIC_ORIGIN", "http://localhost:8091"),
+            cognito_issuer=os.environ.get("VOC_COGNITO_ISSUER", ""),
+            cognito_domain=os.environ.get("VOC_COGNITO_DOMAIN", ""),
+            cognito_web_client_id=os.environ.get("VOC_COGNITO_WEB_CLIENT_ID", ""),
+            cognito_native_client_id=os.environ.get("VOC_COGNITO_NATIVE_CLIENT_ID", ""),
+            cognito_web_client_secret=os.environ.get(
+                "VOC_COGNITO_WEB_CLIENT_SECRET", ""
+            ),
+            cognito_scopes=os.environ.get(
+                "VOC_COGNITO_SCOPES", "openid email voc-api/access"
             ),
         )

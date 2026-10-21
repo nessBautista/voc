@@ -34,10 +34,7 @@ class CountPlanner:
 
 
 def app_for(settings, planner=None):
-    api = create_app(settings)
-    return create_app(
-        settings, data_transport=httpx.ASGITransport(app=api), planner=planner
-    )
+    return create_app(settings, planner=planner)
 
 
 def payload(question="¿Cuántos registros tenemos de Google Play?", conversation=None):
@@ -353,21 +350,15 @@ def test_invalid_requests_and_cross_origin_do_not_start_work(settings, active):
         assert client.get(f"/api/v1/conversations/{uuid4()}").status_code == 404
 
 
-def test_mismatched_http_evidence_never_becomes_a_completed_answer(settings, active):
-    def wrong(request):
-        if request.url.path.endswith("current"):
-            return httpx.Response(
-                200,
-                json={
-                    "schema_version": "voc-data-state-v1",
-                    "publication_id": active["publication_id"],
-                },
-            )
-        return httpx.Response(200, json={"publication_id": str(uuid4())})
-
-    with TestClient(
-        create_app(settings, data_transport=httpx.MockTransport(wrong))
-    ) as client:
+def test_mismatched_evidence_never_becomes_a_completed_answer(
+    settings, active, monkeypatch
+):
+    # A library result naming another publication must fail the turn, not answer it.
+    monkeypatch.setattr(
+        "voc_app.client.queries.query",
+        lambda catalog, publication_id, kind: {"publication_id": str(uuid4())},
+    )
+    with TestClient(create_app(settings)) as client:
         turn = ask(client, payload())["turns"][0]
         assert turn["status"] == "failed"
         assert turn["answer"] is None
