@@ -101,7 +101,11 @@ def test_repository_is_immutable_scanned_and_pruned(template):
             "${ReleaseImagesToKeep}", "5"
         )
     )
-    assert policy["rules"][0]["selection"]["countType"] == "imageCountMoreThan"
+    tagged, untagged = policy["rules"]
+    assert tagged["selection"]["tagStatus"] == "tagged"
+    assert tagged["selection"]["countType"] == "imageCountMoreThan"
+    assert untagged["selection"]["tagStatus"] == "untagged"
+    assert untagged["selection"]["countType"] == "sinceImagePushed"
     assert template["Parameters"]["ReleaseImagesToKeep"]["MinValue"] >= 2
 
 
