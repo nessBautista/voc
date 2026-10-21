@@ -12,7 +12,7 @@
   { "ParameterKey": "CognitoNativeClientId", "ParameterValue": "REPLACE_NATIVE_CLIENT_ID" },
   { "ParameterKey": "PublicOrigin", "ParameterValue": "http://localhost:8091" },
   { "ParameterKey": "PlannerMode", "ParameterValue": "fixture" },
-  { "ParameterKey": "InstanceType", "ParameterValue": "t4g.medium" },
+  { "ParameterKey": "InstanceType", "ParameterValue": "t4g.small" },
   { "ParameterKey": "AmiId", "ParameterValue": "ami-REPLACE_FROM_SSM_PARAMETER" },
   { "ParameterKey": "AvailabilityZone", "ParameterValue": "us-east-2a" },
   { "ParameterKey": "DataVolumeSizeGiB", "ParameterValue": "40" },

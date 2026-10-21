@@ -54,7 +54,9 @@ def test_instance_requires_imdsv2_with_one_hop_and_encrypted_disks(template):
     assert volume["Properties"]["VolumeType"] == "gp3"
     _, instance = resource(template, "AWS::EC2::Instance")
     assert "KeyName" not in instance["Properties"]
-    assert template["Parameters"]["InstanceType"]["Default"] == "t4g.medium"
+    # The free plan refuses anything that is not free-tier eligible.
+    assert template["Parameters"]["InstanceType"]["Default"] == "t4g.small"
+    assert set(template["Parameters"]["InstanceType"]["AllowedValues"]) <= {"t4g.micro", "t4g.small"}
 
 
 def statements(template):

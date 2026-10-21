@@ -59,8 +59,10 @@ Parameters:
     Description: fixture answers without a model provider; model needs the provider secret (guide 07).
   InstanceType:
     Type: String
-    Default: t4g.medium
-    AllowedValues: [t4g.small, t4g.medium, t4g.large]
+    Default: t4g.small
+    # The free plan only launches free-tier-eligible types; these are the arm64 ones.
+    AllowedValues: [t4g.micro, t4g.small]
+    Description: Free-tier-eligible arm64 type. Larger types need the paid plan.
   AmiId:
     Type: AWS::EC2::Image::Id
     Description: Amazon Linux 2023 arm64 image resolved from the public SSM parameter and recorded in the worksheet.
