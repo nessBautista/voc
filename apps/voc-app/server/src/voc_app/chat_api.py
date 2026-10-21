@@ -32,7 +32,7 @@ async def ask(payload: Ask, request: Request, caller: Caller):
     # Prevent another website from spending model calls through a signed-in browser.
     require_same_origin(request, caller, "Envía preguntas desde la aplicación VOC.")
     try:
-        conversation = await service(request).ask(payload)
+        conversation = await service(request).ask(payload, caller)
         turn = next(
             turn
             for turn in conversation["turns"]
@@ -60,6 +60,6 @@ def read_conversation(conversation_id: str, request: Request, caller: Caller):
             "Usa un identificador de conversación válido.",
         ) from error
     try:
-        return service(request).read_conversation(conversation_id)
+        return service(request).read_conversation(conversation_id, caller)
     except ConversationError as error:
         raise failure(error.status, error.code, error.message) from error

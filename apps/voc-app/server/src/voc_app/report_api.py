@@ -58,7 +58,10 @@ def prepare(
     require_same_origin(request, caller, "Prepara el informe desde la aplicación VOC.")
     try:
         return service(request).prepare(
-            identity(conversation_id), payload.request_id, payload.publication_id
+            identity(conversation_id),
+            payload.request_id,
+            payload.publication_id,
+            caller,
         )
     except ConversationError as error:
         raise failure(error.status, error.code, error.message) from error
@@ -68,7 +71,7 @@ def prepare(
 def read(report_id: str, request: Request, caller: Caller):
     reject_query_parameters(request)
     try:
-        return service(request).read(identity(report_id))
+        return service(request).read(identity(report_id), caller)
     except ConversationError as error:
         raise failure(error.status, error.code, error.message) from error
 
@@ -86,6 +89,6 @@ def chunk(
     ):
         raise failure(422, "invalid_request", "Solo se admite una posición offset.")
     try:
-        return service(request).chunk(identity(report_id), offset)
+        return service(request).chunk(identity(report_id), offset, caller)
     except ConversationError as error:
         raise failure(error.status, error.code, error.message) from error
