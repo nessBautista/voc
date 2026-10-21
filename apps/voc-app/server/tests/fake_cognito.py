@@ -54,6 +54,20 @@ class FakeCognito:
                     ]
                 },
             )
+        if str(request.url) == f"{DOMAIN}/oauth2/userInfo":
+            self.requests.append(request)
+            token = request.headers.get("authorization", "")[len("Bearer ") :]
+            try:
+                claims = jwt.decode(token, options={"verify_signature": False})
+            except jwt.PyJWTError:
+                return httpx.Response(401, json={"error": "invalid_token"})
+            return httpx.Response(
+                200,
+                json={
+                    "sub": claims.get("sub"),
+                    "email": f"{claims.get('sub')}@example.com",
+                },
+            )
         if str(request.url) == f"{DOMAIN}/oauth2/token":
             self.requests.append(request)
             if self.refuse:

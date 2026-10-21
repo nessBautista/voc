@@ -210,6 +210,27 @@ class CognitoClient:
                 "No pudimos completar el inicio de sesión. Vuelve a intentarlo.",
             ) from error
 
+    def user_info(self, access_token):
+        """Ask Cognito who an access token belongs to; the native client has no ID token here."""
+        try:
+            response = self.client.get(
+                f"{self.settings.cognito_domain}/oauth2/userInfo",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            if response.status_code != 200 or len(response.content) > RESPONSE_LIMIT:
+                raise ValueError("userInfo refused the token")
+            info = response.json()
+            if not isinstance(info, dict) or not isinstance(info.get("sub"), str):
+                raise ValueError("userInfo response is incomplete")  # noqa: TRY004 - caught below.
+            return info
+        except (httpx.HTTPError, ValueError) as error:
+            raise AuthError(
+                "invalid_token", "La sesión no es válida. Inicia sesión de nuevo."
+            ) from error
+
     def logout_url(self):
         return f"{self.settings.cognito_domain}/logout?" + urlencode(
             {
@@ -237,6 +258,10 @@ class Auth:
         if session is None:
             return None
         if parse(session["access_expires_at"]) <= now():
+            if not session["refresh_token"]:
+                # A desktop-issued session cannot renew itself; the Mac app signs in again.
+                self.sessions.delete(cookie)
+                return None
             try:
                 tokens = self.cognito.refresh(session["refresh_token"])
                 self.verifier.access_identity(tokens["access_token"])
@@ -263,6 +288,13 @@ def current_user(request: Request) -> Identity:
     if settings.auth_mode == "local":
         return LOCAL_DEVELOPER
     auth = request.app.state.auth
+    # An explicit bearer token wins over a cookie: the Mac app always presents one.
+    header = request.headers.get("authorization", "")
+    if header.startswith("Bearer "):
+        try:
+            return auth.verifier.access_identity(header[len("Bearer ") :].strip())
+        except AuthError as error:
+            raise failure(401, error.code, error.message) from error
     cookie = request.cookies.get(COOKIE)
     if cookie:
         identity = auth.session_identity(cookie)
@@ -271,12 +303,6 @@ def current_user(request: Request) -> Identity:
         raise failure(
             401, "session_expired", "Tu sesión terminó. Inicia sesión de nuevo."
         )
-    header = request.headers.get("authorization", "")
-    if header.startswith("Bearer "):
-        try:
-            return auth.verifier.access_identity(header[len("Bearer ") :].strip())
-        except AuthError as error:
-            raise failure(401, error.code, error.message) from error
     raise failure(401, "sign_in_required", "Inicia sesión para usar VOC.")
 
 
