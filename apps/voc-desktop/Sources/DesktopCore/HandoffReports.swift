@@ -98,3 +98,24 @@ extension HandoffReportTransport {
         return data
     }
 }
+
+/// The bridge serves Claude from the bytes the person prepared in VOC; it never calls the server.
+struct StoreReportPages: HandoffReportTransport {
+    let store: HandoffStore
+
+    func prepare(_ work: HandoffWork, requestID: String) async throws -> HandoffReport {
+        throw HandoffError("report_not_prepared")
+    }
+
+    func page(_ work: HandoffWork, report: HandoffReport, offset: Int) async throws -> HandoffReportPage {
+        try report.validate(for: work)
+        guard let bytes = try store.cachedReport(report.reportID), bytes.count == report.byteLength,
+              HandoffReport.digest(bytes) == report.sha256 else { throw HandoffError("report_not_prepared") }
+        guard (0...bytes.count).contains(offset) else { throw HandoffError("invalid_report_offset") }
+        let end = min(offset + HandoffReport.chunkBytes, bytes.count)
+        return HandoffReportPage(report: report, chunk: .init(
+            encoding: "base64", data: bytes.subdata(in: offset..<end).base64EncodedString(),
+            offset: offset, nextOffset: end, eof: end == bytes.count
+        ))
+    }
+}

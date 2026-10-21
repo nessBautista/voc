@@ -2,6 +2,14 @@ import Foundation
 
 /// Only saved work origins and report identities determine requests; redirects are refused.
 final class HandoffReportClient: NSObject, HandoffReportTransport, URLSessionTaskDelegate {
+    private let bearer: BearerProvider?
+    private let sessionConfiguration: URLSessionConfiguration
+
+    init(bearer: BearerProvider? = nil, configuration: URLSessionConfiguration = .ephemeral) {
+        self.bearer = bearer
+        sessionConfiguration = configuration
+    }
+
     func prepare(_ work: HandoffWork, requestID: String) async throws -> HandoffReport {
         guard let conversation = work.conversationID, let publication = work.publicationID else {
             throw HandoffError("report_not_ready")
@@ -38,7 +46,10 @@ final class HandoffReportClient: NSObject, HandoffReportTransport, URLSessionTas
         request.httpBody = body
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         if body != nil { request.setValue("application/json", forHTTPHeaderField: "Content-Type") }
-        let configuration = URLSessionConfiguration.ephemeral
+        if let token = try await bearer?(profile.origin.absoluteString) {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        let configuration = sessionConfiguration
         configuration.timeoutIntervalForRequest = 8
         configuration.timeoutIntervalForResource = 10
         configuration.urlCache = nil
@@ -49,6 +60,7 @@ final class HandoffReportClient: NSObject, HandoffReportTransport, URLSessionTas
         do {
             let (bytes, response) = try await session.bytes(for: request)
             guard let http = response as? HTTPURLResponse, http.url == url else { throw HandoffError("report_transport_failed") }
+            if http.statusCode == 401 { throw HandoffError("sign_in_required") }
             var data = Data()
             for try await byte in bytes {
                 guard data.count < 96 * 1024 else { throw HandoffError("invalid_report") }

@@ -28,11 +28,13 @@ final class HandoffStore {
             try execute("PRAGMA synchronous=FULL")
             try transaction {
                 let version = try scalar("PRAGMA user_version")
-                guard version == "0" || version == "1" else { throw HandoffError("unsupported_state_version") }
+                guard ["0", "1", "2"].contains(version ?? "") else { throw HandoffError("unsupported_state_version") }
                 try execute("CREATE TABLE IF NOT EXISTS settings (name TEXT PRIMARY KEY, value TEXT NOT NULL)")
                 try execute("CREATE TABLE IF NOT EXISTS works (id TEXT PRIMARY KEY, request_id TEXT NOT NULL UNIQUE, active INTEGER NOT NULL CHECK(active IN (0,1)), record TEXT NOT NULL)")
                 try execute("CREATE UNIQUE INDEX IF NOT EXISTS one_active_work ON works(active) WHERE active = 1")
-                try execute("PRAGMA user_version=1")
+                // Version 2: prepared report bytes live here so the bridge never needs a token.
+                try execute("CREATE TABLE IF NOT EXISTS report_cache (report_id TEXT PRIMARY KEY, work_id TEXT NOT NULL, sha256 TEXT NOT NULL, content TEXT NOT NULL)")
+                try execute("PRAGMA user_version=2")
             }
         } catch {
             sqlite3_close(database)
@@ -227,6 +229,41 @@ final class HandoffStore {
             throw HandoffError("report_not_associated")
         }
         return (work, report)
+    }
+
+    /// The server refused the delivery for lack of a signed-in caller; keep the question.
+    func awaitSignIn(_ id: String, owner: String) throws -> HandoffWork {
+        try transaction {
+            var work = try owned(id, owner: owner)
+            work.state = .awaitingSignIn
+            work.errorCode = "sign_in_required"
+            work.updatedAt = Date().timeIntervalSince1970
+            try save(work)
+            return work
+        }
+    }
+
+    func cacheReport(_ id: String, report: HandoffReport, bytes: Data) throws {
+        guard bytes.count == report.byteLength, HandoffReport.digest(bytes) == report.sha256 else {
+            throw HandoffError("invalid_report")
+        }
+        try transaction {
+            let work = try required(id)
+            guard work.reports?.contains(report) == true || work.reportRequestID != nil else { throw HandoffError("report_not_associated") }
+            try execute("INSERT INTO report_cache VALUES (?, ?, ?, ?) ON CONFLICT(report_id) DO UPDATE SET content=excluded.content, sha256=excluded.sha256",
+                        [report.reportID, id, report.sha256, bytes.base64EncodedString()])
+        }
+    }
+
+    func cachedReport(_ reportID: String) throws -> Data? {
+        _ = try HandoffInput.identity(reportID)
+        guard let encoded = try scalar("SELECT content FROM report_cache WHERE report_id=?", [reportID]) else { return nil }
+        return Data(base64Encoded: encoded)
+    }
+
+    /// Signing out or changing servers forgets every prepared report on this Mac.
+    func clearReportCache() throws {
+        try transaction { try execute("DELETE FROM report_cache") }
     }
 
     func fail(_ id: String, owner: String?, code: String) throws {

@@ -5,6 +5,7 @@ struct VOCDataStateApp: App {
     @StateObject private var connection: ConnectionModel
     @StateObject private var handoff: HandoffController
     @StateObject private var reports: ReportController
+    @StateObject private var signIn: SignInController
     @StateObject private var layout = WindowLayoutModel()
     @State private var showLayout = false
     @State private var showConnection = true
@@ -20,10 +21,13 @@ struct VOCDataStateApp: App {
             startupError = error.localizedDescription
         }
         let connection = ConnectionModel(handoffStore: store)
+        let signIn = SignInController()
         _connection = StateObject(wrappedValue: connection)
-        _reports = StateObject(wrappedValue: ReportController(store: store))
+        _signIn = StateObject(wrappedValue: signIn)
+        // Native requests carry the signed-in person's token; a local server gets none.
+        _reports = StateObject(wrappedValue: ReportController(store: store, client: HandoffReportClient(bearer: signIn.bearer)))
         _handoff = StateObject(wrappedValue: HandoffController(
-            connection: connection, store: store, startupError: startupError
+            connection: connection, store: store, client: HandoffClient(bearer: signIn.bearer), startupError: startupError
         ))
     }
 
@@ -58,6 +62,28 @@ struct VOCDataStateApp: App {
                             Button("Reintentar / Recargar") { connection.reload() }
                                 .disabled(connection.command == nil || handoff.isDelivering)
                                 .accessibilityIdentifier("reload-workspace")
+                        }
+                        if signIn.mode != .local {
+                            HStack(spacing: 8) {
+                                Text("Sesión").frame(width: 95, alignment: .leading)
+                                if signIn.mode == .unknown {
+                                    Text(signIn.message.isEmpty ? "Comprobando si el servidor pide inicio de sesión…" : signIn.message)
+                                        .font(.callout).foregroundStyle(.secondary).textSelection(.enabled)
+                                } else if let email = signIn.email {
+                                    Text(email).font(.callout).textSelection(.enabled).accessibilityIdentifier("session-email")
+                                    Button("Cerrar sesión") { Task { await signIn.signOut(origin: connection.currentOrigin); connection.reload() } }
+                                        .disabled(signIn.busy || handoff.isDelivering || reports.busy)
+                                        .accessibilityIdentifier("sign-out")
+                                } else {
+                                    Button("Iniciar sesión") { Task { await signIn.signIn(origin: connection.currentOrigin) } }
+                                        .disabled(signIn.busy)
+                                        .accessibilityIdentifier("sign-in")
+                                }
+                                if signIn.busy { ProgressView().controlSize(.small) }
+                                if signIn.mode == .cognito, !signIn.message.isEmpty {
+                                    Text(signIn.message).font(.callout).foregroundStyle(.secondary).textSelection(.enabled)
+                                }
+                            }
                         }
                         HStack(spacing: 8) {
                             if connection.isLoading { ProgressView().controlSize(.small) }
@@ -113,7 +139,7 @@ struct VOCDataStateApp: App {
                     .padding(.horizontal, 14).padding(.bottom, 10)
                 }
                 Divider()
-                WebWorkspace(model: connection)
+                WebWorkspace(model: connection, dataStore: signIn.webData)
             }
             .frame(minWidth: 560, minHeight: 560)
             .background(WorkspaceWindowReader { layout.backend.window = $0 })
@@ -125,7 +151,20 @@ struct VOCDataStateApp: App {
                     showConnection = false
                     return await layout.automatic(profile)
                 }
+                // A parked question asks for a sign-in; the page's own link does the same.
+                handoff.onSignInRequired = { showConnection = true; Task { await signIn.signIn(origin: connection.currentOrigin) } }
+                connection.onLoginRequested = { Task { await signIn.signIn(origin: connection.currentOrigin) } }
+                connection.onLogoutRequested = { Task { await signIn.signOut(origin: connection.currentOrigin); connection.reload() } }
+                signIn.onSignedIn = { connection.logoutHost = signIn.logoutHost; connection.reload(); handoff.resumeAfterSignIn() }
+                signIn.onSignedOut = { handoff.forgetPreparedReports() }
                 if connection.command == nil { connection.connect() }
+            }
+            .onChange(of: connection.command?.profile.origin) { _, origin in
+                Task {
+                    await signIn.refresh(origin: origin)
+                    connection.logoutHost = signIn.logoutHost
+                    await signIn.restore(origin: origin)
+                }
             }
         }
         .defaultSize(width: 1180, height: 850)

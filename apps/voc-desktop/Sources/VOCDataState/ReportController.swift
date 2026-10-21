@@ -25,6 +25,10 @@ final class ReportController: ObservableObject {
             let selected = try store.reserveReport(work.workID, origin: origin)
             let report = try await client.prepare(selected.work, requestID: selected.requestID)
             try Task.checkCancellation()
+            // Fetch the bytes now, while this person is signed in; the bridge reads only this copy.
+            let bytes = try await client.download(selected.work, report: report)
+            try Task.checkCancellation()
+            try store.cacheReport(work.workID, report: report, bytes: bytes)
             _ = try store.preparedReport(work.workID, requestID: selected.requestID, report: report)
             onChange?()
             message = "Resultado listo: \(report.turnCount) turnos. Vuelve al agente y pídele recuperar este trabajo."
@@ -32,7 +36,7 @@ final class ReportController: ObservableObject {
     }
 
     func save(_ work: HandoffWork) async {
-        guard !busy, let report = work.reports?.last else { return }
+        guard !busy, let report = work.reports?.last, let store else { return }
         busy = true
         defer { busy = false }
         let panel = NSSavePanel()
@@ -48,7 +52,9 @@ final class ReportController: ObservableObject {
         }
         message = "Descargando y verificando Markdown…"
         do {
-            let bytes = try await client.download(work, report: report)
+            let bytes: Data
+            if let cached = try store.cachedReport(report.reportID) { bytes = cached }
+            else { bytes = try await client.download(work, report: report) }
             try Task.checkCancellation()
             // Save only completely verified bytes to the location selected by the user.
             try bytes.write(to: url, options: .atomic)
