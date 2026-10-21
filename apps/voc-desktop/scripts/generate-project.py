@@ -60,6 +60,7 @@ core_files = shared_files + mcp_files + [path for path in layout_files if path.n
     ROOT / "Sources/VOCDataState/ConnectionModel.swift",
     ROOT / "Sources/VOCDataState/HandoffController.swift",
     ROOT / "Sources/VOCDataState/ReportController.swift",
+    ROOT / "Sources/VOCDataState/SignInController.swift",
 ]
 test_files = sorted(ROOT.glob("Tests/*.swift"))
 references = {

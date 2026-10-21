@@ -34,8 +34,19 @@ protocol HandoffTransport {
     func send(_ work: HandoffWork) async throws -> HandoffReceipt
 }
 
+/// Supplies a fresh access token for a server origin, or nil when that server has no login.
+typealias BearerProvider = @Sendable (String) async throws -> String?
+
 /// The native client submits the durable payload; the web app renders the saved answer.
 final class HandoffClient: NSObject, HandoffTransport, URLSessionTaskDelegate {
+    private let bearer: BearerProvider?
+    private let sessionConfiguration: URLSessionConfiguration
+
+    init(bearer: BearerProvider? = nil, configuration: URLSessionConfiguration = .ephemeral) {
+        self.bearer = bearer
+        sessionConfiguration = configuration
+    }
+
     func send(_ work: HandoffWork) async throws -> HandoffReceipt {
         let profile = try ConnectionProfile(server: work.serverOrigin)
         let url = profile.origin.appendingPathComponent("api/v1/ask")
@@ -44,8 +55,11 @@ final class HandoffClient: NSObject, HandoffTransport, URLSessionTaskDelegate {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = Data(work.requestBody.utf8)
+        if let token = try await bearer?(profile.origin.absoluteString) {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 
-        let configuration = URLSessionConfiguration.ephemeral
+        let configuration = sessionConfiguration
         configuration.timeoutIntervalForRequest = 20
         configuration.timeoutIntervalForResource = 25
         configuration.urlCache = nil
@@ -55,10 +69,10 @@ final class HandoffClient: NSObject, HandoffTransport, URLSessionTaskDelegate {
         defer { session.invalidateAndCancel() }
         do {
             let (bytes, response) = try await session.bytes(for: request)
-            guard let http = response as? HTTPURLResponse, http.url == url,
-                  [200, 202].contains(http.statusCode) else {
-                throw HandoffError("transport_failed")
-            }
+            guard let http = response as? HTTPURLResponse, http.url == url else { throw HandoffError("transport_failed") }
+            // The server wants a signed-in person; the question is kept, not discarded.
+            if http.statusCode == 401 { throw HandoffError("sign_in_required") }
+            guard [200, 202].contains(http.statusCode) else { throw HandoffError("transport_failed") }
             var data = Data()
             for try await byte in bytes {
                 guard data.count < 2 * 1024 * 1024 else { throw HandoffError("invalid_response") }

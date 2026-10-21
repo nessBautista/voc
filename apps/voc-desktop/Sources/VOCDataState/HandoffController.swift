@@ -17,6 +17,8 @@ final class HandoffController: ObservableObject {
     private var presentation: HandoffPresentation?
     private var layoutTask: Task<Void, Never>?
     var onPresentation: (@MainActor (HandoffPresentation) async -> HandoffLayoutResult)?
+    /// Fired once when a delivery is parked for lack of a signed-in person.
+    var onSignInRequired: (@MainActor () -> Void)?
 
     init(connection: ConnectionModel, store: HandoffStore?, client: any HandoffTransport = HandoffClient(), startupError: String? = nil) {
         self.connection = connection
@@ -42,6 +44,18 @@ final class HandoffController: ObservableObject {
 
     func recover() {
         guard let work else { return }
+        begin(work.workID, recover: true)
+    }
+
+    /// Signing out forgets every prepared report on this Mac; the server keeps its own.
+    func forgetPreparedReports() {
+        try? store?.clearReportCache()
+        refresh()
+    }
+
+    /// After a sign-in, submit a parked question once; anything else is left alone.
+    func resumeAfterSignIn() {
+        guard let work, work.state == .awaitingSignIn, !isDelivering else { return }
         begin(work.workID, recover: true)
     }
 
@@ -92,9 +106,16 @@ final class HandoffController: ObservableObject {
                 } catch {
                     if !Task.isCancelled {
                         let code = (error as? HandoffError)?.code ?? "transport_failed"
-                        try? store.fail(id, owner: self.owner, code: code)
-                        self.refresh()
-                        self.message = error.localizedDescription
+                        if code == "sign_in_required", let parked = try? store.awaitSignIn(id, owner: self.owner) {
+                            // The question is kept; it is sent exactly once after a sign-in.
+                            self.work = parked
+                            self.message = self.description(parked)
+                            self.onSignInRequired?()
+                        } else {
+                            try? store.fail(id, owner: self.owner, code: code)
+                            self.refresh()
+                            self.message = error.localizedDescription
+                        }
                     }
                     if self.work?.workID == id { self.isDelivering = false }
                 }
@@ -144,6 +165,7 @@ final class HandoffController: ObservableObject {
         }
         switch work.state {
         case .opening: return "Entrega pendiente. Recuperar continúa el mismo trabajo; no crea otra pregunta."
+        case .awaitingSignIn: return "Esperando inicio de sesión. La pregunta se enviará una sola vez cuando inicies sesión en este servidor."
         case .opened: return "Conversación abierta. Continúa en el chat y prepara el resultado para el agente cuando termines."
         case .failed: return HandoffError(work.errorCode ?? "transport_failed").localizedDescription
         case .expired: return HandoffError("expired").localizedDescription

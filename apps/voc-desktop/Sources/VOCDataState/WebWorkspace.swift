@@ -4,13 +4,15 @@ import WebKit
 
 struct WebWorkspace: NSViewRepresentable {
     @ObservedObject var model: ConnectionModel
+    /// Nonpersistent store owned by the sign-in controller, which installs the session cookie.
+    var dataStore: WKWebsiteDataStore = .nonPersistent()
 
     func makeCoordinator() -> Coordinator { Coordinator(model: model) }
 
     func makeNSView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         // Website data stays in memory. Conversation history belongs to the server.
-        configuration.websiteDataStore = .nonPersistent()
+        configuration.websiteDataStore = dataStore
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
         let view = WKWebView(frame: .zero, configuration: configuration)
         view.navigationDelegate = context.coordinator
@@ -47,6 +49,20 @@ struct WebWorkspace: NSViewRepresentable {
         func webView(_ webView: WKWebView, decidePolicyFor action: WKNavigationAction,
                      decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             guard let command else { decisionHandler(.cancel); return }
+            if let url = action.request.url, command.profile.contains(url), url.path == "/auth/login",
+               action.targetFrame?.isMainFrame != false {
+                // Sign-in happens in the system's authentication window, not in this view.
+                decisionHandler(.cancel)
+                model.onLoginRequested?()
+                return
+            }
+            if let url = action.request.url, let host = url.host?.lowercased(), host == model.logoutHost,
+               url.path == "/logout", action.targetFrame?.isMainFrame != false {
+                // The page signed out; forget the native credentials too instead of visiting Cognito.
+                decisionHandler(.cancel)
+                model.onLogoutRequested?()
+                return
+            }
             let decision = command.profile.navigation(
                 to: action.request.url, userActivated: action.navigationType == .linkActivated
             )

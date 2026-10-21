@@ -77,7 +77,9 @@ enum DesktopMCP {
         "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
     ])
 
-    static func make(store: HandoffStore, opener: any HandoffOpening, presentation: HandoffPresentation = .stdio, reports: any HandoffReportTransport = HandoffReportClient()) async -> Server {
+    static func make(store: HandoffStore, opener: any HandoffOpening, presentation: HandoffPresentation = .stdio, reports: (any HandoffReportTransport)? = nil) async -> Server {
+        // Prepared reports are read from the local cache; the helper holds no credentials.
+        let reports = reports ?? StoreReportPages(store: store)
         let server = Server(
             name: "voc-desktop", version: version, title: "VOC Desktop",
             instructions: instructions,

@@ -4,7 +4,8 @@ import Combine
 @MainActor
 final class ConnectionModel: ObservableObject {
     static let preferenceKey = "voc.data-state.server-origin"
-    static let defaultServer = "http://127.0.0.1:8091"
+    // The server publishes http://localhost:8091 as its origin; the Mac must use the same words.
+    static let defaultServer = "http://localhost:8091"
 
     @Published var server: String
     @Published var conversation = ""
@@ -16,6 +17,15 @@ final class ConnectionModel: ObservableObject {
     private let handoffStore: HandoffStore?
     var onNavigationLoaded: ((UUID, URL?) -> Void)?
     var onNavigationFailed: ((UUID) -> Void)?
+    /// The page's own "Iniciar sesión" link is answered natively, never inside the web view.
+    var onLoginRequested: (() -> Void)?
+    /// The page's own sign-out ends at Cognito's logout address; the native side must follow.
+    var onLogoutRequested: (() -> Void)?
+    var logoutHost: String?
+
+    var currentOrigin: URL? {
+        command?.profile.origin ?? (try? ConnectionProfile(server: server).origin)
+    }
 
     init(preferences: UserDefaults = .standard, handoffStore: HandoffStore? = nil) {
         self.handoffStore = handoffStore

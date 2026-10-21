@@ -2,7 +2,11 @@ import Foundation
 
 /// A handoff starts one server conversation; its opening state is not the answer state.
 struct HandoffWork: Codable, Equatable {
-    enum State: String, Codable { case opening, opened, failed, expired, abandoned }
+    enum State: String, Codable {
+        case opening, opened, failed, expired, abandoned
+        /// The server asked for a signed-in caller; the question waits, unexpired, for one.
+        case awaitingSignIn = "awaiting_sign_in"
+    }
 
     let workID: String
     let requestID: String
@@ -89,6 +93,15 @@ struct HandoffError: LocalizedError {
         case "report_request_conflict": return "Esa petición ya corresponde a otra exportación."
         case "report_transport_failed": return "No se pudo recuperar el informe del servidor. Reintenta la misma operación cuando esté disponible."
 
+        case "sign_in_required": return "Inicia sesión en el servidor configurado para continuar."
+        case "sign_in_cancelled": return "El inicio de sesión se canceló. La pregunta sigue esperando; vuelve a iniciar sesión cuando quieras."
+        case "sign_in_failed": return "No se pudo completar el inicio de sesión. Vuelve a intentarlo."
+        case "auth_callback_rejected": return "Se recibió una respuesta de inicio de sesión que no corresponde a este intento; se ignoró."
+        case "server_without_login": return "Este servidor funciona en modo local y no ofrece inicio de sesión."
+        case "auth_config_unavailable": return "No se pudo leer la configuración de inicio de sesión del servidor. Comprueba la conexión."
+        case "invalid_auth_config": return "La configuración de inicio de sesión del servidor no es válida."
+        case "origin_mismatch": return "El servidor espera que lo abras con la dirección que él publica, por ejemplo http://localhost:8091."
+        case "credential_store_failed": return "No se pudo guardar o leer la credencial en el llavero del Mac."
         case "http_token_required": return "Configura VOC_DESKTOP_MCP_TOKEN con una credencial privada de 32 a 512 caracteres ASCII sin espacios."
         case "http_bind_failed": return "No se pudo escuchar en 127.0.0.1:8766. Comprueba si el puerto está ocupado; no se detuvo ningún proceso."
         case "invalid_id", "invalid_link": return "La entrega necesita un identificador UUID válido y un enlace sin parámetros."
