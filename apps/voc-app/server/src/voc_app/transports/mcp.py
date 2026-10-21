@@ -26,6 +26,7 @@ from starlette.routing import Route
 from voc.publications import queries
 
 from ..agent.contracts import AgentError, Ask, Contract
+from ..auth import LOCAL_DEVELOPER
 from ..conversations import ConversationError
 from ..data_api import read_current
 
@@ -193,7 +194,8 @@ def mount_mcp(application, settings):
                 raise AgentError(
                     "chat_unavailable", "Conversation storage is unavailable."
                 )
-            conversation = await service.ask(request)
+            # MCP is a local-mode transport; settings refuse it in cognito mode.
+            conversation = await service.ask(request, LOCAL_DEVELOPER)
             turn = next(
                 item
                 for item in conversation["turns"]

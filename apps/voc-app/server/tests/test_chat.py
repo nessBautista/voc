@@ -171,7 +171,7 @@ def test_crash_marker_is_interrupted_on_start(settings, active):
     service.start()
     with service.database() as db:
         db.execute(
-            "INSERT INTO conversations VALUES (?,?,?)",
+            "INSERT INTO conversations (id, publication_id, created_at) VALUES (?,?,?)",
             (str(uuid4()), active["publication_id"], "2026-01-01T00:00:00Z"),
         )
         identity = db.execute("SELECT id FROM conversations").fetchone()[0]

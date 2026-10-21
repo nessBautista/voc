@@ -9,7 +9,7 @@ import sqlite3
 from contextlib import contextmanager
 from uuid import uuid4
 
-from .conversations import ConversationError, timestamp
+from .conversations import ConversationError, backup, timestamp, visible
 
 CHUNK_BYTES = 32 * 1024
 MAX_REPORT_BYTES = 8 * 1024 * 1024
@@ -180,23 +180,30 @@ class Reports:
         with self.database() as db:
             db.execute("PRAGMA journal_mode=WAL")
             version = db.execute("PRAGMA user_version").fetchone()[0]
-            if version not in (0, 1):
+            if version not in (0, 1, 2):
                 raise ValueError("Unsupported report database version")
+        if version == 1:
+            backup(self.path, version)
+            with self.database() as db:
+                db.execute("ALTER TABLE reports ADD COLUMN owner TEXT")
+                db.execute("ALTER TABLE requests ADD COLUMN owner TEXT")
+        with self.database() as db:
             db.executescript("""
                 CREATE TABLE IF NOT EXISTS reports (
                     id TEXT PRIMARY KEY, conversation_id TEXT NOT NULL,
                     snapshot_sha256 TEXT NOT NULL, metadata TEXT NOT NULL,
-                    snapshot BLOB NOT NULL, markdown BLOB NOT NULL,
+                    snapshot BLOB NOT NULL, markdown BLOB NOT NULL, owner TEXT,
                     UNIQUE(conversation_id, snapshot_sha256)
                 );
                 CREATE TABLE IF NOT EXISTS requests (
                     id TEXT PRIMARY KEY, conversation_id TEXT NOT NULL,
-                    publication_id TEXT NOT NULL, report_id TEXT NOT NULL REFERENCES reports(id)
+                    publication_id TEXT NOT NULL, report_id TEXT NOT NULL REFERENCES reports(id),
+                    owner TEXT
                 );
-                PRAGMA user_version=1;
+                PRAGMA user_version=2;
             """)
 
-    def prepare(self, conversation_id, request_id, publication_id):
+    def prepare(self, conversation_id, request_id, publication_id, caller):
         """Commit bytes and their request identity together; lost responses can retry."""
         with self.database() as db:
             db.execute("BEGIN IMMEDIATE")
@@ -204,6 +211,8 @@ class Reports:
                 "SELECT * FROM requests WHERE id=?", (request_id,)
             ).fetchone()
             if request:
+                if not visible(request["owner"], caller):
+                    raise ReportError(404, "report_not_found", "No existe ese informe.")
                 if (request["conversation_id"], request["publication_id"]) != (
                     conversation_id,
                     publication_id,
@@ -213,8 +222,8 @@ class Reports:
                         "report_request_conflict",
                         "Esa petición pertenece a otra exportación.",
                     )
-                return self._read(db, request["report_id"])[0]
-            snapshot = self.conversations.read_conversation(conversation_id)
+                return self._read(db, request["report_id"], caller)[0]
+            snapshot = self.conversations.read_conversation(conversation_id, caller)
             if snapshot["publication_id"] != publication_id:
                 raise ReportError(
                     409,
@@ -242,7 +251,7 @@ class Reports:
                 (conversation_id, digest),
             ).fetchone()
             if saved:
-                metadata, _ = self._read(db, saved["id"])
+                metadata, _ = self._read(db, saved["id"], caller)
             else:
                 metadata = {
                     "schema_version": "voc-report-v1",
@@ -266,7 +275,7 @@ class Reports:
                     sha256=hashlib.sha256(markdown).hexdigest(),
                 )
                 db.execute(
-                    "INSERT INTO reports VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO reports VALUES (?,?,?,?,?,?,?)",
                     (
                         metadata["report_id"],
                         conversation_id,
@@ -274,17 +283,24 @@ class Reports:
                         canonical(metadata).decode(),
                         encoded,
                         markdown,
+                        caller.owner,
                     ),
                 )
             db.execute(
-                "INSERT INTO requests VALUES (?,?,?,?)",
-                (request_id, conversation_id, publication_id, metadata["report_id"]),
+                "INSERT INTO requests VALUES (?,?,?,?,?)",
+                (
+                    request_id,
+                    conversation_id,
+                    publication_id,
+                    metadata["report_id"],
+                    caller.owner,
+                ),
             )
             return metadata
 
-    def _read(self, db, report_id):
+    def _read(self, db, report_id, caller):
         row = db.execute("SELECT * FROM reports WHERE id=?", (report_id,)).fetchone()
-        if row is None:
+        if row is None or not visible(row["owner"], caller):
             raise ReportError(404, "report_not_found", "No existe ese informe.")
         metadata = json.loads(row["metadata"])
         markdown = bytes(row["markdown"])
@@ -303,13 +319,13 @@ class Reports:
             )
         return metadata, markdown
 
-    def read(self, report_id):
+    def read(self, report_id, caller):
         with self.database() as db:
-            return self._read(db, report_id)[0]
+            return self._read(db, report_id, caller)[0]
 
-    def chunk(self, report_id, offset):
+    def chunk(self, report_id, offset, caller):
         with self.database() as db:
-            metadata, markdown = self._read(db, report_id)
+            metadata, markdown = self._read(db, report_id, caller)
         if type(offset) is not int or not 0 <= offset <= len(markdown):
             raise ReportError(
                 422,
