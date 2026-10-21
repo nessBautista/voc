@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { announceSessionEnded } from "./auth";
 import { parseResult, resultSchema } from "./types";
 import { resolveView, type ViewSpec } from "./components/registry";
 
@@ -188,6 +189,10 @@ export async function readChat(
     },
     ...(payload ? { body: JSON.stringify(payload) } : {}),
   });
+  if (response.status === 401) {
+    announceSessionEnded();
+    throw new Error("Tu sesión terminó. Inicia sesión de nuevo.");
+  }
   const body = await response.json();
   if (!response.ok)
     throw new Error(

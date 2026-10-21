@@ -696,6 +696,26 @@ details[open] > summary {
   padding: 0.4rem 0.7rem;
   font-size: 0.78rem;
 }
+.session-email {
+  font-size: 0.78rem;
+  color: #647064;
+  overflow-wrap: anywhere;
+}
+.button-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  border: 1px solid #bbc7c1;
+  background: white;
+  color: #184d43;
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.button-link:hover {
+  background: #edf4ef;
+  border-color: #256553;
+}
 .page-heading > div,
 .chat-heading > div {
   min-width: 0;

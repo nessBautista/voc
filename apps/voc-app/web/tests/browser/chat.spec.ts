@@ -2,6 +2,13 @@ import { expect, test, type Page } from "@playwright/test";
 import a from "../fixtures/example_a.json" with { type: "json" };
 import saved from "../fixtures/conversation.json" with { type: "json" };
 
+// These specs cover the dashboard itself; the server session is local mode.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/auth/me", (route) =>
+    route.fulfill({ json: { email: "developer@localhost", mode: "local" } }),
+  );
+});
+
 async function dashboard(page: Page) {
   await page.route("**/api/v1/publications/**", (route) =>
     route.fulfill({

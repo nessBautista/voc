@@ -1,6 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Chat } from "./Chat";
 import { DataError, loadDashboard } from "./api";
+import {
+  loginErrorMessage,
+  sessionEndedEvent,
+  signInPath,
+  signOut,
+  whoAmI,
+  type Session,
+} from "./auth";
 import type { Selection, Snapshot } from "./types";
 import { dashboardViews, View } from "./components/registry";
 import { dateLabel } from "./components/format";
@@ -23,10 +31,83 @@ const warningText: Record<string, string> = {
     "Los embeddings cubren solo una parte del dataset.",
 };
 
+function Header({ children }: { children?: ReactNode }) {
+  return (
+    <header className="topbar">
+      <a href="/" className="brand" aria-label="VOC, inicio">
+        <span className="brand-mark" aria-hidden="true">
+          v.
+        </span>
+        VOC<span className="brand-divider">/</span>
+        <span className="brand-context">Explorador de datos</span>
+      </a>
+      <nav className="workspace-navigation" aria-label="Navegación del espacio">
+        {children}
+      </nav>
+    </header>
+  );
+}
+
+function SignIn({ message }: { message: string | null }) {
+  return (
+    <>
+      <a className="skip-link" href="#content">
+        Saltar al contenido
+      </a>
+      <Header />
+      <main id="content">
+        <div role="status" className="state-panel">
+          <p className="eyebrow">Acceso</p>
+          <h2>Inicia sesión para continuar</h2>
+          <p>VOC muestra los datos publicados solo a personas invitadas.</p>
+          {message && (
+            <p role="alert" className="chat-error">
+              {message}
+            </p>
+          )}
+          <a className="button-link" href={signInPath}>
+            Iniciar sesión
+          </a>
+        </div>
+      </main>
+    </>
+  );
+}
+
 export function Dashboard() {
   const [generation, setGeneration] = useState(0);
   const [state, setState] = useState<State>({ status: "loading" });
+  const [session, setSession] = useState<Session | "checking" | "signed-out">(
+    "checking",
+  );
+  const [notice, setNotice] = useState<string | null>(() =>
+    loginErrorMessage(window.location.search),
+  );
   useEffect(() => {
+    const controller = new AbortController();
+    whoAmI(controller.signal)
+      .then((value) => {
+        if (!controller.signal.aborted) setSession(value ?? "signed-out");
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        setNotice("No pudimos comprobar la sesión. Recarga la página.");
+        setSession("signed-out");
+        console.error(error);
+      });
+    const ended = () => {
+      setNotice("Tu sesión terminó. Inicia sesión de nuevo.");
+      setSession("signed-out");
+    };
+    window.addEventListener(sessionEndedEvent, ended);
+    return () => {
+      controller.abort();
+      window.removeEventListener(sessionEndedEvent, ended);
+    };
+  }, []);
+  const signedIn = typeof session === "object";
+  useEffect(() => {
+    if (!signedIn) return;
     const controller = new AbortController();
     // Ignore stale completions after refresh or unmount, including StrictMode cleanup.
     setState({ status: "loading" });
@@ -58,7 +139,7 @@ export function Dashboard() {
       window.clearTimeout(timeout);
       controller.abort();
     };
-  }, [generation]);
+  }, [generation, signedIn]);
 
   const selected =
     state.status === "ready"
@@ -84,37 +165,58 @@ export function Dashboard() {
         ]
       : [];
   const reload = () => setGeneration((value) => value + 1);
+  if (session === "checking")
+    return (
+      <>
+        <Header />
+        <main id="content">
+          <div role="status" className="state-panel">
+            <span className="loader" aria-hidden="true" />
+            <h2>Comprobando la sesión…</h2>
+          </div>
+        </main>
+      </>
+    );
+  if (session === "signed-out") return <SignIn message={notice} />;
+  const leave = () => {
+    signOut()
+      .then((url) => window.location.assign(url))
+      .catch(() =>
+        setNotice("No pudimos cerrar la sesión. Recarga la página."),
+      );
+  };
   return (
     <>
       <a className="skip-link" href="#content">
         Saltar al contenido
       </a>
-      <header className="topbar">
-        <a href="/" className="brand" aria-label="VOC, inicio">
-          <span className="brand-mark" aria-hidden="true">
-            v.
-          </span>
-          VOC<span className="brand-divider">/</span>
-          <span className="brand-context">Explorador de datos</span>
-        </a>
-        <nav
-          className="workspace-navigation"
-          aria-label="Navegación del espacio"
+      <Header>
+        <span className="badge">Datos publicados</span>
+        {session.mode === "cognito" && (
+          <>
+            <span className="session-email">{session.email}</span>
+            <button type="button" onClick={leave}>
+              Cerrar sesión
+            </button>
+          </>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            const question = document.getElementById("chat-question");
+            question?.scrollIntoView({ block: "center" });
+            question?.focus({ preventScroll: true });
+          }}
         >
-          <span className="badge">Datos publicados</span>
-          <button
-            type="button"
-            onClick={() => {
-              const question = document.getElementById("chat-question");
-              question?.scrollIntoView({ block: "center" });
-              question?.focus({ preventScroll: true });
-            }}
-          >
-            Ir al chat
-          </button>
-        </nav>
-      </header>
+          Ir al chat
+        </button>
+      </Header>
       <main id="content">
+        {notice && (
+          <p role="alert" className="chat-error">
+            {notice}
+          </p>
+        )}
         <div className="page-heading">
           <div>
             <p className="eyebrow">Tu punto de partida</p>
