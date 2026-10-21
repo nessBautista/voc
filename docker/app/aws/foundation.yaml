@@ -45,11 +45,18 @@ Resources:
       EncryptionConfiguration:
         EncryptionType: AES256
       EmptyOnDelete: false
+      # Releases are the tagged entries. A multi-platform push also stores untagged
+      # platform and attestation manifests; ECR keeps those while their index exists
+      # and the second rule removes them a day after the index is gone.
       LifecyclePolicy:
         LifecyclePolicyText:
           Fn::Sub: >-
-            {"rules":[{"rulePriority":1,"description":"Keep only the newest release images",
-            "selection":{"tagStatus":"any","countType":"imageCountMoreThan","countNumber":${ReleaseImagesToKeep}},
+            {"rules":[
+            {"rulePriority":1,"description":"Keep only the newest tagged releases",
+            "selection":{"tagStatus":"tagged","tagPatternList":["*"],"countType":"imageCountMoreThan","countNumber":${ReleaseImagesToKeep}},
+            "action":{"type":"expire"}},
+            {"rulePriority":2,"description":"Remove orphaned untagged manifests",
+            "selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countUnit":"days","countNumber":1},
             "action":{"type":"expire"}}]}
       Tags:
         - { Key: Project, Value: VOC }
