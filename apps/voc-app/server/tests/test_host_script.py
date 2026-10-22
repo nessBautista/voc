@@ -311,3 +311,70 @@ def test_an_unverified_compose_download_is_rejected(host):
     host.run("packages", ok=False)
     assert host.calls("curl")
     assert not (host.root / "usr/local/lib/docker/cli-plugins/docker-compose").exists()
+
+
+def make_bundle(tmp_path, release, digest):
+    """A deployment bundle like bundle.py builds, for the release switch tests."""
+    import io
+    import runpy
+    import tarfile
+
+    builder = runpy.run_path(str(AWS_DIR / "bundle.py"), run_name="bundle")
+    result = builder["build"](release, digest, tmp_path / "dist")
+    archive = (tmp_path / "dist" / release / "bundle.tar.gz").read_bytes()
+    return archive, result["sha256"]
+
+
+def test_release_switches_image_and_bundle_and_keeps_the_old_release(host, tmp_path):
+    host.secret("web-auth-abc", json.dumps({"client_secret": "hush-value"}))
+    host.run("bootstrap")
+    new_release, new_digest = "fedcba987654", "sha256:" + "1" * 64
+    archive, sha = make_bundle(tmp_path, new_release, new_digest)
+    (host.state / "publication" / "bundle.tar.gz").write_bytes(archive)
+    host.run("release", f"deployments/{new_release}/bundle.tar.gz", sha, new_digest)
+    release_env = (host.root / "etc/voc/release.env").read_text()
+    assert f"VOC_RELEASE_ID='{new_release}'" in release_env
+    assert (
+        f"VOC_IMAGE='123.dkr.ecr.us-east-2.amazonaws.com/voc-pilot-app@{new_digest}'"
+        in release_env
+    )
+    app_env = (host.root / "etc/voc/app.env").read_text()
+    assert (
+        f"VOC_IMAGE='123.dkr.ecr.us-east-2.amazonaws.com/voc-pilot-app@{new_digest}'"
+        in app_env
+    )
+    assert (host.root / "opt/voc/releases" / new_release / "manifest.json").is_file()
+    assert (
+        host.root / "opt/voc/releases" / RELEASE / "compose.yaml"
+    ).is_file()  # rollback material
+    restarts = [call for call in host.calls("systemctl") if call[:1] == ["restart"]]
+    assert ["restart", "voc-app.service"] in restarts
+    assert host.run("verify-release").returncode == 0
+
+
+def test_release_refuses_bad_digests_and_mismatched_bundles(host, tmp_path):
+    host.secret("web-auth-abc", json.dumps({"client_secret": "hush-value"}))
+    host.run("bootstrap")
+    before = (host.root / "etc/voc/release.env").read_text()
+    new_release, new_digest = "fedcba987654", "sha256:" + "1" * 64
+    archive, sha = make_bundle(tmp_path, new_release, new_digest)
+    (host.state / "publication" / "bundle.tar.gz").write_bytes(archive)
+    failed = host.run(
+        "release",
+        f"deployments/{new_release}/bundle.tar.gz",
+        "0" * 64,
+        new_digest,
+        ok=False,
+    )
+    assert "digest mismatch" in failed.stderr
+    assert not (host.root / "opt/voc/releases" / new_release).exists()
+    failed = host.run(
+        "release",
+        f"deployments/{new_release}/bundle.tar.gz",
+        sha,
+        "sha256:" + "2" * 64,
+        ok=False,
+    )
+    assert "built for image" in failed.stderr
+    assert (host.root / "etc/voc/release.env").read_text() == before
+    assert "usage" in host.run("release", ok=False).stderr

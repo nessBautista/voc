@@ -362,9 +362,24 @@ actor NativeAuth {
             loginOffered[origin.absoluteString] = true
             return true
         } catch let error as HandoffError where error.code == "server_without_login" {
+            // No desktop configuration: a server that still demands a login is simply too old.
+            if try await requiresLogin(origin: origin) { throw HandoffError("server_needs_update") }
             loginOffered[origin.absoluteString] = false
             return false
         }
+    }
+
+    private func requiresLogin(origin: URL) async throws -> Bool {
+        let url = origin.appendingPathComponent("api/v1/publications/current")
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let session = URLSession(configuration: configuration, delegate: NoRedirects.shared, delegateQueue: nil)
+        defer { session.invalidateAndCancel() }
+        guard let (_, response) = try? await session.data(for: request),
+              let http = response as? HTTPURLResponse, http.url == url else {
+            throw HandoffError("auth_config_unavailable")
+        }
+        return http.statusCode == 401
     }
 
     /// The token native requests attach, or nil for a server without login.

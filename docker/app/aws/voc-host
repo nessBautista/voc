@@ -218,6 +218,71 @@ units() {
   systemctl enable voc-secrets.service voc-app.service
 }
 
+verify_release() {
+  # Every file in a release directory must match the manifest it shipped with.
+  local directory="$1" name expected
+  [ -f "$directory/manifest.json" ] || die "no manifest in $directory"
+  python3 - "$directory" <<'PY' || die "release files do not match their manifest"
+import hashlib, json, sys
+from pathlib import Path
+directory = Path(sys.argv[1])
+manifest = json.loads((directory / "manifest.json").read_text())
+assert manifest.get("schema_version") == "voc-deployment-v1"
+for name, digest in manifest["files"].items():
+    if hashlib.sha256((directory / name).read_bytes()).hexdigest() != digest:
+        sys.exit(1)
+PY
+}
+
+set_env_value() {
+  # $1 file, $2 key, $3 value; quoted like configure() writes them.
+  local file="$1" key="$2" value="$3"
+  grep -v "^$key=" "$file" > "$file.tmp" || true
+  printf "%s='%s'\n" "$key" "$value" >> "$file.tmp"
+  chmod 0644 "$file.tmp"
+  mv "$file.tmp" "$file"
+}
+
+release() {
+  # Switch the host to another deployment bundle and image; the previous release stays for rollback.
+  load_release
+  local object="$1" expected="$2" digest="$3" id directory manifest_image manifest_id
+  [ -n "$object" ] && [ -n "$expected" ] && [ -n "$digest" ] \
+    || die "usage: voc-host release deployments/<id>/bundle.tar.gz <bundle sha256> <image digest>"
+  case "$digest" in sha256:*) ;; *) die "image digest must start with sha256:" ;; esac
+  id="${object#deployments/}"
+  id="${id%%/*}"
+  [ "$object" = "deployments/$id/bundle.tar.gz" ] || die "unexpected bundle object $object"
+  directory="$RELEASES/$id"
+  if [ ! -f "$directory/manifest.json" ]; then
+    mkdir -p "$directory"
+    aws s3 cp "s3://${VOC_PUBLICATIONS_BUCKET:?}/$object" "$directory.bundle.tar.gz" --region "$VOC_AWS_REGION"
+    echo "$expected  $directory.bundle.tar.gz" | sha256sum -c - >/dev/null \
+      || { rm -f "$directory.bundle.tar.gz"; rm -rf "$directory"; die "bundle digest mismatch; nothing changed"; }
+    tar -xzf "$directory.bundle.tar.gz" -C "$directory"
+    rm -f "$directory.bundle.tar.gz"
+  fi
+  verify_release "$directory"
+  manifest_id=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["release_id"])' "$directory/manifest.json")
+  manifest_image=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["image_digest"])' "$directory/manifest.json")
+  [ "$manifest_id" = "$id" ] || die "bundle names release $manifest_id, not $id"
+  [ "$manifest_image" = "$digest" ] || die "bundle was built for image $manifest_image, not $digest"
+  local image="${VOC_IMAGE%%@*}@$digest"
+  # Record the new release, then let the new script bring the app up with it.
+  set_env_value "$RELEASE_ENV" VOC_RELEASE_ID "$id"
+  set_env_value "$RELEASE_ENV" VOC_IMAGE "$image"
+  set_env_value "$RELEASE_ENV" VOC_DEPLOYMENT_BUNDLE_OBJECT "$object"
+  set_env_value "$RELEASE_ENV" VOC_DEPLOYMENT_BUNDLE_SHA256 "$expected"
+  [ -f "$APP_ENV" ] && set_env_value "$APP_ENV" VOC_RELEASE_ID "$id" && set_env_value "$APP_ENV" VOC_IMAGE "$image"
+  mkdir -p "$ROOT/usr/local/sbin"
+  install -m 0755 "$directory/voc-host" "$ROOT/usr/local/sbin/voc-host"
+  export VOC_RELEASE_ID="$id" VOC_IMAGE="$image"
+  units
+  systemctl restart voc-secrets.service
+  systemctl restart voc-app.service
+  log "release $id active with image $digest"
+}
+
 bootstrap() {
   load_release
   packages
@@ -245,9 +310,11 @@ case "${1:-}" in
   set) load_release; set_value "${2:?usage: voc-host set KEY=VALUE}" ;;
   secrets) secrets ;;
   install-publication) install_publication "${2:-}" "${3:-}" ;;
+  release) release "${2:-}" "${3:-}" "${4:-}" ;;
+  verify-release) load_release; verify_release "${2:-$(release_dir)}" ;;
   app-up) app_up ;;
   app-down) app_down ;;
   units) load_release; units ;;
   status) status ;;
-  *) die "usage: voc-host {bootstrap|packages|storage|configure|set KEY=VALUE|secrets|install-publication [ID SHA256]|app-up|app-down|units|status}" ;;
+  *) die "usage: voc-host {bootstrap|packages|storage|configure|set KEY=VALUE|secrets|install-publication [ID SHA256]|release OBJECT SHA256 IMAGE_DIGEST|verify-release [DIR]|app-up|app-down|units|status}" ;;
 esac

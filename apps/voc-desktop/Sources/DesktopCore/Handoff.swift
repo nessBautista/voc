@@ -98,6 +98,7 @@ struct HandoffError: LocalizedError {
         case "sign_in_failed": return "No se pudo completar el inicio de sesión. Vuelve a intentarlo."
         case "auth_callback_rejected": return "Se recibió una respuesta de inicio de sesión que no corresponde a este intento; se ignoró."
         case "server_without_login": return "Este servidor funciona en modo local y no ofrece inicio de sesión."
+        case "server_needs_update": return "Este servidor pide inicio de sesión, pero su versión no conoce la aplicación de escritorio. Publica una versión más reciente del servidor."
         case "auth_config_unavailable": return "No se pudo leer la configuración de inicio de sesión del servidor. Comprueba la conexión."
         case "invalid_auth_config": return "La configuración de inicio de sesión del servidor no es válida."
         case "origin_mismatch": return "El servidor espera que lo abras con la dirección que él publica, por ejemplo http://localhost:8091."
