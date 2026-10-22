@@ -65,3 +65,14 @@ def server_command(python, storage):
         "--workers",
         "1",
     ]
+
+
+def analysis_experiment_name(storage, kind="analysis"):
+    if kind not in ("analysis", "sentiment"):
+        raise ValueError("Unknown analysis workflow kind")
+    return experiment_name(storage).replace("voc-datasets", "voc-" + kind, 1)
+
+
+def ensure_analysis_experiment(client, storage, kind="analysis"):
+    """Separate workflow experiments, retaining the configured artifact destination."""
+    return _ensure_experiment(client, storage, analysis_experiment_name(storage, kind))

@@ -13,6 +13,8 @@ This directory holds VOC's configuration values. The Python code that reads and 
 | `preparation.toml` | Rules for preparing the workable dataset; added in a later lesson |
 | `analysis/bertopic.toml` | Baseline topic discovery: first 1,000 pinned reviews, UMAP to five dimensions, HDBSCAN with `min_cluster_size` 10; read by `voc-ml analysis run` and by `voc_ml.topics.discover` |
 | `analysis/sentiment.toml` | Pinned RoBERTuito model and revision, 128 tokens, batches of 16; read by `voc_ml.sentiment.classify_reviews` |
+| `analysis/bertopic-10k.toml` | Stratified 10,000-review sample with the same reduction block and larger clusters; `voc-ml analysis run --config` |
+| `analysis/full.toml` | The whole pinned release; clustering values chosen from the 10,000-review reading |
 
 ## Local settings and credentials
 
