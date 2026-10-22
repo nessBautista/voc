@@ -30,9 +30,12 @@ def test_template_defines_exactly_the_foundation_resources(template):
     kinds = sorted(body["Type"] for body in template["Resources"].values())
     assert kinds == [
         "AWS::ECR::Repository",
+        "AWS::IAM::User",
         "AWS::Logs::LogGroup",
         "AWS::S3::Bucket",
         "AWS::S3::Bucket",
+        "AWS::S3::Bucket",
+        "AWS::S3::BucketPolicy",
         "AWS::S3::BucketPolicy",
         "AWS::S3::BucketPolicy",
         "AWS::SecretsManager::Secret",
@@ -50,7 +53,7 @@ def test_data_bearing_resources_are_retained_on_delete_and_replace(template):
 
 def test_buckets_block_public_access_encrypt_and_version(template):
     buckets = resources(template, "AWS::S3::Bucket")
-    assert set(buckets) == {"PublicationsBucket", "BackupBucket"}
+    assert set(buckets) == {"PublicationsBucket", "BackupBucket", "OperatorBucket"}
     policies = {
         body["Properties"]["Bucket"]["Ref"]
         for body in resources(template, "AWS::S3::BucketPolicy").values()
@@ -88,6 +91,38 @@ def test_backup_bucket_documents_its_retention(template):
         "NoncurrentDays": {"Ref": "BackupRetentionDays"}
     }
     assert any(rule.get("ExpiredObjectDeleteMarker") for rule in rules)
+
+
+def test_operator_bucket_expires_old_versions_but_keeps_current_objects(template):
+    rules = template["Resources"]["OperatorBucket"]["Properties"][
+        "LifecycleConfiguration"
+    ]["Rules"]
+    noncurrent = next(
+        rule for rule in rules if rule["Id"] == "expire-noncurrent-versions"
+    )
+    assert noncurrent["NoncurrentVersionExpiration"] == {"NoncurrentDays": 30}
+    assert not any("ExpirationInDays" in rule for rule in rules)
+    assert any(rule.get("ExpiredObjectDeleteMarker") for rule in rules)
+
+
+def test_operator_user_reaches_only_its_bucket_and_holds_no_key(template):
+    [user] = resources(template, "AWS::IAM::User").values()
+    assert user["Properties"]["UserName"]["Fn::Sub"] == "voc-${Environment}-operator"
+    [policy] = user["Properties"]["Policies"]
+    statements = policy["PolicyDocument"]["Statement"]
+    for statement in statements:
+        assert statement["Effect"] == "Allow"
+        assert "OperatorBucket" in json.dumps(statement["Resource"]), statement["Sid"]
+    deletes = [s for s in statements if "s3:DeleteObject" in json.dumps(s["Action"])]
+    assert [s["Resource"]["Fn::Sub"] for s in deletes] == [
+        "${OperatorBucket.Arn}/members/*"
+    ]
+    assert not any("s3:*" in json.dumps(s["Action"]) for s in statements)
+    assert "AWS::IAM::AccessKey" not in {
+        body["Type"] for body in template["Resources"].values()
+    }
+    for output_name, output in template["Outputs"].items():
+        assert "SecretAccessKey" not in json.dumps(output), output_name
 
 
 def test_repository_is_immutable_scanned_and_pruned(template):
@@ -148,6 +183,7 @@ def test_every_named_resource_lives_under_the_environment_label(template):
             properties.get("RepositoryName")
             or properties.get("BucketName")
             or properties.get("LogGroupName")
+            or properties.get("UserName")
             or properties.get("Name")
         )
         if label is not None:

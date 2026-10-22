@@ -14,7 +14,7 @@ This directory holds VOC's configuration values. The Python code that reads and 
 
 ## Local settings and credentials
 
-The root `.env` holds your bucket, region, member ID, storage modes, ports, and notebook login token.
+The root `.env` holds your bucket, region, member ID, storage modes, ports, and notebook login token. The bucket is the Operator bucket created by the foundation stack in `docker/app/aws/foundation.yaml`; the credentials in `aws.local.env` belong to the stack's operator IAM user, whose access key you create by hand and keep in 1Password.
 
 Both authentication modes use `config/aws.local.env`. Set `VOC_AWS_AUTH_MODE` in `.env` to match its contents:
 
