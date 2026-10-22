@@ -1,0 +1,7 @@
+[Unit]
+Description=VOC: power the pilot host off once it has been up longer than the owner allows
+Documentation=file:///usr/local/sbin/voc-host
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/voc-host autostop

@@ -33,7 +33,10 @@ write("fstype", "xfs"); write("uuid", "1234-UUID")
     "chown": """record("chown", args)""",
     "systemctl": """record("systemctl", args)""",
     "dnf": """record("dnf", args)""",
-    "curl": """record("curl", args); open(args[args.index("-o") + 1], "wb").write(b"not the pinned compose binary")""",
+    "curl": """record("curl", args)
+if "-o" in args: open(args[args.index("-o") + 1], "wb").write(b"not the pinned compose binary")
+else: print('{"status":"ready"}', end="")
+""",
     "aws": """record("aws", args)
 if args[:2] == ["secretsmanager", "get-secret-value"]:
     value = state("secret-" + args[args.index("--secret-id") + 1].rsplit("/", 1)[-1])
@@ -97,8 +100,12 @@ class Host:
             "voc-host",
             "units/voc-secrets.service",
             "units/voc-app.service",
+            "units/voc-autostop.service",
+            "units/voc-autostop.timer",
         ):
             (release / name).write_bytes((AWS_DIR / name).read_bytes())
+        self.uptime = tmp_path / "uptime"
+        self.uptime.write_text("60.00 120.00\n")
         plugin = self.root / "usr/local/lib/docker/cli-plugins/docker-compose"
         plugin.parent.mkdir(parents=True)
         plugin.write_text("#!/bin/sh\n")
@@ -149,6 +156,7 @@ class Host:
             env={
                 "PATH": str(self.bin) + os.pathsep + os.environ["PATH"],
                 "VOC_ROOT": str(self.root),
+                "VOC_UPTIME_FILE": str(self.uptime),
                 "STUB_STATE": str(self.state),
                 "HOME": str(self.root),
             },
@@ -378,3 +386,39 @@ def test_release_refuses_bad_digests_and_mismatched_bundles(host, tmp_path):
     assert "built for image" in failed.stderr
     assert (host.root / "etc/voc/release.env").read_text() == before
     assert "usage" in host.run("release", ok=False).stderr
+
+
+def test_autostop_powers_off_only_past_the_configured_uptime(host):
+    host.secret("web-auth-abc", json.dumps({"client_secret": "hush-value"}))
+    host.run("bootstrap")
+    assert (host.root / "etc/voc/host.env").read_text() == "VOC_AUTOSTOP_HOURS='14'\n"
+    assert ["enable", "--now", "voc-autostop.timer"] in host.calls("systemctl")
+    assert (host.root / "etc/systemd/system/voc-autostop.timer").is_file()
+    host.uptime.write_text(f"{13 * 3600 + 1800}.12 0.00\n")
+    below = host.run("autostop")
+    assert "auto-stop in 1 h" in below.stderr
+    assert ["poweroff"] not in host.calls("systemctl")
+    host.uptime.write_text(f"{14 * 3600}.00 0.00\n")
+    reached = host.run("autostop")
+    assert "powering off" in reached.stderr
+    assert ["poweroff"] in host.calls("systemctl")
+    restarts_before = len([c for c in host.calls("systemctl") if c[:1] == ["restart"]])
+    host.run("set", "VOC_AUTOSTOP_HOURS=0")
+    # A host setting restarts nothing; the container never sees it.
+    assert len([c for c in host.calls("systemctl") if c[:1] == ["restart"]]) == restarts_before
+    assert "VOC_AUTOSTOP_HOURS" not in (host.root / "etc/voc/app.env").read_text()
+    disabled = host.run("autostop")
+    assert "disabled" in disabled.stderr
+    assert host.calls("systemctl").count(["poweroff"]) == 1
+    assert "whole number" in host.run("set", "VOC_AUTOSTOP_HOURS=soon", ok=False).stderr
+
+
+def test_status_reports_uptime_limit_and_disk(host):
+    host.secret("web-auth-abc", json.dumps({"client_secret": "hush-value"}))
+    host.run("bootstrap")
+    host.mounted()
+    host.uptime.write_text(f"{2 * 3600 + 300}.00 0.00\n")
+    shown = host.run("status").stdout
+    assert f"release {RELEASE}" in shown
+    assert "uptime 2 h 5 min; auto-stop after 14 h, in 12 h" in shown
+    assert shown.rstrip().endswith('{"status":"ready"}')

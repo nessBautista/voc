@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
+from . import access_log
 from .agent.planner import Planner
 from .auth import Auth
 from .auth_api import router as auth_router
@@ -23,6 +24,8 @@ from .transports.mcp import mount_mcp
 from .web import mount_web
 
 logger = logging.getLogger(__name__)
+# Query strings carry OAuth codes and state on the sign-in callback; they never reach CloudWatch.
+access_log.install()
 
 
 def error_response(status, code, message, headers=None):

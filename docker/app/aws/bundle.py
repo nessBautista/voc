@@ -22,6 +22,8 @@ FILES = (
     "voc-host",
     "units/voc-secrets.service",
     "units/voc-app.service",
+    "units/voc-autostop.service",
+    "units/voc-autostop.timer",
 )
 SCHEMA = "voc-deployment-v1"
 

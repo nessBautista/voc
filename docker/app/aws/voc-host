@@ -11,8 +11,11 @@ RUN="$ROOT/run/voc"
 RELEASES="$ROOT/opt/voc/releases"
 RELEASE_ENV="$ETC/release.env"
 APP_ENV="$ETC/app.env"
+HOST_ENV="$ETC/host.env"
 SECRET_ENV="$RUN/app.secret.env"
 APP_UID=10001
+# Tests point this at a file of their own; the kernel's clock is the default.
+UPTIME_FILE="${VOC_UPTIME_FILE:-/proc/uptime}"
 
 # Docker Compose is not packaged by Amazon Linux 2023; pin a reviewed release.
 COMPOSE_VERSION=v5.6.0
@@ -22,6 +25,9 @@ COMPOSE_URL="https://github.com/docker/compose/releases/download/$COMPOSE_VERSIO
 # Runtime settings the app may read; everything else in release.env stays out.
 APP_KEYS="VOC_IMAGE VOC_AWS_REGION VOC_LOG_GROUP VOC_RELEASE_ID VOC_AUTH_MODE VOC_PUBLIC_ORIGIN VOC_COGNITO_ISSUER VOC_COGNITO_DOMAIN VOC_COGNITO_WEB_CLIENT_ID VOC_COGNITO_NATIVE_CLIENT_ID VOC_COGNITO_SCOPES VOC_PLANNER_MODE VOC_MCP_ENABLED"
 SETTABLE_KEYS="VOC_PLANNER_MODE VOC_LLM_BASE_URL VOC_LLM_MODEL VOC_TURN_TIMEOUT_SECONDS"
+# Host-only settings never reach the container and change nothing that is running.
+HOST_KEYS="VOC_AUTOSTOP_HOURS"
+AUTOSTOP_HOURS_DEFAULT=14
 
 log() { printf 'voc-host: %s\n' "$*" >&2; }
 die() { log "$*"; exit 1; }
@@ -44,6 +50,19 @@ load_app() {
 }
 
 release_dir() { printf '%s/%s' "$RELEASES" "$VOC_RELEASE_ID"; }
+
+load_host() {
+  VOC_AUTOSTOP_HOURS="$AUTOSTOP_HOURS_DEFAULT"
+  if [ -r "$HOST_ENV" ]; then
+    # shellcheck disable=SC1090
+    . "$HOST_ENV"
+  fi
+  case "$VOC_AUTOSTOP_HOURS" in
+    ''|*[!0-9]*) die "VOC_AUTOSTOP_HOURS must be a whole number of hours (0 disables)" ;;
+  esac
+}
+
+uptime_seconds() { cut -d. -f1 "$UPTIME_FILE"; }
 
 packages() {
   if ! command -v docker >/dev/null 2>&1; then
@@ -93,8 +112,13 @@ storage() {
 
 configure() {
   # Written once from the release facts; later changes go through `set`.
-  [ -f "$APP_ENV" ] && return 0
   mkdir -p "$ETC"
+  if [ ! -f "$HOST_ENV" ]; then
+    printf "VOC_AUTOSTOP_HOURS='%s'\n" "$AUTOSTOP_HOURS_DEFAULT" > "$HOST_ENV.tmp"
+    chmod 0644 "$HOST_ENV.tmp"
+    mv "$HOST_ENV.tmp" "$HOST_ENV"
+  fi
+  [ -f "$APP_ENV" ] && return 0
   local key
   # Single quotes keep values with spaces intact for both bash and Compose.
   {
@@ -113,11 +137,19 @@ set_value() {
   local assignment="$1" key value
   key="${assignment%%=*}"
   value="${assignment#*=}"
+  case "$value" in *"'"*) die "values may not contain single quotes" ;; esac
+  case " $HOST_KEYS " in
+    *" $key "*)
+      case "$value" in ''|*[!0-9]*) die "$key must be a whole number of hours (0 disables)" ;; esac
+      [ -f "$HOST_ENV" ] || die "missing $HOST_ENV; run voc-host configure"
+      set_env_value "$HOST_ENV" "$key" "$value"
+      log "$key=$value; the timer reads it on its next check"
+      return 0 ;;
+  esac
   case " $SETTABLE_KEYS " in
     *" $key "*) ;;
     *) die "$key is not a runtime setting; secrets never go here" ;;
   esac
-  case "$value" in *"'"*) die "values may not contain single quotes" ;; esac
   [ -f "$APP_ENV" ] || die "missing $APP_ENV"
   grep -v "^$key=" "$APP_ENV" > "$APP_ENV.tmp" || true
   printf "%s='%s'\n" "$key" "$value" >> "$APP_ENV.tmp"
@@ -211,11 +243,30 @@ app_down() {
 units() {
   local unit
   mkdir -p "$ROOT/etc/systemd/system"
-  for unit in voc-secrets.service voc-app.service; do
+  for unit in voc-secrets.service voc-app.service voc-autostop.service voc-autostop.timer; do
     install -m 0644 "$(release_dir)/units/$unit" "$ROOT/etc/systemd/system/$unit"
   done
   systemctl daemon-reload
   systemctl enable voc-secrets.service voc-app.service
+  # The timer is the credit's safety net: an instance left running powers itself off.
+  systemctl enable --now voc-autostop.timer
+}
+
+autostop() {
+  load_host
+  local up limit
+  up=$(uptime_seconds)
+  if [ "$VOC_AUTOSTOP_HOURS" = 0 ]; then
+    log "auto-stop disabled; uptime $((up / 3600)) h"
+    return 0
+  fi
+  limit=$((VOC_AUTOSTOP_HOURS * 3600))
+  if [ "$up" -ge "$limit" ]; then
+    log "uptime $((up / 3600)) h reached the $VOC_AUTOSTOP_HOURS h limit; powering off (the instance stops, volumes stay)"
+    systemctl poweroff
+  else
+    log "uptime $((up / 3600)) h; auto-stop in $(( (limit - up + 3599) / 3600 )) h"
+  fi
 }
 
 verify_release() {
@@ -297,7 +348,17 @@ bootstrap() {
 
 status() {
   load_release
+  load_host
+  local up
+  up=$(uptime_seconds)
+  echo "release $VOC_RELEASE_ID"
+  if [ "$VOC_AUTOSTOP_HOURS" = 0 ]; then
+    echo "uptime $((up / 3600)) h $(( (up % 3600) / 60 )) min; auto-stop disabled"
+  else
+    echo "uptime $((up / 3600)) h $(( (up % 3600) / 60 )) min; auto-stop after $VOC_AUTOSTOP_HOURS h, in $(( (VOC_AUTOSTOP_HOURS * 3600 - up + 3599) / 3600 )) h"
+  fi
   findmnt "$SRV" || log "/srv/voc is not mounted"
+  df -h "$SRV" 2>/dev/null || true
   docker compose --project-directory "$(release_dir)" --env-file "$APP_ENV" -f "$(release_dir)/compose.yaml" ps
   curl --fail --silent http://127.0.0.1:8091/health/ready && echo
 }
@@ -315,6 +376,7 @@ case "${1:-}" in
   app-up) app_up ;;
   app-down) app_down ;;
   units) load_release; units ;;
+  autostop) autostop ;;
   status) status ;;
-  *) die "usage: voc-host {bootstrap|packages|storage|configure|set KEY=VALUE|secrets|install-publication [ID SHA256]|release OBJECT SHA256 IMAGE_DIGEST|verify-release [DIR]|app-up|app-down|units|status}" ;;
+  *) die "usage: voc-host {bootstrap|packages|storage|configure|set KEY=VALUE|secrets|install-publication [ID SHA256]|release OBJECT SHA256 IMAGE_DIGEST|verify-release [DIR]|app-up|app-down|units|autostop|status}" ;;
 esac
