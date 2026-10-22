@@ -35,6 +35,7 @@ voc-ml = "voc_ml.cli:main"
 voc-dev = "voc_dev.cli:main"
 
 [project.optional-dependencies]
+# DuckDB powers the data-state publication package and the analysis candidate store.
 publications = [
     "duckdb==1.5.6",
 ]
