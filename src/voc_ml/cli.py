@@ -247,7 +247,11 @@ def embeddings_export(producer_run_id, as_json):
 
 @embeddings.command("publish")
 @click.argument("producer_run_id")
-@click.option("--promote", is_flag=True, help="Make a full release latest for its dataset/profile.")
+@click.option(
+    "--promote",
+    is_flag=True,
+    help="Make a full release latest for its dataset/profile.",
+)
 @click.option("--json", "as_json", is_flag=True)
 def embeddings_publish(producer_run_id, promote, as_json):
     """Publish a completed embedding export to S3 without encoding again."""
@@ -262,6 +266,12 @@ def embeddings_publish(producer_run_id, promote, as_json):
     except Exception as error:
         raise click.ClickException(str(error)) from error
     click.echo(json.dumps(result, indent=None if as_json else 2))
+
+
+from .analysis.cli import analysis, sentiment
+
+main.add_command(analysis)
+main.add_command(sentiment)
 
 
 if __name__ == "__main__":

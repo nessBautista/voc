@@ -1,0 +1,23 @@
+# Second scale of the climb: a proportional sample by platform and month.
+# The reduction block equals bertopic.toml so a changed clustering block reuses
+# the cached coordinates of the same pinned input. Do not pass --limit with it.
+[selection]
+kind = "stratified"
+size = 10000
+seed = 42
+
+[topics]
+backend = "bertopic"
+
+[reduction]
+n_neighbors = 15
+n_components = 5
+min_dist = 0.0
+metric = "cosine"
+random_state = 42
+
+[clustering]
+min_cluster_size = 50
+min_samples = 10
+metric = "euclidean"
+cluster_selection_method = "eom"
