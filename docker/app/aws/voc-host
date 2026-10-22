@@ -327,11 +327,18 @@ release() {
   [ -f "$APP_ENV" ] && set_env_value "$APP_ENV" VOC_RELEASE_ID "$id" && set_env_value "$APP_ENV" VOC_IMAGE "$image"
   mkdir -p "$ROOT/usr/local/sbin"
   install -m 0755 "$directory/voc-host" "$ROOT/usr/local/sbin/voc-host"
-  export VOC_RELEASE_ID="$id" VOC_IMAGE="$image"
+  # From here the newly installed script decides: its settings, units and services may differ from ours.
+  "$ROOT/usr/local/sbin/voc-host" finish-release "$id" "$digest"
+}
+
+finish_release() {
+  load_release
+  [ "$VOC_RELEASE_ID" = "$1" ] || die "release.env names $VOC_RELEASE_ID, not $1"
+  configure
   units
   systemctl restart voc-secrets.service
   systemctl restart voc-app.service
-  log "release $id active with image $digest"
+  log "release $1 active with image $2"
 }
 
 bootstrap() {
@@ -372,6 +379,7 @@ case "${1:-}" in
   secrets) secrets ;;
   install-publication) install_publication "${2:-}" "${3:-}" ;;
   release) release "${2:-}" "${3:-}" "${4:-}" ;;
+  finish-release) finish_release "${2:?}" "${3:?}" ;;
   verify-release) load_release; verify_release "${2:-$(release_dir)}" ;;
   app-up) app_up ;;
   app-down) app_down ;;

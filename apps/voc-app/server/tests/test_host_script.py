@@ -358,6 +358,10 @@ def test_release_switches_image_and_bundle_and_keeps_the_old_release(host, tmp_p
     restarts = [call for call in host.calls("systemctl") if call[:1] == ["restart"]]
     assert ["restart", "voc-app.service"] in restarts
     assert host.run("verify-release").returncode == 0
+    # The installed script finishes the switch: settings and units it introduced exist afterwards.
+    assert (host.root / "etc/voc/host.env").is_file()
+    assert (host.root / "etc/systemd/system/voc-autostop.timer").is_file()
+    assert host.calls("systemctl").count(["enable", "--now", "voc-autostop.timer"]) == 2
 
 
 def test_release_refuses_bad_digests_and_mismatched_bundles(host, tmp_path):
