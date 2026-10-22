@@ -67,10 +67,7 @@ final class HandoffStore {
                 guard existing.question == input.question else { throw HandoffError("request_conflict") }
                 return (try expire(existing, now: now), false)
             }
-            if let active = try record("SELECT record FROM works WHERE active=1"),
-               try expire(active, now: now).active {
-                throw HandoffError("busy")
-            }
+            try supersede(now: now)
             guard let origin = try scalar("SELECT value FROM settings WHERE name='origin'") else {
                 throw HandoffError("not_configured")
             }
@@ -111,8 +108,7 @@ final class HandoffStore {
             }
             // Recovery is a human action under the GUI lease. Deep-link replay never reclaims.
             if !recover && (work.claimedBy != nil || work.state != .opening) { return nil }
-            if let other = try record("SELECT record FROM works WHERE active=1"), other.workID != id,
-               try expire(other, now: now).active { throw HandoffError("busy") }
+            try supersede(except: id, now: now)
             work.active = true
             work.claimedBy = owner
             work.state = .opening
@@ -153,31 +149,6 @@ final class HandoffStore {
         }
     }
 
-    /// Reserve once before any window effect; a crash or a retry cannot reapply it.
-    func reserveLayout(_ id: String, owner: String) throws -> Bool {
-        try transaction {
-            var work = try required(id)
-            guard work.active, work.state == .opened, work.claimedBy == owner,
-                  work.presentation != nil, work.layoutAttempted != true else { return false }
-            work.layoutAttempted = true
-            work.layoutResult = HandoffLayoutResult(status: .skipped,
-                message: "La distribución aún no se ha confirmado; no se repetirá automáticamente.")
-            try save(work)
-            return true
-        }
-    }
-
-    func finishLayout(_ id: String, owner: String, result: HandoffLayoutResult) throws {
-        try transaction {
-            var work = try required(id)
-            guard work.active, work.state == .opened, work.claimedBy == owner,
-                  work.layoutAttempted == true else { return }
-            work.layoutResult = result
-            work.updatedAt = Date().timeIntervalSince1970
-            try save(work)
-        }
-    }
-
     /// Keep the preparation identity across a lost response; do not release work early.
     func reserveReport(_ id: String, origin: String) throws -> (work: HandoffWork, requestID: String) {
         try transaction {
@@ -189,11 +160,7 @@ final class HandoffStore {
                   try scalar("SELECT value FROM settings WHERE name='origin'") == work.serverOrigin else {
                 throw HandoffError("origin_changed")
             }
-            if let other = try record("SELECT record FROM works WHERE active=1"), other.workID != id {
-                throw HandoffError("busy")
-            }
             work.reportRequestID = work.reportRequestID ?? UUID().uuidString.lowercased()
-            work.active = true
             try save(work)
             return (work, work.reportRequestID!)
         }
@@ -202,7 +169,7 @@ final class HandoffStore {
     func preparedReport(_ id: String, requestID: String, report: HandoffReport) throws -> HandoffWork {
         try transaction {
             var work = try required(id)
-            guard work.active, work.state == .opened, work.reportRequestID == requestID else {
+            guard work.state == .opened, work.reportRequestID == requestID else {
                 throw HandoffError("inactive")
             }
             try report.validate(for: work)
@@ -214,7 +181,6 @@ final class HandoffStore {
             reports.append(report)
             work.reports = reports
             work.reportRequestID = nil
-            work.active = false
             work.updatedAt = Date().timeIntervalSince1970
             try save(work)
             return work
@@ -288,6 +254,16 @@ final class HandoffStore {
             work.updatedAt = Date().timeIntervalSince1970
             try save(work)
         }
+    }
+
+    /// A newer delivery takes the GUI; the previous work keeps its state and its conversation.
+    private func supersede(except id: String? = nil, now: Double) throws {
+        guard var other = try record("SELECT record FROM works WHERE active=1"), other.workID != id else { return }
+        other = try expire(other, now: now)
+        guard other.active else { return }
+        other.active = false
+        other.updatedAt = now
+        try save(other)
     }
 
     private func expire(_ original: HandoffWork, now: Double) throws -> HandoffWork {

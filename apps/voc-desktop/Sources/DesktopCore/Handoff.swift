@@ -23,10 +23,8 @@ struct HandoffWork: Codable, Equatable {
     var publicationID: String?
     var turnStatus: String?
     var errorCode: String?
-    // Optional fields preserve records created before local layout existed.
+    // Optional fields preserve records created before these features existed; old layout keys are ignored.
     var presentation: HandoffPresentation?
-    var layoutAttempted: Bool?
-    var layoutResult: HandoffLayoutResult?
     var reports: [HandoffReport]?
     var reportRequestID: String?
 
@@ -108,7 +106,6 @@ struct HandoffError: LocalizedError {
         case "invalid_id", "invalid_link": return "La entrega necesita un identificador UUID válido y un enlace sin parámetros."
         case "invalid_question": return "Escribe una pregunta de entre 1 y 1.000 caracteres."
         case "request_conflict": return "Ese identificador ya pertenece a otra pregunta."
-        case "busy": return "Hay un trabajo activo. Termínalo o abandónalo desde VOC antes de iniciar otro."
         case "not_found": return "No existe esa entrega en este Mac."
         case "expired": return "La entrega venció antes de que VOC la recibiera. Crea una nueva petición."
         case "abandoned": return "El trabajo fue abandonado; su conversación se conserva en el servidor."

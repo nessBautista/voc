@@ -6,9 +6,8 @@ struct VOCDataStateApp: App {
     @StateObject private var handoff: HandoffController
     @StateObject private var reports: ReportController
     @StateObject private var signIn: SignInController
-    @StateObject private var layout = WindowLayoutModel()
-    @State private var showLayout = false
     @State private var showConnection = true
+    @State private var showDetails = false
 
     init() {
         let store: HandoffStore?
@@ -37,7 +36,6 @@ struct VOCDataStateApp: App {
                 HStack {
                     Text("VOC · Estado de los datos").font(.headline)
                     Spacer()
-                    Button("Distribución de ventanas…") { showLayout = true }
                 }.padding(.horizontal, 14).padding(.top, 10)
                 DisclosureGroup("Conexión", isExpanded: $showConnection) {
                     VStack(alignment: .leading, spacing: 10) {
@@ -99,11 +97,11 @@ struct VOCDataStateApp: App {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(handoff.message).font(.callout).textSelection(.enabled)
                         if let work = handoff.work {
-                            Text("Trabajo \(work.workID) · \(work.state.rawValue)")
-                                .font(.caption).textSelection(.enabled)
-                            if let result = work.layoutResult {
-                                Text(result.message).font(.caption).textSelection(.enabled)
-                            }
+                            DisclosureGroup("Detalles", isExpanded: $showDetails) {
+                                Text("Trabajo \(work.workID) · \(work.state.rawValue)")
+                                    .font(.caption).textSelection(.enabled)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }.font(.caption)
                             if let conversation = work.conversationID {
                                 DisclosureGroup("Resultado para el agente") {
                                     VStack(alignment: .leading, spacing: 6) {
@@ -127,11 +125,9 @@ struct VOCDataStateApp: App {
                                     }.frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
-                            HStack {
+                            if [.opening, .failed].contains(work.state), work.reports?.isEmpty != false {
                                 Button("Recuperar entrega") { handoff.recover() }
-                                    .disabled(handoff.isDelivering || reports.busy || work.reports?.isEmpty == false || [.abandoned, .expired].contains(work.state))
-                                Button("Abandonar trabajo") { handoff.abandon() }
-                                    .disabled(reports.busy || !work.active)
+                                    .disabled(handoff.isDelivering || reports.busy)
                             }
                         }
                     }
@@ -142,15 +138,10 @@ struct VOCDataStateApp: App {
                 WebWorkspace(model: connection, dataStore: signIn.webData)
             }
             .frame(minWidth: 560, minHeight: 560)
-            .background(WorkspaceWindowReader { layout.backend.window = $0 })
-            .sheet(isPresented: $showLayout) { WindowLayoutPanel(model: layout) }
             .onOpenURL { handoff.receive($0) }
             .onAppear {
                 reports.onChange = { handoff.refresh() }
-                handoff.onPresentation = { profile in
-                    showConnection = false
-                    return await layout.automatic(profile)
-                }
+                handoff.onOpened = { showConnection = false }
                 // A parked question asks for a sign-in; the page's own link does the same.
                 handoff.onSignInRequired = { showConnection = true; Task { await signIn.signIn(origin: connection.currentOrigin) } }
                 connection.onLoginRequested = { Task { await signIn.signIn(origin: connection.currentOrigin) } }
@@ -158,7 +149,10 @@ struct VOCDataStateApp: App {
                 signIn.onSignedIn = { connection.logoutHost = signIn.logoutHost; connection.reload(); handoff.resumeAfterSignIn() }
                 signIn.onSignedOut = { handoff.forgetPreparedReports() }
                 if connection.command == nil { connection.connect() }
+                // A configured server starts with the chat in view; problems reopen the box below.
+                showConnection = connection.command == nil
             }
+            .onChange(of: connection.hasError) { _, failed in if failed { showConnection = true } }
             .onChange(of: connection.command?.profile.origin) { _, origin in
                 Task {
                     await signIn.refresh(origin: origin)

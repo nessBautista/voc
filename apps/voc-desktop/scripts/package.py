@@ -344,16 +344,15 @@ El servidor VOC debe estar disponible; el MCP local no lo inicia.
 4. Ejecuta en Terminal /Applications/VOCDataState.app/Contents/Helpers/VOCDesktopBridge --claude-config.
    En Claude → Settings → Developer → Edit Config, incorpora solo la entrada voc-desktop al JSON existente.
    Conserva otras integraciones; no pongas tokens en la entrada stdio. Reabre Claude y confirma voc-desktop running.
-5. En VOC, selecciona la ventana de Claude en Distribución de ventanas. Concede Accesibilidad a la app instalada,
-   comprueba Aplicar ahora y habilita la distribución automática para entregas nuevas. No basta el permiso del build anterior.
-6. Cierra solo VOC con Cmd+Q. Pide a Claude abrir VOC con una pregunta sobre Google Play; conserva work_id.
-   Continúa dentro de VOC con «¿y de App Store?». Recarga para comprobar el historial.
-7. Pulsa Preparar resultado para el agente y vuelve a Claude para recuperar el trabajo mediante voc_read_result.
+5. Cierra solo VOC con Cmd+Q. Pide a Claude abrir VOC con una pregunta sobre Google Play; conserva work_id.
+   VOC aparece al frente y maximizado. Continúa dentro de VOC con «¿y de App Store?». Recarga para comprobar el historial.
+   Una pregunta nueva desde Claude sustituye el trabajo anterior sin pulsar nada; su conversación se conserva.
+6. Opcional: pulsa Preparar resultado para el agente y vuelve a Claude (Cmd+Tab) para recuperar el trabajo mediante voc_read_result.
    El receptor fija report_id, lee hasta eof y verifica bytes y SHA-256. El guardado Markdown en el Mac es opcional.
 
 Las preguntas admitidas cubren fuentes, conteos, cobertura, actualización y estado informado de embeddings.
 El modo fixture selecciona consultas sin un modelo; no identifica los datos como sintéticos.
-Si falta Accesibilidad, el chat sigue disponible y la distribución se omite con explicación.
+VOC no mueve ninguna otra ventana ni necesita el permiso de Accesibilidad.
 Si aparece un aviso de macOS sobre esta copia privada, revisa su procedencia. No desactives Gatekeeper.
 
 La aplicación usa el estado existente en ~/Library/Application Support/VOCDataState.
