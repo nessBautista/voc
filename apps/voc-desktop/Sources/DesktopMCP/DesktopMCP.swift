@@ -10,8 +10,8 @@ enum DesktopMCP {
     voc_open opens a native Mac window and hands the initial question to the configured VOC server.
     Keep the returned work_id. Reuse the same request_id and question only to retry that handoff.
     Wait for the user to return before reading a result; do not repeatedly poll for a report.
-    A new handoff can arrange VOC with a window the user selected in local settings.
-    layout_status is separate from opening_status; applied confirms measured geometry, not answer completion.
+    VOC comes to the front maximized; the user returns to this agent with Cmd+Tab when ready.
+    A new request_id supersedes the previous handoff; its conversation stays on the server.
     The user must choose Preparar resultado para el agente in VOC before a report is ready.
     Then voc_read_result returns immutable Markdown as base64 byte chunks of at most 32768 bytes.
     Pin report_id and use next_offset for every subsequent chunk; assemble bytes before decoding UTF-8.
@@ -31,10 +31,9 @@ enum DesktopMCP {
             which may use its configured model provider. Call when the user asks to work in VOC.
             Supply a new canonical lowercase UUID request_id for a new handoff; retain it for retries.
             A retry with the same question returns the same work without sending or focusing again.
-            Another active work returns busy; the user can finish or abandon it inside VOC.
+            A new request_id supersedes the previous handoff without any action inside VOC.
             Retain work_id and conversation_id. opening means navigation is pending; opened confirms navigation,
-            not answer completion. With the user's local layout preference enabled, a new handoff may move
-            VOC and the selected agent window. Read layout_status separately. The user prepares a Markdown report in VOC when finished.
+            not answer completion. VOC comes to the front maximized. The user prepares a Markdown report in VOC when finished.
             """,
             inputSchema: .object([
                 "type": "object",
@@ -184,8 +183,6 @@ enum DesktopMCP {
             "work_id": .string(work.workID),
             "request_id": .string(work.requestID),
             "opening_status": .string(work.state.rawValue),
-            "layout_status": .string((work.layoutResult ?? .notRequested).status.rawValue),
-            "layout_message": .string((work.layoutResult ?? .notRequested).message),
             "active": .bool(work.active),
             "conversation_id": work.conversationID.map(Value.string) ?? .null,
             "publication_id": work.publicationID.map(Value.string) ?? .null,
@@ -193,7 +190,7 @@ enum DesktopMCP {
             "result_reason": report == nil ? "report_not_prepared" : .null,
             "report": reportValue,
             "chunk": chunkValue,
-            "capabilities": .object(["markdown_export": true, "window_layout": true]),
+            "capabilities": .object(["markdown_export": true]),
             "error_code": work.errorCode.map(Value.string) ?? .null,
             "message": .string(message),
         ]), isError: unsuccessful)

@@ -55,7 +55,7 @@ final class HandoffReportTests: XCTestCase {
         _ = try store.preparedReport(work.workID, requestID: pending.requestID, report: report)
     }
 
-    func testPreparationLossRetainsRequestAndReadyReleasesAdmission() async throws {
+    func testPreparationLossRetainsRequestAndReadyKeepsTheConversation() async throws {
         let (directory, store, work) = try fixture()
         defer { try? FileManager.default.removeItem(at: directory) }
         let data = Data("# VOC\nDatos café 🙂\n".utf8)
@@ -72,7 +72,7 @@ final class HandoffReportTests: XCTestCase {
         XCTAssertEqual(requests.count, 2)
         XCTAssertEqual(requests[0], requests[1])
         let saved = try HandoffStore(directory: directory).read(work.workID)
-        XCTAssertFalse(saved.active)
+        XCTAssertTrue(saved.active)
         XCTAssertNil(saved.reportRequestID)
         XCTAssertEqual(saved.reports, [metadata])
         XCTAssertEqual(saved.state, .opened)

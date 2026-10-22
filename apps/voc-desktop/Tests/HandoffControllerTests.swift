@@ -92,9 +92,41 @@ final class HandoffControllerTests: XCTestCase {
         let command = try XCTUnwrap(nextModel.command)
         nextModel.loaded(commandID: command.id, url: command.profile.workspaceURL)
         XCTAssertEqual(try store.read(work.workID).state, .opened)
-        restored.abandon()
-        XCTAssertEqual(try store.read(work.workID).state, .abandoned)
+        // The next question needs no button: it supersedes the opened work and keeps its conversation.
+        let next = try store.submit(HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Otra")).work
+        restored.receive(next.link)
+        try await waitUntil { restored.work?.workID == next.workID && restored.work?.conversationID != nil }
+        XCTAssertFalse(try store.read(work.workID).active)
+        XCTAssertEqual(try store.read(work.workID).state, .opened)
         XCTAssertNotNil(try store.read(work.workID).conversationID)
+        // Replaying the superseded link neither reclaims nor resends it.
+        restored.receive(work.link)
+        XCTAssertEqual(restored.work?.workID, next.workID)
+        let sent = await client.payloads
+        XCTAssertEqual(sent.count, 2)
+    }
+
+    func testReloadLandingOnTheHandoffPageAcknowledgesIt() async throws {
+        let (directory, store, model, defaults) = try fixture()
+        defer {
+            defaults.removeObject(forKey: ConnectionModel.preferenceKey)
+            try? FileManager.default.removeItem(at: directory)
+        }
+        let controller = HandoffController(connection: model, store: store, client: ScriptedTransport())
+        let work = try store.submit(HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Fuentes")).work
+        controller.receive(work.link)
+        try await waitUntil { controller.work?.conversationID != nil }
+        let handoff = try XCTUnwrap(model.command)
+        // The session restore reloads the page before the handoff navigation reports; same URL, new command.
+        model.reload()
+        let reloaded = try XCTUnwrap(model.command)
+        XCTAssertNotEqual(reloaded.id, handoff.id)
+        model.loaded(commandID: reloaded.id, url: URL(string: "http://127.0.0.1:8091/elsewhere"))
+        XCTAssertEqual(try store.read(work.workID).state, .opening)
+        XCTAssertTrue(controller.isDelivering)
+        model.loaded(commandID: reloaded.id, url: reloaded.profile.workspaceURL)
+        XCTAssertEqual(try store.read(work.workID).state, .opened)
+        XCTAssertFalse(controller.isDelivering)
     }
 
     func testNavigationFailureCanRecoverAndWrongOriginDoesNotSend() async throws {
@@ -130,85 +162,32 @@ final class HandoffControllerTests: XCTestCase {
 }
 
 @MainActor
-final class HandoffLayoutTests: XCTestCase {
-    func testLayoutRunsOnlyAfterNavigationAndNeverOnReplayOrRecovery() async throws {
-        let helper = HandoffControllerTests()
-        let (directory, store, model, _) = try helper.fixture()
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let controller = HandoffController(connection: model, store: store, client: ScriptedTransport())
-        var profiles: [HandoffPresentation] = []
-        controller.onPresentation = { profile in
-            profiles.append(profile)
-            return .init(status: .applied, message: "Verified")
-        }
-        let input = try HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Fuentes")
-        let work = try store.submit(input, presentation: .http).work
-        controller.receive(work.link)
-        try await helper.waitUntil { controller.work?.conversationID != nil }
-        XCTAssertTrue(profiles.isEmpty)
-        let command = try XCTUnwrap(model.command)
-        model.loaded(commandID: command.id, url: command.profile.workspaceURL)
-        try await helper.waitUntil { controller.work?.layoutResult?.status == .applied }
-        XCTAssertEqual(profiles, [.http])
-        controller.receive(work.link)
-        controller.recover()
-        try await helper.waitUntil { model.command?.id != command.id }
-        let recovered = try XCTUnwrap(model.command)
-        model.loaded(commandID: recovered.id, url: recovered.profile.workspaceURL)
-        XCTAssertEqual(profiles, [.http])
-        XCTAssertEqual(try store.read(work.workID).layoutResult?.status, .applied)
+final class WorkspacePresenterTests: XCTestCase {
+    func testTargetPrefersTheScreenUnderThePointerAndFallsBackToTheWindowScreen() {
+        let left = WorkspacePresenter.Display(frame: CGRect(x: 0, y: 0, width: 1512, height: 982),
+                                              visibleFrame: CGRect(x: 0, y: 0, width: 1512, height: 945))
+        let right = WorkspacePresenter.Display(frame: CGRect(x: 1512, y: 0, width: 2560, height: 1440),
+                                               visibleFrame: CGRect(x: 1512, y: 0, width: 2560, height: 1400))
+        XCTAssertEqual(WorkspacePresenter.target(mouse: CGPoint(x: 2000, y: 100), displays: [left, right], fallback: left.visibleFrame), right.visibleFrame)
+        XCTAssertEqual(WorkspacePresenter.target(mouse: CGPoint(x: 10, y: 10), displays: [left, right], fallback: right.visibleFrame), left.visibleFrame)
+        XCTAssertEqual(WorkspacePresenter.target(mouse: CGPoint(x: -5, y: 100), displays: [left, right], fallback: left.visibleFrame), left.visibleFrame)
+        XCTAssertNil(WorkspacePresenter.target(mouse: .zero, displays: [], fallback: nil))
     }
 
-    func testSkippedLayoutLeavesTheConversationOpened() async throws {
-        let helper = HandoffControllerTests()
-        let (directory, store, model, _) = try helper.fixture()
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let controller = HandoffController(connection: model, store: store, client: ScriptedTransport())
-        controller.onPresentation = { _ in .init(status: .skipped, message: "Permission denied") }
-        let work = try store.submit(HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Fuentes"), presentation: .stdio).work
-        controller.receive(work.link)
-        try await helper.waitUntil { controller.work?.conversationID != nil }
-        let command = try XCTUnwrap(model.command)
-        model.loaded(commandID: command.id, url: command.profile.workspaceURL)
-        try await helper.waitUntil { controller.work?.layoutResult?.message == "Permission denied" }
-        XCTAssertEqual(controller.work?.state, .opened)
-        XCTAssertEqual(controller.work?.layoutResult?.status, .skipped)
-        XCTAssertEqual(model.command?.id, command.id)
-        XCTAssertFalse(controller.isDelivering)
-    }
-
-    func testLayoutReservationSurvivesStoreReopenAndCrossTransportRetry() throws {
-        let helper = HandoffControllerTests()
-        let (directory, store, model, _) = try helper.fixture()
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let input = try HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Fuentes")
-        let work = try store.submit(input, presentation: .http).work
-        _ = try store.claim(work.workID, origin: model.server, owner: "gui")
-        let receipt = HandoffReceipt(conversationID: UUID().uuidString.lowercased(), publicationID: UUID().uuidString.lowercased(), turnStatus: "running")
-        _ = try store.received(work.workID, owner: "gui", receipt: receipt)
-        _ = try store.opened(work.workID, owner: "gui", url: ConnectionProfile(server: model.server, conversation: receipt.conversationID).workspaceURL)
-        XCTAssertTrue(try store.reserveLayout(work.workID, owner: "gui"))
-        let next = try HandoffStore(directory: directory)
-        XCTAssertFalse(try next.reserveLayout(work.workID, owner: "gui"))
-        let replay = try next.submit(input, presentation: .stdio)
-        XCTAssertFalse(replay.shouldOpen)
-        XCTAssertEqual(replay.work.presentation, .http)
-        XCTAssertEqual(replay.work.state, .opened)
-        XCTAssertEqual(replay.work.layoutResult?.status, .skipped)
-        try next.abandon(work.workID)
-        try store.finishLayout(work.workID, owner: "gui", result: .init(status: .applied, message: "Late"))
-        XCTAssertEqual(try next.read(work.workID).layoutResult?.status, .skipped)
-    }
-
-    func testOldRecordsDecodeWithoutLayoutAndRemainOptedOut() throws {
+    func testRecordsWithOldLayoutKeysStillDecode() throws {
         let helper = HandoffControllerTests()
         let (directory, store, _, _) = try helper.fixture()
         defer { try? FileManager.default.removeItem(at: directory) }
         let work = try store.submit(HandoffInput(requestID: UUID().uuidString.lowercased(), question: "Fuentes")).work
-        let bytes = try JSONEncoder().encode(work)
-        let record = try JSONDecoder().decode(HandoffWork.self, from: bytes)
-        XCTAssertNil(record.presentation)
-        XCTAssertNil(record.layoutResult)
-        XCTAssertNil(record.layoutAttempted)
+        var json = try JSONSerialization.jsonObject(with: JSONEncoder().encode(work)) as! [String: Any]
+        json["layoutAttempted"] = true
+        json["layoutResult"] = ["status": "applied", "message": "Observed geometry"]
+        json["presentation"] = "http"
+        let record = try JSONDecoder().decode(HandoffWork.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(record.workID, work.workID)
+        XCTAssertEqual(record.presentation, .http)
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(record)) as! [String: Any]
+        XCTAssertNil(encoded["layoutResult"])
+        XCTAssertNil(encoded["layoutAttempted"])
     }
 }

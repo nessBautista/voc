@@ -50,13 +50,12 @@ def configurations(settings):
 shared_files = sorted(ROOT.glob("Sources/DesktopCore/*.swift")) + [
     ROOT / "Sources/VOCDataState/ConnectionProfile.swift"
 ]
-layout_files = sorted(ROOT.glob("Sources/DesktopLayout/*.swift"))
-app_files = sorted(ROOT.glob("Sources/VOCDataState/*.swift")) + layout_files + [
+app_files = sorted(ROOT.glob("Sources/VOCDataState/*.swift")) + [
     path for path in shared_files if path.name != "ConnectionProfile.swift"
 ]
 mcp_files = sorted(ROOT.glob("Sources/DesktopMCP/*.swift"))
 bridge_files = shared_files + mcp_files + sorted(ROOT.glob("Sources/DesktopBridge/*.swift"))
-core_files = shared_files + mcp_files + [path for path in layout_files if path.name != "WindowLayoutPanel.swift"] + [
+core_files = shared_files + mcp_files + [
     ROOT / "Sources/VOCDataState/ConnectionModel.swift",
     ROOT / "Sources/VOCDataState/HandoffController.swift",
     ROOT / "Sources/VOCDataState/ReportController.swift",

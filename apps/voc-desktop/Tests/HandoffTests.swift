@@ -48,7 +48,10 @@ final class HandoffTests: XCTestCase {
         XCTAssertFalse(replay.shouldOpen)
         XCTAssertEqual(replay.work, first.work)
         assertCode("request_conflict") { _ = try self.store.submit(self.input("Other?", id: request.requestID)) }
-        assertCode("busy") { _ = try self.store.submit(self.input()) }
+        // A newer question takes the GUI; the earlier work keeps its record and origin.
+        let next = try store.submit(input())
+        XCTAssertTrue(next.shouldOpen)
+        XCTAssertFalse(try store.read(first.work.workID).active)
         assertCode("origin_changed") { _ = try self.store.claim(first.work.workID, origin: self.origin, owner: "gui") }
         XCTAssertNil(try store.read(first.work.workID).claimedBy)
     }
@@ -116,9 +119,10 @@ final class HandoffTests: XCTestCase {
         XCTAssertEqual(try store.read(work.workID).state, .opening)
         try store.fail(work.workID, owner: "gui", code: "transport_failed")
         let next = try store.submit(input()).work
-        assertCode("busy") { _ = try self.store.claim(work.workID, origin: self.origin, owner: "gui", recover: true) }
-        try store.abandon(next.workID)
+        // An explicit recovery of older work supersedes the newer one without any button.
         _ = try store.claim(work.workID, origin: origin, owner: "gui", recover: true)
+        XCTAssertFalse(try store.read(next.workID).active)
+        XCTAssertEqual(try store.read(next.workID).state, .opening)
         try store.abandon(work.workID)
         let receipt = HandoffReceipt(conversationID: UUID().uuidString.lowercased(), publicationID: UUID().uuidString.lowercased(), turnStatus: "running")
         assertCode("inactive") { _ = try self.store.received(work.workID, owner: "gui", receipt: receipt) }

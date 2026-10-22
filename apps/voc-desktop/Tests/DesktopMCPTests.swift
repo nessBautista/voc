@@ -76,7 +76,7 @@ final class DesktopMCPTests: XCTestCase {
         await link.close()
     }
 
-    func testOpenReplayConflictAndBusyUseTheSameDurableDispatcher() async throws {
+    func testOpenReplayConflictAndSupersedeUseTheSameDurableDispatcher() async throws {
         let (directory, store) = try state()
         defer { try? FileManager.default.removeItem(at: directory) }
         let opener = Opener()
@@ -87,14 +87,19 @@ final class DesktopMCPTests: XCTestCase {
         let replay = try payload(await link.call("voc_open", arguments))
         XCTAssertEqual(first, replay)
         XCTAssertEqual(first["opening_status"], "opening")
-        XCTAssertEqual(first["layout_status"], "not_requested")
+        XCTAssertNil(first["layout_status"])
         XCTAssertEqual(try store.read(first["work_id"]!.stringValue!).presentation, .stdio)
         XCTAssertEqual(opener.calls, 1)
         let conflict = try payload(await link.call("voc_open", ["request_id": .string(id), "question": "Otra"]))
         XCTAssertEqual(conflict["error_code"], "request_conflict")
-        let busy = try payload(await link.call("voc_open", ["request_id": .string(UUID().uuidString.lowercased()), "question": "Fuentes"]))
-        XCTAssertEqual(busy["error_code"], "busy")
-        XCTAssertEqual(opener.calls, 1)
+        let next = try payload(await link.call("voc_open", ["request_id": .string(UUID().uuidString.lowercased()), "question": "Fuentes"]))
+        XCTAssertEqual(next["opening_status"], "opening")
+        XCTAssertNotEqual(next["work_id"], first["work_id"])
+        XCTAssertEqual(opener.calls, 2)
+        XCTAssertFalse(try store.read(first["work_id"]!.stringValue!).active)
+        let replayed = try payload(await link.call("voc_open", arguments))
+        XCTAssertEqual(replayed["work_id"], first["work_id"])
+        XCTAssertEqual(opener.calls, 2)
         await link.close()
     }
 
@@ -140,15 +145,11 @@ final class DesktopMCPTests: XCTestCase {
         _ = try store.received(id, owner: "gui", receipt: receipt)
         let profile = try ConnectionProfile(server: "http://127.0.0.1:8091", conversation: receipt.conversationID)
         _ = try store.opened(id, owner: "gui", url: profile.workspaceURL)
-        XCTAssertTrue(try store.reserveLayout(id, owner: "gui"))
-        try store.finishLayout(id, owner: "gui", result: .init(status: .applied, message: "Observed geometry"))
         await link.close()
 
         let reconnected = try await session(HandoffStore(directory: directory), opener)
         let read = try payload(await reconnected.call("voc_read_result", ["work_id": .string(id)]))
         XCTAssertEqual(read["opening_status"], "opened")
-        XCTAssertEqual(read["layout_status"], "applied")
-        XCTAssertEqual(read["layout_message"], "Observed geometry")
         XCTAssertEqual(read["conversation_id"], .string(receipt.conversationID))
         XCTAssertEqual(read["publication_id"], .string(receipt.publicationID))
         XCTAssertEqual(read["result_status"], "not_ready")

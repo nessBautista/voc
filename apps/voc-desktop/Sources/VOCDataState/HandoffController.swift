@@ -14,11 +14,10 @@ final class HandoffController: ObservableObject {
     private var lease: DesktopLease?
     private var task: Task<Void, Never>?
     private var navigationID: UUID?
-    private var presentation: HandoffPresentation?
-    private var layoutTask: Task<Void, Never>?
-    var onPresentation: (@MainActor (HandoffPresentation) async -> HandoffLayoutResult)?
     /// Fired once when a delivery is parked for lack of a signed-in person.
     var onSignInRequired: (@MainActor () -> Void)?
+    /// Fired when a delivered conversation is on screen.
+    var onOpened: (@MainActor () -> Void)?
 
     init(connection: ConnectionModel, store: HandoffStore?, client: any HandoffTransport = HandoffClient(), startupError: String? = nil) {
         self.connection = connection
@@ -59,21 +58,8 @@ final class HandoffController: ObservableObject {
         begin(work.workID, recover: true)
     }
 
-    func abandon() {
-        guard let store, let work else { return }
-        do {
-            try store.abandon(work.workID)
-            task?.cancel()
-            layoutTask?.cancel()
-            presentation = nil
-            navigationID = nil
-            isDelivering = false
-            refresh()
-        } catch { message = error.localizedDescription }
-    }
-
     private func begin(_ id: String, recover: Bool) {
-        guard let store, !isDelivering else { return }
+        guard let store else { return }
         do {
             if lease == nil { lease = try DesktopLease(directory: store.directory) }
             let origin = try ConnectionProfile(server: connection.server).origin.absoluteString
@@ -81,14 +67,14 @@ final class HandoffController: ObservableObject {
                 refresh()
                 return
             }
+            // A newer delivery supersedes one still in flight; the store already released it.
+            task?.cancel()
             work = claimed
-            presentation = recover ? nil : claimed.presentation
             navigationID = nil
             isDelivering = true
             message = "Entregando la pregunta al servidor…"
             // Replayed or expired links never reach this activation point.
-            NSApp?.activate(ignoringOtherApps: true)
-            NSApp?.windows.first(where: { $0.identifier?.rawValue == "workspace" || $0.isVisible })?.makeKeyAndOrderFront(nil)
+            WorkspacePresenter.present()
             task = Task { [weak self] in
                 guard let self else { return }
                 do {
@@ -127,32 +113,24 @@ final class HandoffController: ObservableObject {
     }
 
     private func loaded(id: UUID, url: URL?) {
-        guard id == navigationID, let work, let store, let url else { return }
+        guard navigationID != nil, let work, let store, let url else { return }
+        // A reload issued meanwhile, for example by the session restore, lands on the same page; accept it by its URL.
+        guard id == navigationID || url == (try? ConnectionProfile(server: work.serverOrigin, conversation: work.conversationID ?? "").workspaceURL) else { return }
         do {
             self.work = try store.opened(work.workID, owner: owner, url: url)
             message = description(self.work!)
-            if let presentation, let onPresentation,
-               (try? store.reserveLayout(work.workID, owner: owner)) == true {
-                layoutTask = Task { [weak self] in
-                    let result = await onPresentation(presentation)
-                    guard let self, !Task.isCancelled else { return }
-                    do {
-                        try store.finishLayout(work.workID, owner: self.owner, result: result)
-                        self.refresh()
-                    } catch { self.message = "La conversación está abierta, pero no se guardó el estado de distribución." }
-                }
-            }
+            onOpened?()
         } catch {
             try? store.fail(work.workID, owner: owner, code: "navigation_failed")
             refresh()
         }
         isDelivering = false
         navigationID = nil
-        presentation = nil
     }
 
     private func navigationFailed(id: UUID) {
-        guard id == navigationID, let work, let store else { return }
+        // Only the current command reports; while a handoff waits for its page, any failure is its failure.
+        guard navigationID != nil, let work, let store else { return }
         try? store.fail(work.workID, owner: owner, code: "navigation_failed")
         navigationID = nil
         isDelivering = false
@@ -160,16 +138,44 @@ final class HandoffController: ObservableObject {
     }
 
     private func description(_ work: HandoffWork) -> String {
-        if work.reports?.isEmpty == false && !work.active {
-            return "Resultado preparado para el agente. La conversación se conserva y puedes iniciar otro trabajo."
+        if work.reports?.isEmpty == false {
+            return "Resultado preparado para el agente. La conversación se conserva en el servidor."
         }
         switch work.state {
         case .opening: return "Entrega pendiente. Recuperar continúa el mismo trabajo; no crea otra pregunta."
         case .awaitingSignIn: return "Esperando inicio de sesión. La pregunta se enviará una sola vez cuando inicies sesión en este servidor."
-        case .opened: return "Conversación abierta. Continúa en el chat y prepara el resultado para el agente cuando termines."
+        case .opened: return "Conversación abierta. Vuelve al agente con Cmd+Tab cuando quieras."
         case .failed: return HandoffError(work.errorCode ?? "transport_failed").localizedDescription
         case .expired: return HandoffError("expired").localizedDescription
         case .abandoned: return HandoffError("abandoned").localizedDescription
+        }
+    }
+}
+
+/// A delivery brings VOC to the front, maximized on the screen the person is using. Nothing else moves.
+@MainActor
+enum WorkspacePresenter {
+    struct Display: Equatable {
+        let frame: CGRect
+        let visibleFrame: CGRect
+    }
+
+    /// The screen under the pointer is where the agent window was; otherwise the window's own screen.
+    static func target(mouse: CGPoint, displays: [Display], fallback: CGRect?) -> CGRect? {
+        displays.first(where: { NSMouseInRect(mouse, $0.frame, false) })?.visibleFrame ?? fallback
+    }
+
+    static func present() {
+        NSApp?.activate(ignoringOtherApps: true)
+        guard let window = NSApp?.windows.first(where: { $0.identifier?.rawValue == "workspace" })
+            ?? NSApp?.windows.first(where: { $0.isVisible }) else { return }
+        if window.isMiniaturized { window.deminiaturize(nil) }
+        window.makeKeyAndOrderFront(nil)
+        guard !window.styleMask.contains(.fullScreen) else { return }
+        let displays = NSScreen.screens.map { Display(frame: $0.frame, visibleFrame: $0.visibleFrame) }
+        let fallback = (window.screen ?? NSScreen.main)?.visibleFrame
+        if let frame = target(mouse: NSEvent.mouseLocation, displays: displays, fallback: fallback) {
+            window.setFrame(frame, display: true, animate: false)
         }
     }
 }
