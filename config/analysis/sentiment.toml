@@ -1,0 +1,5 @@
+# Pretrained baseline. Fine-tuning and human corrections are separate workflows.
+model = "pysentimiento/robertuito-sentiment-analysis"
+revision = "a2cc0f67ebd705c55191e25a05ba23d885fcc09b"
+max_length = 128
+batch_size = 16
