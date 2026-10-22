@@ -233,6 +233,18 @@ final class NativeAuthTests: XCTestCase {
         let auth = NativeAuth(store: MemoryCredentialStore(), session: FakeSignIn(mode: .follow), configuration: configuration())
         do { _ = try await auth.config(for: origin); XCTFail("expected server_without_login") }
         catch { XCTAssertEqual((error as? HandoffError)?.code, "server_without_login") }
+        // A 404 on the configuration plus a 401 on data means the server predates the desktop client.
+        let previous = AuthStubProtocol.handler
+        AuthStubProtocol.handler = { request in
+            request.url!.path == "/api/v1/publications/current" ? (401, Data()) : previous!(request)
+        }
+        do { _ = try await auth.hasLogin(origin: origin); XCTFail("expected server_needs_update") }
+        catch { XCTAssertEqual((error as? HandoffError)?.code, "server_needs_update") }
+        AuthStubProtocol.handler = { request in
+            request.url!.path == "/api/v1/publications/current" ? (503, Data()) : previous!(request)
+        }
+        let offered = try await auth.hasLogin(origin: origin)
+        XCTAssertFalse(offered)
         do { _ = try await auth.accessToken(origin: origin); XCTFail("expected sign_in_required") }
         catch { XCTAssertEqual((error as? HandoffError)?.code, "sign_in_required") }
         try await auth.signOut(origin: origin)
