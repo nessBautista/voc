@@ -4,9 +4,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >-
   VOC pilot foundation: a private image repository, a publications bucket, a
-  backup bucket, the host log group and two empty secrets. No compute, no
-  users and no secret values live here; the host stack and the console add
-  those.
+  backup bucket, the Operator's own bucket with the one IAM user that writes
+  to it, the host log group and two empty secrets. No compute, no access keys
+  and no secret values live here; the host stack and the console add those.
 
 Parameters:
   Environment:
@@ -168,6 +168,106 @@ Resources:
               Bool:
                 "aws:SecureTransport": "false"
 
+  # The Operator's own store: shared dataset releases, embedding releases and
+  # personal ZenML/MLflow artifacts, written from the developer's machine with
+  # the operator user's keys. The app's host role never touches this bucket.
+  OperatorBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: { "Fn::Sub": "voc-${Environment}-operator-${AWS::AccountId}" }
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          # Releases are immutable, but ZenML and MLflow rewrite small files;
+          # old versions of those must not accumulate against the credit.
+          - Id: expire-noncurrent-versions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+          - Id: remove-expired-delete-markers
+            Status: Enabled
+            ExpiredObjectDeleteMarker: true
+          - Id: abandon-incomplete-uploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  OperatorBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: OperatorBucket }
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: RequireTls
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - { "Fn::GetAtt": [OperatorBucket, Arn] }
+              - { "Fn::Sub": "${OperatorBucket.Arn}/*" }
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+
+  # The only principal that writes to the Operator bucket. Its access key is
+  # created by hand on the developer's machine and stored in 1Password; the
+  # template never holds a key, and the user can reach nothing else.
+  OperatorUser:
+    Type: AWS::IAM::User
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      UserName: { "Fn::Sub": "voc-${Environment}-operator" }
+      Path: /voc/
+      Policies:
+        - PolicyName: voc-operator-bucket
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ListOperatorBucket
+                Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                  - s3:ListBucketMultipartUploads
+                Resource: { "Fn::GetAtt": [OperatorBucket, Arn] }
+              - Sid: ReadAndWriteObjects
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:PutObject
+                  - s3:AbortMultipartUpload
+                  - s3:ListMultipartUploadParts
+                Resource: { "Fn::Sub": "${OperatorBucket.Arn}/*" }
+              # Releases under voc/ are append-only; only personal scratch may be deleted.
+              - Sid: DeletePersonalArtifactsOnly
+                Effect: Allow
+                Action: s3:DeleteObject
+                Resource: { "Fn::Sub": "${OperatorBucket.Arn}/members/*" }
+      Tags:
+        - { Key: Project, Value: VOC }
+        - { Key: Environment, Value: { Ref: Environment } }
+
   HostLogGroup:
     Type: AWS::Logs::LogGroup
     DeletionPolicy: Retain
@@ -225,6 +325,18 @@ Outputs:
   BackupBucketArn:
     Value: { "Fn::GetAtt": [BackupBucket, Arn] }
     Export: { Name: { "Fn::Sub": "voc-${Environment}-BackupBucketArn" } }
+  OperatorBucketName:
+    Value: { Ref: OperatorBucket }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-OperatorBucketName" } }
+  OperatorBucketArn:
+    Value: { "Fn::GetAtt": [OperatorBucket, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-OperatorBucketArn" } }
+  OperatorUserName:
+    Value: { Ref: OperatorUser }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-OperatorUserName" } }
+  OperatorUserArn:
+    Value: { "Fn::GetAtt": [OperatorUser, Arn] }
+    Export: { Name: { "Fn::Sub": "voc-${Environment}-OperatorUserArn" } }
   HostLogGroupName:
     Value: { Ref: HostLogGroup }
     Export: { Name: { "Fn::Sub": "voc-${Environment}-HostLogGroupName" } }
