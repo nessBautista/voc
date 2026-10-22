@@ -9,6 +9,11 @@ from uuid import uuid4
 
 import pytest
 
+# The verifier runs inside the app container, whose HTTP client is httpx2; the
+# Operator workspace collects this file too and must skip it rather than fail.
+pytest.importorskip(
+    "httpx2", reason="check_report runs where the app's httpx2 is installed"
+)
 sys.path.insert(0, str(Path(__file__).parent))
 from check_report import CHUNK_BYTES, Download
 

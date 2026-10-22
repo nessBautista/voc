@@ -4,12 +4,13 @@ import click
 from botocore.exceptions import BotoCoreError, ClientError
 
 from voc import __version__
+from voc.analysis.cli import analysis_cli
 from voc.publications.cli import publication
 
 
 @click.group()
 def main():
-    """VOC dataset tools."""
+    """VOC dataset, analysis and publication tools."""
     # Click dispatches the selected command registered below.
 
 
@@ -305,6 +306,7 @@ def embeddings_inspect(
 
 # Register portable publication commands alongside the existing dataset tools.
 main.add_command(publication)
+main.add_command(analysis_cli)
 
 
 if __name__ == "__main__":
