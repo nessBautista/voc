@@ -11,6 +11,7 @@ This directory holds VOC's configuration values. The Python code that reads and 
 | `aws.local.env` | Your private credentials file, copied from the example |
 | `collector.toml` | Collection sources and update rules; added in a later lesson |
 | `preparation.toml` | Rules for preparing the workable dataset; added in a later lesson |
+| `analysis/bertopic.toml` | Baseline topic discovery: first 1,000 pinned reviews, UMAP to five dimensions, HDBSCAN with `min_cluster_size` 10; read by `voc-ml analysis run` and by `voc_ml.topics.discover` |
 
 ## Local settings and credentials
 

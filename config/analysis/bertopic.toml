@@ -1,0 +1,21 @@
+# Small discovery baseline for local experimentation, not tuned corpus settings.
+# Pin full dataset/embedding releases first, then select their first 1,000 rows.
+[selection]
+kind = "first-n"
+size = 1000
+
+[topics]
+backend = "bertopic"
+
+[reduction]
+n_neighbors = 15
+n_components = 5
+min_dist = 0.0
+metric = "cosine"
+random_state = 42
+
+[clustering]
+min_cluster_size = 10
+min_samples = 3
+metric = "euclidean"
+cluster_selection_method = "eom"
