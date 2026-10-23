@@ -1060,3 +1060,46 @@ def test_result_identity_does_not_depend_on_catalog_location(
             selected["publication_id"],
             kind,
         )
+
+
+def test_integrity_and_rows_are_verified_once_per_file_identity(
+    locations, active, monkeypatch
+):
+    from voc.publications import store
+
+    catalog, _ = locations
+    store.forget_verifications()
+    hashed, validated = [], []
+    real_hash, real_validate = store.file_sha256, store.validate_database
+
+    def counting_hash(path):
+        if Path(path).name == "publication.duckdb":
+            hashed.append(path)
+        return real_hash(path)
+
+    def counting_validate(connection):
+        validated.append(connection)
+        return real_validate(connection)
+
+    monkeypatch.setattr(store, "file_sha256", counting_hash)
+    monkeypatch.setattr(store, "validate_database", counting_validate)
+    first = query(catalog, active["publication_id"], "overview")
+    second = query(catalog, active["publication_id"], "sources")
+    assert len(hashed) == 1 and len(validated) == 1
+    assert first["warnings"] == second["warnings"]
+    # The cache hands out copies: a consumer cannot alter what the next one sees.
+    with open_publication(catalog, active["publication_id"]) as opened:
+        opened.warnings.append({"code": "tampered", "message": "x"})
+    assert (
+        query(catalog, active["publication_id"], "overview")["warnings"]
+        == (first["warnings"])
+    )
+    # A changed file is a new identity: it is hashed again, and refused.
+    path = catalog / active["publication_id"] / "publication.duckdb"
+    with path.open("ab") as stream:
+        stream.write(b"changed")
+    with pytest.raises(ValueError, match="checksum"):
+        query(catalog, active["publication_id"], "overview")
+    # The size check refused it before any hashing; nothing was re-validated.
+    assert len(hashed) == 1 and len(validated) == 1
+    store.forget_verifications()

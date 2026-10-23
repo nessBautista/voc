@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import tempfile
+import threading
 from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -41,6 +42,39 @@ READ_CONFIG = {
     "autoload_known_extensions": False,
     "autoinstall_known_extensions": False,
 }
+
+# Packages are immutable and the catalog is read-only to the server, so the
+# database digest and the row validation are verified once per process for each
+# file identity (directory, manifest bytes, database size and mtime). A changed
+# file or a restarted process verifies again; a v2 package costs a second and a
+# few hundred megabytes to validate, which is far too much for every request.
+_VERIFIED = {}
+_VERIFIED_LIMIT = 16
+_VERIFY_LOCK = threading.Lock()
+
+
+def _file_identity(path, manifest_payload):
+    database = path / DATABASE_NAME
+    stat = database.stat()
+    return (
+        str(path.resolve()),
+        hashlib.sha256(manifest_payload).hexdigest(),
+        stat.st_size,
+        stat.st_mtime_ns,
+    )
+
+
+def _remember(key, warnings):
+    with _VERIFY_LOCK:
+        if len(_VERIFIED) >= _VERIFIED_LIMIT:
+            _VERIFIED.pop(next(iter(_VERIFIED)))
+        _VERIFIED[key] = tuple(dict(w) for w in warnings)
+
+
+def forget_verifications():
+    """Drop the per-process verification cache; tests and long jobs may want this."""
+    with _VERIFY_LOCK:
+        _VERIFIED.clear()
 
 
 def file_sha256(path):
@@ -213,19 +247,22 @@ def _checked_manifest(path):
     )
     _validate_manifest(manifest)
     database = path / DATABASE_NAME
+    key = _file_identity(path, payload)
+    if key in _VERIFIED:
+        return manifest, key
     if (
         database.stat().st_size != manifest["database"]["size_bytes"]
         or file_sha256(database) != manifest["database"]["sha256"]
     ):
         raise ValueError("Database size or checksum differs from the manifest")
 
-    return manifest
+    return manifest, key
 
 
 @contextmanager
 def _open_bundle(path, *, expected_manifest_sha256=None):
     path = Path(path)
-    manifest = _checked_manifest(path)
+    manifest, key = _checked_manifest(path)
     if expected_manifest_sha256 is not None:
         _digest(
             expected_manifest_sha256,
@@ -249,7 +286,18 @@ def _open_bundle(path, *, expected_manifest_sha256=None):
             raise ValueError(
                 f"Database schema differs from {manifest['schema_version']}"
             )
-        warnings = validate_database(connection)
+        verified = _VERIFIED.get(key)
+        if verified is None:
+            # One validation at a time: the row checks hold whole tables in memory.
+            with _VERIFY_LOCK:
+                verified = _VERIFIED.get(key)
+            if verified is None:
+                warnings = validate_database(connection)
+                _remember(key, warnings)
+            else:
+                warnings = [dict(w) for w in verified]
+        else:
+            warnings = [dict(w) for w in verified]
         row = connection.execute(
             "SELECT publication_id, dataset_id, schema_version, created_at FROM publication"
         ).fetchone()
