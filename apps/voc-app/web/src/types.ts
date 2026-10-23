@@ -108,9 +108,9 @@ export const selectionSchema = z
     publication_id: uuid,
     manifest_sha256: digest,
     activated_at: z.iso.datetime(),
-    schema_version: z.literal("voc-data-state-v1"),
+    schema_version: z.enum(["voc-data-state-v1", "voc-data-state-v2"]),
     dataset_id: identifier,
-    capabilities: z.array(z.enum(kinds)),
+    capabilities: z.array(z.string().min(1).max(40)),
     warnings: z.array(warning),
   })
   .strict();
@@ -119,10 +119,11 @@ export type Snapshot = { selection: Selection; results: Result[] };
 
 export function parseSelection(payload: unknown): Selection {
   const parsed = selectionSchema.safeParse(payload);
+  // This screen needs the five dataset kinds; a v2 package lists more, never fewer.
   if (
     !parsed.success ||
-    parsed.data.capabilities.length !== kinds.length ||
-    new Set(parsed.data.capabilities).size !== kinds.length ||
+    new Set(parsed.data.capabilities).size !==
+      parsed.data.capabilities.length ||
     kinds.some((kind) => !parsed.data.capabilities.includes(kind))
   ) {
     throw new Error(

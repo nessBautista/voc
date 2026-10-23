@@ -48,7 +48,7 @@ describe("published response validation", () => {
       ).toThrow();
     },
   );
-  it("rejects capabilities omitted, added or repeated", () => {
+  it("rejects capabilities omitted or repeated, accepts a v2 superset", () => {
     for (const capabilities of [
       [],
       ["topics"],
@@ -56,6 +56,21 @@ describe("published response validation", () => {
     ]) {
       expect(() => parseSelection({ ...a.selection, capabilities })).toThrow();
     }
+    const v2 = parseSelection({
+      ...a.selection,
+      schema_version: "voc-data-state-v2",
+      capabilities: [
+        ...a.selection.capabilities,
+        "analysis",
+        "topics",
+        "sentiment",
+        "reviews",
+      ],
+    });
+    expect(v2.schema_version).toBe("voc-data-state-v2");
+    expect(() =>
+      parseSelection({ ...a.selection, schema_version: "voc-data-state-v3" }),
+    ).toThrow();
   });
   it("rejects aggregate disagreement instead of rendering different totals", () => {
     const value = snapshot();

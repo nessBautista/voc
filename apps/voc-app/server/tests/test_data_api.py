@@ -8,11 +8,12 @@ from uuid import uuid4
 import duckdb
 import pytest
 from fastapi.testclient import TestClient
-from voc_app import data_api
-from voc_app.main import create_app
-
 from voc.publications import store
 from voc.publications.queries import query
+from voc.publications.store import activate_bundle
+
+from voc_app import data_api
+from voc_app.main import create_app
 
 
 def error_code(response, status, code):
@@ -50,7 +51,7 @@ def test_current_refuses_a_package_newer_than_this_server(client, active, monkey
         with original(*args, **kwargs) as opened:
             yield type(opened)(
                 opened.connection,
-                {**opened.manifest, "schema_version": "voc-data-state-v2"},
+                {**opened.manifest, "schema_version": "voc-data-state-v3"},
                 opened.warnings,
             )
 
@@ -223,12 +224,78 @@ def test_unknown_id_is_not_an_empty_dataset(client):
     )
 
 
-@pytest.mark.parametrize("kind", ["topics", "sentiment", "SELECT 1"])
+@pytest.mark.parametrize("kind", ["topics", "sentiment", "reviews", "SELECT 1"])
 def test_unsupported_query_is_rejected(client, active, kind):
     error_code(
         client.get(f"/api/v1/publications/{active['publication_id']}/{kind}"),
         422,
         "capability_unavailable",
+    )
+
+
+def test_v2_package_is_served_with_its_capabilities(client, v2_active):
+    current = client.get("/api/v1/publications/current")
+    assert current.status_code == 200, current.text
+    selection = current.json()
+    assert selection["schema_version"] == "voc-data-state-v2"
+    assert selection["capabilities"] == [
+        "overview",
+        "sources",
+        "coverage",
+        "freshness",
+        "embeddings",
+        "analysis",
+        "topics",
+        "sentiment",
+        "reviews",
+    ]
+    assert client.get("/health/ready").status_code == 200
+    identity = v2_active["publication_id"]
+    overview = client.get(f"/api/v1/publications/{identity}/overview").json()
+    assert overview["data"]["row_count"] == 60
+    topics = client.get(f"/api/v1/publications/{identity}/topics").json()
+    assert [row["topic_id"] for row in topics["data"]] == [-1, 0, 1, 2, 3, 4]
+    assert (
+        topics["data"][1]["display_name"] == "Lentitud al abrir y cargar la aplicación"
+    )
+    assert topics["data"][1]["negative"] == 8
+    sentiment = client.get(f"/api/v1/publications/{identity}/sentiment").json()
+    assert sentiment["data"]["classified"] == 58 and sentiment["data"]["excluded"] == 2
+    analysis = client.get(f"/api/v1/publications/{identity}/analysis").json()
+    assert analysis["data"]["topic_count"] == 5
+    assert all(
+        len(r["result_id"]) == 64 for r in (overview, topics, sentiment, analysis)
+    )
+    # Reviews are stored in a v2 package but not yet queryable; the next guide adds it.
+    error_code(
+        client.get(f"/api/v1/publications/{identity}/reviews"),
+        422,
+        "capability_unavailable",
+    )
+
+
+def test_activation_moves_between_versions_without_losing_either(
+    client, settings, active, v2_bundle
+):
+    v2 = activate_bundle(v2_bundle, settings.publications_dir, settings.state_dir)
+    assert client.get("/api/v1/publications/current").json()["schema_version"] == (
+        "voc-data-state-v2"
+    )
+    # The v1 package stays installed and answers by its own identity.
+    old = client.get(f"/api/v1/publications/{active['publication_id']}/overview")
+    assert old.status_code == 200 and old.json()["data"]["row_count"] == 12
+    # And a v1 package can become active again while the v2 one keeps answering.
+    activate_bundle(
+        settings.publications_dir / active["publication_id"],
+        settings.publications_dir,
+        settings.state_dir,
+    )
+    assert client.get("/api/v1/publications/current").json()["schema_version"] == (
+        "voc-data-state-v1"
+    )
+    assert (
+        client.get(f"/api/v1/publications/{v2['publication_id']}/topics").status_code
+        == 200
     )
 
 

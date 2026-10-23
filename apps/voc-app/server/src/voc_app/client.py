@@ -9,7 +9,7 @@ from starlette.exceptions import HTTPException
 from voc.publications import queries
 
 from .agent.contracts import KINDS, AgentError, validate_result
-from .data_api import read_current
+from .data_api import SUPPORTED_SCHEMA_VERSIONS, read_current
 
 
 class PublicationService:
@@ -23,7 +23,7 @@ class PublicationService:
             identity = selected["publication_id"]
             if (
                 str(UUID(identity)) != identity
-                or selected["schema_version"] != "voc-data-state-v1"
+                or selected["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS
             ):
                 raise ValueError("Invalid selection")
             return identity
