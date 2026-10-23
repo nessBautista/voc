@@ -5,6 +5,7 @@ from uuid import UUID
 import duckdb
 from fastapi import APIRouter, Depends, Request
 from voc.publications import queries, store
+from voc.publications import selection as selection_fields
 
 from .auth import current_user
 from .errors import failure, reject_query_parameters
@@ -72,10 +73,27 @@ def current(request: Request):
     return read_current(request.app.state.settings)
 
 
+def read_selection(request):
+    """The query string as a selection mapping: known fields only, lists split on commas."""
+    selection = {}
+    for name, value in request.query_params.multi_items():
+        if name not in selection_fields.FIELDS or name in selection:
+            raise failure(
+                422,
+                "invalid_request",
+                "Unknown or repeated selection parameter: " + name[:40],
+            )
+        selection[name] = (
+            value.split(",")
+            if name in ("platforms", "labels", "assessments")
+            else value
+        )
+    return selection or None
+
+
 @router.get("/{publication_id}/{kind}")
 def publication_query(publication_id: str, kind: str, request: Request):
     """Read a fixed publication; activation changes never redirect this query."""
-    reject_query_parameters(request)
     # Validate caller input separately from failures in the installed data.
     try:
         if str(UUID(publication_id)) != publication_id:
@@ -92,6 +110,12 @@ def publication_query(publication_id: str, kind: str, request: Request):
             "capability_unavailable",
             "Use one of: " + ", ".join(queries.KINDS) + ".",
         )
+    # Dataset kinds take no filters; analysis kinds take the one shared selection.
+    if kind in selection_fields.ANALYSIS_KINDS:
+        selection = read_selection(request)
+    else:
+        reject_query_parameters(request)
+        selection = None
 
     try:
         # Preserve the complete library response, including warnings and result ID.
@@ -99,7 +123,10 @@ def publication_query(publication_id: str, kind: str, request: Request):
             request.app.state.settings.publications_dir,
             publication_id,
             kind,
+            selection,
         )
+    except selection_fields.SelectionError as error:
+        raise failure(422, "invalid_selection", str(error)) from error
     except LookupError as error:
         raise failure(
             404,

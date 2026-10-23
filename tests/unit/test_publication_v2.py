@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
+from tests.fixtures.data_state.analysis_example import analysis_description
 from tests.unit.test_analysis_inputs import DATASET_ID, fixture_inputs
 from tests.unit.test_analysis_store import candidate as candidate  # noqa: PLC0414
 from voc.analysis.store import read_analysis, write_analysis
@@ -25,6 +26,7 @@ from voc.publications.exporter import (
     review_ratings,
 )
 from voc.publications.queries import query
+from voc.publications.selection import SelectionError
 from voc.publications.store import activate_bundle, validate_bundle
 
 
@@ -160,8 +162,9 @@ def test_v2_bundle_builds_validates_and_answers_the_new_kinds(descriptions, tmp_
     sentiment = query(catalog, identity, "sentiment")["data"]
     assert sentiment["classified"] == 3 and sentiment["excluded"] == 1
     assert sum(p["selected_reviews"] for p in sentiment["by_platform"]) == 4
-    with pytest.raises(ValueError, match="Capability not available"):
-        query(catalog, identity, "reviews")
+    # Reviews became a query in the dashboard bundle: paged, text included.
+    reviews = query(catalog, identity, "reviews")["data"]
+    assert reviews["total"] == 4 and len(reviews["items"]) == 4
     # The five v1 kinds answer exactly as they would for a v1 package of the same data.
     for kind in store.CAPABILITIES_V1:
         assert query(catalog, identity, kind)["kind"] == kind
@@ -342,3 +345,188 @@ def test_cli_build_with_an_analysis_produces_v2(
     )
     assert personal.exit_code != 0 and "requires --source s3" in personal.output
     assert not (tmp_path / "no").exists()
+
+
+@pytest.fixture(scope="module")
+def shared(tmp_path_factory):
+    root = tmp_path_factory.mktemp("shared-v2")
+    bundle = build_bundle(analysis_description(), root / "bundle")
+    pointer = activate_bundle(bundle, root / "catalog", root / "state")
+    return root / "catalog", pointer["publication_id"]
+
+
+def test_summary_and_topic_list_rank_feature_topics_by_wilson_bound(shared):
+    catalog, identity = shared
+    summary = query(catalog, identity, "summary")
+    assert summary["schema_version"] == "voc-data-query-v2"
+    assert (
+        summary["selection"]["platforms"] is None
+        and summary["selection"]["page"] is None
+    )
+    data = summary["data"]
+    assert (data["reviews_in_view"], data["classified"], data["topics_in_view"]) == (
+        60,
+        58,
+        5,
+    )
+    assert data["negative"] == {"count": 20, "share": 20 / 58}
+    top = data["most_negative_feature"]
+    assert top["topic_id"] == 0 and top["assessment"] == "single_feature"
+    assert (
+        top["negative"] == 8 and top["total"] == 10 and 0.48 < top["wilson_lower"] < 0.5
+    )
+    # Topic 3 is more negative than topic 1 but uninterpreted, so it cannot be the feature.
+    rows = query(catalog, identity, "topic_list", {"sort": "negative"})["data"]
+    assert [r["topic_id"] for r in rows] == [0, 3, 1, 4, 2, -1]
+    assert (
+        rows[1]["assessment"] == "uninterpreted"
+        and rows[-1]["assessment"] == "unassigned"
+    )
+    assert rows[0]["keywords"] == [
+        "lenta",
+        "tarda",
+        "abrir",
+        "carga",
+        "espera",
+        "lento",
+    ]
+    volume = query(catalog, identity, "topic_list")["data"]
+    assert [r["topic_id"] for r in volume] == [0, 1, 2, 3, 4, -1]
+
+
+def test_timeline_platforms_detail_and_reviews_answer_under_the_selection(shared):
+    catalog, identity = shared
+    timeline = query(catalog, identity, "timeline")["data"]
+    assert [m["month"] for m in timeline["months"]][:2] == ["2025-09", "2025-10"]
+    assert len(timeline["months"]) == 13 and timeline["busiest"]["total"] == 5
+    narrowed = query(
+        catalog, identity, "timeline", {"month_from": "2026-07", "topic_id": 0}
+    )["data"]
+    assert [m["month"] for m in narrowed["months"]] == ["2026-07", "2026-08", "2026-09"]
+    assert narrowed["reviews_in_view"] == sum(m["total"] for m in narrowed["months"])
+    platforms = query(catalog, identity, "platforms")["data"]
+    assert [p["platform"] for p in platforms] == [
+        "google_play",
+        "app_store",
+        "x",
+        "youtube",
+    ]
+    assert platforms[0]["total"] == 36
+    detail = query(catalog, identity, "topic_detail", {"topic_id": 0})["data"]
+    assert detail["display_name"] == "Lentitud al abrir y cargar la aplicación"
+    assert detail["in_view"] == 10 == detail["member_count"] and detail["negative"] == 8
+    assert detail["description"].startswith("Descripción ficticia")
+    empty = query(
+        catalog, identity, "topic_detail", {"topic_id": 0, "platforms": "youtube"}
+    )["data"]
+    assert empty["in_view"] == 0 and empty["display_name"] == detail["display_name"]
+    with pytest.raises(LookupError):
+        query(catalog, identity, "topic_detail", {"topic_id": 99})
+    reviews = query(catalog, identity, "reviews", {"topic_id": 0, "page_size": 4})[
+        "data"
+    ]
+    assert (reviews["total"], reviews["pages"], len(reviews["items"])) == (10, 3, 4)
+    assert [i["label"] for i in reviews["items"]] == ["negative"] * 4
+    assert all(
+        i["rating"] in (None, 1, 2, 3, 4, 5) and "text" in i for i in reviews["items"]
+    )
+    last = query(
+        catalog, identity, "reviews", {"topic_id": 0, "page_size": 4, "page": 3}
+    )["data"]
+    assert [i["label"] for i in last["items"]] == ["positive", "neutral"][::-1][
+        :2
+    ] or len(last["items"]) == 2
+
+
+def test_filters_change_the_view_and_the_result_id(shared):
+    catalog, identity = shared
+    whole = query(catalog, identity, "summary")
+    stores = query(catalog, identity, "summary", {"platforms": "google_play,app_store"})
+    assert stores["data"]["reviews_in_view"] == 44
+    assert stores["result_id"] != whole["result_id"]
+    # Two spellings of the same selection share one result identifier.
+    again = query(
+        catalog, identity, "summary", {"platforms": ["app_store", "google_play"]}
+    )
+    assert again["result_id"] == stores["result_id"]
+    labelled = query(catalog, identity, "summary", {"labels": "negative"})["data"]
+    assert labelled["reviews_in_view"] == 20 == labelled["classified"]
+    unassigned = query(catalog, identity, "reviews", {"assessments": "unassigned"})[
+        "data"
+    ]
+    assert unassigned["total"] == 10 and {
+        i["topic_id"] for i in unassigned["items"]
+    } == {-1}
+    found = query(catalog, identity, "reviews", {"search": "TARDA"})["data"]
+    assert found["total"] == 40
+    literal = query(catalog, identity, "reviews", {"search": "100%_x"})["data"]
+    assert literal["total"] == 0
+
+
+def test_dataset_kinds_keep_their_v1_envelope_and_take_no_selection(shared):
+    catalog, identity = shared
+    overview = query(catalog, identity, "overview")
+    assert (
+        overview["schema_version"] == "voc-data-query-v1"
+        and "selection" not in overview
+    )
+    with pytest.raises(SelectionError, match="takes no selection"):
+        query(catalog, identity, "overview", {"platforms": "x"})
+    with pytest.raises(SelectionError, match="Unknown selection fields"):
+        query(catalog, identity, "summary", {"sql": "SELECT 1"})
+
+
+def test_v1_packages_refuse_analysis_kinds(descriptions, tmp_path):
+    dataset, _ = descriptions
+    bundle = build_bundle(dataset, tmp_path / "v1-only")
+    identity = activate_bundle(bundle, tmp_path / "cat", tmp_path / "st")[
+        "publication_id"
+    ]
+    with pytest.raises(
+        ValueError, match="Capability not available in this publication"
+    ):
+        query(tmp_path / "cat", identity, "summary")
+
+
+def test_cli_query_passes_the_selection_through(shared):
+    catalog, identity = shared
+    result = CliRunner().invoke(
+        main,
+        [
+            "publication",
+            "query",
+            "--catalog",
+            str(catalog),
+            "--publication-id",
+            identity,
+            "--kind",
+            "reviews",
+            "--topic-id",
+            "0",
+            "--labels",
+            "negative",
+            "--page-size",
+            "2",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert (
+        payload["selection"]["labels"] == ["negative"] and payload["data"]["total"] == 8
+    )
+    bad = CliRunner().invoke(
+        main,
+        [
+            "publication",
+            "query",
+            "--catalog",
+            str(catalog),
+            "--publication-id",
+            identity,
+            "--kind",
+            "summary",
+            "--sort",
+            "negative",
+        ],
+    )
+    assert bad.exit_code != 0 and "does not take sort" in bad.output

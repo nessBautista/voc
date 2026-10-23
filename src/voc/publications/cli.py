@@ -232,11 +232,58 @@ def current(state):
             "analysis",
             "topics",
             "sentiment",
+            "summary",
+            "topic_list",
+            "timeline",
+            "platforms",
+            "topic_detail",
+            "reviews",
         ]
     ),
 )
-def query_publication(catalog, publication_id, kind):
-    """Read a named result for one fixed publication, with its evidence reference."""
+@click.option(
+    "--platforms",
+    default=None,
+    help="Comma-separated subset of google_play, app_store, x, youtube.",
+)
+@click.option(
+    "--labels",
+    default=None,
+    help="Comma-separated subset of negative, neutral, positive.",
+)
+@click.option(
+    "--assessments",
+    default=None,
+    help="Comma-separated subset of single_feature, mixed, unclear, uninterpreted, unassigned.",
+)
+@click.option("--month-from", default=None, help="First month, YYYY-MM.")
+@click.option("--month-to", default=None, help="Last month, YYYY-MM.")
+@click.option(
+    "--search",
+    default=None,
+    help="Case-insensitive text contained in the review, at most 100 characters.",
+)
+@click.option(
+    "--topic-id",
+    default=None,
+    type=int,
+    help="Topic for topic_detail, or to narrow timeline and reviews.",
+)
+@click.option(
+    "--sort",
+    default=None,
+    type=click.Choice(["volume", "negative", "positive"]),
+    help="Order of topic_list.",
+)
+@click.option("--page", default=None, type=int, help="Page of reviews, from 1.")
+@click.option(
+    "--page-size", default=None, type=int, help="Reviews per page, at most 50."
+)
+def query_publication(catalog, publication_id, kind, **options):
+    """Read a named result for one fixed publication, with its evidence reference.
+
+    The analysis kinds take a selection; the dataset kinds take none.
+    """
     try:
         import duckdb
 
@@ -245,12 +292,14 @@ def query_publication(catalog, publication_id, kind):
         raise click.ClickException(
             "Install voc[publications] to query publications"
         ) from error
+    selection = {k: v for k, v in options.items() if v is not None} or None
     try:
         # Shared query functions own SQL, warnings and stable result identifiers.
         result = query(
             catalog,
             publication_id,
             kind,
+            selection,
         )
     except (LookupError, ValueError, OSError, duckdb.Error) as error:
         raise click.ClickException(str(error)) from error
