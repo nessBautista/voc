@@ -9,7 +9,8 @@ from datetime import UTC, datetime, timedelta
 from uuid import NAMESPACE_URL, uuid5
 
 from .agent.contracts import AgentError
-from .agent.graph import build_graph
+from .agent.graph import RECURSION_LIMIT, build_graph
+from .agent.memory import remember
 
 
 class ConversationError(Exception):
@@ -236,6 +237,8 @@ class Conversations:
                 for turn in conversation["turns"]
                 if turn["status"] == "completed"
             ][-4:]
+            # What earlier answers named, for topic references; the model never sees it.
+            memory = remember(conversation["turns"])
             with self.database() as db:
                 if request.conversation_id is None:
                     db.execute(
@@ -260,23 +263,24 @@ class Conversations:
                     ),
                 )
             # Keep a strong task reference; client disconnects do not cancel work.
-            task = asyncio.create_task(self.run(request, publication, history))
+            task = asyncio.create_task(self.run(request, publication, history, memory))
             self.tasks[request.request_id] = task
             task.add_done_callback(
                 lambda finished: self.tasks.pop(request.request_id, None)
             )
             return self.read_conversation(identity, caller)
 
-    async def run(self, request, publication, history):
+    async def run(self, request, publication, history, memory):
         try:
             async with asyncio.timeout(self.settings.turn_timeout_seconds):
                 result = await self.graph.ainvoke(
                     {
                         "question": request.question,
                         "history": history,
+                        "memory": memory,
                         "publication_id": publication,
                     },
-                    config={"recursion_limit": 6},
+                    config={"recursion_limit": RECURSION_LIMIT},
                 )
             self.finish(request.request_id, "completed", answer=result["answer"])
         except TimeoutError:

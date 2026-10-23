@@ -3,10 +3,26 @@ import { View } from "./components/registry";
 import {
   parseConversation,
   pendingKey,
+  planScope,
   readChat,
   type Ask,
   type Conversation,
 } from "./conversation";
+
+// The six questions of the demo flow, suggested when the package carries analysis.
+const DEMO_QUESTIONS = [
+  "¿Cómo se sienten, en general, quienes dejaron reseñas?",
+  "¿Cuál es la queja principal?",
+  "¿Cuándo aumentaron las quejas?",
+  "¿Qué dicen exactamente los clientes?",
+  "¿Qué problemas más específicos aparecen?",
+  "¿Dónde convendría poner atención primero?",
+];
+const DATA_QUESTIONS = [
+  "¿De dónde provienen los datos?",
+  "¿Cuál es la última actualización?",
+  "¿Qué cobertura mensual tenemos?",
+];
 
 function urlId() {
   return new URLSearchParams(window.location.search).get("conversation");
@@ -30,7 +46,7 @@ function pendingRequest(): Ask | null {
   }
 }
 
-export function Chat() {
+export function Chat({ analysis = false }: { analysis?: boolean }) {
   const [id, setId] = useState<string | null>(urlId);
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [question, setQuestion] = useState("");
@@ -163,8 +179,10 @@ export function Chat() {
         </button>
       </div>
       <p>
-        Consulta fuentes, cobertura, fechas y embeddings. Cada conversación
-        conserva la publicación seleccionada al comenzar.
+        {analysis
+          ? "Pregunta por el ánimo general, la queja principal, su evolución mensual y las reseñas de un tema; también por fuentes, cobertura y fechas. "
+          : "Consulta fuentes, cobertura, fechas y embeddings. "}
+        Cada conversación conserva la publicación seleccionada al comenzar.
       </p>
       {id && (
         <div className="chat-identity">
@@ -184,11 +202,7 @@ export function Chat() {
       )}
       {!id && !pending && (
         <div className="suggestions">
-          {[
-            "¿De dónde provienen los datos?",
-            "¿Cuál es la última actualización?",
-            "¿Qué cobertura mensual tenemos?",
-          ].map((example) => (
+          {(analysis ? DEMO_QUESTIONS : DATA_QUESTIONS).map((example) => (
             <button key={example} onClick={() => setQuestion(example)}>
               {example}
             </button>
@@ -219,12 +233,16 @@ export function Chat() {
                 <p className="chat-answer">{turn.answer.text}</p>
                 <div className="chat-views">
                   {turn.answer.views.map((spec) => (
-                    <View
+                    <div
                       key={spec.component}
-                      spec={spec}
-                      results={turn.answer!.results}
-                      publicationId={conversation.publication_id}
-                    />
+                      className={`chat-view chat-view-${spec.component}`}
+                    >
+                      <View
+                        spec={spec}
+                        results={turn.answer!.results}
+                        publicationId={conversation.publication_id}
+                      />
+                    </div>
                   ))}
                 </div>
                 {turn.answer.warnings.length > 0 && (
@@ -240,8 +258,8 @@ export function Chat() {
                 <details className="chat-trace">
                   <summary>Ver consultas y uso</summary>
                   <p>
-                    Intención: {turn.answer.plan.intent}. Plataforma:{" "}
-                    {turn.answer.plan.platform ?? "dataset completo"}.
+                    Intención: {turn.answer.plan.intent}.{" "}
+                    {planScope(turn.answer.plan)}
                   </p>
                   <ul>
                     {turn.answer.trace.map((item) => (

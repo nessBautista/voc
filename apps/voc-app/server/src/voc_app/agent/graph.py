@@ -1,4 +1,4 @@
-"""A bounded LangGraph: interpret, query, compose and validate once per turn."""
+"""A bounded LangGraph: interpret, resolve, query, compose and validate once per turn."""
 
 from typing import TypedDict
 
@@ -6,11 +6,15 @@ from langgraph.graph import END, START, StateGraph
 
 from .answers import compose, operations, validate_answer
 from .contracts import Plan
+from .memory import resolve
+
+RECURSION_LIMIT = 8
 
 
 class State(TypedDict, total=False):
     question: str
     history: list
+    memory: list
     publication_id: str
     plan: Plan
     results: list
@@ -26,10 +30,16 @@ def build_graph(planner, client):
         plan = Plan.model_validate(plan.model_dump())
         return {"plan": plan, "usage": usage}
 
+    def resolve_topic(state):
+        # A reference becomes a number here, or the plan becomes clarify; no query runs on a guess.
+        return {"plan": resolve(state["plan"], state.get("memory", []))}
+
     async def query(state):
         trace, results = [], []
-        for kind in operations(state["plan"]):
-            results.append(await client.query(state["publication_id"], kind, trace))
+        for kind, selection in operations(state["plan"]):
+            results.append(
+                await client.query(state["publication_id"], kind, trace, selection)
+            )
         return {"results": results, "trace": trace}
 
     def answer(state):
@@ -53,6 +63,7 @@ def build_graph(planner, client):
     graph = StateGraph(State)
     for name, node in (
         ("interpret", interpret),
+        ("resolve", resolve_topic),
         ("query", query),
         ("compose", answer),
         ("validate", validate),
@@ -60,7 +71,8 @@ def build_graph(planner, client):
         graph.add_node(name, node)
     for source, target in (
         (START, "interpret"),
-        ("interpret", "query"),
+        ("interpret", "resolve"),
+        ("resolve", "query"),
         ("query", "compose"),
         ("compose", "validate"),
         ("validate", END),
