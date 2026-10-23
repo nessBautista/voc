@@ -378,3 +378,25 @@ def test_corrupt_conversation_storage_keeps_publication_api_available(settings, 
 )
 def test_fixture_does_not_silently_drop_date_filters(question):
     assert fixture_plan(question, []).intent == "unsupported"
+
+
+def test_v1_questions_still_answer_on_a_v2_package(settings, v2_active):
+    with TestClient(app_for(settings)) as client:
+        conversation = ask(client, payload())
+        turn = conversation["turns"][0]
+        assert turn["status"] == "completed", turn
+        assert turn["answer"]["plan"]["intent"] == "sources"
+        assert turn["answer"]["publication_id"] == v2_active["publication_id"]
+        assert [r["kind"] for r in turn["answer"]["results"]] == ["sources"]
+        # Analysis questions keep the fixed refusal until the agentic bundle.
+        follow_up = ask(
+            client,
+            payload(
+                "¿Qué temas tienen más reseñas negativas?",
+                conversation["conversation_id"],
+            ),
+        )
+        last = follow_up["turns"][-1]
+        assert last["status"] == "completed"
+        assert last["answer"]["plan"]["intent"] == "unsupported"
+        assert last["answer"]["results"] == []

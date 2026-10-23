@@ -15,6 +15,7 @@ from voc_app.settings import Settings
 
 REPO = Path(__file__).resolve().parents[4]
 helpers = run_path(str(REPO / "tests/unit/test_publication_builder.py"))
+analysis = run_path(str(REPO / "tests/fixtures/data_state/analysis_example.py"))
 
 
 @pytest.fixture(scope="session")
@@ -29,6 +30,13 @@ def bundles(tmp_path_factory):
     )
 
 
+@pytest.fixture(scope="session")
+def v2_bundle(tmp_path_factory):
+    """The shared voc-data-state-v2 fixture: sixty reviews, five topics, three names."""
+    root = tmp_path_factory.mktemp("app-publications-v2")
+    return build_bundle(analysis["analysis_description"](), root / "analysis")
+
+
 @pytest.fixture
 def settings(tmp_path):
     return Settings(
@@ -41,6 +49,15 @@ def settings(tmp_path):
 def active(bundles, settings):
     return activate_bundle(
         bundles[0],
+        settings.publications_dir,
+        settings.state_dir,
+    )
+
+
+@pytest.fixture
+def v2_active(v2_bundle, settings):
+    return activate_bundle(
+        v2_bundle,
         settings.publications_dir,
         settings.state_dir,
     )

@@ -176,6 +176,10 @@ def _embeddings(connection, dataset_id):
     return result
 
 
+class CapabilityUnavailable(ValueError):
+    """The kind is unknown, or this publication's manifest does not list it."""
+
+
 # These are capabilities, not an interface for executing arbitrary SQL. The
 # last three exist only in v2 packages; reviews are stored but not queried here.
 _OPERATIONS = {
@@ -231,13 +235,17 @@ def query(catalog, publication_id, kind):
         )
         or kind not in _OPERATIONS
     ):
-        raise ValueError("Capability not available; use one of: " + ", ".join(KINDS))
+        raise CapabilityUnavailable(
+            "Capability not available; use one of: " + ", ".join(KINDS)
+        )
     with open_publication(
         catalog,
         publication_id,
     ) as opened:
         if kind not in opened.manifest["capabilities"]:
-            raise ValueError(f"Capability not available in this publication: {kind}")
+            raise CapabilityUnavailable(
+                f"Capability not available in this publication: {kind}"
+            )
         result = _json_value(
             {
                 "schema_version": QUERY_SCHEMA_VERSION,

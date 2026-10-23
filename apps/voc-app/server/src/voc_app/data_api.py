@@ -20,8 +20,8 @@ router = APIRouter(
 
 
 # The app serves the versions it understands; a newer package is refused, not
-# half-read. The next increment teaches it voc-data-state-v2.
-SUPPORTED_SCHEMA_VERSIONS = ("voc-data-state-v1",)
+# half-read. Version 2 adds one analysis candidate to the dataset description.
+SUPPORTED_SCHEMA_VERSIONS = ("voc-data-state-v1", "voc-data-state-v2")
 
 
 def read_current(settings):
@@ -86,11 +86,11 @@ def publication_query(publication_id: str, kind: str, request: Request):
             "invalid_publication_id",
             "Use a canonical publication UUID.",
         ) from error
-    if kind not in store.CAPABILITIES:
+    if kind not in queries.KINDS:
         raise failure(
             422,
             "capability_unavailable",
-            "Use overview, sources, coverage, freshness or embeddings.",
+            "Use one of: " + ", ".join(queries.KINDS) + ".",
         )
 
     try:
@@ -105,6 +105,13 @@ def publication_query(publication_id: str, kind: str, request: Request):
             404,
             "publication_not_found",
             "This publication is not installed.",
+        ) from error
+    except queries.CapabilityUnavailable as error:
+        # A v1 package asked for a v2 kind is a caller error, not a broken package.
+        raise failure(
+            422,
+            "capability_unavailable",
+            "This publication does not offer that capability.",
         ) from error
     except (ValueError, OSError, duckdb.Error) as error:
         raise failure(

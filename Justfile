@@ -19,6 +19,15 @@ status:
 test:
     {{compose}} exec workspace pytest -q
 
+# The app server keeps its own lock; run its suite inside the Operator container,
+# with a separate environment under data/ so /opt/venv stays the Operator's.
+server-test:
+    {{compose}} exec -e UV_PROJECT_ENVIRONMENT=/workspace/data/venvs/voc-app-server -e UV_CACHE_DIR=/workspace/data/venvs/uv-cache workspace uv run --project apps/voc-app/server --group dev --locked pytest -q apps/voc-app/server/tests
+
+# Web unit tests and the production build in a throwaway Node container; nothing installs on the host.
+web-test:
+    docker run --rm -v "{{justfile_directory()}}/apps/voc-app/web:/web" -w /web node:22-bookworm-slim sh -c "npm ci --no-fund --no-audit && npm test && npm run build"
+
 new-marimo $notebook_name:
     @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
 
