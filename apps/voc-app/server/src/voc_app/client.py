@@ -6,7 +6,9 @@ from uuid import UUID
 
 import duckdb
 from starlette.exceptions import HTTPException
+
 from voc.publications import queries
+from voc.publications.queries import CapabilityUnavailable
 
 from .agent.contracts import KINDS, AgentError, validate_result
 from .data_api import SUPPORTED_SCHEMA_VERSIONS, read_current
@@ -37,24 +39,38 @@ class PublicationService:
                 "data_unavailable", "La selección publicada no es válida."
             ) from error
 
-    async def query(self, publication_id, kind, trace):
+    async def query(self, publication_id, kind, trace, selection=None, budget=3):
         if (
             kind not in KINDS
             or str(UUID(publication_id)) != publication_id
-            or len(trace) >= 3
+            or len(trace) >= budget
         ):
             raise ValueError("Query outside the permitted budget")
         started = monotonic()
         try:
             # DuckDB reads block; keep the event loop free for other requests.
             result = await asyncio.to_thread(
-                queries.query, self.settings.publications_dir, publication_id, kind
+                queries.query,
+                self.settings.publications_dir,
+                publication_id,
+                kind,
+                selection,
             )
-        except (LookupError, ValueError, OSError, duckdb.Error) as error:
+        except CapabilityUnavailable as error:
+            raise AgentError(
+                "analysis_unavailable",
+                "La publicación activa no incluye temas ni sentimiento. Pregunta por el estado de los datos, o espera a que el Operador publique el análisis.",
+            ) from error
+        except LookupError as error:
+            raise AgentError(
+                "topic_unknown",
+                "Ese tema no existe en la publicación activa. Indica un número de tema de la lista.",
+            ) from error
+        except (ValueError, OSError, duckdb.Error) as error:
             raise AgentError(
                 "data_unavailable", "No pudimos validar los datos publicados."
             ) from error
-        validate_result(result, publication_id, kind)
+        validate_result(result, publication_id, kind, selection)
         trace.append(
             {
                 "operation": kind,

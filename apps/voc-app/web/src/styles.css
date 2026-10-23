@@ -1178,7 +1178,30 @@ button.topic-row:hover {
   overflow-wrap: anywhere;
 }
 .chat-views {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
   margin: 1rem 0;
+}
+.chat-view {
+  min-width: 0;
+  display: grid;
+}
+/* Small blocks share a row; the rows, the tiles, the timeline and a topic take the width. */
+.chat-view-kpi_tiles,
+.chat-view-topic_list,
+.chat-view-timeline,
+.chat-view-topic_detail,
+.chat-view-dataset_summary,
+.chat-view-sources,
+.chat-view-coverage,
+.chat-view-preparation {
+  grid-column: 1 / -1;
+}
+@media (max-width: 720px) {
+  .chat-views {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .chat details {
   margin-top: 0.8rem;

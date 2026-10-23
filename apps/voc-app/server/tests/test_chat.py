@@ -74,7 +74,7 @@ def ask(client, request):
         ("¿Qué cobertura mensual tenemos?", "coverage", None),
         ("Estado de embeddings", "embeddings", None),
         ("Resumen del dataset", "overview", None),
-        ("Sentimiento por mes", "unsupported", None),
+        ("Sentimiento por mes", "trend", None),
         ("Cambia UMAP a cuatro dimensiones", "unsupported", None),
         ("Cobertura de 2026", "unsupported", None),
         ("Cobertura mensual Google Play", "clarify", None),
@@ -86,16 +86,23 @@ def test_fixture_examples(question, intent, platform):
     assert fixture_plan(question, []).model_dump() == {
         "intent": intent,
         "platform": platform,
+        "selection": None,
+        "topic": None,
+        "limit": None,
     }
+
+
+EMPTY = {"selection": None, "topic": None, "limit": None}
 
 
 @pytest.mark.parametrize(
     "plan",
     [
-        {"intent": "execute_pipeline", "platform": None},
-        {"intent": "sources", "platform": "Google Play"},
-        {"intent": "sources", "platform": None, "sql": "DROP TABLE dataset"},
-        {"intent": "coverage", "platform": "google_play"},
+        {"intent": "execute_pipeline", "platform": None, **EMPTY},
+        {"intent": "sources", "platform": "Google Play", **EMPTY},
+        {"intent": "sources", "platform": None, "sql": "DROP TABLE dataset", **EMPTY},
+        {"intent": "coverage", "platform": "google_play", **EMPTY},
+        {"intent": "sources", "platform": None},
     ],
 )
 def test_plan_rejects_unavailable_work(plan):
@@ -196,7 +203,7 @@ def test_two_workers_do_not_interrupt_the_owner(settings, active):
     asyncio.run(owner.close())
 
 
-@pytest.mark.parametrize("question", ["Sentimiento por mes", "Hola"])
+@pytest.mark.parametrize("question", ["Recalcula los temas", "Hola"])
 def test_out_of_scope_has_no_queries_or_views(settings, active, question):
     with TestClient(app_for(settings)) as client:
         answer = ask(client, payload(question))["turns"][0]["answer"]
@@ -257,7 +264,7 @@ def test_unavailable_model_fails_without_fallback_or_secret(settings, active):
                 {
                     "finish_reason": "stop",
                     "message": {
-                        "content": '{"intent":"sources","platform":"google_play"}'
+                        "content": '{"intent":"sources","platform":"google_play","selection":null,"topic":null,"limit":null}'
                     },
                 }
             ],
@@ -268,7 +275,7 @@ def test_unavailable_model_fails_without_fallback_or_secret(settings, active):
                 {
                     "finish_reason": "stop",
                     "message": {
-                        "content": '{"intent":"execute_pipeline","platform":null}'
+                        "content": '{"intent":"execute_pipeline","platform":null,"selection":null,"topic":null,"limit":null}'
                     },
                 }
             ]
@@ -277,7 +284,9 @@ def test_unavailable_model_fails_without_fallback_or_secret(settings, active):
             "choices": [
                 {
                     "finish_reason": "length",
-                    "message": {"content": '{"intent":"sources","platform":null}'},
+                    "message": {
+                        "content": '{"intent":"sources","platform":null,"selection":null,"topic":null,"limit":null}'
+                    },
                 }
             ]
         },
@@ -298,7 +307,7 @@ def test_model_adapter_contract_and_bounded_context(settings, active, body):
     with TestClient(app_for(settings, planner)) as client:
         turn = ask(client, payload())["turns"][0]
     assert len(requests) == 1
-    assert requests[0]["max_tokens"] == 256
+    assert requests[0]["max_tokens"] == 512
     context = json.loads(requests[0]["messages"][1]["content"])
     assert set(context) == {"question", "history"}
     assert "never-return-this-secret" not in json.dumps(turn)
@@ -388,7 +397,7 @@ def test_v1_questions_still_answer_on_a_v2_package(settings, v2_active):
         assert turn["answer"]["plan"]["intent"] == "sources"
         assert turn["answer"]["publication_id"] == v2_active["publication_id"]
         assert [r["kind"] for r in turn["answer"]["results"]] == ["sources"]
-        # Analysis questions keep the fixed refusal until the agentic bundle.
+        # The same conversation can now ask an analysis question.
         follow_up = ask(
             client,
             payload(
@@ -397,6 +406,123 @@ def test_v1_questions_still_answer_on_a_v2_package(settings, v2_active):
             ),
         )
         last = follow_up["turns"][-1]
-        assert last["status"] == "completed"
-        assert last["answer"]["plan"]["intent"] == "unsupported"
-        assert last["answer"]["results"] == []
+        assert last["status"] == "completed", last
+        assert last["answer"]["plan"]["intent"] == "main_complaints"
+        assert [r["kind"] for r in last["answer"]["results"]] == [
+            "summary",
+            "topic_list",
+        ]
+
+
+DEMO_FLOW = [
+    (
+        "¿Cómo se sienten, en general, quienes dejaron reseñas?",
+        "mood",
+        ["summary", "platforms"],
+        ["mood_ring", "platforms"],
+    ),
+    (
+        "¿Cuál es la queja principal?",
+        "main_complaints",
+        ["summary", "topic_list"],
+        ["topic_list", "kpi_tiles"],
+    ),
+    ("¿Cuándo aumentaron las quejas?", "trend", ["timeline"], ["timeline"]),
+    (
+        "¿Qué dicen exactamente los clientes?",
+        "topic_reviews",
+        ["topic_detail", "reviews"],
+        ["topic_detail"],
+    ),
+    (
+        "¿Qué problemas más específicos aparecen?",
+        "specific_problems",
+        ["summary", "topic_list"],
+        ["topic_list"],
+    ),
+    (
+        "¿Dónde convendría poner atención primero?",
+        "focus",
+        ["summary", "topic_list"],
+        ["topic_list", "kpi_tiles"],
+    ),
+]
+
+
+def test_six_questions_in_fixture_mode(settings, v2_active):
+    with TestClient(app_for(settings)) as client:
+        conversation = None
+        for question, intent, kinds, views in DEMO_FLOW:
+            conversation = ask(
+                client,
+                payload(question, conversation and conversation["conversation_id"]),
+            )
+            turn = conversation["turns"][-1]
+            assert turn["status"] == "completed", turn
+            answer = turn["answer"]
+            assert answer["plan"]["intent"] == intent
+            assert [item["operation"] for item in answer["trace"]] == kinds
+            assert [view["component"] for view in answer["views"]] == views
+            assert answer["usage"]["requests"] == 0
+            validate_answer(
+                answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
+            )
+        turns = conversation["turns"]
+        # The scope sentence reads the first result; the blocks carry the rest.
+        assert turns[0]["answer"]["text"].startswith(
+            "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas"
+        )
+        assert turns[2]["answer"]["text"].startswith(
+            "En todas las plataformas, en todo el periodo publicado, la serie cubre 13 meses"
+        )
+        # "¿Qué dicen exactamente los clientes?" opened the topic the previous answer put first.
+        assert turns[3]["answer"]["plan"]["topic"] == {"topic_id": 0, "reference": None}
+        assert turns[3]["answer"]["text"].startswith(
+            "Tema 0, «Lentitud al abrir y cargar la aplicación»: 10 de 10 reseñas"
+        )
+        reviews = turns[3]["answer"]["results"][1]
+        assert reviews["selection"]["page_size"] == 6 and reviews["data"]["pages"] == 2
+        assert turns[1]["answer"]["results"][1]["selection"]["sort"] == "negative"
+
+
+def test_topic_reference_resolves_or_asks(settings, v2_active):
+    with TestClient(app_for(settings)) as client:
+        first = ask(client, payload("¿Qué dicen exactamente los clientes?"))
+        turn = first["turns"][0]
+        assert turn["status"] == "completed", turn
+        assert turn["answer"]["plan"] == {
+            "intent": "clarify",
+            "platform": None,
+            "selection": None,
+            "topic": {"topic_id": None, "reference": "last_highlighted"},
+            "limit": None,
+        }
+        assert turn["answer"]["text"].startswith("¿A qué tema te refieres?")
+        assert turn["answer"]["results"] == [] and turn["answer"]["views"] == []
+        identity = first["conversation_id"]
+        ask(client, payload("¿Cuál es la queja principal?", identity))
+        ask(client, payload("¿Cómo se sienten en general?", identity))
+        opened = ask(client, payload("¿Qué dicen exactamente los clientes?", identity))
+        assert opened["turns"][-1]["answer"]["plan"]["topic"] == {
+            "topic_id": 0,
+            "reference": None,
+        }
+        # last_opened finds the reviews shown; a named number needs no memory.
+        again = ask(client, payload("Reseñas del tema abierto", identity))
+        assert again["turns"][-1]["answer"]["plan"]["topic"]["topic_id"] == 0
+        named = ask(
+            client, payload("Muéstrame las reseñas positivas del tema 2", identity)
+        )
+        last = named["turns"][-1]["answer"]
+        assert last["plan"]["topic"]["topic_id"] == 2
+        assert last["results"][1]["selection"]["labels"] == ["positive"]
+        unknown = ask(client, payload("Reseñas del tema 999", identity))
+        assert unknown["turns"][-1]["error"]["code"] == "topic_unknown"
+
+
+def test_analysis_question_on_a_v1_package_is_refused(settings, active):
+    with TestClient(app_for(settings)) as client:
+        turn = ask(client, payload("¿Cuál es la queja principal?"))["turns"][0]
+        assert turn["status"] == "failed"
+        assert turn["error"]["code"] == "analysis_unavailable"
+        assert client.get("/health/ready").status_code == 200

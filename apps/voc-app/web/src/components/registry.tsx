@@ -47,7 +47,7 @@ const viewSchema = z
   .strict();
 export type ViewSpec = z.infer<typeof viewSchema>;
 type AnyKind = Kind | AnalysisKind;
-type AnyResult = Result | AnalysisResult;
+export type AnyResult = Result | AnalysisResult;
 const required: Record<ViewSpec["component"], AnyKind[]> = {
   dataset_summary: ["overview"],
   sources: ["sources"],
@@ -61,7 +61,7 @@ const required: Record<ViewSpec["component"], AnyKind[]> = {
   topic_detail: ["topic_detail", "reviews"],
 };
 
-function parseAny(payload: unknown, publicationId: string): AnyResult {
+export function parseAny(payload: unknown, publicationId: string): AnyResult {
   const version =
     typeof payload === "object" && payload !== null
       ? (payload as { schema_version?: unknown }).schema_version

@@ -1,38 +1,97 @@
 import { z } from "zod";
 import { announceSessionEnded } from "./auth";
-import { parseResult, resultSchema } from "./types";
-import { resolveView, type ViewSpec } from "./components/registry";
+import {
+  analysisKinds,
+  analysisResultSchema,
+  labels,
+  platforms,
+} from "./analysis";
+import { kinds as datasetKinds, resultSchema } from "./types";
+import { parseAny, resolveView, type ViewSpec } from "./components/registry";
 
 const uuid = z
   .string()
   .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
 const digest = z.string().regex(/^[0-9a-f]{64}$/);
-const intent = z.enum([
+const intents = [
   "overview",
   "sources",
   "coverage",
   "freshness",
   "embeddings",
+  "mood",
+  "main_complaints",
+  "trend",
+  "topic_reviews",
+  "specific_problems",
+  "focus",
   "unsupported",
   "clarify",
+] as const;
+type Intent = (typeof intents)[number];
+// The kinds each intent runs, in order; the server's operations() table.
+const expectedKinds: Record<Intent, string[]> = {
+  overview: ["overview"],
+  sources: ["sources"],
+  coverage: ["coverage"],
+  freshness: ["freshness", "embeddings"],
+  embeddings: ["freshness", "embeddings"],
+  mood: ["summary", "platforms"],
+  main_complaints: ["summary", "topic_list"],
+  trend: ["timeline"],
+  topic_reviews: ["topic_detail", "reviews"],
+  specific_problems: ["summary", "topic_list"],
+  focus: ["summary", "topic_list"],
+  unsupported: [],
+  clarify: [],
+};
+const analysisIntents = new Set<Intent>([
+  "mood",
+  "main_complaints",
+  "trend",
+  "topic_reviews",
+  "specific_problems",
+  "focus",
 ]);
 const mode = z.enum(["fixture", "model"]);
 const count = z.number().int().nonnegative();
+const month = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
 const warning = z.object({ code: z.string(), message: z.string() }).strict();
+const planSelection = z
+  .object({
+    platforms: z.array(z.enum(platforms)).min(1).nullable(),
+    labels: z.array(z.enum(labels)).min(1).nullable(),
+    month_from: month.nullable(),
+    month_to: month.nullable(),
+    search: z.string().min(1).max(100).nullable(),
+  })
+  .strict();
+const topicReference = z
+  .object({
+    topic_id: z.number().int().min(-1).nullable(),
+    reference: z.enum(["last_highlighted", "last_opened"]).nullable(),
+  })
+  .strict();
+// Plans stored before the selection existed have two keys; the rest are read as null.
+const planSchema = z
+  .object({
+    intent: z.enum(intents),
+    platform: z
+      .enum(["google_play", "app_store", "x", "youtube", "unknown"])
+      .nullable(),
+    selection: planSelection.nullable().optional(),
+    topic: topicReference.nullable().optional(),
+    limit: z.number().int().min(1).max(10).nullable().optional(),
+  })
+  .strict();
+export type Plan = z.infer<typeof planSchema>;
 const answerSchema = z
   .object({
     schema_version: z.literal("voc-answer-v1"),
     publication_id: uuid,
-    plan: z
-      .object({
-        intent,
-        platform: z
-          .enum(["google_play", "app_store", "x", "youtube", "unknown"])
-          .nullable(),
-      })
-      .strict(),
+    plan: planSchema,
     text: z.string().min(1),
-    results: z.array(resultSchema).max(3),
+    results: z.array(z.union([resultSchema, analysisResultSchema])).max(6),
     views: z
       .array(
         z
@@ -42,31 +101,31 @@ const answerSchema = z
               "sources",
               "coverage",
               "preparation",
+              "kpi_tiles",
+              "topic_list",
+              "timeline",
+              "platforms",
+              "mood_ring",
+              "topic_detail",
             ]),
-            result_ids: z.array(digest).min(1).max(2),
+            result_ids: z.array(digest).min(1).max(3),
           })
           .strict(),
       )
-      .max(1),
+      .max(3),
     warnings: z.array(warning),
     trace: z
       .array(
         z
           .object({
-            operation: z.enum([
-              "overview",
-              "sources",
-              "coverage",
-              "freshness",
-              "embeddings",
-            ]),
+            operation: z.enum([...datasetKinds, ...analysisKinds]),
             publication_id: uuid,
             result_id: digest,
             duration_ms: count,
           })
           .strict(),
       )
-      .max(3),
+      .max(6),
     usage: z
       .object({
         mode,
@@ -140,23 +199,23 @@ export function parseConversation(
     )
       throw new Error("La respuesta pertenece a otra publicación o modo.");
     const results = answer.results.map((result) =>
-      parseResult(result, conversation.publication_id),
+      parseAny(result, conversation.publication_id),
     );
     if (
       new Set(results.map((result) => result.result_id)).size !== results.length
     )
       throw new Error("Evidencia duplicada.");
-    const noData = ["unsupported", "clarify"].includes(answer.plan.intent);
-    const kinds = noData
-      ? []
-      : ["freshness", "embeddings"].includes(answer.plan.intent)
-        ? ["freshness", "embeddings"]
-        : [answer.plan.intent];
+    const intent = answer.plan.intent;
+    const views = answer.views.length;
+    // Version 1 intents draw one block; analysis intents one to three; refusals none.
+    const viewsExpected = analysisIntents.has(intent)
+      ? views >= 1 && views <= 3
+      : views === (expectedKinds[intent].length === 0 ? 0 : 1);
     if (
       JSON.stringify(results.map((result) => result.kind)) !==
-        JSON.stringify(kinds) ||
+        JSON.stringify(expectedKinds[intent]) ||
       answer.trace.length !== results.length ||
-      answer.views.length !== (noData ? 0 : 1)
+      !viewsExpected
     )
       throw new Error("La evidencia no corresponde al plan.");
     for (const [index, item] of answer.trace.entries()) {
@@ -173,6 +232,23 @@ export function parseConversation(
   }
   if (running > 1) throw new Error("Hay más de una pregunta en ejecución.");
   return conversation;
+}
+
+// The plan's scope in words for the trace drawer, as the evidence echo writes it.
+export function planScope(plan: Plan) {
+  const parts: string[] = [];
+  if (plan.platform) parts.push(`Plataforma: ${plan.platform}.`);
+  const selection = Object.fromEntries(
+    Object.entries(plan.selection ?? {}).filter(([, value]) => value !== null),
+  );
+  if (Object.keys(selection).length > 0)
+    parts.push(`Selección: ${JSON.stringify(selection)}.`);
+  if (plan.topic)
+    parts.push(
+      `Tema: ${plan.topic.topic_id !== null && plan.topic.topic_id !== undefined ? plan.topic.topic_id : plan.topic.reference}.`,
+    );
+  if (plan.limit) parts.push(`Límite: ${plan.limit}.`);
+  return parts.length > 0 ? parts.join(" ") : "Alcance: dataset completo.";
 }
 
 export async function readChat(

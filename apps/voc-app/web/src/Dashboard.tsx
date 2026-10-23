@@ -165,7 +165,11 @@ export function Dashboard() {
             )}
           </>
         )}
-        <Chat />
+        <Chat
+          analysis={
+            state.status === "ready" && hasAnalysis(state.snapshot.selection)
+          }
+        />
         <footer className="page-footer">
           <span>VOC · Información con contexto</span>
           <span>Las cifras corresponden a una publicación guardada.</span>
