@@ -1,146 +1,25 @@
-import { useEffect, useState, type ReactNode } from "react";
 import { Chat } from "./Chat";
-import { DataError, loadDashboard } from "./api";
-import {
-  loginErrorMessage,
-  sessionEndedEvent,
-  signInPath,
-  signOut,
-  whoAmI,
-  type Session,
-} from "./auth";
-import type { Selection, Snapshot } from "./types";
 import { dashboardViews, View } from "./components/registry";
 import { dateLabel } from "./components/format";
+import {
+  dedupedWarnings,
+  hasAnalysis,
+  Header,
+  SessionControls,
+  SignIn,
+  usePublication,
+  useSession,
+  warningText,
+} from "./shell";
 
-type State =
-  | { status: "loading"; selection?: Selection }
-  | { status: "ready"; snapshot: Snapshot }
-  | { status: "error"; error: DataError };
-const warningText: Record<string, string> = {
-  collection_date_unknown:
-    "Faltan fechas de recolección documentadas para una o más fuentes.",
-  record_dates_missing:
-    "Algunos registros no tienen fecha y se muestran fuera de los conteos mensuales.",
-  platform_unknown: "Hay registros sin una plataforma identificada.",
-  embeddings_not_reported:
-    "La publicación no informa evidencia sobre embeddings.",
-  embeddings_not_verified:
-    "Los embeddings están registrados, pero su verificación no está documentada.",
-  embeddings_partial_coverage:
-    "Los embeddings cubren solo una parte del dataset.",
-};
+const CONTEXT = "Explorador de datos";
 
-function Header({ children }: { children?: ReactNode }) {
-  return (
-    <header className="topbar">
-      <a href="/" className="brand" aria-label="VOC, inicio">
-        <span className="brand-mark" aria-hidden="true">
-          v.
-        </span>
-        VOC<span className="brand-divider">/</span>
-        <span className="brand-context">Explorador de datos</span>
-      </a>
-      <nav className="workspace-navigation" aria-label="Navegación del espacio">
-        {children}
-      </nav>
-    </header>
-  );
-}
-
-function SignIn({ message }: { message: string | null }) {
-  return (
-    <>
-      <a className="skip-link" href="#content">
-        Saltar al contenido
-      </a>
-      <Header />
-      <main id="content">
-        <div role="status" className="state-panel">
-          <p className="eyebrow">Acceso</p>
-          <h2>Inicia sesión para continuar</h2>
-          <p>VOC muestra los datos publicados solo a personas invitadas.</p>
-          {message && (
-            <p role="alert" className="chat-error">
-              {message}
-            </p>
-          )}
-          <a className="button-link" href={signInPath}>
-            Iniciar sesión
-          </a>
-        </div>
-      </main>
-    </>
-  );
-}
-
+// "/": the state of the published data and the conversation. The analysis has
+// its own page at /dashboard/, linked from here when the package carries it.
 export function Dashboard() {
-  const [generation, setGeneration] = useState(0);
-  const [state, setState] = useState<State>({ status: "loading" });
-  const [session, setSession] = useState<Session | "checking" | "signed-out">(
-    "checking",
-  );
-  const [notice, setNotice] = useState<string | null>(() =>
-    loginErrorMessage(window.location.search),
-  );
-  useEffect(() => {
-    const controller = new AbortController();
-    whoAmI(controller.signal)
-      .then((value) => {
-        if (!controller.signal.aborted) setSession(value ?? "signed-out");
-      })
-      .catch((error) => {
-        if (controller.signal.aborted) return;
-        setNotice("No pudimos comprobar la sesión. Recarga la página.");
-        setSession("signed-out");
-        console.error(error);
-      });
-    const ended = () => {
-      setNotice("Tu sesión terminó. Inicia sesión de nuevo.");
-      setSession("signed-out");
-    };
-    window.addEventListener(sessionEndedEvent, ended);
-    return () => {
-      controller.abort();
-      window.removeEventListener(sessionEndedEvent, ended);
-    };
-  }, []);
+  const { session, notice, leave } = useSession();
   const signedIn = typeof session === "object";
-  useEffect(() => {
-    if (!signedIn) return;
-    const controller = new AbortController();
-    // Ignore stale completions after refresh or unmount, including StrictMode cleanup.
-    setState({ status: "loading" });
-    const timeout = window.setTimeout(() => {
-      controller.abort();
-      setState((previous) => ({
-        status: "error",
-        error: new DataError(
-          "La consulta tardó demasiado. Intenta de nuevo.",
-          "timeout",
-          previous.status === "loading"
-            ? previous.selection?.publication_id
-            : undefined,
-        ),
-      }));
-    }, 20000);
-    loadDashboard(controller.signal, (selection) => {
-      if (!controller.signal.aborted)
-        setState({ status: "loading", selection });
-    })
-      .then((snapshot) => {
-        if (!controller.signal.aborted) setState({ status: "ready", snapshot });
-      })
-      .catch((error) => {
-        if (!controller.signal.aborted) setState({ status: "error", error });
-      })
-      .finally(() => window.clearTimeout(timeout));
-    return () => {
-      window.clearTimeout(timeout);
-      controller.abort();
-    };
-  }, [generation, signedIn]);
-
+  const { state, reload } = usePublication(signedIn);
   const selected =
     state.status === "ready"
       ? state.snapshot.selection
@@ -151,24 +30,11 @@ export function Dashboard() {
     selected?.publication_id ??
     (state.status === "error" ? state.error.publicationId : undefined);
   const warnings =
-    state.status === "ready"
-      ? [
-          ...new Map(
-            [
-              ...state.snapshot.selection.warnings,
-              ...state.snapshot.results.flatMap((result) => result.warnings),
-            ].map((warning) => [
-              warningText[warning.code] ?? warning.message,
-              warning,
-            ]),
-          ).values(),
-        ]
-      : [];
-  const reload = () => setGeneration((value) => value + 1);
+    state.status === "ready" ? dedupedWarnings(state.snapshot) : [];
   if (session === "checking")
     return (
       <>
-        <Header />
+        <Header context={CONTEXT} />
         <main id="content">
           <div role="status" className="state-panel">
             <span className="loader" aria-hidden="true" />
@@ -177,29 +43,21 @@ export function Dashboard() {
         </main>
       </>
     );
-  if (session === "signed-out") return <SignIn message={notice} />;
-  const leave = () => {
-    signOut()
-      .then((url) => window.location.assign(url))
-      .catch(() =>
-        setNotice("No pudimos cerrar la sesión. Recarga la página."),
-      );
-  };
+  if (session === "signed-out")
+    return <SignIn context={CONTEXT} message={notice} />;
   return (
     <>
       <a className="skip-link" href="#content">
         Saltar al contenido
       </a>
-      <Header>
+      <Header context={CONTEXT}>
         <span className="badge">Datos publicados</span>
-        {session.mode === "cognito" && (
-          <>
-            <span className="session-email">{session.email}</span>
-            <button type="button" onClick={leave}>
-              Cerrar sesión
-            </button>
-          </>
+        {selected && hasAnalysis(selected) && (
+          <a className="button-link nav-link" href="/dashboard/">
+            Panel de análisis
+          </a>
         )}
+        <SessionControls session={session} leave={leave} />
         <button
           type="button"
           onClick={() => {
@@ -275,6 +133,12 @@ export function Dashboard() {
               <p className="fixture-notice">
                 Ejemplo sintético · Estos datos no provienen de una recolección
                 real.
+              </p>
+            )}
+            {hasAnalysis(state.snapshot.selection) && (
+              <p className="analysis-link">
+                Esta publicación incluye el análisis de temas y sentimiento.{" "}
+                <a href="/dashboard/">Abrir el panel de análisis</a>
               </p>
             )}
             <div className="dashboard-grid">

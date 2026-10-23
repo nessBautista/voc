@@ -1,5 +1,11 @@
 import { useId, type ReactNode } from "react";
-import type { Result } from "../types";
+
+type Evidence = {
+  kind: string;
+  result_id: string;
+  publication_id: string;
+  selection?: Record<string, unknown>;
+};
 
 export function Panel({
   title,
@@ -11,7 +17,7 @@ export function Panel({
   title: string;
   eyebrow: string;
   children: ReactNode;
-  results: Result[];
+  results: Evidence[];
   className?: string;
 }) {
   const heading = useId();
@@ -32,6 +38,17 @@ export function Panel({
             <li key={result.result_id}>
               <span>{result.kind}</span>
               <code>{result.result_id}</code>
+              {result.selection && (
+                <code className="selection-echo">
+                  {JSON.stringify(
+                    Object.fromEntries(
+                      Object.entries(result.selection).filter(
+                        ([, v]) => v !== null,
+                      ),
+                    ),
+                  )}
+                </code>
+              )}
             </li>
           ))}
         </ul>

@@ -3,6 +3,12 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  // Two pages, two entries: "/" (data state and conversation) and "/dashboard/".
+  build: {
+    rollupOptions: {
+      input: { main: "index.html", dashboard: "dashboard/index.html" },
+    },
+  },
   // Never load the Operator's environment or expose provider keys in the bundle.
   envDir: false,
   server: {

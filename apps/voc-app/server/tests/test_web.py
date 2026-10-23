@@ -97,3 +97,19 @@ def test_web_directory_is_explicit_environment_configuration(monkeypatch, tmp_pa
     monkeypatch.setenv("VOC_WEB_DIR", "relative/path")
     with pytest.raises(ValueError, match="absolute local"):
         Settings.from_env()
+
+
+def test_the_analysis_page_is_a_second_entry_under_dashboard(web_settings):
+    # The web build ships dashboard/index.html; the static mount serves it at
+    # /dashboard/ and redirects the bare path, with no HTML fallback elsewhere.
+    page = web_settings.web_dir / "dashboard"
+    page.mkdir()
+    (page / "index.html").write_text('<!doctype html><div id="root">panel</div>')
+    with TestClient(create_app(web_settings)) as client:
+        served = client.get("/dashboard/")
+        assert served.status_code == 200 and "panel" in served.text
+        bare = client.get("/dashboard", follow_redirects=False)
+        assert bare.status_code in (301, 307) and bare.headers["location"].endswith(
+            "/dashboard/"
+        )
+        assert client.get("/panel/").status_code == 404
