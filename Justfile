@@ -28,6 +28,10 @@ server-test:
 web-test:
     docker run --rm -v "{{justfile_directory()}}/apps/voc-app/web:/web" -w /web node:22-bookworm-slim sh -c "npm ci --no-fund --no-audit && npm test && npm run build"
 
+# The browser suite in Microsoft's Playwright image, which ships the pinned Chromium; routes are stubbed, no server needed.
+web-browser-test:
+    docker run --rm --ipc=host -v "{{justfile_directory()}}/apps/voc-app/web:/web" -w /web mcr.microsoft.com/playwright:v1.64.1-noble sh -c "npm ci --no-fund --no-audit && npm run test:browser"
+
 new-marimo $notebook_name:
     @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
 

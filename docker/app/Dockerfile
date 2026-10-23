@@ -5,6 +5,8 @@ COPY apps/voc-app/web/package.json apps/voc-app/web/package-lock.json ./
 RUN npm ci --no-fund --no-audit
 COPY apps/voc-app/web/index.html apps/voc-app/web/tsconfig.json apps/voc-app/web/vite.config.ts ./
 COPY apps/voc-app/web/src ./src
+# The analysis page is a second Vite entry; its HTML lives beside index.html.
+COPY apps/voc-app/web/dashboard ./dashboard
 RUN npm run build
 
 # Use the same uv version as the Operator, with an independent dependency lock.

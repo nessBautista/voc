@@ -6,11 +6,25 @@ import {
   type Result,
   type ResultOf,
 } from "../types";
+import {
+  parseAnalysisResult,
+  type AnalysisKind,
+  type AnalysisResult,
+  type AnalysisResultOf,
+} from "../analysis";
+import { KpiTiles } from "./analysis/KpiTiles";
+import { MoodRing } from "./analysis/MoodRing";
+import { Platforms } from "./analysis/Platforms";
+import { Timeline } from "./analysis/Timeline";
+import { TopicDetail } from "./analysis/TopicDetail";
+import { TopicList } from "./analysis/TopicList";
 import { Coverage } from "./Coverage";
 import { DatasetSummary } from "./DatasetSummary";
 import { Preparation } from "./Preparation";
 import { Sources } from "./Sources";
 
+// Dataset components read v1 results; analysis components read v2 results.
+// Both lists are closed: a view names a component and evidence, never code.
 const viewSchema = z
   .object({
     component: z.enum([
@@ -18,20 +32,44 @@ const viewSchema = z
       "sources",
       "coverage",
       "preparation",
+      "kpi_tiles",
+      "topic_list",
+      "timeline",
+      "platforms",
+      "mood_ring",
+      "topic_detail",
     ]),
     result_ids: z
       .array(z.string().regex(/^[0-9a-f]{64}$/))
       .min(1)
-      .max(2),
+      .max(3),
   })
   .strict();
 export type ViewSpec = z.infer<typeof viewSchema>;
-const required: Record<ViewSpec["component"], Kind[]> = {
+type AnyKind = Kind | AnalysisKind;
+type AnyResult = Result | AnalysisResult;
+const required: Record<ViewSpec["component"], AnyKind[]> = {
   dataset_summary: ["overview"],
   sources: ["sources"],
   coverage: ["coverage"],
   preparation: ["freshness", "embeddings"],
+  kpi_tiles: ["summary"],
+  topic_list: ["topic_list"],
+  timeline: ["timeline"],
+  platforms: ["platforms"],
+  mood_ring: ["summary"],
+  topic_detail: ["topic_detail", "reviews"],
 };
+
+function parseAny(payload: unknown, publicationId: string): AnyResult {
+  const version =
+    typeof payload === "object" && payload !== null
+      ? (payload as { schema_version?: unknown }).schema_version
+      : undefined;
+  return version === "voc-data-query-v2"
+    ? parseAnalysisResult(payload, publicationId)
+    : parseResult(payload, publicationId);
+}
 
 export function resolveView(
   spec: unknown,
@@ -40,7 +78,7 @@ export function resolveView(
 ) {
   // A view can name existing evidence; it cannot supply code, HTML or invented props.
   const view = viewSchema.parse(spec);
-  const results = evidence.map((result) => parseResult(result, publicationId));
+  const results = evidence.map((result) => parseAny(result, publicationId));
   const ids = new Set(results.map((result) => result.result_id));
   if (
     ids.size !== results.length ||
@@ -71,13 +109,34 @@ export function View({
   publicationId,
 }: {
   spec: ViewSpec;
-  results: Result[];
+  results: AnyResult[];
   publicationId: string;
 }) {
   const resolved = resolveView(spec, results, publicationId);
   const get = <K extends Kind>(kind: K) =>
     resolved.results.find((result) => result.kind === kind) as ResultOf<K>;
+  const analysis = <K extends AnalysisKind>(kind: K) =>
+    resolved.results.find(
+      (result) => result.kind === kind,
+    ) as AnalysisResultOf<K>;
   switch (resolved.view.component) {
+    case "kpi_tiles":
+      return <KpiTiles result={analysis("summary")} />;
+    case "topic_list":
+      return <TopicList result={analysis("topic_list")} limit={8} />;
+    case "timeline":
+      return <Timeline data={analysis("timeline").data} />;
+    case "platforms":
+      return <Platforms result={analysis("platforms")} />;
+    case "mood_ring":
+      return <MoodRing result={analysis("summary")} />;
+    case "topic_detail":
+      return (
+        <TopicDetail
+          detail={analysis("topic_detail")}
+          reviews={analysis("reviews")}
+        />
+      );
     case "dataset_summary":
       return <DatasetSummary result={get("overview")} />;
     case "sources":
@@ -94,18 +153,23 @@ export function View({
   }
 }
 
+const datasetComponents = [
+  "dataset_summary",
+  "sources",
+  "coverage",
+  "preparation",
+] as const;
+
 export function dashboardViews(results: Result[]): ViewSpec[] {
   // Fixed dashboard and future agent answers share the same renderer.
   if (results.length !== kinds.length)
     throw new Error("Faltan resultados para esta pantalla.");
-  return (Object.keys(required) as ViewSpec["component"][]).map(
-    (component) => ({
-      component,
-      result_ids: required[component].map((kind) => {
-        const result = results.find((item) => item.kind === kind);
-        if (!result) throw new Error("Falta una consulta de datos.");
-        return result.result_id;
-      }),
+  return datasetComponents.map((component) => ({
+    component,
+    result_ids: required[component].map((kind) => {
+      const result = results.find((item) => item.kind === kind);
+      if (!result) throw new Error("Falta una consulta de datos.");
+      return result.result_id;
     }),
-  );
+  }));
 }
