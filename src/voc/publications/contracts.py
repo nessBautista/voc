@@ -486,6 +486,9 @@ def _analysis(description, dataset, evidence, warnings):
         if not isinstance(item["model_text"], str) or not item["model_text"].strip():
             raise ValueError("reviews.model_text must be nonblank text")
         _count(item["vector_row"], "reviews.vector_row")
+        rating = item["rating"]
+        if rating is not None and (type(rating) is not int or not 1 <= rating <= 5):
+            raise ValueError("reviews.rating must be an integer from 1 to 5 or null")
         if item["vector_row"] in positions:
             raise ValueError("reviews.vector_row must be unique")
         positions.add(item["vector_row"])
