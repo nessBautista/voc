@@ -16,15 +16,23 @@ from uuid import UUID
 import duckdb
 
 from .contracts import (
+    SCHEMA_VERSION,
+    SCHEMA_VERSION_V2,
     _fields,
     _identifier,
     utc_datetime,
     validate_database,
     validate_publication,
 )
-from .schema import SCHEMA_SQL
+from .schema import SCHEMA_SQL_BY_VERSION
 
 CAPABILITIES = ("overview", "sources", "coverage", "freshness", "embeddings")
+CAPABILITIES_V1 = CAPABILITIES
+CAPABILITIES_V2 = (*CAPABILITIES_V1, "analysis", "topics", "sentiment", "reviews")
+CAPABILITIES_BY_VERSION = {
+    SCHEMA_VERSION: CAPABILITIES_V1,
+    SCHEMA_VERSION_V2: CAPABILITIES_V2,
+}
 DATABASE_NAME = "publication.duckdb"
 MANIFEST_NAME = "manifest.json"
 MAX_MANIFEST_BYTES = 64 * 1024
@@ -87,7 +95,9 @@ def _validate_manifest(manifest):
         },
         manifest["dataset_id"],
     )
-    if manifest["capabilities"] != list(CAPABILITIES):
+    if manifest["capabilities"] != list(
+        CAPABILITIES_BY_VERSION[manifest["schema_version"]]
+    ):
         raise ValueError("Unsupported publication capabilities")
 
     # No caller-selected database path or query can be supplied by a manifest.
@@ -224,9 +234,10 @@ def _open_bundle(path, *, expected_manifest_sha256=None):
         if file_sha256(path / MANIFEST_NAME) != expected_manifest_sha256:
             raise ValueError("Manifest differs from the active selection")
     database = path / DATABASE_NAME
-    # Compare with our code-owned schema; never run SQL from package metadata.
+    # Compare with our code-owned schema for the manifest's version; never run
+    # SQL from package metadata. The manifest version was whitelisted above.
     with duckdb.connect(":memory:") as expected:
-        expected.execute(SCHEMA_SQL)
+        expected.execute(SCHEMA_SQL_BY_VERSION[manifest["schema_version"]])
         signature = _schema_signature(expected)
     with duckdb.connect(
         str(database),
@@ -235,7 +246,9 @@ def _open_bundle(path, *, expected_manifest_sha256=None):
     ) as connection:
         connection.execute("SET TimeZone = 'UTC'")
         if _schema_signature(connection) != signature:
-            raise ValueError("Database schema differs from voc-data-state-v1")
+            raise ValueError(
+                f"Database schema differs from {manifest['schema_version']}"
+            )
         warnings = validate_database(connection)
         row = connection.execute(
             "SELECT publication_id, dataset_id, schema_version, created_at FROM publication"

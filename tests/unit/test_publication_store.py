@@ -671,7 +671,7 @@ def test_reader_closes_when_the_consumer_raises(locations, active):
 
 @pytest.mark.parametrize(
     "kind",
-    ["topics", "SELECT * FROM dataset", "../sources", "", None],
+    ["projection", "SELECT * FROM dataset", "../sources", "", None],
 )
 def test_unsupported_capability_fails_instead_of_returning_empty_data(tmp_path, kind):
     with pytest.raises(

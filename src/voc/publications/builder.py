@@ -17,10 +17,10 @@ import duckdb
 
 from voc import __version__
 
-from .contracts import SCHEMA_VERSION, validate_database, validate_description
-from .schema import SCHEMA_SQL, TABLE_COLUMNS
+from .contracts import schema_version_for, validate_database, validate_description
+from .schema import SCHEMA_SQL_BY_VERSION, TABLE_COLUMNS_BY_VERSION, V2_TABLE_COLUMNS
 from .store import (
-    CAPABILITIES,
+    CAPABILITIES_BY_VERSION,
     DATABASE_NAME,
     MANIFEST_NAME,
     file_sha256,
@@ -96,17 +96,21 @@ def _require_new_destination(destination):
 
 
 def _write_database(path, description, publication):
+    version = publication["schema_version"]
     with duckdb.connect(str(path)) as connection:
         connection.execute("SET TimeZone = 'UTC'")
         connection.execute("BEGIN TRANSACTION")
         try:
-            connection.execute(SCHEMA_SQL)
+            connection.execute(SCHEMA_SQL_BY_VERSION[version])
             # Insert parent tables first; identifiers are fixed and values are bound.
-            for table, columns in TABLE_COLUMNS.items():
+            for table, columns in TABLE_COLUMNS_BY_VERSION[version].items():
                 if table == "publication":
                     rows = [publication]
                 elif table in ("dataset", "embedding_status"):
                     rows = [description[table]]
+                elif table in V2_TABLE_COLUMNS:
+                    block = description["analysis"]
+                    rows = [block[table]] if table == "analysis" else block[table]
                 else:
                     rows = description[table]
                 if rows:
@@ -156,10 +160,11 @@ def build_bundle(description, destination):
             )
         )
         try:
+            version = schema_version_for(description)
             publication = {
                 "publication_id": str(uuid4()),
                 "dataset_id": description["dataset"]["dataset_id"],
-                "schema_version": SCHEMA_VERSION,
+                "schema_version": version,
                 "created_at": datetime.now(UTC).isoformat(),
             }
             database = staging / DATABASE_NAME
@@ -172,7 +177,7 @@ def build_bundle(description, destination):
                 "format_version": 1,
                 **publication,
                 "producer": producer_info(),
-                "capabilities": list(CAPABILITIES),
+                "capabilities": list(CAPABILITIES_BY_VERSION[version]),
                 "database": {
                     "path": DATABASE_NAME,
                     "size_bytes": database.stat().st_size,
