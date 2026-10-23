@@ -40,6 +40,27 @@ def test_liveness_without_a_publication_does_not_create_catalog(client, settings
     assert (settings.state_dir / "conversations.sqlite3").is_file()
 
 
+def test_current_refuses_a_package_newer_than_this_server(client, active, monkeypatch):
+    from contextlib import contextmanager
+
+    original = data_api.store.open_publication
+
+    @contextmanager
+    def newer(*args, **kwargs):
+        with original(*args, **kwargs) as opened:
+            yield type(opened)(
+                opened.connection,
+                {**opened.manifest, "schema_version": "voc-data-state-v2"},
+                opened.warnings,
+            )
+
+    monkeypatch.setattr(data_api.store, "open_publication", newer)
+    error_code(
+        client.get("/api/v1/publications/current"), 503, "publication_unavailable"
+    )
+    error_code(client.get("/health/ready"), 503, "publication_unavailable")
+
+
 def test_current_validates_selection_and_reports_capabilities(client, active):
     response = client.get("/api/v1/publications/current")
     assert response.status_code == 200

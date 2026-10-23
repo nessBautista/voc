@@ -19,6 +19,11 @@ router = APIRouter(
 )
 
 
+# The app serves the versions it understands; a newer package is refused, not
+# half-read. The next increment teaches it voc-data-state-v2.
+SUPPORTED_SCHEMA_VERSIONS = ("voc-data-state-v1",)
+
+
 def read_current(settings):
     """Resolve the pointer once and validate the exact selected package."""
     try:
@@ -43,6 +48,8 @@ def read_current(settings):
             pointer["publication_id"],
             expected_manifest_sha256=pointer["manifest_sha256"],
         ) as opened:
+            if opened.manifest["schema_version"] not in SUPPORTED_SCHEMA_VERSIONS:
+                raise ValueError("Unsupported publication schema for this server")
             return {
                 **pointer,
                 "schema_version": opened.manifest["schema_version"],

@@ -33,7 +33,13 @@ def publication():
     ),
     help="New local directory, for example /workspace/data/data-state-demo/real-a.",
 )
-def build(source, dataset_version, output):
+@click.option(
+    "--analysis",
+    "analysis_id",
+    default=None,
+    help="Completed analysis candidate UUID; produces a voc-data-state-v2 package. Requires --source s3.",
+)
+def build(source, dataset_version, output, analysis_id):
     """Export saved dataset state; does not collect, train, upload or activate."""
     import sys
     from contextlib import redirect_stdout
@@ -44,13 +50,17 @@ def build(source, dataset_version, output):
     try:
         # Validate explicit identities before touching storage or optional tools.
         canonical_id(dataset_version)
+        if analysis_id is not None:
+            canonical_id(analysis_id)
+            if source != "s3":
+                raise ValueError("An analysis package requires --source s3")
         if output.exists() or output.is_symlink():
             raise FileExistsError(f"Publication destination already exists: {output}")
         import duckdb
 
         from .builder import build_bundle
         from .contracts import validate_description
-        from .exporter import describe_dataset
+        from .exporter import describe_analysis, describe_dataset
         from .store import validate_bundle
     except ImportError as error:
         raise click.ClickException(
@@ -74,6 +84,10 @@ def build(source, dataset_version, output):
                 raise ValueError(
                     "Loaded dataset identity differs from the requested version"
                 )
+            if analysis_id is not None:
+                from voc.analysis.store import read_analysis
+
+                description = describe_analysis(read_analysis(analysis_id), description)
             bundle = build_bundle(
                 description,
                 output,
@@ -96,6 +110,7 @@ def build(source, dataset_version, output):
                 "publication_id": manifest["publication_id"],
                 "dataset_id": manifest["dataset_id"],
                 "schema_version": manifest["schema_version"],
+                "capabilities": manifest["capabilities"],
                 "destination": str(bundle),
                 "warnings": validate_description(description),
             },
@@ -203,7 +218,18 @@ def current(state):
 @click.option(
     "--kind",
     required=True,
-    type=click.Choice(["overview", "sources", "coverage", "freshness", "embeddings"]),
+    type=click.Choice(
+        [
+            "overview",
+            "sources",
+            "coverage",
+            "freshness",
+            "embeddings",
+            "analysis",
+            "topics",
+            "sentiment",
+        ]
+    ),
 )
 def query_publication(catalog, publication_id, kind):
     """Read a named result for one fixed publication, with its evidence reference."""

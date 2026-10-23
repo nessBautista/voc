@@ -277,8 +277,13 @@ def test_sql_rejects_invalid_rows(database, sql, parameters):
         ),
         (
             "UPDATE publication SET schema_version = ?",
-            ["voc-data-state-v2"],
+            ["voc-data-state-v999"],
             "Unsupported",
+        ),
+        (
+            "UPDATE publication SET schema_version = ?",
+            ["voc-data-state-v2"],
+            "without its tables",
         ),
     ],
 )
