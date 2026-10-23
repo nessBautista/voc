@@ -147,3 +147,72 @@ def analysis_inspect(run_id, as_json):
 @click.option("--json", "as_json", is_flag=True)
 def sentiment_inspect(run_id, as_json):
     inspect("sentiment", run_id, as_json)
+
+
+@analysis.command("represent")
+@click.argument("analysis_id")
+@click.option(
+    "--config",
+    default="config/analysis/representation.toml",
+    type=click.Path(exists=True, dir_okay=False),
+    show_default=True,
+)
+@click.option(
+    "--local-files-only/--allow-model-download",
+    default=True,
+    help="Use cached pinned embedding weights for KeyBERT/MMR.",
+)
+@click.option("--json", "as_json", is_flag=True)
+def analysis_represent(analysis_id, config, local_files_only, as_json):
+    """Refine keywords into a child candidate. Keep groups, titles and sentiment."""
+    from .representation import execute_representation
+
+    try:
+        with redirect_stdout(sys.stderr):
+            state = execute_representation(
+                analysis_id, config, local_files_only=local_files_only
+            )
+    except (ValueError, TypeError, OSError, LookupError) as error:
+        raise click.ClickException(str(error)) from error
+    emit(state, as_json)
+
+
+@analysis.command("interpret")
+@click.argument("analysis_id")
+@click.option(
+    "--topics", required=True, help="Comma-separated topic IDs, excluding -1."
+)
+@click.option(
+    "--config",
+    default="config/analysis/interpretation.toml",
+    type=click.Path(exists=True, dir_okay=False),
+    show_default=True,
+)
+@click.option("--dry-run", is_flag=True, help="Plan only. This is the default.")
+@click.option(
+    "--live",
+    is_flag=True,
+    help="Execute, sending only requests without reusable responses.",
+)
+@click.option(
+    "--refresh",
+    is_flag=True,
+    help="Bypass saved responses. Requires --live to send requests.",
+)
+@click.option("--json", "as_json", is_flag=True)
+def analysis_interpret(analysis_id, topics, config, dry_run, live, refresh, as_json):
+    """Interpret selected topics into a local child, with saved-response reuse."""
+    from .interpretation import interpret
+
+    try:
+        if dry_run and live:
+            raise ValueError("Choose --dry-run or --live, not both")
+        ids = [int(t.strip()) for t in topics.split(",")]
+        with redirect_stdout(sys.stderr):
+            state = interpret(analysis_id, ids, config, live=live, refresh=refresh)
+    except (ValueError, TypeError, OSError, LookupError) as error:
+        raise click.ClickException(str(error)) from error
+    if state["state"] == "dry_run":
+        click.echo(json.dumps(state, indent=None if as_json else 2))
+    else:
+        emit(state, as_json)

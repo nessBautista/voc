@@ -15,6 +15,8 @@ This directory holds VOC's configuration values. The Python code that reads and 
 | `analysis/sentiment.toml` | Pinned RoBERTuito model and revision, 128 tokens, batches of 16; read by `voc_ml.sentiment.classify_reviews` |
 | `analysis/bertopic-10k.toml` | Stratified 10,000-review sample with the same reduction block and larger clusters; `voc-ml analysis run --config` |
 | `analysis/full.toml` | The whole pinned release; clustering values chosen from the 10,000-review reading |
+| `analysis/representation.toml`, `representation-keybert-mmr.toml` | Keyword rewording of an existing candidate (c-TF-IDF, or KeyBERT with MMR); groups never change; `voc-ml analysis represent` |
+| `analysis/interpretation.toml` | Model, per-run topic ceiling and evidence budget for `voc-ml analysis interpret`; dry run by default |
 
 ## Local settings and credentials
 
