@@ -1,0 +1,11 @@
+# Same groups, semantic keyword ranking followed by diversity selection.
+method = "keybert_mmr"
+ngram_min = 1
+ngram_max = 2
+top_n_words = 10
+candidate_words = 30
+diversity = 0.3
+nr_repr_docs = 5
+nr_samples = 500
+# BERTopic samples representative documents with fixed seed 42.
+batch_size = 32

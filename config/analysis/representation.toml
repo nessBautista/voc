@@ -1,0 +1,7 @@
+# Local keyword experiment. No model inference or OpenRouter required.
+method = "ctfidf"
+ngram_min = 1
+ngram_max = 2
+top_n_words = 15
+min_df = 1 # Number of grouped topic documents, not individual reviews.
+reduce_frequent_words = true

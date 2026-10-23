@@ -1,0 +1,9 @@
+# One request per topic. Default execution is dry-run, without credential access.
+# max_topics is the per-run ceiling (the code allows at most 20); chain child
+# runs to cover more topics. max_reviews is the evidence sent per topic.
+model = "google/gemini-2.5-flash"
+max_topics = 20
+max_reviews = 6
+max_chars = 900
+max_tokens = 800
+temperature = 0.0
