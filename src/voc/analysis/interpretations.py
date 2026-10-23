@@ -22,6 +22,37 @@ RESULT_FIELDS = {
 }
 
 
+def evidence_labels(evidence_ids):
+    """Short labels the model cites instead of copying long review IDs: E1, E2, …"""
+    return {f"E{i + 1}": rid for i, rid in enumerate(evidence_ids)}
+
+
+def normalize_result(result, evidence_ids):
+    """Validate a raw model result, mapping cited labels back to review IDs.
+
+    Prompt v3 responses cite ``supporting_evidence`` labels; earlier responses
+    carried ``supporting_review_ids`` and pass through unchanged. The stored
+    result always holds review IDs, so consumers never see labels.
+    """
+    if (
+        isinstance(result, dict)
+        and "supporting_evidence" in result
+        and "supporting_review_ids" not in result
+    ):
+        labels = evidence_labels(evidence_ids)
+        cited = result["supporting_evidence"]
+        if (
+            not isinstance(cited, list)
+            or not cited
+            or not all(isinstance(c, str) and c in labels for c in cited)
+            or len(set(cited)) != len(cited)
+        ):
+            raise ValueError("Supporting evidence must be unique supplied labels")
+        result = {k: v for k, v in result.items() if k != "supporting_evidence"}
+        result["supporting_review_ids"] = [labels[c] for c in cited]
+    return validate_result(result, evidence_ids)
+
+
 def validate_result(result, evidence_ids):
     if not isinstance(result, dict) or set(result) != RESULT_FIELDS:
         raise ValueError("Interpretation response fields differ from the contract")
@@ -214,7 +245,8 @@ def verify_artifacts(records, manifest, directory):
             choice = response["choices"][0]
             if choice["finish_reason"] != "stop" or choice["message"].get("refusal"):
                 raise ValueError("Interpretation response incomplete or refused")
-            result = json.loads(choice["message"]["content"])
-            validate_result(result, record["evidence_ids"])
+            result = normalize_result(
+                json.loads(choice["message"]["content"]), record["evidence_ids"]
+            )
             if result != record["result"]:
                 raise ValueError("Interpretation differs from raw response")

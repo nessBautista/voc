@@ -60,7 +60,7 @@ def build(source, dataset_version, output, analysis_id):
 
         from .builder import build_bundle
         from .contracts import validate_description
-        from .exporter import describe_analysis, describe_dataset
+        from .exporter import describe_analysis, describe_dataset, review_ratings
         from .store import validate_bundle
     except ImportError as error:
         raise click.ClickException(
@@ -87,7 +87,11 @@ def build(source, dataset_version, output, analysis_id):
             if analysis_id is not None:
                 from voc.analysis.store import read_analysis
 
-                description = describe_analysis(read_analysis(analysis_id), description)
+                description = describe_analysis(
+                    read_analysis(analysis_id),
+                    description,
+                    ratings=review_ratings(snapshot),
+                )
             bundle = build_bundle(
                 description,
                 output,

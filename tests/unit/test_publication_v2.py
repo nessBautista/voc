@@ -19,7 +19,11 @@ from voc.publications.contracts import (
     SCHEMA_VERSION_V2,
     validate_description,
 )
-from voc.publications.exporter import describe_analysis, describe_dataset
+from voc.publications.exporter import (
+    describe_analysis,
+    describe_dataset,
+    review_ratings,
+)
 from voc.publications.queries import query
 from voc.publications.store import activate_bundle, validate_bundle
 
@@ -47,8 +51,40 @@ def stored(candidate):
 
 @pytest.fixture
 def descriptions(stored, candidate):
-    dataset = describe_dataset(snapshot_for(candidate))
-    return dataset, describe_analysis(stored, dataset)
+    snapshot = snapshot_for(candidate)
+    dataset = describe_dataset(snapshot)
+    return dataset, describe_analysis(stored, dataset, ratings=review_ratings(snapshot))
+
+
+def test_ratings_come_from_the_dataset_and_may_be_absent(
+    descriptions, stored, candidate
+):
+    dataset, analysis = descriptions
+    by_id = {row["record_id"]: row["rating"] for row in analysis["analysis"]["reviews"]}
+    assert by_id == {f"review-{i:03d}": 1 + i % 5 for i in range(4)}
+    # Without a rating column, every review is null and the description still validates.
+    bare = snapshot_for(candidate)
+    bare.data = bare.data.drop(columns=["rating"])
+    assert review_ratings(bare) == {}
+    without = describe_analysis(stored, dataset)
+    assert {row["rating"] for row in without["analysis"]["reviews"]} == {None}
+    assert validate_description(without)
+    # A social post without a rating is null; a bad value is a defect, not a null.
+    mixed = snapshot_for(candidate)
+    mixed.data.loc[0, "rating"] = None
+    assert review_ratings(mixed)["review-000"] is None
+    broken = snapshot_for(candidate)
+    broken.data.loc[1, "rating"] = 7
+    with pytest.raises(ValueError, match="out of range"):
+        review_ratings(broken)
+    out_of_range = deepcopy(analysis)
+    out_of_range["analysis"]["reviews"][0]["rating"] = 0
+    with pytest.raises(ValueError, match="integer from 1 to 5"):
+        validate_description(out_of_range)
+    boolean = deepcopy(analysis)
+    boolean["analysis"]["reviews"][0]["rating"] = True
+    with pytest.raises(ValueError, match="integer from 1 to 5"):
+        validate_description(boolean)
 
 
 def interpretation_row(dataset_id, topic_id, supporting):

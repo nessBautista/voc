@@ -149,6 +149,7 @@ V2_TABLE_COLUMNS = {
         "record_date",
         "model_text",
         "vector_row",
+        "rating",
     ),
     "assignments": (
         "dataset_id",
@@ -222,6 +223,7 @@ CREATE TABLE reviews (
     record_date VARCHAR,
     model_text VARCHAR NOT NULL,
     vector_row BIGINT NOT NULL CHECK (vector_row >= 0),
+    rating INTEGER CHECK (rating BETWEEN 1 AND 5),
     PRIMARY KEY (dataset_id, record_id)
 );
 

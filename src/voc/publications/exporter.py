@@ -169,13 +169,36 @@ def describe_dataset(snapshot):
     return description
 
 
-def describe_analysis(stored, description):
+def review_ratings(snapshot):
+    """Star ratings by review ID from a dataset snapshot; empty without a column.
+
+    Store reviews carry 1 to 5 stars; social posts carry none and map to null.
+    Any other value is a preparation defect and is refused rather than dropped.
+    """
+    frame = snapshot.data
+    if "rating" not in frame.columns:
+        return {}
+    ratings = {}
+    for record_id, value in zip(frame["record_id"], frame["rating"], strict=True):
+        if value is None or pd.isna(value):
+            ratings[record_id] = None
+            continue
+        number = float(value)
+        if not number.is_integer() or not 1 <= number <= 5:
+            raise ValueError(f"Dataset rating out of range for {record_id}: {value!r}")
+        ratings[record_id] = int(number)
+    return ratings
+
+
+def describe_analysis(stored, description, ratings=None):
     """Extend a dataset description with one stored analysis candidate.
 
-    ``stored`` is a verified ``voc.analysis.store.StoredAnalysis``. The result
-    is a v2 description: the candidate's reviews, assignments, topics,
-    sentiment and interpretations, with the embedding release registered and
-    the candidate cited as provenance. The input description is not modified.
+    ``stored`` is a verified ``voc.analysis.store.StoredAnalysis``. ``ratings``
+    maps review IDs to star ratings, as ``review_ratings`` reads them from the
+    dataset snapshot; reviews without an entry get null. The result is a v2
+    description: the candidate's reviews, assignments, topics, sentiment and
+    interpretations, with the embedding release registered and the candidate
+    cited as provenance. The input description is not modified.
     """
     from copy import deepcopy
 
@@ -227,6 +250,7 @@ def describe_analysis(stored, description):
         },
     ]
     frame = stored.reviews
+    ratings = ratings or {}
     reviews = [
         {
             "dataset_id": dataset_id,
@@ -235,6 +259,7 @@ def describe_analysis(stored, description):
             "record_date": None if pd.isna(record_date) else str(record_date),
             "model_text": text,
             "vector_row": int(position),
+            "rating": ratings.get(record_id),
         }
         for record_id, platform, record_date, text, position in zip(
             frame["record_id"],

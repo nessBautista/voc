@@ -26,7 +26,7 @@ def reply(body, assessment="single_feature"):
         "topic_description": "Problemas de acceso en los ejemplos.",
         "proposed_feature": "Acceso" if assessment == "single_feature" else None,
         "assessment": assessment,
-        "supporting_review_ids": [evidence[0]["record_id"]],
+        "supporting_evidence": [evidence[0]["label"]],
     }
     return {
         "id": "provider-request",
@@ -193,9 +193,7 @@ def test_invalid_responses_stay_failed_and_are_not_reused(setup, failure):
         if failure == "provider":
             return {"error": "provider_error"}
         if failure == "foreign_id":
-            value["supporting_review_ids"] = [
-                "review-002"
-            ]  # Topic 1, not selected topic 0.
+            value["supporting_evidence"] = ["E9"]  # A label that was never sent.
         if failure == "mixed_feature":
             value["assessment"] = "mixed"
         if failure == "long_feature":
@@ -203,7 +201,7 @@ def test_invalid_responses_stay_failed_and_are_not_reused(setup, failure):
         if failure == "missing_feature":
             value["proposed_feature"] = None
         if failure == "altered_id":
-            value["supporting_review_ids"][0] += "-altered"
+            value["supporting_evidence"][0] += "x"
         if failure == "array":
             value = [value]
         raw["choices"][0]["message"]["content"] = (
@@ -396,3 +394,34 @@ def test_request_identity_includes_settings_keywords_and_evidence(setup):
         ]
         != original
     )
+
+
+def test_labels_map_back_to_ids_and_old_results_pass_through(setup):
+    from voc.analysis.interpretations import normalize_result
+
+    parent, _, _, _ = setup
+    request = prompts.make_requests(parent, [0], prompts.InterpretationConfig())[0]
+    evidence = json.loads(request["request"]["body"]["messages"][1]["content"])
+    ids = request["evidence_ids"]
+    assert [e["label"] for e in evidence["evidence"]] == [
+        f"E{i + 1}" for i in range(len(ids))
+    ]
+    assert [e["record_id"] for e in evidence["evidence"]] == ids
+    schema = request["request"]["body"]["response_format"]["json_schema"]["schema"]
+    assert schema["properties"]["supporting_evidence"]["items"]["enum"] == [
+        f"E{i + 1}" for i in range(len(ids))
+    ]
+    base = {
+        "name": "Acceso",
+        "topic_description": "Texto.",
+        "proposed_feature": None,
+        "assessment": "mixed",
+    }
+    mapped = normalize_result({**base, "supporting_evidence": ["E2", "E1"]}, ids)
+    assert mapped["supporting_review_ids"] == [ids[1], ids[0]]
+    assert "supporting_evidence" not in mapped
+    legacy = normalize_result({**base, "supporting_review_ids": [ids[0]]}, ids)
+    assert legacy["supporting_review_ids"] == [ids[0]]
+    for bad in (["E1", "E1"], [], ["E0"], "E1"):
+        with pytest.raises(ValueError, match="unique supplied labels"):
+            normalize_result({**base, "supporting_evidence": bad}, ids)
