@@ -20,6 +20,7 @@ SCHEMA_VERSION = "voc-data-state-v1"
 SCHEMA_VERSION_V2 = "voc-data-state-v2"
 SUPPORTED_SCHEMA_VERSIONS = (SCHEMA_VERSION, SCHEMA_VERSION_V2)
 QUERY_SCHEMA_VERSION = "voc-data-query-v1"
+QUERY_SCHEMA_VERSION_V2 = "voc-data-query-v2"
 
 _DESCRIPTION_FIELDS = (
     "dataset",

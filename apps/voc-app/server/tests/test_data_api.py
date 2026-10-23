@@ -266,12 +266,10 @@ def test_v2_package_is_served_with_its_capabilities(client, v2_active):
     assert all(
         len(r["result_id"]) == 64 for r in (overview, topics, sentiment, analysis)
     )
-    # Reviews are stored in a v2 package but not yet queryable; the next guide adds it.
-    error_code(
-        client.get(f"/api/v1/publications/{identity}/reviews"),
-        422,
-        "capability_unavailable",
-    )
+    # Reviews are the only kind that returns text, and only one page at a time.
+    reviews = client.get(f"/api/v1/publications/{identity}/reviews").json()
+    assert reviews["schema_version"] == "voc-data-query-v2"
+    assert reviews["data"]["total"] == 60 and len(reviews["data"]["items"]) == 10
 
 
 def test_activation_moves_between_versions_without_losing_either(
@@ -400,3 +398,37 @@ def test_no_mutation_routes_and_unknown_api_is_json(client, settings, active):
     error_code(client.post("/api/v1/publications/activate"), 404, "route_not_found")
     error_code(client.get("/api/v1/missing"), 404, "route_not_found")
     assert file_bytes(settings.publications_dir.parent) == before
+
+
+def test_analysis_kinds_take_the_selection_and_refuse_anything_else(client, v2_active):
+    identity = v2_active["publication_id"]
+    base = f"/api/v1/publications/{identity}"
+    summary = client.get(
+        f"{base}/summary?platforms=google_play,app_store&labels=negative"
+    )
+    assert summary.status_code == 200, summary.text
+    assert summary.json()["schema_version"] == "voc-data-query-v2"
+    assert summary.json()["selection"]["platforms"] == ["app_store", "google_play"]
+    assert summary.json()["data"]["reviews_in_view"] == 15
+    reviews = client.get(f"{base}/reviews?topic_id=0&page=1&page_size=3").json()
+    assert reviews["data"]["total"] == 10 and len(reviews["data"]["items"]) == 3
+    assert (
+        client.get(f"{base}/topic_list?sort=negative").json()["data"][0]["topic_id"]
+        == 0
+    )
+    error_code(client.get(f"{base}/reviews?page_size=500"), 422, "invalid_selection")
+    error_code(
+        client.get(f"{base}/summary?platforms=facebook"), 422, "invalid_selection"
+    )
+    error_code(client.get(f"{base}/topic_detail"), 422, "invalid_selection")
+    error_code(client.get(f"{base}/summary?sql=SELECT+1"), 422, "invalid_request")
+    error_code(
+        client.get(f"{base}/summary?platforms=x&platforms=youtube"),
+        422,
+        "invalid_request",
+    )
+    # Dataset kinds still take no parameters at all.
+    error_code(client.get(f"{base}/overview?platforms=x"), 422, "invalid_request")
+    error_code(
+        client.get(f"{base}/topic_detail?topic_id=99"), 404, "publication_not_found"
+    )
