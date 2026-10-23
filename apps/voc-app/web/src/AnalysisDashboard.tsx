@@ -59,6 +59,17 @@ export function AnalysisDashboard({
   const [months, setMonths] = useState<string[]>([]);
   const debounced = useDebounced(filters, 250);
   const latest = useRef(0);
+  const settled = useRef(false);
+
+  // A filter changed while the reader was down at a topic: bring the tiles and
+  // the list back into view, otherwise the change seems to do nothing.
+  const reveal = () => {
+    const tiles = document.querySelector(".kpi-tiles");
+    if (tiles && tiles.getBoundingClientRect().bottom < 0)
+      document
+        .getElementById("analysis-heading")
+        ?.scrollIntoView({ block: "start", behavior: "smooth" });
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -70,6 +81,8 @@ export function AnalysisDashboard({
       .then((snapshot) => {
         if (controller.signal.aborted || generation !== latest.current) return;
         setState({ status: "ready", snapshot });
+        if (settled.current) reveal();
+        settled.current = true;
         // The month range of the package comes from the first unfiltered answer.
         setMonths((known) =>
           known.length > 0
