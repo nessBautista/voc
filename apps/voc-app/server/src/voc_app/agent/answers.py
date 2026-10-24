@@ -1,6 +1,12 @@
 """Compose factual Spanish answers from saved evidence and closed visual descriptors."""
 
-from .contracts import ANALYSIS_INTENTS, PLATFORMS, VIEWS, validate_result
+from .contracts import (
+    ANALYSIS_INTENTS,
+    PLATFORMS,
+    VIEWS,
+    plan_from_stored,
+    validate_result,
+)
 
 DEFAULT_LIMIT = {"main_complaints": 3, "specific_problems": 5, "focus": 5}
 # A topic needs this many classified reviews before a ranking names it.
@@ -16,6 +22,21 @@ INTENT_VIEWS = {
     "focus": ["topic_list", "kpi_tiles"],
 }
 LABEL_WORDS = {"negative": "negativas", "neutral": "neutras", "positive": "positivas"}
+INTENT_LABELS = {
+    "overview": "Estado de los datos",
+    "sources": "Fuentes",
+    "coverage": "Cobertura",
+    "freshness": "Actualización",
+    "embeddings": "Embeddings",
+    "mood": "Ánimo general",
+    "main_complaints": "Queja principal",
+    "trend": "Evolución mensual",
+    "topic_reviews": "Reseñas del tema",
+    "specific_problems": "Problemas específicos",
+    "focus": "Prioridades",
+    "unsupported": "Fuera de alcance",
+    "clarify": "Aclaración",
+}
 MONTH_NAMES = (
     "enero",
     "febrero",
@@ -135,7 +156,9 @@ def scope(selection):
     ]
     month_from = selection.month_from if selection else None
     month_to = selection.month_to if selection else None
-    if month_from and month_to:
+    if month_from and month_to and month_from == month_to:
+        parts.append(f"en {month_words(month_from)}")
+    elif month_from and month_to:
         parts.append(f"entre {month_words(month_from)} y {month_words(month_to)}")
     elif month_from:
         parts.append(f"desde {month_words(month_from)}")
@@ -623,6 +646,7 @@ def compose(plan, results, publication_id, trace, usage):
     return {
         "schema_version": "voc-answer-v1",
         "publication_id": publication_id,
+        "mode": "daily",
         "plan": plan.model_dump(),
         "text": text,
         "results": results,
@@ -633,14 +657,155 @@ def compose(plan, results, publication_id, trace, usage):
     }
 
 
-def validate_answer(answer, plan, publication_id):
-    """Validate evidence first, then require the exact deterministic composition."""
-    results = answer["results"]
+def summarize(kind, result):
+    """The few numbers and names an assessment needs; never a review text or a description."""
+    data = result["data"]
+    if kind == "summary":
+        tile = data["most_negative_feature"]
+        return {
+            "reviews_in_view": data["reviews_in_view"],
+            "classified": data["classified"],
+            "negative_share": data["negative"]["share"],
+            "positive_share": data["positive"]["share"],
+            "most_negative_feature": None
+            if tile is None
+            else {
+                k: tile[k]
+                for k in (
+                    "topic_id",
+                    "display_name",
+                    "negative",
+                    "total",
+                    "wilson_lower",
+                )
+            },
+        }
+    if kind == "topic_list":
+        return {
+            "topics": [
+                {
+                    k: r[k]
+                    for k in (
+                        "topic_id",
+                        "display_name",
+                        "negative",
+                        "classified",
+                        "negative_share",
+                    )
+                }
+                for r in feature_ranking(data)[:5]
+            ]
+        }
+    if kind == "timeline":
+        months = data["months"]
+        return {
+            "months": len(months),
+            "first": months[0]["month"] if months else None,
+            "last": months[-1]["month"] if months else None,
+            "reviews_in_view": data["reviews_in_view"],
+            "rises": [
+                {"month": r["month"], "share": round(r["share"], 3)}
+                for r in rises(months)
+            ],
+            "busiest": data["busiest"],
+            "comparable": [
+                {
+                    "month": m["month"],
+                    "negative_share": round(m["negative"] / m["classified"], 3),
+                }
+                for m in months
+                if m["classified"] >= TREND_MINIMUM
+            ],
+        }
+    if kind == "platforms":
+        return {
+            "platforms": [
+                {k: r[k] for k in ("platform", "classified", "negative_share")}
+                for r in data
+            ]
+        }
+    if kind == "topic_detail":
+        return {
+            k: data[k]
+            for k in (
+                "topic_id",
+                "display_name",
+                "assessment",
+                "in_view",
+                "negative",
+                "neutral",
+                "positive",
+            )
+        }
+    if kind == "reviews":
+        return {"total": data["total"], "pages": data["pages"]}
+    return {"kind": kind}
+
+
+def compose_research(steps, publication_id, trace, usage):
+    """One answer from several Daily plans: each step's finding, then the last step's reading."""
+    parts = [f"Investigación en {len(steps)} pasos."]
+    rest = []
+    views = []
+    results = []
+    for number, (plan, step_results) in enumerate(steps, 1):
+        daily = compose(plan, step_results, publication_id, [], usage)
+        data_part, *rest = daily["text"].split("\n\n")
+        parts.append(
+            f"Paso {number} · {INTENT_LABELS[plan.intent]}. "
+            + data_part.removeprefix("Qué dicen los datos. ")
+        )
+        views.extend(daily["views"][:1])
+        results.extend(step_results)
+    parts.append(
+        rest[0]
+        if rest
+        else "Interpretación. El último paso no deja una interpretación."
+    )
+    closing = (
+        rest[1].removeprefix("Lo que no se puede afirmar. ") if len(rest) > 1 else ""
+    )
+    parts.append(
+        "Lo que no se puede afirmar. Cada paso usa la selección que el modelo eligió a partir "
+        "del anterior; la cadena es una lectura posible, no la única. " + closing
+    )
+    warnings = list(
+        {
+            (item["code"], item["message"]): item
+            for result in results
+            for item in result["warnings"]
+        }.values()
+    )
+    return {
+        "schema_version": "voc-answer-v1",
+        "publication_id": publication_id,
+        "mode": "research",
+        "plan": steps[0][0].model_dump(),
+        "steps": [
+            {
+                "plan": plan.model_dump(),
+                "result_ids": [r["result_id"] for r in step_results],
+            }
+            for plan, step_results in steps
+        ],
+        "text": "\n\n".join(parts).rstrip(),
+        "results": results,
+        "views": views,
+        "warnings": warnings,
+        "trace": trace,
+        "usage": usage,
+    }
+
+
+def _check_evidence(results, plan, publication_id):
     expected = operations(plan)
     if [result["kind"] for result in results] != [kind for kind, _ in expected]:
         raise ValueError("Unexpected query evidence")
     for result, (kind, selection) in zip(results, expected, strict=True):
         validate_result(result, publication_id, kind, selection)
+
+
+def _check_trace(answer, results, publication_id):
     if answer["publication_id"] != publication_id or len(answer["trace"]) != len(
         results
     ):
@@ -651,7 +816,34 @@ def validate_answer(answer, plan, publication_id):
             or entry["operation"] != result["kind"]
         ):
             raise ValueError("Trace does not match evidence")
-    expected = compose(plan, results, publication_id, answer["trace"], answer["usage"])
+
+
+def validate_answer(answer, plan, publication_id):
+    """Validate evidence first, then require the exact deterministic composition."""
+    results = answer["results"]
+    if answer.get("mode") == "research":
+        # Rebuild the steps from the answer itself: plans and slices of the evidence.
+        steps, cursor = [], 0
+        for stored in answer["steps"]:
+            step_plan = plan_from_stored(stored["plan"])
+            step_results = results[cursor : cursor + len(stored["result_ids"])]
+            if [r["result_id"] for r in step_results] != stored["result_ids"]:
+                raise ValueError("Research steps do not partition the evidence")
+            _check_evidence(step_results, step_plan, publication_id)
+            steps.append((step_plan, step_results))
+            cursor += len(step_results)
+        if cursor != len(results) or not steps or steps[0][0] != plan:
+            raise ValueError("Research steps do not match the plan or the evidence")
+        _check_trace(answer, results, publication_id)
+        expected = compose_research(
+            steps, publication_id, answer["trace"], answer["usage"]
+        )
+    else:
+        _check_evidence(results, plan, publication_id)
+        _check_trace(answer, results, publication_id)
+        expected = compose(
+            plan, results, publication_id, answer["trace"], answer["usage"]
+        )
     if answer != expected:
         raise ValueError("Answer or visual reference differs from verified composition")
     return answer

@@ -117,3 +117,29 @@ def test_specific_problems_rank_by_volume_and_skip_the_main_complaint():
     assert [r["topic_id"] for r in ranked_rows(plan, results)] == [0, 9, 97]
     plan = Plan(intent="focus", platform=None, selection=None, topic=None, limit=2)
     assert [r["topic_id"] for r in ranked_rows(plan, results)] == [9, 73]
+
+
+def test_scope_reads_a_single_month_as_one_month():
+    from voc_app.agent.answers import scope
+    from voc_app.agent.contracts import Selection
+
+    one = Selection(
+        platforms=None,
+        labels=None,
+        month_from="2026-08",
+        month_to="2026-08",
+        search=None,
+    )
+    assert scope(one) == "en todas las plataformas, en agosto de 2026"
+    two = Selection(
+        platforms=["x"],
+        labels=None,
+        month_from="2026-07",
+        month_to="2026-08",
+        search="tarjeta",
+    )
+    assert (
+        scope(two)
+        == "en X, entre julio de 2026 y agosto de 2026, que mencionan «tarjeta»"
+    )
+    assert scope(None) == "en todas las plataformas, en todo el periodo publicado"

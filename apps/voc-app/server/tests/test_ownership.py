@@ -114,7 +114,7 @@ def test_one_running_turn_and_a_rate_limit_per_user(
         def __init__(self):
             self.delegate = Planner(cognito_settings)
 
-        async def plan(self, question, history):
+        async def plan(self, question, history, mode="daily"):
             await asyncio.sleep(0.3)
             return await self.delegate.plan(question, history)
 

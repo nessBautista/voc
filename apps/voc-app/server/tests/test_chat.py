@@ -26,11 +26,11 @@ class CountPlanner:
         self.calls = 0
         self.delay = delay
 
-    async def plan(self, question, history):
+    async def plan(self, question, history, mode="daily"):
         self.calls += 1
         if self.delay:
             await asyncio.sleep(self.delay)
-        return await self.delegate.plan(question, history)
+        return await self.delegate.plan(question, history, mode)
 
 
 def app_for(settings, planner=None):

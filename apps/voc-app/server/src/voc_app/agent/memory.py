@@ -4,21 +4,42 @@ from .answers import named_topics, opened_topic
 from .contracts import Plan, TopicReference, plan_from_stored
 
 
+def _entry(steps):
+    """What a list of (plan, results) steps named, in order, and the last topic it opened."""
+    named, opened = [], None
+    for plan, results in steps:
+        named.extend(named_topics(plan, results))
+        opened = opened_topic(plan, results) or opened
+    return {"named": named, "opened": opened}
+
+
+def answer_steps(answer):
+    """The (plan, results) steps of a stored answer: one for Daily, several for research."""
+    results = answer["results"]
+    if answer.get("mode") != "research":
+        return [(plan_from_stored(answer["plan"]), results)]
+    steps, cursor = [], 0
+    for stored in answer["steps"]:
+        count = len(stored["result_ids"])
+        steps.append(
+            (plan_from_stored(stored["plan"]), results[cursor : cursor + count])
+        )
+        cursor += count
+    return steps
+
+
 def remember(turns):
     """What each completed answer named and opened, oldest first; derived, never stored."""
-    memory = []
-    for turn in turns:
-        answer = turn.get("answer")
-        if turn.get("status") != "completed" or not answer:
-            continue
-        plan = plan_from_stored(answer["plan"])
-        memory.append(
-            {
-                "named": named_topics(plan, answer["results"]),
-                "opened": opened_topic(plan, answer["results"]),
-            }
-        )
-    return memory
+    return [
+        _entry(answer_steps(turn["answer"]))
+        for turn in turns
+        if turn.get("status") == "completed" and turn.get("answer")
+    ]
+
+
+def remember_steps(steps):
+    """The same memory for the steps of the turn in progress."""
+    return [_entry(steps)] if steps else []
 
 
 def resolve(plan, memory):

@@ -21,7 +21,7 @@ PROTECTED = [
 class NeverPlanner:
     """Fails loudly if a request reaches the planner without a recognised caller."""
 
-    async def plan(self, question, history):
+    async def plan(self, question, history, mode="daily"):
         raise AssertionError("The planner ran for an unauthenticated request")
 
 

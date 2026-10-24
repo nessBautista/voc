@@ -1,8 +1,8 @@
 {
   "schema_version": "voc-conversation-v1",
   "conversation_id": "034394ea-bbe2-5c7b-8890-09d066c3bf2d",
-  "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-  "created_at": "2026-10-24T02:17:19.853777Z",
+  "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+  "created_at": "2026-10-24T03:40:14.555224Z",
   "turns": [
     {
       "request_id": "00000000-0000-4000-8000-0000000000a1",
@@ -11,7 +11,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "mood",
           "platform": null,
@@ -23,7 +24,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -96,11 +97,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "platforms",
             "selection": {
               "platforms": null,
@@ -186,20 +187,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78"
+            "result_id": "f59870e169ddba73eb9963358e4f42ad6a347bcfdc1ae3c1421502462cdbd200"
           }
         ],
         "views": [
           {
             "component": "mood_ring",
             "result_ids": [
-              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+              "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
             ]
           },
           {
             "component": "platforms",
             "result_ids": [
-              "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78"
+              "f59870e169ddba73eb9963358e4f42ad6a347bcfdc1ae3c1421502462cdbd200"
             ]
           }
         ],
@@ -236,15 +237,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
-            "duration_ms": 41
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74",
+            "duration_ms": 45
           },
           {
             "operation": "platforms",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78",
-            "duration_ms": 46
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "f59870e169ddba73eb9963358e4f42ad6a347bcfdc1ae3c1421502462cdbd200",
+            "duration_ms": 39
           }
         ],
         "usage": {
@@ -257,8 +258,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:19.853959Z",
-      "finished_at": "2026-10-24T02:17:19.956217Z"
+      "created_at": "2026-10-24T03:40:14.555396Z",
+      "finished_at": "2026-10-24T03:40:14.654935Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a2",
@@ -267,7 +268,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "main_complaints",
           "platform": null,
@@ -279,7 +281,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -352,11 +354,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -533,20 +535,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+              "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
             ]
           },
           {
             "component": "kpi_tiles",
             "result_ids": [
-              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+              "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
             ]
           }
         ],
@@ -583,15 +585,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
-            "duration_ms": 42
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74",
+            "duration_ms": 48
           },
           {
             "operation": "topic_list",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
-            "duration_ms": 42
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2",
+            "duration_ms": 41
           }
         ],
         "usage": {
@@ -604,8 +606,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:19.968192Z",
-      "finished_at": "2026-10-24T02:17:20.064581Z"
+      "created_at": "2026-10-24T03:40:14.667257Z",
+      "finished_at": "2026-10-24T03:40:14.765909Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a3",
@@ -614,7 +616,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "trend",
           "platform": null,
@@ -626,7 +629,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "timeline",
             "selection": {
               "platforms": null,
@@ -784,14 +787,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf"
+            "result_id": "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525"
           }
         ],
         "views": [
           {
             "component": "timeline",
             "result_ids": [
-              "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf"
+              "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525"
             ]
           }
         ],
@@ -828,9 +831,9 @@
         "trace": [
           {
             "operation": "timeline",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf",
-            "duration_ms": 38
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525",
+            "duration_ms": 43
           }
         ],
         "usage": {
@@ -843,8 +846,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:20.082050Z",
-      "finished_at": "2026-10-24T02:17:20.130684Z"
+      "created_at": "2026-10-24T03:40:14.778122Z",
+      "finished_at": "2026-10-24T03:40:14.832295Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a4",
@@ -853,7 +856,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "topic_reviews",
           "platform": null,
@@ -868,7 +872,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "topic_detail",
             "selection": {
               "platforms": null,
@@ -947,11 +951,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35"
+            "result_id": "d8e25603f73869060e0d130625c33e79fb1007996ce71b9400c6ee2ff59c77c8"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "reviews",
             "selection": {
               "platforms": null,
@@ -1094,15 +1098,15 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7"
+            "result_id": "5b28d3644ad555b8dcb0fb232a05f2bea7968b35333904a5591e5136ddd5f56e"
           }
         ],
         "views": [
           {
             "component": "topic_detail",
             "result_ids": [
-              "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35",
-              "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7"
+              "d8e25603f73869060e0d130625c33e79fb1007996ce71b9400c6ee2ff59c77c8",
+              "5b28d3644ad555b8dcb0fb232a05f2bea7968b35333904a5591e5136ddd5f56e"
             ]
           }
         ],
@@ -1139,15 +1143,15 @@
         "trace": [
           {
             "operation": "topic_detail",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35",
-            "duration_ms": 38
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "d8e25603f73869060e0d130625c33e79fb1007996ce71b9400c6ee2ff59c77c8",
+            "duration_ms": 37
           },
           {
             "operation": "reviews",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7",
-            "duration_ms": 40
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "5b28d3644ad555b8dcb0fb232a05f2bea7968b35333904a5591e5136ddd5f56e",
+            "duration_ms": 37
           }
         ],
         "usage": {
@@ -1160,8 +1164,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:20.144301Z",
-      "finished_at": "2026-10-24T02:17:20.234188Z"
+      "created_at": "2026-10-24T03:40:14.844410Z",
+      "finished_at": "2026-10-24T03:40:14.927050Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a5",
@@ -1170,7 +1174,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "specific_problems",
           "platform": null,
@@ -1182,7 +1187,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -1255,11 +1260,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -1436,14 +1441,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+              "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
             ]
           }
         ],
@@ -1480,15 +1485,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
-            "duration_ms": 43
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74",
+            "duration_ms": 47
           },
           {
             "operation": "topic_list",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
-            "duration_ms": 38
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2",
+            "duration_ms": 42
           }
         ],
         "usage": {
@@ -1501,8 +1506,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:20.255315Z",
-      "finished_at": "2026-10-24T02:17:20.343778Z"
+      "created_at": "2026-10-24T03:40:14.951831Z",
+      "finished_at": "2026-10-24T03:40:15.050801Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a6",
@@ -1511,7 +1516,8 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "daily",
         "plan": {
           "intent": "focus",
           "platform": null,
@@ -1523,7 +1529,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -1596,11 +1602,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -1777,20 +1783,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+              "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2"
             ]
           },
           {
             "component": "kpi_tiles",
             "result_ids": [
-              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+              "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74"
             ]
           }
         ],
@@ -1827,14 +1833,14 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
-            "duration_ms": 40
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "8900d7c58d683045a48e433bb5595f28a64068d0067aeb290c814b4f6acbdd74",
+            "duration_ms": 41
           },
           {
             "operation": "topic_list",
-            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
-            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "90b26685b4f50507b608e833720b4b1e2a6f6651a44c82262dc5e68641217ea2",
             "duration_ms": 39
           }
         ],
@@ -1848,8 +1854,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T02:17:20.364887Z",
-      "finished_at": "2026-10-24T02:17:20.456365Z"
+      "created_at": "2026-10-24T03:40:15.062923Z",
+      "finished_at": "2026-10-24T03:40:15.154099Z"
     }
   ]
 }

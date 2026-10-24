@@ -1,0 +1,532 @@
+{
+  "schema_version": "voc-conversation-v1",
+  "conversation_id": "33c9001b-db54-5aba-9003-791662794960",
+  "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+  "created_at": "2026-10-24T03:40:15.208149Z",
+  "turns": [
+    {
+      "request_id": "00000000-0000-4000-8000-0000000000b1",
+      "question": "Encuentra el mes con mayor proporción de comentarios negativos, compara sus temas y muestra reseñas del tema destacado",
+      "status": "completed",
+      "planner_mode": "fixture",
+      "answer": {
+        "schema_version": "voc-answer-v1",
+        "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+        "mode": "research",
+        "plan": {
+          "intent": "trend",
+          "platform": null,
+          "selection": null,
+          "topic": null,
+          "limit": null
+        },
+        "steps": [
+          {
+            "plan": {
+              "intent": "trend",
+              "platform": null,
+              "selection": null,
+              "topic": null,
+              "limit": null
+            },
+            "result_ids": [
+              "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525"
+            ]
+          },
+          {
+            "plan": {
+              "intent": "main_complaints",
+              "platform": null,
+              "selection": {
+                "platforms": null,
+                "labels": null,
+                "month_from": "2025-09",
+                "month_to": "2025-09",
+                "search": null
+              },
+              "topic": null,
+              "limit": null
+            },
+            "result_ids": [
+              "54781d16f69ebc006a2d6a8a25742e17234cb52b32af43212b344901578ddc72",
+              "64c1a06991ad6aaa6b36216d0ec28e260bb2c7cd1583dc80641726a8ed4fce04"
+            ]
+          }
+        ],
+        "text": "Investigación en 2 pasos.\n\nPaso 1 · Evolución mensual. En todas las plataformas, en todo el periodo publicado, la serie cubre 13 meses, de septiembre de 2025 a septiembre de 2026, con 60 reseñas. Ningún mes alcanza las 10 reseñas clasificadas necesarias para comparar proporciones. El mes con más reseñas fue septiembre de 2025, con 5.\n\nPaso 2 · Queja principal. En todas las plataformas, en septiembre de 2025, hay 5 reseñas en vista de 60 publicadas; 5 tienen etiqueta de sentimiento. No hay temas de una funcionalidad con al menos 5 reseñas clasificadas en esta selección.\n\nInterpretación. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas.\n\nLo que no se puede afirmar. Cada paso usa la selección que el modelo eligió a partir del anterior; la cadena es una lectura posible, no la única. 5 temas en vista no tienen un nombre generado, no describen una funcionalidad o tienen menos de 5 reseñas clasificadas, y no participan en este orden. 0 reseñas en vista no están asignadas a ningún tema. Una proporción alta de negativas no mide cuántas personas sufren el problema.",
+        "results": [
+          {
+            "schema_version": "voc-data-query-v2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "kind": "timeline",
+            "selection": {
+              "platforms": null,
+              "labels": null,
+              "assessments": null,
+              "month_from": null,
+              "month_to": null,
+              "search": null,
+              "topic_id": null,
+              "sort": null,
+              "page": null,
+              "page_size": null
+            },
+            "data": {
+              "topic_id": null,
+              "months": [
+                {
+                  "month": "2025-09",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 2,
+                  "neutral": 1,
+                  "positive": 2
+                },
+                {
+                  "month": "2025-10",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 2,
+                  "neutral": 2,
+                  "positive": 1
+                },
+                {
+                  "month": "2025-11",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 1,
+                  "neutral": 3,
+                  "positive": 1
+                },
+                {
+                  "month": "2025-12",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 3,
+                  "neutral": 1,
+                  "positive": 1
+                },
+                {
+                  "month": "2026-01",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 2,
+                  "neutral": 3,
+                  "positive": 0
+                },
+                {
+                  "month": "2026-02",
+                  "total": 5,
+                  "classified": 5,
+                  "negative": 1,
+                  "neutral": 2,
+                  "positive": 2
+                },
+                {
+                  "month": "2026-03",
+                  "total": 5,
+                  "classified": 4,
+                  "negative": 1,
+                  "neutral": 1,
+                  "positive": 2
+                },
+                {
+                  "month": "2026-04",
+                  "total": 5,
+                  "classified": 4,
+                  "negative": 1,
+                  "neutral": 1,
+                  "positive": 2
+                },
+                {
+                  "month": "2026-05",
+                  "total": 4,
+                  "classified": 4,
+                  "negative": 1,
+                  "neutral": 2,
+                  "positive": 1
+                },
+                {
+                  "month": "2026-06",
+                  "total": 4,
+                  "classified": 4,
+                  "negative": 1,
+                  "neutral": 2,
+                  "positive": 1
+                },
+                {
+                  "month": "2026-07",
+                  "total": 4,
+                  "classified": 4,
+                  "negative": 2,
+                  "neutral": 1,
+                  "positive": 1
+                },
+                {
+                  "month": "2026-08",
+                  "total": 4,
+                  "classified": 4,
+                  "negative": 1,
+                  "neutral": 2,
+                  "positive": 1
+                },
+                {
+                  "month": "2026-09",
+                  "total": 4,
+                  "classified": 4,
+                  "negative": 2,
+                  "neutral": 0,
+                  "positive": 2
+                }
+              ],
+              "busiest": {
+                "month": "2025-09",
+                "total": 5
+              },
+              "reviews_in_view": 60
+            },
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for google_play."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for x."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for youtube."
+              },
+              {
+                "code": "embeddings_not_verified",
+                "message": "An embedding release is registered; its artifacts are not verified."
+              },
+              {
+                "code": "interpretations_partial",
+                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+              },
+              {
+                "code": "sentiment_unclassified",
+                "message": "Some reviews have no sentiment label; they are counted by status."
+              }
+            ],
+            "result_id": "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525"
+          },
+          {
+            "schema_version": "voc-data-query-v2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "kind": "summary",
+            "selection": {
+              "platforms": null,
+              "labels": null,
+              "assessments": null,
+              "month_from": "2025-09",
+              "month_to": "2025-09",
+              "search": null,
+              "topic_id": null,
+              "sort": null,
+              "page": null,
+              "page_size": null
+            },
+            "data": {
+              "reviews_in_view": 5,
+              "reviews_total": 60,
+              "classified": 5,
+              "topics_in_view": 5,
+              "topics_total": 5,
+              "negative": {
+                "count": 2,
+                "share": 0.4
+              },
+              "neutral": {
+                "count": 1,
+                "share": 0.2
+              },
+              "positive": {
+                "count": 2,
+                "share": 0.4
+              },
+              "most_negative_feature": null
+            },
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for google_play."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for x."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for youtube."
+              },
+              {
+                "code": "embeddings_not_verified",
+                "message": "An embedding release is registered; its artifacts are not verified."
+              },
+              {
+                "code": "interpretations_partial",
+                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+              },
+              {
+                "code": "sentiment_unclassified",
+                "message": "Some reviews have no sentiment label; they are counted by status."
+              }
+            ],
+            "result_id": "54781d16f69ebc006a2d6a8a25742e17234cb52b32af43212b344901578ddc72"
+          },
+          {
+            "schema_version": "voc-data-query-v2",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "kind": "topic_list",
+            "selection": {
+              "platforms": null,
+              "labels": null,
+              "assessments": null,
+              "month_from": "2025-09",
+              "month_to": "2025-09",
+              "search": null,
+              "topic_id": null,
+              "sort": "negative",
+              "page": null,
+              "page_size": null
+            },
+            "data": [
+              {
+                "topic_id": 0,
+                "display_name": "Lentitud al abrir y cargar la aplicación",
+                "wording_source": "generated",
+                "assessment": "single_feature",
+                "keywords": [
+                  "lenta",
+                  "tarda",
+                  "abrir",
+                  "carga",
+                  "espera",
+                  "lento"
+                ],
+                "member_count": 10,
+                "total": 1,
+                "classified": 1,
+                "negative": 1,
+                "neutral": 0,
+                "positive": 0,
+                "negative_share": 1.0,
+                "positive_share": 0.0,
+                "wilson_lower": 0.20654931437723742
+              },
+              {
+                "topic_id": 1,
+                "display_name": "Problemas con transferencias y saldo",
+                "wording_source": "generated",
+                "assessment": "mixed",
+                "keywords": [
+                  "transferencia",
+                  "dinero",
+                  "saldo",
+                  "envío",
+                  "cobro",
+                  "pago"
+                ],
+                "member_count": 10,
+                "total": 1,
+                "classified": 1,
+                "negative": 1,
+                "neutral": 0,
+                "positive": 0,
+                "negative_share": 1.0,
+                "positive_share": 0.0,
+                "wilson_lower": 0.20654931437723742
+              },
+              {
+                "topic_id": 2,
+                "display_name": "Valoración positiva general de la aplicación",
+                "wording_source": "generated",
+                "assessment": "unclear",
+                "keywords": [
+                  "fácil",
+                  "rápida",
+                  "práctica",
+                  "usar",
+                  "sencilla",
+                  "buena"
+                ],
+                "member_count": 10,
+                "total": 1,
+                "classified": 1,
+                "negative": 0,
+                "neutral": 0,
+                "positive": 1,
+                "negative_share": 0.0,
+                "positive_share": 1.0,
+                "wilson_lower": 0.0
+              },
+              {
+                "topic_id": 3,
+                "display_name": "tarjeta / bloqueo / digital",
+                "wording_source": "original",
+                "assessment": "uninterpreted",
+                "keywords": [
+                  "tarjeta",
+                  "bloqueo",
+                  "digital",
+                  "física",
+                  "activar",
+                  "pin"
+                ],
+                "member_count": 10,
+                "total": 1,
+                "classified": 1,
+                "negative": 0,
+                "neutral": 1,
+                "positive": 0,
+                "negative_share": 0.0,
+                "positive_share": 0.0,
+                "wilson_lower": 0.0
+              },
+              {
+                "topic_id": 4,
+                "display_name": "servicio / atención / sucursal",
+                "wording_source": "original",
+                "assessment": "uninterpreted",
+                "keywords": [
+                  "servicio",
+                  "atención",
+                  "sucursal",
+                  "teléfono",
+                  "ayuda",
+                  "soporte"
+                ],
+                "member_count": 10,
+                "total": 1,
+                "classified": 1,
+                "negative": 0,
+                "neutral": 0,
+                "positive": 1,
+                "negative_share": 0.0,
+                "positive_share": 1.0,
+                "wilson_lower": 0.0
+              }
+            ],
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for google_play."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for x."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for youtube."
+              },
+              {
+                "code": "embeddings_not_verified",
+                "message": "An embedding release is registered; its artifacts are not verified."
+              },
+              {
+                "code": "interpretations_partial",
+                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+              },
+              {
+                "code": "sentiment_unclassified",
+                "message": "Some reviews have no sentiment label; they are counted by status."
+              }
+            ],
+            "result_id": "64c1a06991ad6aaa6b36216d0ec28e260bb2c7cd1583dc80641726a8ed4fce04"
+          }
+        ],
+        "views": [
+          {
+            "component": "timeline",
+            "result_ids": [
+              "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525"
+            ]
+          },
+          {
+            "component": "topic_list",
+            "result_ids": [
+              "64c1a06991ad6aaa6b36216d0ec28e260bb2c7cd1583dc80641726a8ed4fce04"
+            ]
+          }
+        ],
+        "warnings": [
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for app_store."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for google_play."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for x."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for youtube."
+          },
+          {
+            "code": "embeddings_not_verified",
+            "message": "An embedding release is registered; its artifacts are not verified."
+          },
+          {
+            "code": "interpretations_partial",
+            "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+          },
+          {
+            "code": "sentiment_unclassified",
+            "message": "Some reviews have no sentiment label; they are counted by status."
+          }
+        ],
+        "trace": [
+          {
+            "operation": "timeline",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "f7c21e4a37c6b9dbc319f17d0b81a8137a93c10434a7086a92d85b11599c9525",
+            "duration_ms": 41
+          },
+          {
+            "operation": "summary",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "54781d16f69ebc006a2d6a8a25742e17234cb52b32af43212b344901578ddc72",
+            "duration_ms": 37
+          },
+          {
+            "operation": "topic_list",
+            "publication_id": "6ad6b895-ee6f-4224-9d87-2679b6a3123e",
+            "result_id": "64c1a06991ad6aaa6b36216d0ec28e260bb2c7cd1583dc80641726a8ed4fce04",
+            "duration_ms": 42
+          }
+        ],
+        "usage": {
+          "mode": "fixture",
+          "model": null,
+          "requests": 0,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "duration_ms": 0
+        }
+      },
+      "error": null,
+      "created_at": "2026-10-24T03:40:15.208306Z",
+      "finished_at": "2026-10-24T03:40:15.344389Z"
+    }
+  ]
+}

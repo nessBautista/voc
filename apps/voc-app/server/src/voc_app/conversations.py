@@ -3,14 +3,22 @@
 import asyncio
 import fcntl
 import json
+import logging
 import sqlite3
 from contextlib import contextmanager
 from datetime import UTC, datetime, timedelta
 from uuid import NAMESPACE_URL, uuid5
 
 from .agent.contracts import AgentError
-from .agent.graph import RECURSION_LIMIT, build_graph
+from .agent.graph import (
+    DAILY_RECURSION_LIMIT,
+    RESEARCH_RECURSION_LIMIT,
+    RESEARCH_TIMEOUT_SECONDS,
+    build_graph,
+)
 from .agent.memory import remember
+
+logger = logging.getLogger(__name__)
 
 
 class ConversationError(Exception):
@@ -48,6 +56,8 @@ class Conversations:
     # Per-owner limits apply before any model request is made.
     RATE_LIMIT = 30
     RATE_WINDOW = timedelta(minutes=10)
+    # A class attribute so the test suite can shorten it; requests cannot change it.
+    RESEARCH_TIMEOUT_SECONDS = RESEARCH_TIMEOUT_SECONDS
 
     def __init__(self, settings, client, planner):
         self.settings, self.client = settings, client
@@ -271,16 +281,27 @@ class Conversations:
             return self.read_conversation(identity, caller)
 
     async def run(self, request, publication, history, memory):
+        research = request.mode == "research"
+        timeout = (
+            self.RESEARCH_TIMEOUT_SECONDS
+            if research
+            else self.settings.turn_timeout_seconds
+        )
         try:
-            async with asyncio.timeout(self.settings.turn_timeout_seconds):
+            async with asyncio.timeout(timeout):
                 result = await self.graph.ainvoke(
                     {
                         "question": request.question,
                         "history": history,
                         "memory": memory,
                         "publication_id": publication,
+                        "mode": request.mode,
                     },
-                    config={"recursion_limit": RECURSION_LIMIT},
+                    config={
+                        "recursion_limit": RESEARCH_RECURSION_LIMIT
+                        if research
+                        else DAILY_RECURSION_LIMIT
+                    },
                 )
             self.finish(request.request_id, "completed", answer=result["answer"])
         except TimeoutError:
@@ -308,8 +329,15 @@ class Conversations:
                 "failed",
                 error={"code": error.code, "message": error.message},
             )
-        except Exception:  # noqa: BLE001 - persist a terminal failure for every task.
-            # Provider text and graph state must never be returned as error detail.
+        except Exception as error:  # noqa: BLE001 - persist a terminal failure for every task.
+            # Provider text and graph state must never be returned as error detail;
+            # the log keeps the exception type and, for our own ValueErrors, its message.
+            logger.warning(
+                "Turn %s failed before an answer: %s%s",
+                request.request_id,
+                type(error).__name__,
+                f": {error}" if type(error) is ValueError else "",
+            )
             self.finish(
                 request.request_id,
                 "failed",

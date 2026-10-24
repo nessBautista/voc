@@ -1209,6 +1209,17 @@ button.topic-row:hover {
 .chat-trace li {
   overflow-wrap: anywhere;
 }
+.chat-mode-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.chat-mode-toggle span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
 .chat form {
   margin-top: 1.2rem;
 }
