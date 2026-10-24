@@ -7,6 +7,7 @@ import {
   readChat,
   type Ask,
   type Conversation,
+  type Mode,
 } from "./conversation";
 
 // The six questions of the demo flow, suggested when the package carries analysis.
@@ -37,6 +38,11 @@ function pendingRequest(): Ask | null {
       !(
         value.conversation_id === null ||
         typeof value.conversation_id === "string"
+      ) ||
+      !(
+        value.mode === undefined ||
+        value.mode === "daily" ||
+        value.mode === "research"
       )
     )
       return null;
@@ -50,6 +56,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
   const [id, setId] = useState<string | null>(urlId);
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [question, setQuestion] = useState("");
+  const [mode, setMode] = useState<Mode>("daily");
   const [pending, setPending] = useState<Ask | null>(pendingRequest);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -155,6 +162,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       request_id: crypto.randomUUID(),
       question: question.trim(),
       conversation_id: id,
+      mode,
     });
   }
   function startNew() {
@@ -217,6 +225,9 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
               {turn.question}
             </p>
             <p className="chat-mode">
+              {turn.answer?.steps
+                ? `Investigación · ${turn.answer.steps.length} pasos · `
+                : ""}
               {turn.planner_mode === "fixture"
                 ? "Planificador de prueba · Sin llamadas a un modelo"
                 : "Intención interpretada por el modelo"}
@@ -305,6 +316,35 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         </div>
       )}
       <form onSubmit={submit}>
+        <div className="chat-mode-toggle">
+          <div
+            className="segmented"
+            role="group"
+            aria-label="Modo de la pregunta"
+          >
+            {(
+              [
+                ["daily", "Diaria"],
+                ["research", "Investigación"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={mode === value}
+                onClick={() => setMode(value)}
+                disabled={busy || running || pending !== null}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <span>
+            {mode === "research"
+              ? "Una pregunta mayor, respondida en hasta seis consultas encadenadas; hasta 90 segundos."
+              : "Una pregunta, un plan, una respuesta."}
+          </span>
+        </div>
         <label htmlFor="chat-question">Tu pregunta</label>
         <textarea
           id="chat-question"

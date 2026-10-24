@@ -173,6 +173,8 @@ class Ask(Contract):
     request_id: str
     question: str = Field(min_length=1, max_length=1000)
     conversation_id: str | None = None
+    # A request field with a default: clients that do not know it get Daily.
+    mode: Literal["daily", "research"] = "daily"
 
     @field_validator("request_id", "conversation_id")
     @classmethod
@@ -188,6 +190,12 @@ class Ask(Contract):
         if not value:
             raise ValueError("Write a question")
         return value
+
+
+class Assessment(Contract):
+    """What the model returns between research steps: the next plan, or nothing."""
+
+    next: Plan | None
 
 
 class AgentError(Exception):

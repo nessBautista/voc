@@ -196,7 +196,9 @@ def mount_mcp(application, settings):
                 "arguments, including omitted conversation_id, to poll without another model call. "
                 "Never substitute a new request_id for a retry. completed, failed and interrupted "
                 "are terminal. Publication is pinned for the conversation. Cannot run pipelines "
-                "or open the Mac app. Model mode may send question/history to its configured provider."
+                "or open the Mac app. mode is daily (default, one plan) or research (a bounded chain of "
+                "up to six queries with a model assessment between steps). Model mode may send "
+                "question/history and step summaries to its configured provider."
             ),
             input_schema=input_schema(Ask),
             annotations=ToolAnnotations(

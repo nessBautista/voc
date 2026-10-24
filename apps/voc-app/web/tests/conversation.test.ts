@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { parseConversation, planScope } from "../src/conversation";
 import conversation from "./fixtures/conversation.json" with { type: "json" };
 import analysis from "./fixtures/conversation_v2.json" with { type: "json" };
+import research from "./fixtures/conversation_research.json" with { type: "json" };
 
 describe("saved conversation contracts", () => {
   it("accepts cited answers from the real server composer", () => {
@@ -91,6 +92,50 @@ describe("analysis answers from the server composer", () => {
       if (field === "selection")
         Object.assign(first.plan, { selection: { platforms: [] } });
       if (field === "limit") Object.assign(first.plan, { limit: 11 });
+      expect(() => parseConversation(value)).toThrow();
+    },
+  );
+});
+
+describe("research answers", () => {
+  it("accepts a chain of steps that partition the evidence", () => {
+    const parsed = parseConversation(research);
+    const answer = parsed.turns[0].answer!;
+    expect(answer.mode).toBe("research");
+    expect(answer.steps?.map((step) => step.plan.intent)).toEqual([
+      "trend",
+      "main_complaints",
+    ]);
+    expect(answer.results.map((result) => result.kind)).toEqual([
+      "timeline",
+      "summary",
+      "topic_list",
+    ]);
+    expect(answer.text.startsWith("Investigación en 2 pasos.")).toBe(true);
+    expect(answer.views.map((view) => view.component)).toEqual([
+      "timeline",
+      "topic_list",
+    ]);
+  });
+  it.each(["missing-id", "order", "no-steps", "first-plan"])(
+    "rejects corrupt %s",
+    (field) => {
+      type Loose = {
+        turns: {
+          answer: {
+            mode?: string;
+            plan: Record<string, unknown>;
+            steps?: { plan: Record<string, unknown>; result_ids: string[] }[];
+          };
+        }[];
+      };
+      const value = structuredClone(research) as unknown as Loose;
+      const answer = value.turns[0].answer;
+      if (field === "missing-id") answer.steps![1].result_ids.pop();
+      if (field === "order") answer.steps!.reverse();
+      if (field === "no-steps") delete answer.steps;
+      if (field === "first-plan")
+        answer.plan = { ...answer.plan, intent: "mood" };
       expect(() => parseConversation(value)).toThrow();
     },
   );

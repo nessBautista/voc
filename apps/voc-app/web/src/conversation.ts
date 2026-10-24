@@ -85,11 +85,25 @@ const planSchema = z
   })
   .strict();
 export type Plan = z.infer<typeof planSchema>;
+const modeSchema = z.enum(["daily", "research"]);
+export type Mode = z.infer<typeof modeSchema>;
 const answerSchema = z
   .object({
     schema_version: z.literal("voc-answer-v1"),
     publication_id: uuid,
+    // Answers stored before research mode have no mode: they are Daily.
+    mode: modeSchema.optional(),
     plan: planSchema,
+    // A research answer lists its steps; each names a slice of the results in order.
+    steps: z
+      .array(
+        z
+          .object({ plan: planSchema, result_ids: z.array(digest).max(6) })
+          .strict(),
+      )
+      .min(1)
+      .max(6)
+      .optional(),
     text: z.string().min(1),
     results: z.array(z.union([resultSchema, analysisResultSchema])).max(6),
     views: z
@@ -112,7 +126,7 @@ const answerSchema = z
           })
           .strict(),
       )
-      .max(3),
+      .max(6),
     warnings: z.array(warning),
     trace: z
       .array(
@@ -130,7 +144,7 @@ const answerSchema = z
       .object({
         mode,
         model: z.string().nullable(),
-        requests: count.max(1),
+        requests: count.max(7),
         prompt_tokens: count.nullable(),
         completion_tokens: count.nullable(),
         duration_ms: count,
@@ -167,6 +181,7 @@ export type Ask = {
   request_id: string;
   question: string;
   conversation_id: string | null;
+  mode?: Mode;
 };
 export const pendingKey = "voc.pending-question.v1";
 
@@ -207,13 +222,31 @@ export function parseConversation(
       throw new Error("Evidencia duplicada.");
     const intent = answer.plan.intent;
     const views = answer.views.length;
-    // Version 1 intents draw one block; analysis intents one to three; refusals none.
-    const viewsExpected = analysisIntents.has(intent)
-      ? views >= 1 && views <= 3
-      : views === (expectedKinds[intent].length === 0 ? 0 : 1);
+    const research = answer.mode === "research";
+    if (research !== (answer.steps !== undefined))
+      throw new Error("La respuesta no declara sus pasos.");
+    // A research answer's steps partition the results in order and start with its plan.
+    const steps = answer.steps ?? [{ plan: answer.plan, result_ids: [] }];
+    if (
+      research &&
+      (JSON.stringify(steps[0].plan) !== JSON.stringify(answer.plan) ||
+        JSON.stringify(steps.flatMap((step) => step.result_ids)) !==
+          JSON.stringify(results.map((result) => result.result_id)))
+    )
+      throw new Error("Los pasos no corresponden a la evidencia.");
+    const kinds = research
+      ? steps.flatMap((step) => expectedKinds[step.plan.intent])
+      : expectedKinds[intent];
+    // Version 1 intents draw one block; analysis intents one to three; a research
+    // answer at most one per step; refusals none.
+    const viewsExpected = research
+      ? views <= steps.length
+      : analysisIntents.has(intent)
+        ? views >= 1 && views <= 3
+        : views === (expectedKinds[intent].length === 0 ? 0 : 1);
     if (
       JSON.stringify(results.map((result) => result.kind)) !==
-        JSON.stringify(expectedKinds[intent]) ||
+        JSON.stringify(kinds) ||
       answer.trace.length !== results.length ||
       !viewsExpected
     )

@@ -24,7 +24,7 @@ from voc_app.settings import Settings
 from voc_app.agent.planner import Planner
 settings = Settings.from_env()
 class SlowPlanner(Planner):
-    async def plan(self, question, history):
+    async def plan(self, question, history, mode="daily"):
         await asyncio.sleep(60 if question == "slow" else .2)
         return await super().plan("Fuentes", history)
 app = create_app(settings, planner=SlowPlanner(settings))
