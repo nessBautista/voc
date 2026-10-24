@@ -1,8 +1,8 @@
 {
   "schema_version": "voc-conversation-v1",
   "conversation_id": "034394ea-bbe2-5c7b-8890-09d066c3bf2d",
-  "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-  "created_at": "2026-10-24T00:06:00.410692Z",
+  "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+  "created_at": "2026-10-24T02:17:19.853777Z",
   "turns": [
     {
       "request_id": "00000000-0000-4000-8000-0000000000a1",
@@ -11,7 +11,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
         "plan": {
           "intent": "mood",
           "platform": null,
@@ -23,7 +23,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -96,11 +96,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "platforms",
             "selection": {
               "platforms": null,
@@ -186,20 +186,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e"
+            "result_id": "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78"
           }
         ],
         "views": [
           {
             "component": "mood_ring",
             "result_ids": [
-              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
+              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
             ]
           },
           {
             "component": "platforms",
             "result_ids": [
-              "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e"
+              "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78"
             ]
           }
         ],
@@ -236,15 +236,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
-            "duration_ms": 49
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
+            "duration_ms": 41
           },
           {
             "operation": "platforms",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e",
-            "duration_ms": 42
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "0a8f15b5ebbdab14c1cfc99b6d158f8c2e90628e507128e586aafc2950a4df78",
+            "duration_ms": 46
           }
         ],
         "usage": {
@@ -257,8 +257,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T00:06:00.410873Z",
-      "finished_at": "2026-10-24T00:06:00.514577Z"
+      "created_at": "2026-10-24T02:17:19.853959Z",
+      "finished_at": "2026-10-24T02:17:19.956217Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a2",
@@ -267,7 +267,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
         "plan": {
           "intent": "main_complaints",
           "platform": null,
@@ -275,11 +275,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. El tema con mayor proporción negativa entre los de una funcionalidad es el tema 0, «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas son negativas (80%; al menos 49% con 95% de confianza). Le siguen «Problemas con transferencias y saldo» (38%, 3 negativas).\n\nInterpretación. Los nombres de los temas son generados por un modelo a partir de sus reseñas; «Lentitud al abrir y cargar la aplicación» reúne reseñas con palabras clave como lenta, tarda y abrir. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas.\n\nLo que no se puede afirmar. 3 temas en vista no tienen un nombre generado, no describen una funcionalidad o tienen menos de 5 reseñas clasificadas, y no participan en este orden. 10 reseñas en vista no están asignadas a ningún tema. Una proporción alta de negativas no mide cuántas personas sufren el problema.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. El tema con mayor proporción negativa entre los de una funcionalidad es el tema 0, «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas son negativas (80%; al menos 49% con 95% de confianza). Le siguen «Problemas con transferencias y saldo» (tema 1, 38%, 3 negativas).\n\nInterpretación. Los nombres de los temas son generados por un modelo a partir de sus reseñas; «Lentitud al abrir y cargar la aplicación» reúne reseñas con palabras clave como lenta, tarda y abrir. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas.\n\nLo que no se puede afirmar. 3 temas en vista no tienen un nombre generado, no describen una funcionalidad o tienen menos de 5 reseñas clasificadas, y no participan en este orden. 10 reseñas en vista no están asignadas a ningún tema. Una proporción alta de negativas no mide cuántas personas sufren el problema.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -352,11 +352,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -533,20 +533,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
+              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
             ]
           },
           {
             "component": "kpi_tiles",
             "result_ids": [
-              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
+              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
             ]
           }
         ],
@@ -583,15 +583,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
-            "duration_ms": 46
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
+            "duration_ms": 42
           },
           {
             "operation": "topic_list",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
-            "duration_ms": 41
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
+            "duration_ms": 42
           }
         ],
         "usage": {
@@ -604,8 +604,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T00:06:00.522899Z",
-      "finished_at": "2026-10-24T00:06:00.616197Z"
+      "created_at": "2026-10-24T02:17:19.968192Z",
+      "finished_at": "2026-10-24T02:17:20.064581Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a3",
@@ -614,7 +614,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
         "plan": {
           "intent": "trend",
           "platform": null,
@@ -626,7 +626,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "timeline",
             "selection": {
               "platforms": null,
@@ -784,14 +784,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51"
+            "result_id": "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf"
           }
         ],
         "views": [
           {
             "component": "timeline",
             "result_ids": [
-              "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51"
+              "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf"
             ]
           }
         ],
@@ -828,9 +828,9 @@
         "trace": [
           {
             "operation": "timeline",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51",
-            "duration_ms": 41
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "38468f044130463574e898699ee3bdd11d9033207d829bf16cff972fa3d788cf",
+            "duration_ms": 38
           }
         ],
         "usage": {
@@ -843,8 +843,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T00:06:00.628525Z",
-      "finished_at": "2026-10-24T00:06:00.680883Z"
+      "created_at": "2026-10-24T02:17:20.082050Z",
+      "finished_at": "2026-10-24T02:17:20.130684Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a4",
@@ -853,7 +853,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
         "plan": {
           "intent": "topic_reviews",
           "platform": null,
@@ -868,7 +868,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "topic_detail",
             "selection": {
               "platforms": null,
@@ -947,11 +947,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c"
+            "result_id": "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "reviews",
             "selection": {
               "platforms": null,
@@ -1094,15 +1094,15 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8"
+            "result_id": "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7"
           }
         ],
         "views": [
           {
             "component": "topic_detail",
             "result_ids": [
-              "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c",
-              "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8"
+              "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35",
+              "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7"
             ]
           }
         ],
@@ -1139,15 +1139,15 @@
         "trace": [
           {
             "operation": "topic_detail",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c",
-            "duration_ms": 39
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "20773831e3398552fce683a229d200b009f8057cb9c987fc9b9204f266c37c35",
+            "duration_ms": 38
           },
           {
             "operation": "reviews",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8",
-            "duration_ms": 37
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "c4a486c2853f4b5fe81cd3d88e3fd088018b71edd35a94eb7213dddad5165ec7",
+            "duration_ms": 40
           }
         ],
         "usage": {
@@ -1160,8 +1160,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T00:06:00.691273Z",
-      "finished_at": "2026-10-24T00:06:00.775532Z"
+      "created_at": "2026-10-24T02:17:20.144301Z",
+      "finished_at": "2026-10-24T02:17:20.234188Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a5",
@@ -1170,7 +1170,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
         "plan": {
           "intent": "specific_problems",
           "platform": null,
@@ -1182,7 +1182,7 @@
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -1255,11 +1255,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -1436,14 +1436,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
+              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
             ]
           }
         ],
@@ -1480,361 +1480,14 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
-            "duration_ms": 45
-          },
-          {
-            "operation": "topic_list",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
-            "duration_ms": 43
-          }
-        ],
-        "usage": {
-          "mode": "fixture",
-          "model": null,
-          "requests": 0,
-          "prompt_tokens": null,
-          "completion_tokens": null,
-          "duration_ms": 0
-        }
-      },
-      "error": null,
-      "created_at": "2026-10-24T00:06:00.797098Z",
-      "finished_at": "2026-10-24T00:06:00.896101Z"
-    },
-    {
-      "request_id": "00000000-0000-4000-8000-0000000000a6",
-      "question": "¿Dónde convendría poner atención primero?",
-      "status": "completed",
-      "planner_mode": "fixture",
-      "answer": {
-        "schema_version": "voc-answer-v1",
-        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-        "plan": {
-          "intent": "focus",
-          "platform": null,
-          "selection": null,
-          "topic": null,
-          "limit": null
-        },
-        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. Ordenados por el límite inferior de la proporción negativa, los temas de una funcionalidad a atender primero son: 1) «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo»: 3 de 8 reseñas clasificadas negativas (38%; al menos 14%).\n\nInterpretación. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas. Los nombres son generados por un modelo y señalan la funcionalidad, no la causa.\n\nLo que no se puede afirmar. Este orden es una señal estadística, no una prioridad de negocio: no considera el costo de corregir, el impacto en ingresos ni cuántas personas afecta. 10 reseñas en vista no tienen tema y 3 temas sin nombre generado, sin una funcionalidad clara o con menos de 5 reseñas clasificadas quedan fuera.",
-        "results": [
-          {
-            "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "kind": "summary",
-            "selection": {
-              "platforms": null,
-              "labels": null,
-              "assessments": null,
-              "month_from": null,
-              "month_to": null,
-              "search": null,
-              "topic_id": null,
-              "sort": null,
-              "page": null,
-              "page_size": null
-            },
-            "data": {
-              "reviews_in_view": 60,
-              "reviews_total": 60,
-              "classified": 58,
-              "topics_in_view": 5,
-              "topics_total": 5,
-              "negative": {
-                "count": 20,
-                "share": 0.3448275862068966
-              },
-              "neutral": {
-                "count": 21,
-                "share": 0.3620689655172414
-              },
-              "positive": {
-                "count": 17,
-                "share": 0.29310344827586204
-              },
-              "most_negative_feature": {
-                "topic_id": 0,
-                "display_name": "Lentitud al abrir y cargar la aplicación",
-                "assessment": "single_feature",
-                "negative": 8,
-                "total": 10,
-                "share": 0.8,
-                "wilson_lower": 0.4901624715366418,
-                "eligible_topics": 2
-              }
-            },
-            "warnings": [
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for app_store."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for google_play."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for x."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for youtube."
-              },
-              {
-                "code": "embeddings_not_verified",
-                "message": "An embedding release is registered; its artifacts are not verified."
-              },
-              {
-                "code": "interpretations_partial",
-                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
-              },
-              {
-                "code": "sentiment_unclassified",
-                "message": "Some reviews have no sentiment label; they are counted by status."
-              }
-            ],
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
-          },
-          {
-            "schema_version": "voc-data-query-v2",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "kind": "topic_list",
-            "selection": {
-              "platforms": null,
-              "labels": null,
-              "assessments": null,
-              "month_from": null,
-              "month_to": null,
-              "search": null,
-              "topic_id": null,
-              "sort": "negative",
-              "page": null,
-              "page_size": null
-            },
-            "data": [
-              {
-                "topic_id": 0,
-                "display_name": "Lentitud al abrir y cargar la aplicación",
-                "wording_source": "generated",
-                "assessment": "single_feature",
-                "keywords": [
-                  "lenta",
-                  "tarda",
-                  "abrir",
-                  "carga",
-                  "espera",
-                  "lento"
-                ],
-                "member_count": 10,
-                "total": 10,
-                "classified": 10,
-                "negative": 8,
-                "neutral": 1,
-                "positive": 1,
-                "negative_share": 0.8,
-                "positive_share": 0.1,
-                "wilson_lower": 0.4901624715366418
-              },
-              {
-                "topic_id": 3,
-                "display_name": "tarjeta / bloqueo / digital",
-                "wording_source": "original",
-                "assessment": "uninterpreted",
-                "keywords": [
-                  "tarjeta",
-                  "bloqueo",
-                  "digital",
-                  "física",
-                  "activar",
-                  "pin"
-                ],
-                "member_count": 10,
-                "total": 10,
-                "classified": 10,
-                "negative": 6,
-                "neutral": 2,
-                "positive": 2,
-                "negative_share": 0.6,
-                "positive_share": 0.2,
-                "wilson_lower": 0.3126737697336583
-              },
-              {
-                "topic_id": 1,
-                "display_name": "Problemas con transferencias y saldo",
-                "wording_source": "generated",
-                "assessment": "mixed",
-                "keywords": [
-                  "transferencia",
-                  "dinero",
-                  "saldo",
-                  "envío",
-                  "cobro",
-                  "pago"
-                ],
-                "member_count": 10,
-                "total": 10,
-                "classified": 8,
-                "negative": 3,
-                "neutral": 3,
-                "positive": 2,
-                "negative_share": 0.375,
-                "positive_share": 0.25,
-                "wilson_lower": 0.13684428582359737
-              },
-              {
-                "topic_id": 4,
-                "display_name": "servicio / atención / sucursal",
-                "wording_source": "original",
-                "assessment": "uninterpreted",
-                "keywords": [
-                  "servicio",
-                  "atención",
-                  "sucursal",
-                  "teléfono",
-                  "ayuda",
-                  "soporte"
-                ],
-                "member_count": 10,
-                "total": 10,
-                "classified": 10,
-                "negative": 3,
-                "neutral": 4,
-                "positive": 3,
-                "negative_share": 0.3,
-                "positive_share": 0.3,
-                "wilson_lower": 0.10779126740630099
-              },
-              {
-                "topic_id": 2,
-                "display_name": "Valoración positiva general de la aplicación",
-                "wording_source": "generated",
-                "assessment": "unclear",
-                "keywords": [
-                  "fácil",
-                  "rápida",
-                  "práctica",
-                  "usar",
-                  "sencilla",
-                  "buena"
-                ],
-                "member_count": 10,
-                "total": 10,
-                "classified": 10,
-                "negative": 0,
-                "neutral": 1,
-                "positive": 9,
-                "negative_share": 0.0,
-                "positive_share": 0.9,
-                "wilson_lower": 0.0
-              },
-              {
-                "topic_id": -1,
-                "display_name": "Unassigned",
-                "wording_source": "original",
-                "assessment": "unassigned",
-                "keywords": [],
-                "member_count": 10,
-                "total": 10,
-                "classified": 10,
-                "negative": 0,
-                "neutral": 10,
-                "positive": 0,
-                "negative_share": 0.0,
-                "positive_share": 0.0,
-                "wilson_lower": 0.0
-              }
-            ],
-            "warnings": [
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for app_store."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for google_play."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for x."
-              },
-              {
-                "code": "collection_date_unknown",
-                "message": "Collection date is unknown for youtube."
-              },
-              {
-                "code": "embeddings_not_verified",
-                "message": "An embedding release is registered; its artifacts are not verified."
-              },
-              {
-                "code": "interpretations_partial",
-                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
-              },
-              {
-                "code": "sentiment_unclassified",
-                "message": "Some reviews have no sentiment label; they are counted by status."
-              }
-            ],
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
-          }
-        ],
-        "views": [
-          {
-            "component": "topic_list",
-            "result_ids": [
-              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
-            ]
-          },
-          {
-            "component": "kpi_tiles",
-            "result_ids": [
-              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
-            ]
-          }
-        ],
-        "warnings": [
-          {
-            "code": "collection_date_unknown",
-            "message": "Collection date is unknown for app_store."
-          },
-          {
-            "code": "collection_date_unknown",
-            "message": "Collection date is unknown for google_play."
-          },
-          {
-            "code": "collection_date_unknown",
-            "message": "Collection date is unknown for x."
-          },
-          {
-            "code": "collection_date_unknown",
-            "message": "Collection date is unknown for youtube."
-          },
-          {
-            "code": "embeddings_not_verified",
-            "message": "An embedding release is registered; its artifacts are not verified."
-          },
-          {
-            "code": "interpretations_partial",
-            "message": "Not every topic has a completed interpretation; the rest keep keyword names."
-          },
-          {
-            "code": "sentiment_unclassified",
-            "message": "Some reviews have no sentiment label; they are counted by status."
-          }
-        ],
-        "trace": [
-          {
-            "operation": "summary",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
             "duration_ms": 43
           },
           {
             "operation": "topic_list",
-            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
-            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
             "duration_ms": 38
           }
         ],
@@ -1848,8 +1501,355 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-24T00:06:00.907370Z",
-      "finished_at": "2026-10-24T00:06:00.998039Z"
+      "created_at": "2026-10-24T02:17:20.255315Z",
+      "finished_at": "2026-10-24T02:17:20.343778Z"
+    },
+    {
+      "request_id": "00000000-0000-4000-8000-0000000000a6",
+      "question": "¿Dónde convendría poner atención primero?",
+      "status": "completed",
+      "planner_mode": "fixture",
+      "answer": {
+        "schema_version": "voc-answer-v1",
+        "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+        "plan": {
+          "intent": "focus",
+          "platform": null,
+          "selection": null,
+          "topic": null,
+          "limit": null
+        },
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. Ordenados por el límite inferior de la proporción negativa, los temas de una funcionalidad a atender primero son: 1) «Lentitud al abrir y cargar la aplicación» (tema 0): 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo» (tema 1): 3 de 8 reseñas clasificadas negativas (38%; al menos 14%).\n\nInterpretación. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas. Los nombres son generados por un modelo y señalan la funcionalidad, no la causa.\n\nLo que no se puede afirmar. Este orden es una señal estadística, no una prioridad de negocio: no considera el costo de corregir, el impacto en ingresos ni cuántas personas afecta. 10 reseñas en vista no tienen tema y 3 temas sin nombre generado, sin una funcionalidad clara o con menos de 5 reseñas clasificadas quedan fuera.",
+        "results": [
+          {
+            "schema_version": "voc-data-query-v2",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "kind": "summary",
+            "selection": {
+              "platforms": null,
+              "labels": null,
+              "assessments": null,
+              "month_from": null,
+              "month_to": null,
+              "search": null,
+              "topic_id": null,
+              "sort": null,
+              "page": null,
+              "page_size": null
+            },
+            "data": {
+              "reviews_in_view": 60,
+              "reviews_total": 60,
+              "classified": 58,
+              "topics_in_view": 5,
+              "topics_total": 5,
+              "negative": {
+                "count": 20,
+                "share": 0.3448275862068966
+              },
+              "neutral": {
+                "count": 21,
+                "share": 0.3620689655172414
+              },
+              "positive": {
+                "count": 17,
+                "share": 0.29310344827586204
+              },
+              "most_negative_feature": {
+                "topic_id": 0,
+                "display_name": "Lentitud al abrir y cargar la aplicación",
+                "assessment": "single_feature",
+                "negative": 8,
+                "total": 10,
+                "share": 0.8,
+                "wilson_lower": 0.4901624715366418,
+                "eligible_topics": 2
+              }
+            },
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for google_play."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for x."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for youtube."
+              },
+              {
+                "code": "embeddings_not_verified",
+                "message": "An embedding release is registered; its artifacts are not verified."
+              },
+              {
+                "code": "interpretations_partial",
+                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+              },
+              {
+                "code": "sentiment_unclassified",
+                "message": "Some reviews have no sentiment label; they are counted by status."
+              }
+            ],
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+          },
+          {
+            "schema_version": "voc-data-query-v2",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "kind": "topic_list",
+            "selection": {
+              "platforms": null,
+              "labels": null,
+              "assessments": null,
+              "month_from": null,
+              "month_to": null,
+              "search": null,
+              "topic_id": null,
+              "sort": "negative",
+              "page": null,
+              "page_size": null
+            },
+            "data": [
+              {
+                "topic_id": 0,
+                "display_name": "Lentitud al abrir y cargar la aplicación",
+                "wording_source": "generated",
+                "assessment": "single_feature",
+                "keywords": [
+                  "lenta",
+                  "tarda",
+                  "abrir",
+                  "carga",
+                  "espera",
+                  "lento"
+                ],
+                "member_count": 10,
+                "total": 10,
+                "classified": 10,
+                "negative": 8,
+                "neutral": 1,
+                "positive": 1,
+                "negative_share": 0.8,
+                "positive_share": 0.1,
+                "wilson_lower": 0.4901624715366418
+              },
+              {
+                "topic_id": 3,
+                "display_name": "tarjeta / bloqueo / digital",
+                "wording_source": "original",
+                "assessment": "uninterpreted",
+                "keywords": [
+                  "tarjeta",
+                  "bloqueo",
+                  "digital",
+                  "física",
+                  "activar",
+                  "pin"
+                ],
+                "member_count": 10,
+                "total": 10,
+                "classified": 10,
+                "negative": 6,
+                "neutral": 2,
+                "positive": 2,
+                "negative_share": 0.6,
+                "positive_share": 0.2,
+                "wilson_lower": 0.3126737697336583
+              },
+              {
+                "topic_id": 1,
+                "display_name": "Problemas con transferencias y saldo",
+                "wording_source": "generated",
+                "assessment": "mixed",
+                "keywords": [
+                  "transferencia",
+                  "dinero",
+                  "saldo",
+                  "envío",
+                  "cobro",
+                  "pago"
+                ],
+                "member_count": 10,
+                "total": 10,
+                "classified": 8,
+                "negative": 3,
+                "neutral": 3,
+                "positive": 2,
+                "negative_share": 0.375,
+                "positive_share": 0.25,
+                "wilson_lower": 0.13684428582359737
+              },
+              {
+                "topic_id": 4,
+                "display_name": "servicio / atención / sucursal",
+                "wording_source": "original",
+                "assessment": "uninterpreted",
+                "keywords": [
+                  "servicio",
+                  "atención",
+                  "sucursal",
+                  "teléfono",
+                  "ayuda",
+                  "soporte"
+                ],
+                "member_count": 10,
+                "total": 10,
+                "classified": 10,
+                "negative": 3,
+                "neutral": 4,
+                "positive": 3,
+                "negative_share": 0.3,
+                "positive_share": 0.3,
+                "wilson_lower": 0.10779126740630099
+              },
+              {
+                "topic_id": 2,
+                "display_name": "Valoración positiva general de la aplicación",
+                "wording_source": "generated",
+                "assessment": "unclear",
+                "keywords": [
+                  "fácil",
+                  "rápida",
+                  "práctica",
+                  "usar",
+                  "sencilla",
+                  "buena"
+                ],
+                "member_count": 10,
+                "total": 10,
+                "classified": 10,
+                "negative": 0,
+                "neutral": 1,
+                "positive": 9,
+                "negative_share": 0.0,
+                "positive_share": 0.9,
+                "wilson_lower": 0.0
+              },
+              {
+                "topic_id": -1,
+                "display_name": "Unassigned",
+                "wording_source": "original",
+                "assessment": "unassigned",
+                "keywords": [],
+                "member_count": 10,
+                "total": 10,
+                "classified": 10,
+                "negative": 0,
+                "neutral": 10,
+                "positive": 0,
+                "negative_share": 0.0,
+                "positive_share": 0.0,
+                "wilson_lower": 0.0
+              }
+            ],
+            "warnings": [
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for app_store."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for google_play."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for x."
+              },
+              {
+                "code": "collection_date_unknown",
+                "message": "Collection date is unknown for youtube."
+              },
+              {
+                "code": "embeddings_not_verified",
+                "message": "An embedding release is registered; its artifacts are not verified."
+              },
+              {
+                "code": "interpretations_partial",
+                "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+              },
+              {
+                "code": "sentiment_unclassified",
+                "message": "Some reviews have no sentiment label; they are counted by status."
+              }
+            ],
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+          }
+        ],
+        "views": [
+          {
+            "component": "topic_list",
+            "result_ids": [
+              "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8"
+            ]
+          },
+          {
+            "component": "kpi_tiles",
+            "result_ids": [
+              "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497"
+            ]
+          }
+        ],
+        "warnings": [
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for app_store."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for google_play."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for x."
+          },
+          {
+            "code": "collection_date_unknown",
+            "message": "Collection date is unknown for youtube."
+          },
+          {
+            "code": "embeddings_not_verified",
+            "message": "An embedding release is registered; its artifacts are not verified."
+          },
+          {
+            "code": "interpretations_partial",
+            "message": "Not every topic has a completed interpretation; the rest keep keyword names."
+          },
+          {
+            "code": "sentiment_unclassified",
+            "message": "Some reviews have no sentiment label; they are counted by status."
+          }
+        ],
+        "trace": [
+          {
+            "operation": "summary",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "c5272a6aae3a8ab6dbebf321d68c01ab2f4b12b9d4eddca13749c5905e584497",
+            "duration_ms": 40
+          },
+          {
+            "operation": "topic_list",
+            "publication_id": "0e6aa35b-1b51-4938-9a50-8b1775c629f2",
+            "result_id": "76e0547c558ea30f85358b48eb106b38a1a30195a242f6e6bdacef106476def8",
+            "duration_ms": 39
+          }
+        ],
+        "usage": {
+          "mode": "fixture",
+          "model": null,
+          "requests": 0,
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "duration_ms": 0
+        }
+      },
+      "error": null,
+      "created_at": "2026-10-24T02:17:20.364887Z",
+      "finished_at": "2026-10-24T02:17:20.456365Z"
     }
   ]
 }

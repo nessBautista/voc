@@ -1,6 +1,7 @@
 """The planner classifies the demo flow in fixture mode and parses it in model mode."""
 
 import json
+import logging
 from dataclasses import replace
 
 import httpx
@@ -246,3 +247,80 @@ def test_model_mode_parses_the_new_schema(settings, v2_active, content, expected
     else:
         assert turn["error"]["code"] == "invalid_plan"
         assert "test-secret" not in json.dumps(turn)
+
+
+def canned(content, status=200):
+    def respond(request):
+        if status != 200:
+            return httpx.Response(
+                status, json={"error": {"message": "provider detail"}}
+            )
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 900, "completion_tokens": 60},
+            },
+        )
+
+    return httpx.MockTransport(respond)
+
+
+def model_turn(settings, transport, question="¿Cómo se sienten en general?"):
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, transport)
+    with TestClient(create_app(settings, planner=planner)) as client:
+        return ask(client, payload(question))["turns"][0]
+
+
+def test_model_all_null_selection_is_stored_as_null(settings, v2_active):
+    turn = model_turn(
+        settings,
+        canned(
+            {
+                "intent": "mood",
+                "platform": None,
+                "selection": selection(),
+                "topic": None,
+                "limit": None,
+            }
+        ),
+    )
+    assert turn["status"] == "completed", turn
+    assert turn["answer"]["plan"]["selection"] is None
+    assert turn["answer"]["usage"]["prompt_tokens"] == 900
+
+
+def test_provider_failures_log_status_and_fields_only(settings, v2_active, caplog):
+    question = "¿Cómo se sienten en general? texto-privado-de-la-pregunta"
+    with caplog.at_level(logging.WARNING, logger="voc_app.agent.planner"):
+        failed = model_turn(settings, canned(None, status=400), question)
+        assert failed["error"]["code"] == "model_unavailable"
+        rejected = model_turn(
+            settings,
+            canned(
+                {
+                    "intent": "mood",
+                    "platform": None,
+                    "selection": selection(labels=["negative"]),
+                    "topic": None,
+                    "limit": None,
+                }
+            ),
+            question,
+        )
+        assert rejected["error"]["code"] == "invalid_plan"
+    messages = [record.getMessage() for record in caplog.records]
+    assert any("answered 400" in message for message in messages)
+    assert any(
+        "Model plan rejected at" in message and "sentiment label" in message
+        for message in messages
+    )
+    joined = "\n".join(messages)
+    assert "test-secret-key" not in joined
+    assert "texto-privado" not in joined and "provider detail" not in joined

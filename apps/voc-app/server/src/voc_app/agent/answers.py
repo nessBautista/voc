@@ -77,12 +77,16 @@ def ranked_rows(plan, results):
         return []
     rows = by_kind["topic_list"]["data"]
     if plan.intent == "specific_problems":
+        # Volume, not the bound: which single features concentrate the most complaints.
         tile = by_kind.get("summary", {}).get("data", {}).get("most_negative_feature")
         ranked = [
             r
             for r in feature_ranking(rows, SPECIFIC_MINIMUM, single_only=True)
             if tile is None or r["topic_id"] != tile["topic_id"]
         ]
+        ranked.sort(
+            key=lambda r: (-r["negative"], -(r["negative_share"] or 0), r["topic_id"])
+        )
     else:
         ranked = feature_ranking(rows)
     return ranked[: plan.limit or DEFAULT_LIMIT[plan.intent]]
@@ -209,10 +213,11 @@ def rises(months):
 
 
 def ranking_items(rows):
+    # The topic number travels with the name: generated names repeat across topics.
     return "; ".join(
-        f"{number}) «{row['display_name']}»: {row['negative']:,} de {row['classified']:,} "
-        f"reseñas clasificadas negativas ({pct(row['negative_share'])}; al menos "
-        f"{pct(row['wilson_lower'])})"
+        f"{number}) «{row['display_name']}» (tema {row['topic_id']}): {row['negative']:,} de "
+        f"{row['classified']:,} reseñas clasificadas negativas ({pct(row['negative_share'])}; "
+        f"al menos {pct(row['wilson_lower'])})"
         for number, row in enumerate(rows, 1)
     )
 
@@ -302,7 +307,7 @@ def main_complaints_text(plan, by_kind, results):
             data_part += (
                 " Le siguen "
                 + join_words(
-                    f"«{row['display_name']}» ({pct(row['negative_share'])}, {counted(row['negative'], 'negativa')})"
+                    f"«{row['display_name']}» (tema {row['topic_id']}, {pct(row['negative_share'])}, {counted(row['negative'], 'negativa')})"
                     for row in named[1:]
                 )
                 + "."
@@ -397,9 +402,17 @@ def topic_reviews_text(plan, by_kind):
     shown = len(reviews["items"])
     if shown:
         rated = sum(1 for item in reviews["items"] if item["rating"] is not None)
+        # One label asked for: the sentiment order is moot, only confidence orders the page.
+        order = (
+            "ordenadas por confianza"
+            if plan.selection
+            and plan.selection.labels
+            and len(plan.selection.labels) == 1
+            else "de las negativas con mayor confianza a las positivas"
+        )
         data_part += (
-            f" Se muestran {shown} de {reviews['total']:,} reseñas, de las negativas con mayor "
-            f"confianza a las positivas; {rated} traen calificación de la tienda."
+            f" Se muestran {shown} de {reviews['total']:,} reseñas, {order}; "
+            f"{rated} traen calificación de la tienda."
         )
     else:
         data_part += " No hay reseñas que mostrar con estos filtros."
@@ -433,8 +446,9 @@ def specific_problems_text(plan, by_kind, results):
     lead = f" Más allá del tema principal, «{tile['display_name']}»," if tile else ""
     if named:
         data_part += (
-            f"{lead} los problemas de una sola funcionalidad con al menos {SPECIFIC_MINIMUM} reseñas "
-            f"clasificadas y mayor proporción negativa son: {ranking_items(named)}."
+            f"{lead} los problemas de una sola funcionalidad con más reseñas negativas, "
+            f"entre los temas con al menos {SPECIFIC_MINIMUM} reseñas clasificadas, son: "
+            f"{ranking_items(named)}."
         )
         negatives = sum(row["negative"] for row in named)
         share = (
@@ -444,12 +458,15 @@ def specific_problems_text(plan, by_kind, results):
         )
         interpretation = (
             "Cada uno describe una funcionalidad concreta según la interpretación generada. "
-            f"Juntos suman {negatives:,} reseñas negativas, {pct(share)} de las negativas en vista."
+            "Este orden va por volumen, no por proporción: señala dónde se concentran las "
+            "quejas, mientras que la queja principal y las prioridades usan la proporción "
+            f"negativa. Juntos suman {negatives:,} reseñas negativas, {pct(share)} de las "
+            "negativas en vista."
         )
     else:
         data_part += (
-            f"{lead} no hay otros temas de una sola funcionalidad con al menos {SPECIFIC_MINIMUM} "
-            "reseñas clasificadas en esta selección."
+            f"{lead} no hay otros temas de una sola funcionalidad con al menos "
+            f"{SPECIFIC_MINIMUM} reseñas clasificadas en esta selección."
         )
         interpretation = "Con esta selección el análisis no separa problemas más específicos; amplía la selección o pregunta por la queja principal."
     limits = (
