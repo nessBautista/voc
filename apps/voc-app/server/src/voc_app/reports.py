@@ -152,6 +152,20 @@ def render(snapshot, metadata):
                 "",
                 "publication_id: " + escaped(result["publication_id"]),
                 "",
+                # Analysis evidence states the filters that produced the tables below.
+                *(
+                    [
+                        "selection: "
+                        + escaped(
+                            json.dumps(
+                                result["selection"], ensure_ascii=False, sort_keys=True
+                            )
+                        ),
+                        "",
+                    ]
+                    if "selection" in result
+                    else []
+                ),
                 *evidence_data(result["data"]),
                 "**Advertencias de la evidencia**",
                 "",

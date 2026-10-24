@@ -468,18 +468,56 @@ def test_six_questions_in_fixture_mode(settings, v2_active):
                 answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
             )
         turns = conversation["turns"]
-        # The scope sentence reads the first result; the blocks carry the rest.
-        assert turns[0]["answer"]["text"].startswith(
-            "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas"
+        texts = [turn["answer"]["text"] for turn in turns]
+        # Every analysis answer has its three parts, scope first; numbers come from the blocks.
+        for text in texts:
+            assert text.startswith("Qué dicen los datos. ")
+            assert "\n\nInterpretación. " in text
+            assert "\n\nLo que no se puede afirmar. " in text
+        assert (
+            "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. De ellas, 34% son negativas (20), 36% neutras (21) y 29% positivas (17)."
+            in texts[0]
         )
-        assert turns[2]["answer"]["text"].startswith(
-            "En todas las plataformas, en todo el periodo publicado, la serie cubre 13 meses"
+        assert (
+            "la mayor proporción negativa está en X (63% de 8 clasificadas)" in texts[0]
         )
+        assert (
+            "El ánimo general está dividido: positivas y negativas difieren en 5 puntos"
+            in texts[0]
+        )
+        assert (
+            "el tema 0, «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas son negativas (80%; al menos 49% con 95% de confianza)."
+            in texts[1]
+        )
+        assert (
+            "Le siguen «Problemas con transferencias y saldo» (38%, 3 negativas)."
+            in texts[1]
+        )
+        assert "límite inferior de Wilson" in texts[1]
+        assert (
+            "la serie cubre 13 meses, de septiembre de 2025 a septiembre de 2026, con 60 reseñas."
+            in texts[2]
+        )
+        assert "Ningún mes alcanza las 10 reseñas clasificadas" in texts[2]
         # "¿Qué dicen exactamente los clientes?" opened the topic the previous answer put first.
         assert turns[3]["answer"]["plan"]["topic"] == {"topic_id": 0, "reference": None}
-        assert turns[3]["answer"]["text"].startswith(
-            "Tema 0, «Lentitud al abrir y cargar la aplicación»: 10 de 10 reseñas"
+        assert (
+            "Tema 0, «Lentitud al abrir y cargar la aplicación»: 10 de 10 reseñas cumplen los filtros (en todas las plataformas, en todo el periodo publicado); 8 negativas, 1 neutra y 1 positiva (80% negativas). Se muestran 6 de 10 reseñas"
+            in texts[3]
         )
+        assert (
+            "Descripción generada por un modelo: «Descripción ficticia del tema 0 para pruebas.»"
+            in texts[3]
+        )
+        assert (
+            "no hay otros temas de una sola funcionalidad con al menos 100 reseñas clasificadas"
+            in texts[4]
+        )
+        assert (
+            "1) «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo»"
+            in texts[5]
+        )
+        assert "no una prioridad de negocio" in texts[5]
         reviews = turns[3]["answer"]["results"][1]
         assert reviews["selection"]["page_size"] == 6 and reviews["data"]["pages"] == 2
         assert turns[1]["answer"]["results"][1]["selection"]["sort"] == "negative"

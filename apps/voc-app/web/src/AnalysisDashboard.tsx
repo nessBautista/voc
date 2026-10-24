@@ -22,6 +22,7 @@ import { Timeline } from "./components/analysis/Timeline";
 import { TopicDetail } from "./components/analysis/TopicDetail";
 import { TopicList } from "./components/analysis/TopicList";
 import { Panel } from "./components/Panel";
+import { analysisPanels, topicDetailPanel } from "./components/registry";
 import { number } from "./components/format";
 import { shortMonth } from "./components/analysis/shared";
 
@@ -207,21 +208,11 @@ export function AnalysisDashboard({
       )}
       {ready && (
         <>
-          <Panel
-            title="Indicadores"
-            eyebrow="Selección actual"
-            results={[ready.summary]}
-            className="kpi-panel"
-          >
+          <Panel {...analysisPanels.kpi_tiles} results={[ready.summary]}>
             <KpiTiles result={ready.summary} onOpenTopic={open} />
           </Panel>
           <div className="analysis-grid">
-            <Panel
-              title="Temas por volumen y sentimiento"
-              eyebrow="Temas"
-              results={[ready.topics]}
-              className="topics-panel"
-            >
+            <Panel {...analysisPanels.topic_list} results={[ready.topics]}>
               <TopicList
                 result={ready.topics}
                 sort={sort}
@@ -231,25 +222,13 @@ export function AnalysisDashboard({
               />
             </Panel>
             <div className="side-column">
-              <Panel
-                title="Sentimiento en el tiempo"
-                eyebrow="Meses"
-                results={[ready.timeline]}
-              >
+              <Panel {...analysisPanels.timeline} results={[ready.timeline]}>
                 <Timeline data={ready.timeline.data} />
               </Panel>
-              <Panel
-                title="Por plataforma"
-                eyebrow="Fuentes"
-                results={[ready.platforms]}
-              >
+              <Panel {...analysisPanels.platforms} results={[ready.platforms]}>
                 <Platforms result={ready.platforms} />
               </Panel>
-              <Panel
-                title="Ánimo general"
-                eyebrow="Sentimiento"
-                results={[ready.summary]}
-              >
+              <Panel {...analysisPanels.mood_ring} results={[ready.summary]}>
                 <MoodRing result={ready.summary} />
               </Panel>
             </div>
@@ -278,7 +257,7 @@ export function AnalysisDashboard({
         {topic.status === "ready" && (
           <Panel
             title={topic.snapshot.detail.data.display_name}
-            eyebrow="Detalle del tema"
+            {...topicDetailPanel}
             results={
               [
                 topic.snapshot.detail,
@@ -286,7 +265,6 @@ export function AnalysisDashboard({
                 topic.snapshot.reviews,
               ] as AnalysisResultOf<"topic_detail" | "timeline" | "reviews">[]
             }
-            className="detail-panel"
           >
             <TopicDetail
               detail={topic.snapshot.detail}
