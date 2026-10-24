@@ -490,7 +490,7 @@ def test_six_questions_in_fixture_mode(settings, v2_active):
             in texts[1]
         )
         assert (
-            "Le siguen «Problemas con transferencias y saldo» (38%, 3 negativas)."
+            "Le siguen «Problemas con transferencias y saldo» (tema 1, 38%, 3 negativas)."
             in texts[1]
         )
         assert "límite inferior de Wilson" in texts[1]
@@ -514,7 +514,7 @@ def test_six_questions_in_fixture_mode(settings, v2_active):
             in texts[4]
         )
         assert (
-            "1) «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo»"
+            "1) «Lentitud al abrir y cargar la aplicación» (tema 0): 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo» (tema 1)"
             in texts[5]
         )
         assert "no una prioridad de negocio" in texts[5]
@@ -554,6 +554,7 @@ def test_topic_reference_resolves_or_asks(settings, v2_active):
         last = named["turns"][-1]["answer"]
         assert last["plan"]["topic"]["topic_id"] == 2
         assert last["results"][1]["selection"]["labels"] == ["positive"]
+        assert "ordenadas por confianza" in last["text"]
         unknown = ask(client, payload("Reseñas del tema 999", identity))
         assert unknown["turns"][-1]["error"]["code"] == "topic_unknown"
 
