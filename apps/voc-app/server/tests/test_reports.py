@@ -260,6 +260,12 @@ def test_report_carries_analysis_evidence_with_its_selection(settings, v2_active
         report = prepare(client, conversation).json()
         body = download(client, report)[0].decode()
     assert report["turn_count"] == 6
+    # The fixed note names both planner modes, whichever planned the turns.
+    assert (
+        "es fixture, que selecciona consultas sin llamar a un modelo"
+        in body.replace("\\", "")
+    )
+    assert "o model, que las selecciona con un modelo" in body.replace("\\", "")
     for label in (
         "Qué dicen los datos.",
         "Interpretación.",
