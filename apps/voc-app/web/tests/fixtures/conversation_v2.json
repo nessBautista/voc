@@ -1,8 +1,8 @@
 {
   "schema_version": "voc-conversation-v1",
   "conversation_id": "034394ea-bbe2-5c7b-8890-09d066c3bf2d",
-  "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-  "created_at": "2026-10-23T23:39:36.362045Z",
+  "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+  "created_at": "2026-10-24T00:06:00.410692Z",
   "turns": [
     {
       "request_id": "00000000-0000-4000-8000-0000000000a1",
@@ -11,7 +11,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "mood",
           "platform": null,
@@ -19,11 +19,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. De ellas, 34% son negativas (20), 36% neutras (21) y 29% positivas (17). Por plataforma, la mayor proporción negativa está en X (63% de 8 clasificadas) y la menor en YouTube (0% de 8).\n\nInterpretación. El ánimo general está dividido: positivas y negativas difieren en 5 puntos, menos de diez.\n\nLo que no se puede afirmar. 2 reseñas en vista no tienen etiqueta y no entran en las proporciones. Las etiquetas de sentimiento son resultados de un modelo, no juicios de personas. Una proporción cuenta reseñas, no personas: una misma persona puede dejar varias.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -96,11 +96,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "platforms",
             "selection": {
               "platforms": null,
@@ -186,20 +186,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "2174108e5db02d36cb636a7ab7fd103756b62c48bb6f7cbfee7bb204ec38308e"
+            "result_id": "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e"
           }
         ],
         "views": [
           {
             "component": "mood_ring",
             "result_ids": [
-              "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
             ]
           },
           {
             "component": "platforms",
             "result_ids": [
-              "2174108e5db02d36cb636a7ab7fd103756b62c48bb6f7cbfee7bb204ec38308e"
+              "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e"
             ]
           }
         ],
@@ -236,15 +236,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5",
-            "duration_ms": 43
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
+            "duration_ms": 49
           },
           {
             "operation": "platforms",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "2174108e5db02d36cb636a7ab7fd103756b62c48bb6f7cbfee7bb204ec38308e",
-            "duration_ms": 43
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "6f238b0821617c7d2ec98ee514cdd32f1381ce680c542c360399746aca8a6e6e",
+            "duration_ms": 42
           }
         ],
         "usage": {
@@ -257,8 +257,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.362232Z",
-      "finished_at": "2026-10-23T23:39:36.460093Z"
+      "created_at": "2026-10-24T00:06:00.410873Z",
+      "finished_at": "2026-10-24T00:06:00.514577Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a2",
@@ -267,7 +267,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "main_complaints",
           "platform": null,
@@ -275,11 +275,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. El tema con mayor proporción negativa entre los de una funcionalidad es el tema 0, «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas son negativas (80%; al menos 49% con 95% de confianza). Le siguen «Problemas con transferencias y saldo» (38%, 3 negativas).\n\nInterpretación. Los nombres de los temas son generados por un modelo a partir de sus reseñas; «Lentitud al abrir y cargar la aplicación» reúne reseñas con palabras clave como lenta, tarda y abrir. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas.\n\nLo que no se puede afirmar. 3 temas en vista no tienen un nombre generado, no describen una funcionalidad o tienen menos de 5 reseñas clasificadas, y no participan en este orden. 10 reseñas en vista no están asignadas a ningún tema. Una proporción alta de negativas no mide cuántas personas sufren el problema.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -352,11 +352,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -533,20 +533,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
             ]
           },
           {
             "component": "kpi_tiles",
             "result_ids": [
-              "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
             ]
           }
         ],
@@ -583,15 +583,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
             "duration_ms": 46
           },
           {
             "operation": "topic_list",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6",
-            "duration_ms": 39
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
+            "duration_ms": 41
           }
         ],
         "usage": {
@@ -604,8 +604,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.470105Z",
-      "finished_at": "2026-10-23T23:39:36.564747Z"
+      "created_at": "2026-10-24T00:06:00.522899Z",
+      "finished_at": "2026-10-24T00:06:00.616197Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a3",
@@ -614,7 +614,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "trend",
           "platform": null,
@@ -622,11 +622,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "En todas las plataformas, en todo el periodo publicado, la serie cubre 13 meses, de septiembre de 2025 a septiembre de 2026, con 60 reseñas.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, la serie cubre 13 meses, de septiembre de 2025 a septiembre de 2026, con 60 reseñas. Ningún mes alcanza las 10 reseñas clasificadas necesarias para comparar proporciones. El mes con más reseñas fue septiembre de 2025, con 5.\n\nInterpretación. Con tan pocas reseñas por mes la serie no permite hablar de una tendencia; mira el volumen de cada mes en el bloque.\n\nLo que no se puede afirmar. Los meses con menos de 10 reseñas clasificadas no se comparan. El último mes, septiembre de 2026, puede estar incompleto si la recolección terminó antes de fin de mes. La serie sigue la selección; no separa plataformas salvo que la selección lo haga.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "timeline",
             "selection": {
               "platforms": null,
@@ -784,14 +784,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "3dd929c05ee869119da28b95eb941a15d6dbdb12775a78525e784a232a6b8bad"
+            "result_id": "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51"
           }
         ],
         "views": [
           {
             "component": "timeline",
             "result_ids": [
-              "3dd929c05ee869119da28b95eb941a15d6dbdb12775a78525e784a232a6b8bad"
+              "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51"
             ]
           }
         ],
@@ -828,9 +828,9 @@
         "trace": [
           {
             "operation": "timeline",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "3dd929c05ee869119da28b95eb941a15d6dbdb12775a78525e784a232a6b8bad",
-            "duration_ms": 43
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "cd078617279c1b3a4844bdeabc5f60f5f8564e52ba8d81ba53cdc084b2503c51",
+            "duration_ms": 41
           }
         ],
         "usage": {
@@ -843,8 +843,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.579863Z",
-      "finished_at": "2026-10-23T23:39:36.632454Z"
+      "created_at": "2026-10-24T00:06:00.628525Z",
+      "finished_at": "2026-10-24T00:06:00.680883Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a4",
@@ -853,7 +853,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "topic_reviews",
           "platform": null,
@@ -864,11 +864,11 @@
           },
           "limit": null
         },
-        "text": "Tema 0, «Lentitud al abrir y cargar la aplicación»: 10 de 10 reseñas cumplen los filtros (en todas las plataformas, en todo el periodo publicado).",
+        "text": "Qué dicen los datos. Tema 0, «Lentitud al abrir y cargar la aplicación»: 10 de 10 reseñas cumplen los filtros (en todas las plataformas, en todo el periodo publicado); 8 negativas, 1 neutra y 1 positiva (80% negativas). Se muestran 6 de 10 reseñas, de las negativas con mayor confianza a las positivas; 6 traen calificación de la tienda.\n\nInterpretación. Descripción generada por un modelo: «Descripción ficticia del tema 0 para pruebas.» Palabras clave: lenta, tarda, abrir, carga, espera y lento.\n\nLo que no se puede afirmar. La página muestra reseñas ordenadas por sentimiento y confianza, no las más representativas del tema. La asignación de una reseña al tema es un resultado de modelo. Todas las reseñas del tema entran en esta vista.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "topic_detail",
             "selection": {
               "platforms": null,
@@ -947,11 +947,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "6aa431e8275706df678738fded59fd02b8e5fb5e67841a5520132ae76647b597"
+            "result_id": "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "reviews",
             "selection": {
               "platforms": null,
@@ -1094,15 +1094,15 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "436af4e475e1275aa9161a568731392badf760f2efc779ae83f393ef790a260e"
+            "result_id": "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8"
           }
         ],
         "views": [
           {
             "component": "topic_detail",
             "result_ids": [
-              "6aa431e8275706df678738fded59fd02b8e5fb5e67841a5520132ae76647b597",
-              "436af4e475e1275aa9161a568731392badf760f2efc779ae83f393ef790a260e"
+              "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c",
+              "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8"
             ]
           }
         ],
@@ -1139,15 +1139,15 @@
         "trace": [
           {
             "operation": "topic_detail",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "6aa431e8275706df678738fded59fd02b8e5fb5e67841a5520132ae76647b597",
-            "duration_ms": 44
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "289582b33601e8af2dd0cdd9e51912be2cddbfc20dbc68992056b43b26bafc6c",
+            "duration_ms": 39
           },
           {
             "operation": "reviews",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "436af4e475e1275aa9161a568731392badf760f2efc779ae83f393ef790a260e",
-            "duration_ms": 40
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "97d85936213a1dcd915ba21958e2d6249e262d35150bb0400a35e944a73bb8f8",
+            "duration_ms": 37
           }
         ],
         "usage": {
@@ -1160,8 +1160,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.643747Z",
-      "finished_at": "2026-10-23T23:39:36.735857Z"
+      "created_at": "2026-10-24T00:06:00.691273Z",
+      "finished_at": "2026-10-24T00:06:00.775532Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a5",
@@ -1170,7 +1170,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "specific_problems",
           "platform": null,
@@ -1178,11 +1178,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. Más allá del tema principal, «Lentitud al abrir y cargar la aplicación», no hay otros temas de una sola funcionalidad con al menos 100 reseñas clasificadas en esta selección.\n\nInterpretación. Con esta selección el análisis no separa problemas más específicos; amplía la selección o pregunta por la queja principal.\n\nLo que no se puede afirmar. Los temas con menos de 100 reseñas clasificadas, los de interpretación mixta o poco clara y los no interpretados no aparecen aquí aunque sean muy negativos. Un tema puede mezclar varias causas.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -1255,11 +1255,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -1436,14 +1436,14 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
             ]
           }
         ],
@@ -1480,14 +1480,14 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5",
-            "duration_ms": 43
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
+            "duration_ms": 45
           },
           {
             "operation": "topic_list",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
             "duration_ms": 43
           }
         ],
@@ -1501,8 +1501,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.750512Z",
-      "finished_at": "2026-10-23T23:39:36.845068Z"
+      "created_at": "2026-10-24T00:06:00.797098Z",
+      "finished_at": "2026-10-24T00:06:00.896101Z"
     },
     {
       "request_id": "00000000-0000-4000-8000-0000000000a6",
@@ -1511,7 +1511,7 @@
       "planner_mode": "fixture",
       "answer": {
         "schema_version": "voc-answer-v1",
-        "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+        "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
         "plan": {
           "intent": "focus",
           "platform": null,
@@ -1519,11 +1519,11 @@
           "topic": null,
           "limit": null
         },
-        "text": "En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento.",
+        "text": "Qué dicen los datos. En todas las plataformas, en todo el periodo publicado, hay 60 reseñas en vista de 60 publicadas; 58 tienen etiqueta de sentimiento. Ordenados por el límite inferior de la proporción negativa, los temas de una funcionalidad a atender primero son: 1) «Lentitud al abrir y cargar la aplicación»: 8 de 10 reseñas clasificadas negativas (80%; al menos 49%); 2) «Problemas con transferencias y saldo»: 3 de 8 reseñas clasificadas negativas (38%; al menos 14%).\n\nInterpretación. El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no supera a uno grande con casi todas negativas. Los nombres son generados por un modelo y señalan la funcionalidad, no la causa.\n\nLo que no se puede afirmar. Este orden es una señal estadística, no una prioridad de negocio: no considera el costo de corregir, el impacto en ingresos ni cuántas personas afecta. 10 reseñas en vista no tienen tema y 3 temas sin nombre generado, sin una funcionalidad clara o con menos de 5 reseñas clasificadas quedan fuera.",
         "results": [
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "summary",
             "selection": {
               "platforms": null,
@@ -1596,11 +1596,11 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
           },
           {
             "schema_version": "voc-data-query-v2",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
             "kind": "topic_list",
             "selection": {
               "platforms": null,
@@ -1777,20 +1777,20 @@
                 "message": "Some reviews have no sentiment label; they are counted by status."
               }
             ],
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
           }
         ],
         "views": [
           {
             "component": "topic_list",
             "result_ids": [
-              "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6"
+              "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a"
             ]
           },
           {
             "component": "kpi_tiles",
             "result_ids": [
-              "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5"
+              "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2"
             ]
           }
         ],
@@ -1827,15 +1827,15 @@
         "trace": [
           {
             "operation": "summary",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "223eb10f12de724a8d4011af0537edd6b2fbec3f973b7ca11625a2750d5d52d5",
-            "duration_ms": 44
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "912d6bc71cda2977be11697ba3c37a9c926116d621f14116e5a7c120df849ab2",
+            "duration_ms": 43
           },
           {
             "operation": "topic_list",
-            "publication_id": "9cb31834-c91c-4e78-84bf-2113929e2220",
-            "result_id": "7139fd494ad263b42f9d1014d2857d221b5758f4d8a857224a77bfc7adce96b6",
-            "duration_ms": 45
+            "publication_id": "5b7b031a-713e-4e1c-a640-5d81027ceaeb",
+            "result_id": "e43e2dc1d8a62cee34a3f0eba54d6f9db5e67dbea6475993da735923a39d564a",
+            "duration_ms": 38
           }
         ],
         "usage": {
@@ -1848,8 +1848,8 @@
         }
       },
       "error": null,
-      "created_at": "2026-10-23T23:39:36.859303Z",
-      "finished_at": "2026-10-23T23:39:36.959048Z"
+      "created_at": "2026-10-24T00:06:00.907370Z",
+      "finished_at": "2026-10-24T00:06:00.998039Z"
     }
   ]
 }

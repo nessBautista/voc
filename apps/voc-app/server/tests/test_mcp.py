@@ -5,7 +5,7 @@ import json
 import socket
 import threading
 import time
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
 from dataclasses import replace
 from uuid import uuid4
 
@@ -27,9 +27,9 @@ TOKEN = "test-mcp-token-not-a-real-credential-00001"
 AUTH = {"Authorization": f"Bearer {TOKEN}"}
 
 
-@pytest.fixture
-def mcp_app(settings, active):
-    # Reserve a real ephemeral socket so the SDK exercises the HTTP transport.
+@contextmanager
+def serve(settings):
+    """A real MCP server on an ephemeral socket, so the SDK exercises the HTTP transport."""
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         origin = f"http://127.0.0.1:{listener.getsockname()[1]}"
@@ -57,6 +57,12 @@ def mcp_app(settings, active):
             server.should_exit = True
             thread.join(timeout=8)
             assert not thread.is_alive(), "MCP test server did not stop"
+
+
+@pytest.fixture
+def mcp_app(settings, active):
+    with serve(settings) as served:
+        yield served
 
 
 @asynccontextmanager
@@ -434,3 +440,63 @@ def test_current_sdk_discovery_protocol(mcp_app):
             assert result.structured_content["ok"] is True
 
     asyncio.run(exercise())
+
+
+def test_analysis_kinds_read_with_a_selection(settings, v2_bundle, bundles, tmp_path):
+    from voc_app.settings import Settings
+
+    v1_settings = Settings(
+        publications_dir=tmp_path / "v1-catalog", state_dir=tmp_path / "v1-state"
+    )
+    activate_bundle(bundles[0], v1_settings.publications_dir, v1_settings.state_dir)
+    v2_active = activate_bundle(
+        v2_bundle, settings.publications_dir, settings.state_dir
+    )
+
+    async def exercise(origin_v2, origin_v1):
+        async with connect(origin_v2) as session:
+            tool = next(
+                t
+                for t in (await session.list_tools()).tools
+                if t.name == "voc_get_data_state"
+            )
+            assert "topic_list" in tool.description
+            assert "topic_id" in tool.input_schema["properties"]
+            result = await session.call_tool(
+                "voc_get_data_state", {"kind": "summary", "platforms": ["google_play"]}
+            )
+            assert not result.is_error, result.structured_content
+            query = result.structured_content["result"]
+            validate_result(
+                query,
+                v2_active["publication_id"],
+                "summary",
+                {"platforms": ["google_play"]},
+            )
+            assert query["selection"]["platforms"] == ["google_play"]
+            assert query["data"]["reviews_in_view"] == 36
+            paged = await session.call_tool(
+                "voc_get_data_state",
+                {"kind": "reviews", "topic_id": 0, "page_size": 3},
+            )
+            assert paged.structured_content["result"]["data"]["pages"] == 4
+            for args, code in (
+                (
+                    {"kind": "overview", "platforms": ["google_play"]},
+                    "invalid_selection",
+                ),
+                ({"kind": "topic_detail"}, "invalid_selection"),
+                ({"kind": "topic_list", "sort": "random"}, "invalid_selection"),
+                ({"kind": "topic_detail", "topic_id": 999}, "publication_not_found"),
+            ):
+                refused = await session.call_tool("voc_get_data_state", args)
+                assert refused.is_error
+                assert refused.structured_content["error"]["code"] == code, args
+        async with connect(origin_v1) as session:
+            refused = await session.call_tool("voc_get_data_state", {"kind": "summary"})
+            assert (
+                refused.structured_content["error"]["code"] == "capability_unavailable"
+            )
+
+    with serve(settings) as (origin_v2, _, _), serve(v1_settings) as (origin_v1, _, _):
+        asyncio.run(exercise(origin_v2, origin_v1))

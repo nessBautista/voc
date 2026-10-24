@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { z } from "zod";
 import {
   kinds,
@@ -19,6 +20,7 @@ import { Timeline } from "./analysis/Timeline";
 import { TopicDetail } from "./analysis/TopicDetail";
 import { TopicList } from "./analysis/TopicList";
 import { Coverage } from "./Coverage";
+import { Panel } from "./Panel";
 import { DatasetSummary } from "./DatasetSummary";
 import { Preparation } from "./Preparation";
 import { Sources } from "./Sources";
@@ -60,6 +62,32 @@ const required: Record<ViewSpec["component"], AnyKind[]> = {
   mood_ring: ["summary"],
   topic_detail: ["topic_detail", "reviews"],
 };
+
+export // The analysis panels' chrome, shared by the dashboard page and the chat's blocks,
+// so a "mood_ring" view is the "Ánimo general" panel wherever it is drawn.
+const analysisPanels = {
+  kpi_tiles: {
+    title: "Indicadores",
+    eyebrow: "Selección actual",
+    className: "kpi-panel",
+  },
+  topic_list: {
+    title: "Temas por volumen y sentimiento",
+    eyebrow: "Temas",
+    className: "topics-panel",
+  },
+  timeline: {
+    title: "Sentimiento en el tiempo",
+    eyebrow: "Meses",
+    className: "",
+  },
+  platforms: { title: "Por plataforma", eyebrow: "Fuentes", className: "" },
+  mood_ring: { title: "Ánimo general", eyebrow: "Sentimiento", className: "" },
+} as const;
+export const topicDetailPanel = {
+  eyebrow: "Detalle del tema",
+  className: "detail-panel",
+} as const;
 
 export function parseAny(payload: unknown, publicationId: string): AnyResult {
   const version =
@@ -119,24 +147,39 @@ export function View({
     resolved.results.find(
       (result) => result.kind === kind,
     ) as AnalysisResultOf<K>;
-  switch (resolved.view.component) {
+  const component = resolved.view.component;
+  // Analysis blocks are the dashboard's panels, read-only: no filters, sort or paging.
+  const panel = (name: keyof typeof analysisPanels, child: ReactNode) => (
+    <Panel {...analysisPanels[name]} results={resolved.results}>
+      {child}
+    </Panel>
+  );
+  switch (component) {
     case "kpi_tiles":
-      return <KpiTiles result={analysis("summary")} />;
+      return panel(component, <KpiTiles result={analysis("summary")} />);
     case "topic_list":
-      return <TopicList result={analysis("topic_list")} limit={8} />;
-    case "timeline":
-      return <Timeline data={analysis("timeline").data} />;
-    case "platforms":
-      return <Platforms result={analysis("platforms")} />;
-    case "mood_ring":
-      return <MoodRing result={analysis("summary")} />;
-    case "topic_detail":
-      return (
-        <TopicDetail
-          detail={analysis("topic_detail")}
-          reviews={analysis("reviews")}
-        />
+      return panel(
+        component,
+        <TopicList result={analysis("topic_list")} limit={8} />,
       );
+    case "timeline":
+      return panel(component, <Timeline data={analysis("timeline").data} />);
+    case "platforms":
+      return panel(component, <Platforms result={analysis("platforms")} />);
+    case "mood_ring":
+      return panel(component, <MoodRing result={analysis("summary")} />);
+    case "topic_detail": {
+      const detail = analysis("topic_detail");
+      return (
+        <Panel
+          title={detail.data.display_name}
+          {...topicDetailPanel}
+          results={resolved.results}
+        >
+          <TopicDetail detail={detail} reviews={analysis("reviews")} />
+        </Panel>
+      );
+    }
     case "dataset_summary":
       return <DatasetSummary result={get("overview")} />;
     case "sources":

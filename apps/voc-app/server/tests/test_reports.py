@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from fastapi.testclient import TestClient
 from test_chat import CountPlanner, app_for, ask, payload, wait
-from voc_app.reports import CHUNK_BYTES
+from voc_app.reports import CHUNK_BYTES, escaped
 
 from voc.publications.store import activate_bundle
 
@@ -245,3 +245,37 @@ def test_report_size_limit_does_not_publish_partial_state(
         assert response.status_code == 413
         with sqlite3.connect(settings.state_dir / "reports.sqlite3") as db:
             assert db.execute("SELECT count(*) FROM reports").fetchone()[0] == 0
+
+
+def test_report_carries_analysis_evidence_with_its_selection(settings, v2_active):
+    from test_chat import DEMO_FLOW
+
+    with TestClient(app_for(settings)) as client:
+        conversation = None
+        for question, *_ in DEMO_FLOW:
+            conversation = ask(
+                client,
+                payload(question, conversation and conversation["conversation_id"]),
+            )
+        report = prepare(client, conversation).json()
+        body = download(client, report)[0].decode()
+    assert report["turn_count"] == 6
+    for label in (
+        "Qué dicen los datos.",
+        "Interpretación.",
+        "Lo que no se puede afirmar.",
+    ):
+        # The report escapes Markdown punctuation in every saved text and kind.
+        assert body.count(escaped(label)) == 6
+    for kind in (
+        "summary",
+        "topic_list",
+        "timeline",
+        "topic_detail",
+        "reviews",
+        "platforms",
+    ):
+        assert f"### Evidencia: {escaped(kind)}" in body
+    # Each analysis evidence names the filters that produced its tables.
+    assert body.count("selection: ") == 11
+    assert "negative" in body and "Lentitud al abrir y cargar la aplicación" in body

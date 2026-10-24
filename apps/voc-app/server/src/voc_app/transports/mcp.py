@@ -22,7 +22,10 @@ from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
+
 from voc.publications import queries
+from voc.publications.queries import CapabilityUnavailable
+from voc.publications.selection import SelectionError
 
 from ..agent.contracts import AgentError, Ask, Contract
 from ..auth import LOCAL_DEVELOPER
@@ -34,8 +37,35 @@ UUID_PATTERN = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 
 
 class GetDataState(Contract):
-    kind: Literal["overview", "sources", "coverage", "freshness", "embeddings"]
+    kind: Literal[
+        "overview",
+        "sources",
+        "coverage",
+        "freshness",
+        "embeddings",
+        "summary",
+        "topic_list",
+        "timeline",
+        "platforms",
+        "topic_detail",
+        "reviews",
+    ]
     publication_id: str | None = None
+    # The analysis selection, validated and canonicalized by the library on read.
+    platforms: list[str] | None = None
+    labels: list[str] | None = None
+    assessments: list[str] | None = None
+    month_from: str | None = None
+    month_to: str | None = None
+    search: str | None = None
+    topic_id: int | None = None
+    sort: str | None = None
+    page: int | None = None
+    page_size: int | None = None
+
+    def selection(self):
+        fields = self.model_dump(exclude={"kind", "publication_id"})
+        return {key: value for key, value in fields.items() if value is not None}
 
     @field_validator("publication_id")
     @classmethod
@@ -83,7 +113,9 @@ def read_data(settings, request):
     identity = request.publication_id
     if identity is None:
         identity = read_current(settings)["publication_id"]
-    return queries.query(settings.publications_dir, identity, request.kind)
+    return queries.query(
+        settings.publications_dir, identity, request.kind, request.selection() or None
+    )
 
 
 class AccessGuard:
@@ -137,10 +169,14 @@ def mount_mcp(application, settings):
         Tool(
             name="voc_get_data_state",
             description=(
-                "Read published dataset metadata and counts. kind is overview, sources, "
-                "coverage, freshness or embeddings. Omit publication_id to resolve the active "
-                "publication once; retain its returned ID for consistent follow-up reads. "
-                "No SQL, date filters, raw reviews, sentiment or processing are available."
+                "Read published dataset metadata, counts and analysis. kind is overview, sources, "
+                "coverage, freshness or embeddings for the data state, or summary, topic_list, "
+                "timeline, platforms, topic_detail or reviews for the analysis of a package that "
+                "carries topics and sentiment. Analysis kinds take an optional selection: platforms, "
+                "labels, assessments, month_from, month_to (YYYY-MM), search, and per kind topic_id, "
+                "sort (volume, negative, positive), page and page_size. Omit publication_id to "
+                "resolve the active publication once; retain its returned ID for consistent "
+                "follow-up reads. No SQL or processing is available."
             ),
             input_schema=input_schema(GetDataState),
             annotations=ToolAnnotations(
@@ -227,8 +263,18 @@ def mount_mcp(application, settings):
             )
         except LookupError:
             return tool_result(
-                "This publication is not installed.",
+                "This publication is not installed, or the topic is not in it.",
                 error={"code": "publication_not_found"},
+            )
+        except CapabilityUnavailable:
+            return tool_result(
+                "This publication does not carry that kind; read the data-state kinds instead.",
+                error={"code": "capability_unavailable"},
+            )
+        except SelectionError as error:
+            return tool_result(
+                "The selection is not valid for this kind: " + str(error),
+                error={"code": "invalid_selection"},
             )
         except (ValueError, OSError, duckdb.Error):
             return tool_result(

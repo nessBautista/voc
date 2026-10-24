@@ -70,8 +70,8 @@ def feature_ranking(rows, minimum=FEATURE_MINIMUM, single_only=False):
     return eligible
 
 
-def named_topics(plan, results):
-    """The topics an answer names, in order; the same list the memory keeps."""
+def ranked_rows(plan, results):
+    """The topic rows a ranking answer names, in order, capped by the plan's limit."""
     by_kind = {result["kind"]: result for result in results}
     if plan.intent not in DEFAULT_LIMIT or "topic_list" not in by_kind:
         return []
@@ -85,10 +85,14 @@ def named_topics(plan, results):
         ]
     else:
         ranked = feature_ranking(rows)
-    limit = plan.limit or DEFAULT_LIMIT[plan.intent]
+    return ranked[: plan.limit or DEFAULT_LIMIT[plan.intent]]
+
+
+def named_topics(plan, results):
+    """The topics an answer names, in order; the same list the memory keeps."""
     return [
         {"topic_id": r["topic_id"], "display_name": r["display_name"]}
-        for r in ranked[:limit]
+        for r in ranked_rows(plan, results)
     ]
 
 
@@ -145,6 +149,357 @@ def scope(selection):
     return ", ".join(parts)
 
 
+TREND_MINIMUM = 10
+RISE_POINTS = 0.01
+BOUND_SENTENCE = (
+    "El orden usa el límite inferior de Wilson al 95% de la proporción negativa, que "
+    "descuenta a los temas pequeños: un tema con pocas reseñas y todas negativas no "
+    "supera a uno grande con casi todas negativas."
+)
+
+
+def pct(share):
+    """A share as the tiles write it: whole percent, half rounded up, dash when unknown."""
+    return "—" if share is None else f"{int(share * 100 + 0.5)}%"
+
+
+def points(delta):
+    return f"{int(abs(delta) * 100 + 0.5)} puntos"
+
+
+def platform_name(platform):
+    return PLATFORMS.get(platform, platform)
+
+
+def counted(number, word):
+    """'1 negativa', '3 negativas': the count with its noun in number."""
+    return f"{number:,} {word}" + ("" if number == 1 else "s")
+
+
+def three_parts(data_part, interpretation, limits):
+    """Every analysis answer: what the data says, what is interpretation, what cannot be claimed."""
+    return "\n\n".join(
+        (
+            "Qué dicen los datos. " + data_part,
+            "Interpretación. " + interpretation,
+            "Lo que no se puede afirmar. " + limits,
+        )
+    )
+
+
+def rises(months):
+    """Months whose negative share rose at least one point over a comparable month."""
+    found, previous = [], None
+    for month in months:
+        share = (
+            month["negative"] / month["classified"]
+            if month["classified"] >= TREND_MINIMUM
+            else None
+        )
+        if (
+            share is not None
+            and previous is not None
+            and share - previous >= RISE_POINTS - 1e-9
+        ):
+            found.append(
+                {"month": month["month"], "share": share, "rise": share - previous}
+            )
+        previous = share
+    return found
+
+
+def ranking_items(rows):
+    return "; ".join(
+        f"{number}) «{row['display_name']}»: {row['negative']:,} de {row['classified']:,} "
+        f"reseñas clasificadas negativas ({pct(row['negative_share'])}; al menos "
+        f"{pct(row['wilson_lower'])})"
+        for number, row in enumerate(rows, 1)
+    )
+
+
+def outside_ranking(rows):
+    """Topics in view the feature ranking leaves out, and the unassigned reviews."""
+    eligible = {r["topic_id"] for r in feature_ranking(rows)}
+    left_out = sum(
+        1 for r in rows if r["topic_id"] >= 0 and r["topic_id"] not in eligible
+    )
+    unassigned = sum(r["total"] for r in rows if r["topic_id"] == -1)
+    return left_out, unassigned
+
+
+def scope_sentence(plan, summary):
+    where = scope(plan.selection)
+    where = where[0].upper() + where[1:]
+    return (
+        f"{where}, hay {summary['reviews_in_view']:,} reseñas en vista de "
+        f"{summary['reviews_total']:,} publicadas; {summary['classified']:,} tienen "
+        "etiqueta de sentimiento."
+    )
+
+
+def mood_text(plan, by_kind):
+    summary = by_kind["summary"]["data"]
+    platforms = by_kind["platforms"]["data"]
+    data_part = scope_sentence(plan, summary)
+    classified = summary["classified"]
+    unclassified = summary["reviews_in_view"] - classified
+    if classified == 0:
+        data_part += " No hay reseñas con etiqueta de sentimiento en esta selección."
+        interpretation = "Sin etiquetas no hay un ánimo que describir."
+    else:
+        negative, neutral, positive = (
+            summary[label] for label in ("negative", "neutral", "positive")
+        )
+        data_part += (
+            f" De ellas, {pct(negative['share'])} son negativas ({negative['count']:,}), "
+            f"{pct(neutral['share'])} neutras ({neutral['count']:,}) y "
+            f"{pct(positive['share'])} positivas ({positive['count']:,})."
+        )
+        rated = [row for row in platforms if row["classified"] > 0]
+        if len(rated) >= 2:
+            high = max(rated, key=lambda r: (r["negative_share"], r["classified"]))
+            low = min(rated, key=lambda r: (r["negative_share"], -r["classified"]))
+            data_part += (
+                f" Por plataforma, la mayor proporción negativa está en {platform_name(high['platform'])} "
+                f"({pct(high['negative_share'])} de {high['classified']:,} clasificadas) y la menor en "
+                f"{platform_name(low['platform'])} ({pct(low['negative_share'])} de {low['classified']:,})."
+            )
+        elif len(rated) == 1:
+            data_part += f" Solo {platform_name(rated[0]['platform'])} tiene reseñas clasificadas en esta selección."
+        difference = positive["share"] - negative["share"]
+        if difference >= 0.10:
+            interpretation = f"El ánimo general es predominantemente positivo: las positivas superan a las negativas por {points(difference)}."
+        elif difference <= -0.10:
+            interpretation = f"El ánimo general es predominantemente negativo: las negativas superan a las positivas por {points(difference)}."
+        else:
+            interpretation = f"El ánimo general está dividido: positivas y negativas difieren en {points(difference)}, menos de diez."
+    limits = (
+        f"{unclassified:,} reseñas en vista no tienen etiqueta y no entran en las proporciones. "
+        "Las etiquetas de sentimiento son resultados de un modelo, no juicios de personas. "
+        "Una proporción cuenta reseñas, no personas: una misma persona puede dejar varias."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def main_complaints_text(plan, by_kind, results):
+    summary = by_kind["summary"]["data"]
+    rows = by_kind["topic_list"]["data"]
+    named = ranked_rows(plan, results)
+    data_part = scope_sentence(plan, summary)
+    left_out, unassigned = outside_ranking(rows)
+    if not named:
+        data_part += f" No hay temas de una funcionalidad con al menos {FEATURE_MINIMUM} reseñas clasificadas en esta selección."
+        interpretation = BOUND_SENTENCE
+    else:
+        first = named[0]
+        data_part += (
+            f" El tema con mayor proporción negativa entre los de una funcionalidad es el tema "
+            f"{first['topic_id']}, «{first['display_name']}»: {first['negative']:,} de "
+            f"{first['classified']:,} reseñas clasificadas son negativas "
+            f"({pct(first['negative_share'])}; al menos {pct(first['wilson_lower'])} con 95% de confianza)."
+        )
+        if len(named) > 1:
+            data_part += (
+                " Le siguen "
+                + join_words(
+                    f"«{row['display_name']}» ({pct(row['negative_share'])}, {counted(row['negative'], 'negativa')})"
+                    for row in named[1:]
+                )
+                + "."
+            )
+        keywords = join_words(first["keywords"][:3])
+        interpretation = (
+            "Los nombres de los temas son generados por un modelo a partir de sus reseñas"
+            + (
+                f"; «{first['display_name']}» reúne reseñas con palabras clave como {keywords}."
+                if keywords
+                else "."
+            )
+            + " "
+            + BOUND_SENTENCE
+        )
+    limits = (
+        f"{left_out} temas en vista no tienen un nombre generado, no describen una funcionalidad "
+        f"o tienen menos de {FEATURE_MINIMUM} reseñas clasificadas, y no participan en este orden. "
+        f"{unassigned:,} reseñas en vista no están asignadas a ningún tema. "
+        "Una proporción alta de negativas no mide cuántas personas sufren el problema."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def trend_text(plan, by_kind):
+    data = by_kind["timeline"]["data"]
+    months = data["months"]
+    where = scope(plan.selection)
+    where = where[0].upper() + where[1:]
+    if not months:
+        return three_parts(
+            f"{where}, no hay meses con reseñas fechadas.",
+            "Sin meses no hay una tendencia que leer.",
+            "Las reseñas sin fecha no entran en la serie.",
+        )
+    last = months[-1]["month"]
+    data_part = (
+        f"{where}, la serie cubre {len(months)} meses, de {month_words(months[0]['month'])} a "
+        f"{month_words(last)}, con {data['reviews_in_view']:,} reseñas."
+    )
+    found = rises(months)
+    thin = [m["month"] for m in months if m["classified"] < TREND_MINIMUM]
+    if len(thin) == len(months):
+        data_part += f" Ningún mes alcanza las {TREND_MINIMUM} reseñas clasificadas necesarias para comparar proporciones."
+        interpretation = "Con tan pocas reseñas por mes la serie no permite hablar de una tendencia; mira el volumen de cada mes en el bloque."
+    elif found:
+        data_part += (
+            " La proporción de negativas subió respecto al mes anterior en "
+            + join_words(
+                f"{month_words(item['month'])} (+{points(item['rise'])}, a {pct(item['share'])})"
+                for item in found
+            )
+            + "."
+        )
+        biggest = max(found, key=lambda item: (item["rise"], item["month"]))
+        interpretation = (
+            f"El mayor aumento fue en {month_words(biggest['month'])}, de {points(biggest['rise'])}. "
+            "Un aumento de la proporción negativa acompañado de más reseñas apunta a un incidente o a un "
+            "cambio en la aplicación; un aumento con pocas reseñas puede ser ruido."
+        )
+    else:
+        data_part += " La proporción de negativas no subió un punto o más en ningún mes respecto al anterior."
+        interpretation = "Sin aumentos de un punto o más, la serie no señala un mes de quiebre; mira el volumen de cada mes en el bloque antes de concluir estabilidad."
+    if data["busiest"]:
+        data_part += f" El mes con más reseñas fue {month_words(data['busiest']['month'])}, con {data['busiest']['total']:,}."
+    limits = (
+        f"Los meses con menos de {TREND_MINIMUM} reseñas clasificadas no se comparan"
+    )
+    if thin and len(thin) < len(months):
+        limits += (
+            ": " + join_words(month_words(m) for m in thin)
+            if len(thin) <= 6
+            else f": {len(thin)} meses de la serie"
+        )
+    limits += (
+        f". El último mes, {month_words(last)}, puede estar incompleto si la recolección terminó antes "
+        "de fin de mes. La serie sigue la selección; no separa plataformas salvo que la selección lo haga."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def topic_reviews_text(plan, by_kind):
+    detail = by_kind["topic_detail"]["data"]
+    reviews = by_kind["reviews"]["data"]
+    where = scope(plan.selection)
+    data_part = (
+        f"Tema {detail['topic_id']}, «{detail['display_name']}»: {detail['in_view']:,} de "
+        f"{detail['member_count']:,} reseñas cumplen los filtros ({where}); "
+        f"{counted(detail['negative'], 'negativa')}, {counted(detail['neutral'], 'neutra')} y "
+        f"{counted(detail['positive'], 'positiva')} ({pct(detail['negative_share'])} negativas)."
+    )
+    shown = len(reviews["items"])
+    if shown:
+        rated = sum(1 for item in reviews["items"] if item["rating"] is not None)
+        data_part += (
+            f" Se muestran {shown} de {reviews['total']:,} reseñas, de las negativas con mayor "
+            f"confianza a las positivas; {rated} traen calificación de la tienda."
+        )
+    else:
+        data_part += " No hay reseñas que mostrar con estos filtros."
+    keywords = join_words(detail["keywords"])
+    if detail["wording_source"] == "generated" and detail["description"]:
+        interpretation = (
+            f"Descripción generada por un modelo: «{detail['description']}»"
+            + (f" Palabras clave: {keywords}." if keywords else "")
+        )
+    elif keywords:
+        interpretation = f"Este tema no tiene una descripción generada; sus palabras clave son {keywords}."
+    else:
+        interpretation = "Este grupo reúne reseñas sin tema asignado; no tiene descripción ni palabras clave."
+    limits = (
+        "La página muestra reseñas ordenadas por sentimiento y confianza, no las más representativas del tema. "
+        "La asignación de una reseña al tema es un resultado de modelo. "
+        + (
+            f"{outside:,} reseñas del tema no entran en esta vista."
+            if (outside := max(detail["member_count"] - detail["in_view"], 0))
+            else "Todas las reseñas del tema entran en esta vista."
+        )
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def specific_problems_text(plan, by_kind, results):
+    summary = by_kind["summary"]["data"]
+    named = ranked_rows(plan, results)
+    tile = summary["most_negative_feature"]
+    data_part = scope_sentence(plan, summary)
+    lead = f" Más allá del tema principal, «{tile['display_name']}»," if tile else ""
+    if named:
+        data_part += (
+            f"{lead} los problemas de una sola funcionalidad con al menos {SPECIFIC_MINIMUM} reseñas "
+            f"clasificadas y mayor proporción negativa son: {ranking_items(named)}."
+        )
+        negatives = sum(row["negative"] for row in named)
+        share = (
+            negatives / summary["negative"]["count"]
+            if summary["negative"]["count"]
+            else None
+        )
+        interpretation = (
+            "Cada uno describe una funcionalidad concreta según la interpretación generada. "
+            f"Juntos suman {negatives:,} reseñas negativas, {pct(share)} de las negativas en vista."
+        )
+    else:
+        data_part += (
+            f"{lead} no hay otros temas de una sola funcionalidad con al menos {SPECIFIC_MINIMUM} "
+            "reseñas clasificadas en esta selección."
+        )
+        interpretation = "Con esta selección el análisis no separa problemas más específicos; amplía la selección o pregunta por la queja principal."
+    limits = (
+        f"Los temas con menos de {SPECIFIC_MINIMUM} reseñas clasificadas, los de interpretación mixta o "
+        "poco clara y los no interpretados no aparecen aquí aunque sean muy negativos. "
+        "Un tema puede mezclar varias causas."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def focus_text(plan, by_kind, results):
+    summary = by_kind["summary"]["data"]
+    rows = by_kind["topic_list"]["data"]
+    named = ranked_rows(plan, results)
+    left_out, unassigned = outside_ranking(rows)
+    data_part = scope_sentence(plan, summary)
+    if named:
+        data_part += (
+            " Ordenados por el límite inferior de la proporción negativa, los temas de una "
+            f"funcionalidad a atender primero son: {ranking_items(named)}."
+        )
+    else:
+        data_part += f" No hay temas de una funcionalidad con al menos {FEATURE_MINIMUM} reseñas clasificadas en esta selección."
+    interpretation = (
+        BOUND_SENTENCE
+        + " Los nombres son generados por un modelo y señalan la funcionalidad, no la causa."
+    )
+    limits = (
+        "Este orden es una señal estadística, no una prioridad de negocio: no considera el costo de "
+        f"corregir, el impacto en ingresos ni cuántas personas afecta. {unassigned:,} reseñas en vista no "
+        f"tienen tema y {left_out} temas sin nombre generado, sin una funcionalidad clara o con menos de "
+        f"{FEATURE_MINIMUM} reseñas clasificadas quedan fuera."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
+def analysis_text(plan, by_kind, results):
+    if plan.intent == "mood":
+        return mood_text(plan, by_kind)
+    if plan.intent == "main_complaints":
+        return main_complaints_text(plan, by_kind, results)
+    if plan.intent == "trend":
+        return trend_text(plan, by_kind)
+    if plan.intent == "topic_reviews":
+        return topic_reviews_text(plan, by_kind)
+    if plan.intent == "specific_problems":
+        return specific_problems_text(plan, by_kind, results)
+    return focus_text(plan, by_kind, results)
+
+
 def compose(plan, results, publication_id, trace, usage):
     """Keep numbers and dates in templates; the model only selects an intent."""
     by_kind = {result["kind"]: result for result in results}
@@ -157,22 +512,7 @@ def compose(plan, results, publication_id, trace, usage):
         else:
             text = "¿Quieres conocer el ánimo general, la queja principal, su evolución mensual, las reseñas de un tema, los problemas más específicos o dónde poner atención primero? También puedo describir las fuentes, el total de registros, la cobertura mensual, las fechas de recolección o el estado de los embeddings."
     elif plan.intent in ANALYSIS_INTENTS:
-        where = scope(plan.selection)
-        where = where[0].upper() + where[1:]
-        if plan.intent == "trend":
-            data = by_kind["timeline"]["data"]
-            months = data["months"]
-            text = (
-                f"{where}, la serie cubre {len(months)} meses, de {month_words(months[0]['month'])} a {month_words(months[-1]['month'])}, con {data['reviews_in_view']:,} reseñas."
-                if months
-                else f"{where}, no hay meses con reseñas fechadas."
-            )
-        elif plan.intent == "topic_reviews":
-            data = by_kind["topic_detail"]["data"]
-            text = f"Tema {data['topic_id']}, «{data['display_name']}»: {data['in_view']:,} de {data['member_count']:,} reseñas cumplen los filtros ({where[0].lower() + where[1:]})."
-        else:
-            data = by_kind["summary"]["data"]
-            text = f"{where}, hay {data['reviews_in_view']:,} reseñas en vista de {data['reviews_total']:,} publicadas; {data['classified']:,} tienen etiqueta de sentimiento."
+        text = analysis_text(plan, by_kind, results)
         views = [
             {
                 "component": component,
