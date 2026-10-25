@@ -14,9 +14,10 @@ from voc.datasets.manifest import file_hash
 from voc.storage.objects import PublicationConflict, ReleaseObjects
 from voc.storage.settings import validate_prefixes
 
-from .manifest import require_promotable
-from .namespace import scope_prefix
-from .validation import load_release
+from ..shared.manifest import require_promotable
+from ..shared.namespace import scope_prefix
+from ..shared.validation import load_release
+from .contracts import EmbeddingPublication
 
 
 def _now():
@@ -41,7 +42,9 @@ def _upload(objects, key, path, digest, size):
         raise ValueError("Uploaded release object is missing: " + key)
 
 
-def publish_release(reference, storage, *, promote=False, client=None):
+def publish_release(
+    reference, storage, *, promote=False, client=None
+) -> EmbeddingPublication:
     """Upload an immutable release; optionally promote a full selection.
 
     A durable SQLite record pins the destination and export for this producer.

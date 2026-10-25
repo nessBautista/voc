@@ -24,8 +24,12 @@ from tests.unit.test_embedding_release import (  # noqa: F401
 )
 from tests.unit.test_storage_bootstrap import storage
 from voc.datasets.manifest import file_hash
-from voc.embeddings.contracts import DatasetIdentity, InputSelection, feature_identity
-from voc.embeddings.publisher import publish_release
+from voc.embeddings.publication import publish_release
+from voc.embeddings.shared.contracts import (
+    DatasetIdentity,
+    InputSelection,
+    feature_identity,
+)
 from voc.storage.objects import PublicationConflict
 from voc.storage.settings import load_storage
 from voc_ml.cli import main
@@ -229,7 +233,7 @@ def test_cli_adapter_never_encodes_and_returns_clean_json(
     client = MemoryS3()
     monkeypatch.setattr(publish, "load_storage", lambda: destination)
     monkeypatch.setattr(
-        "voc.embeddings.publisher.boto3.client", lambda *args, **kw: client
+        "voc.embeddings.publication.operations.boto3.client", lambda *args, **kw: client
     )
     encoder = Mock(side_effect=AssertionError("must not encode"))
     monkeypatch.setattr(sentence_encoder, "SentenceEncoder", encoder)

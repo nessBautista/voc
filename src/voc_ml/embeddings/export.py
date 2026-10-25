@@ -7,14 +7,15 @@ from pathlib import Path
 from uuid import uuid4
 
 from voc.datasets.manifest import file_hash
-from voc.embeddings.contracts import (
+from voc.embeddings.export import write_release
+from voc.embeddings.shared.contracts import (
     SCHEMA_VERSION,
     canonical_json,
     fingerprint,
     require_uuid,
 )
-from voc.embeddings.export import sync_directory, write_release
-from voc.embeddings.validation import load_release
+from voc.embeddings.shared.filesystem import sync_directory
+from voc.embeddings.shared.validation import load_release
 
 from .artifacts import read_encoding, read_input
 from .producer import load_run, run_directory

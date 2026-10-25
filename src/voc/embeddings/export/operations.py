@@ -6,19 +6,10 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from .contracts import canonical_json
-from .manifest import validate_manifest
-from .validation import load_release
-
-
-def sync_directory(path):
-    """Persist directory entries after creating or renaming local artifacts."""
-    if os.name == "posix":
-        descriptor = os.open(path, os.O_RDONLY | os.O_DIRECTORY)
-        try:
-            os.fsync(descriptor)
-        finally:
-            os.close(descriptor)
+from ..shared.contracts import canonical_json
+from ..shared.filesystem import sync_directory
+from ..shared.validation import load_release
+from .contracts import require_new_destination
 
 
 def write_release(directory, manifest, *, vectors_path, reviews_path, expected_reviews):
@@ -28,10 +19,7 @@ def write_release(directory, manifest, *, vectors_path, reviews_path, expected_r
     checksums. The shared validator checks stored dtype/order without coercion.
     Only the completed-run adapter may establish actual producer provenance.
     """
-    validate_manifest(manifest)
-    destination = Path(directory)
-    if destination.exists():
-        raise FileExistsError(f"Release directory already exists: {destination}")
+    destination = require_new_destination(directory, manifest)
     destination.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(
         prefix=".release-", dir=destination.parent

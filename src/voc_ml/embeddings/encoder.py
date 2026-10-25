@@ -43,12 +43,12 @@ def encode_features(
     import numpy as np
 
     from voc.datasets.manifest import file_hash
-    from voc.embeddings.contracts import (
+    from voc.embeddings.shared.contracts import (
         REVIEW_COLUMNS,
         canonical_json,
         encoder_identity,
     )
-    from voc.embeddings.profiles import resolve_profile
+    from voc.embeddings.shared.profiles import resolve_profile
 
     from .cache import EmbeddingCache, validate_vectors
     from .features import read_features

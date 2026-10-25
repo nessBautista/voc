@@ -1,6 +1,6 @@
 """Completed-producer adapter for shared embedding publication."""
 
-from voc.embeddings.publisher import publish_release
+from voc.embeddings.publication import publish_release
 from voc.storage import load_storage
 
 from .export import export_run

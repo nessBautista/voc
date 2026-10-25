@@ -32,7 +32,7 @@ def pin_embedding_input(producer_run_id: str) -> Annotated[dict, "input_referenc
 def prepare_embedding_features(
     input_reference: dict, producer_run_id: str
 ) -> Annotated[dict, "feature_reference"]:
-    from voc.embeddings.profiles import resolve_profile
+    from voc.embeddings.shared.profiles import resolve_profile
     from voc_ml.embeddings import FeatureConfig, prepare_features
     from voc_ml.embeddings.artifacts import read_input
 

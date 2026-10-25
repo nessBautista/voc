@@ -4,7 +4,7 @@ import platform
 from importlib.metadata import version
 from pathlib import Path
 
-from voc.embeddings.contracts import encoder_identity
+from voc.embeddings.shared.contracts import encoder_identity
 
 ADAPTER_VERSION = "sentence-transformers-cpu-f32-threads4-v1"
 

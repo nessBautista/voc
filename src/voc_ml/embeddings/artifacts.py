@@ -7,13 +7,13 @@ import numpy as np
 import pandas as pd
 
 from voc.datasets.manifest import MAX_FILE_BYTES, MAX_JSON_BYTES, file_hash
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     REVIEW_COLUMNS,
     DatasetIdentity,
     InputSelection,
     encoder_identity,
 )
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.profiles import resolve_profile
 
 from .cache import validate_vectors
 from .features import read_features

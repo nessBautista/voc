@@ -15,7 +15,7 @@ def get_embeddings(
 
     Explicit subset releases require allow_subset=True. Reading never runs models.
     """
-    from .embeddings.reader import get_embeddings as read
+    from .embeddings.reading import get_embeddings as read
 
     return read(
         dataset=dataset,

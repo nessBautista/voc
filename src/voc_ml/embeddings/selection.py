@@ -6,7 +6,7 @@ import pandas as pd
 
 from voc import collector
 from voc.datasets.manifest import frame_hash
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     DatasetIdentity,
     InputSelection,
     ordered_rows_hash,

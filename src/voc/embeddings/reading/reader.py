@@ -12,60 +12,21 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ClientError
 
-from voc.datasets.manifest import frame_hash
 from voc.storage import load_storage
 from voc.storage.objects import ReleaseObjects, _missing
 
-from .contracts import (
-    REVIEW_COLUMNS,
-    DatasetIdentity,
+from ..shared.contracts import (
     canonical_json,
     fingerprint,
     require_digest,
     require_uuid,
 )
-from .export import sync_directory
-from .manifest import MAX_JSON_BYTES, require_promotable, validate_manifest
-from .namespace import scope_prefix
-from .profiles import resolve_profile
-from .validation import load_release
-
-
-def _snapshot(dataset):
-    """Check all source rows, not only the selected prefix, before any request."""
-    try:
-        identity = DatasetIdentity(
-            **{key: dataset.info[key] for key in DatasetIdentity.__dataclass_fields__}
-        )
-        frame = dataset.data.copy(deep=True)
-    except (KeyError, AttributeError, TypeError) as error:
-        raise ValueError("A verified shared workable Snapshot is required") from error
-    if not frame.columns.is_unique or not {"record_id", "model_text"}.issubset(
-        frame.columns
-    ):
-        raise ValueError(
-            "Snapshot requires unique columns including record_id and model_text"
-        )
-    if (
-        set(REVIEW_COLUMNS)
-        .difference({"record_id", "model_text"})
-        .intersection(frame.columns)
-    ):
-        raise ValueError("Snapshot contains reserved embedding output columns")
-    for field in ("record_id", "model_text"):
-        if (
-            not frame[field]
-            .map(lambda value: isinstance(value, str) and bool(value.strip()))
-            .all()
-        ):
-            raise ValueError(f"Snapshot {field} contains invalid values")
-    if frame.record_id.duplicated().any():
-        raise ValueError("Snapshot contains duplicate record IDs")
-    if len(frame) != identity.row_count or frame_hash(frame) != identity.content_sha256:
-        raise ValueError(
-            "Snapshot content/row count differs from its pinned dataset identity"
-        )
-    return identity, frame[["record_id", "model_text"]].reset_index(drop=True)
+from ..shared.filesystem import sync_directory
+from ..shared.manifest import MAX_JSON_BYTES, require_promotable, validate_manifest
+from ..shared.namespace import scope_prefix
+from ..shared.profiles import resolve_profile
+from ..shared.validation import load_release
+from .contracts import validate_snapshot
 
 
 def _bytes(path):
@@ -184,7 +145,7 @@ class SharedEmbeddingReader:
         if version != "latest":
             require_uuid(version, "embedding_release_id")
         selected_profile = resolve_profile(profile)
-        identity, reviews = _snapshot(dataset)
+        identity, reviews = validate_snapshot(dataset)
         if identity.dataset_uri != self.storage.shared_dataset_uri:
             raise ValueError("Snapshot belongs to another shared dataset namespace")
         prefix = scope_prefix(
@@ -289,23 +250,3 @@ class SharedEmbeddingReader:
             return load_release(
                 destination, manifest_sha256=digest, expected_reviews=expected
             )
-
-
-def get_embeddings(
-    *,
-    dataset,
-    profile="minilm-verbatim-v1",
-    version="latest",
-    source="s3",
-    allow_subset=False,
-):
-    """Return verified canonical-order reviews, vectors and release metadata.
-
-    Explicit subset releases require allow_subset=True. No inference or producer
-    runtime is needed. Pass a full, unmodified shared workable Snapshot as dataset.
-    """
-    if source != "s3":
-        raise ValueError("Embedding reads currently require source='s3'")
-    return SharedEmbeddingReader().read(
-        dataset=dataset, profile=profile, version=version, allow_subset=allow_subset
-    )

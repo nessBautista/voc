@@ -11,7 +11,7 @@ import pytest
 from click.testing import CliRunner
 
 from voc.datasets.manifest import file_hash, frame_hash
-from voc.embeddings.contracts import canonical_json
+from voc.embeddings.shared.contracts import canonical_json
 from voc.models import Snapshot
 from voc_ml.cli import main
 from voc_ml.embeddings import (
@@ -32,6 +32,7 @@ def runtime(tmp_path, monkeypatch):
 
 @pytest.fixture
 def outputs(runtime, monkeypatch):
+    from tests.unit.test_embedding_contracts import descriptor
     from voc_ml.embeddings import sentence_encoder
 
     frame = pd.DataFrame(
@@ -63,6 +64,10 @@ def outputs(runtime, monkeypatch):
             return vectors, [3] * len(texts)
 
     monkeypatch.setattr(sentence_encoder, "SentenceEncoder", Encoder)
+    # Synthetic vectors need synthetic provenance, not installed ML packages.
+    monkeypatch.setattr(
+        sentence_encoder, "encoder_descriptor", lambda profile: descriptor()
+    )
     state = producer.create_run()
     folder = Path(state["paths"]["run"])
     source = write_input(pinned, folder / "input")

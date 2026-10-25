@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 
 from voc.datasets.manifest import MAX_FILE_BYTES, MAX_JSON_BYTES, file_hash
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     DatasetIdentity,
     InputSelection,
     canonical_json,

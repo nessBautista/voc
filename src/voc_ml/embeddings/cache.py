@@ -7,7 +7,11 @@ from pathlib import Path
 
 import numpy as np
 
-from voc.embeddings.contracts import canonical_json, encoder_identity, require_digest
+from voc.embeddings.shared.contracts import (
+    canonical_json,
+    encoder_identity,
+    require_digest,
+)
 
 
 def validate_vectors(vectors, rows, dimensions, normalized=True):

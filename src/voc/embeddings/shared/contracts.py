@@ -1,4 +1,4 @@
-"""Versioned, model-free identities shared by embedding producers and consumers."""
+"""Model-free identities and result contracts shared by embedding capabilities."""
 
 import hashlib
 import json

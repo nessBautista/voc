@@ -7,8 +7,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import uuid4
 
-from voc.embeddings.contracts import canonical_json, require_positive_int, require_uuid
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.contracts import (
+    canonical_json,
+    require_positive_int,
+    require_uuid,
+)
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.paths import data_root
 
 

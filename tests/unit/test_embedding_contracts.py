@@ -12,7 +12,7 @@ import pandas as pd
 import pytest
 
 from voc.datasets.manifest import frame_hash
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     SCHEMA_VERSION,
     canonical_json,
     encoder_identity,
@@ -21,8 +21,8 @@ from voc.embeddings.contracts import (
     ordered_rows_hash,
     text_hash,
 )
-from voc.embeddings.manifest import require_promotable, validate_manifest
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.manifest import require_promotable, validate_manifest
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.models import Snapshot
 from voc_ml.embeddings import InputValidationError, pin_input, select_snapshot
 
@@ -349,7 +349,7 @@ class NoML(importlib.abc.MetaPathFinder):
             raise AssertionError('Unexpected ML dependency: ' + fullname)
 sys.meta_path.insert(0, NoML())
 from voc.embeddings import resolve_profile
-from voc.embeddings.manifest import validate_manifest
+from voc.embeddings.shared.manifest import validate_manifest
 from voc_ml.embeddings import pin_input
 from voc_ml.embeddings.features import prepare_frame
 assert resolve_profile().dimensions == 384

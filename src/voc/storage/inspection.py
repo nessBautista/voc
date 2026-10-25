@@ -9,14 +9,14 @@ from datetime import UTC, datetime
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 
-from voc.embeddings.contracts import require_uuid
-from voc.embeddings.manifest import (
+from voc.embeddings.shared.contracts import require_uuid
+from voc.embeddings.shared.manifest import (
     MAX_JSON_BYTES,
     require_promotable,
     validate_manifest,
 )
-from voc.embeddings.namespace import scope_prefix
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.namespace import scope_prefix
+from voc.embeddings.shared.profiles import resolve_profile
 
 from .objects import ReleaseObjects, _missing
 from .settings import read_installation_id, validate_prefixes

@@ -24,14 +24,14 @@ from tests.unit.test_embedding_release import (  # noqa: F401
     runtime,
 )
 from tests.unit.test_storage_bootstrap import storage
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     DatasetIdentity,
     InputSelection,
     canonical_json,
     feature_identity,
 )
-from voc.embeddings.namespace import scope_prefix
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.namespace import scope_prefix
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.storage.inspection import inspect_storage
 from voc_dev.cli import main
 from voc_dev.storage_render import render_report

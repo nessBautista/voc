@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from voc.datasets.manifest import frame_hash
-from voc.embeddings.contracts import text_hash
+from voc.embeddings.shared.contracts import text_hash
 from voc.models import Snapshot
 from voc_ml.embeddings import encode_features, select_snapshot
 from voc_ml.embeddings.features import FeatureConfig, prepare_features

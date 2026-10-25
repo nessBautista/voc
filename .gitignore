@@ -37,7 +37,8 @@ pip-wheel-metadata/
 MANIFEST
 
 # --- uv / entornos virtuales ---
-.venv/
+# Ignore either a local environment directory or a link to an external one.
+.venv
 venv/
 env/
 ENV/

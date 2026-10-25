@@ -8,8 +8,8 @@ import pandas as pd
 import pytest
 
 from voc.datasets.manifest import file_hash, frame_hash
-from voc.embeddings.contracts import text_hash
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.contracts import text_hash
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.models import Snapshot
 from voc_ml.embeddings import InputValidationError, select_snapshot
 from voc_ml.embeddings.features import (
