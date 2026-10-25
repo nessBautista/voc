@@ -26,7 +26,7 @@ from tests.unit.test_embedding_release import (  # noqa: F401
 )
 from voc import get_embeddings
 from voc.cli import main
-from voc.datasets.manifest import frame_hash
+from voc.datasets.shared.manifest import frame_hash
 from voc.embeddings.inspection import inspect_embeddings
 from voc.embeddings.reading.reader import SharedEmbeddingReader
 from voc.embeddings.shared.contracts import (

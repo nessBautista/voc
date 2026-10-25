@@ -1,6 +1,6 @@
 """Shared S3 namespace rules for embedding publishers, inspectors and readers."""
 
-from voc.storage.settings import validate_prefixes
+from voc.storage.shared.settings import validate_prefixes
 
 from .contracts import require_digest, require_uuid
 

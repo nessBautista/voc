@@ -10,9 +10,9 @@ from uuid import uuid4
 
 import boto3
 
-from voc.datasets.manifest import file_hash
-from voc.storage.objects import PublicationConflict, ReleaseObjects
-from voc.storage.settings import validate_prefixes
+from voc.datasets.shared.manifest import file_hash
+from voc.storage.shared.objects import PublicationConflict, ReleaseObjects
+from voc.storage.shared.settings import validate_prefixes
 
 from ..shared.manifest import require_promotable
 from ..shared.namespace import scope_prefix

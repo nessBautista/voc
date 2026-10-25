@@ -4,8 +4,8 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from voc.collection.sources import Response
-from voc.collection.store import RawStore
+from voc.collection.raw.store import RawStore
+from voc.collection.update.sources import Response
 
 
 def row(i, provider="play", app="example.app"):

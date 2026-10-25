@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from voc.datasets.manifest import file_hash
+from voc.datasets.shared.manifest import file_hash
 
 from .contracts import REVIEW_COLUMNS, EmbeddingBundle, ordered_rows_hash, text_hash
 from .manifest import MAX_JSON_BYTES, validate_manifest

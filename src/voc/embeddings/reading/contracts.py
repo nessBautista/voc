@@ -1,6 +1,6 @@
 """Input invariants for reading embeddings aligned to a full dataset snapshot."""
 
-from voc.datasets.manifest import frame_hash
+from voc.datasets.shared.manifest import frame_hash
 
 from ..shared.contracts import REVIEW_COLUMNS, DatasetIdentity
 

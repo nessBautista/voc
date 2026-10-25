@@ -9,18 +9,17 @@ import boto3
 import click
 import pandas as pd
 
-from voc_ml.preparation.dataset import COLUMNS, prepare_dataset
-from voc.datasets.publisher import (
-    PublicationConflict,
-    ReleaseObjects,
+from voc.datasets.publication import publish_release
+from voc.datasets.shared.manifest import (
     canonical_id,
     frame_hash,
     json_bytes,
-    publish_release,
     validate_manifest,
 )
+from voc.models import Snapshot
 from voc.storage import load_storage
-from voc.collection.store import Snapshot
+from voc.storage.shared.objects import PublicationConflict, ReleaseObjects
+from voc_ml.preparation import COLUMNS, prepare_dataset
 
 
 def sample_pair(check_id, *, titles=False):

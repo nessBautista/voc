@@ -16,12 +16,12 @@ import pytest
 
 from tests.acceptance.shared_scenario import sample_pair
 from tests.acceptance.test_embeddings import invoke
-from voc.datasets.publisher import publish_release as publish_dataset
+from voc.datasets.publication import publish_release as publish_dataset
 from voc.embeddings.publication import publish_release
 from voc.embeddings.shared.validation import load_release
 from voc.storage import load_storage
-from voc.storage.objects import PublicationConflict, ReleaseObjects
-from voc.storage.settings import DEFAULTS
+from voc.storage.shared.objects import PublicationConflict, ReleaseObjects
+from voc.storage.shared.settings import DEFAULTS
 from voc_ml.embeddings.export import export_run
 
 

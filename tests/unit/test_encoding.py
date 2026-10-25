@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from voc.datasets.manifest import frame_hash
+from voc.datasets.shared.manifest import frame_hash
 from voc.embeddings.shared.contracts import text_hash
 from voc.models import Snapshot
 from voc_ml.embeddings import encode_features, select_snapshot
@@ -41,7 +41,7 @@ def features(tmp_path):
 
 @pytest.fixture
 def fake(monkeypatch):
-    import voc_ml.embeddings.sentence_encoder as adapter
+    import voc_ml.embeddings.encoding.sentence_encoder as adapter
 
     state = {"loads": 0, "batches": [], "fail_at": None, "software_version": "test"}
 

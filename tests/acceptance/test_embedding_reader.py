@@ -35,7 +35,7 @@ class Block(importlib.abc.MetaPathFinder):
 sys.meta_path.insert(0, Block())
 import numpy as np
 from voc import collector, get_embeddings
-from voc.datasets.manifest import file_hash
+from voc.datasets.shared.manifest import file_hash
 from voc.embeddings.shared.contracts import require_digest, require_uuid
 from voc.embeddings.reading.reader import SharedEmbeddingReader
 from voc.storage import load_storage

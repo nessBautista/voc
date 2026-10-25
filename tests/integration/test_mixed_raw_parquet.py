@@ -5,13 +5,15 @@ from dataclasses import replace
 
 import pandas as pd
 import pytest
+
 from tests.integration.test_shared_publication import MemoryS3
 from tests.integration.test_shared_publication import pair as pair_fixture
 from tests.unit.test_storage_bootstrap import storage
-
-from voc.datasets.parquet import ENCODING, decode_scalar
-from voc.datasets.publisher import export_frame, publish_release, validate_manifest
-from voc.datasets.shared_reader import SharedDatasetReader
+from voc.datasets.export import export_frame
+from voc.datasets.publication import publish_release
+from voc.datasets.reading.reader import SharedDatasetReader
+from voc.datasets.shared.manifest import validate_manifest
+from voc.datasets.shared.parquet import ENCODING, decode_scalar
 
 
 @pytest.fixture

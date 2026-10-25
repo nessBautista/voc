@@ -18,13 +18,13 @@ FAULT_RUNNER = """
 import sys
 fault = sys.argv.pop(1)
 if fault == "validation":
-    import voc_ml.embeddings.artifacts as artifacts
+    import voc_ml.embeddings.shared.artifacts as artifacts
     def fail_validation(*args, **kwargs):
         raise ValueError("injected output validation failure")
     artifacts.read_encoding = fail_validation
 elif fault == "interrupt":
     import os
-    import voc_ml.embeddings.artifacts as artifacts
+    import voc_ml.embeddings.shared.artifacts as artifacts
     def stop_process(*args, **kwargs):
         os._exit(137)
     artifacts.read_encoding = stop_process

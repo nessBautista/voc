@@ -18,7 +18,7 @@ from tests.unit.test_embedding_producer import (  # noqa: F401 - shared pytest f
     outputs,
     runtime,
 )
-from voc.datasets.manifest import file_hash
+from voc.datasets.shared.manifest import file_hash
 from voc.embeddings.shared.contracts import (
     canonical_json,
     feature_identity,
@@ -27,8 +27,8 @@ from voc.embeddings.shared.contracts import (
 )
 from voc.embeddings.shared.validation import load_release
 from voc_ml.cli import main
-from voc_ml.embeddings import export as exporter
-from voc_ml.embeddings import producer
+from voc_ml.embeddings.export import operations as exporter
+from voc_ml.embeddings.production import operations as producer
 
 VERIFY_TRACKING = exporter.verify_tracking
 

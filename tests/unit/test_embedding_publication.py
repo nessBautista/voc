@@ -23,15 +23,15 @@ from tests.unit.test_embedding_release import (  # noqa: F401
     runtime,
 )
 from tests.unit.test_storage_bootstrap import storage
-from voc.datasets.manifest import file_hash
+from voc.datasets.shared.manifest import file_hash
 from voc.embeddings.publication import publish_release
 from voc.embeddings.shared.contracts import (
     DatasetIdentity,
     InputSelection,
     feature_identity,
 )
-from voc.storage.objects import PublicationConflict
-from voc.storage.settings import load_storage
+from voc.storage.shared.objects import PublicationConflict
+from voc.storage.shared.settings import load_storage
 from voc_ml.cli import main
 
 
@@ -228,7 +228,8 @@ def test_corrupt_export_or_wrong_source_fails_before_s3(release, destination):
 def test_cli_adapter_never_encodes_and_returns_clean_json(
     completed, destination, monkeypatch
 ):
-    from voc_ml.embeddings import publish, sentence_encoder
+    from voc_ml.embeddings import publish
+    from voc_ml.embeddings.encoding import sentence_encoder
 
     client = MemoryS3()
     monkeypatch.setattr(publish, "load_storage", lambda: destination)

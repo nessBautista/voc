@@ -39,7 +39,7 @@ def main(version):
     with (
         TemporaryDirectory(prefix="voc-shared-reader-") as temporary,
         patch.dict(os.environ, {"VOC_DATA_DIR": temporary}),
-        patch("voc.datasets.shared_reader.boto3.client", return_value=counter),
+        patch("voc.datasets.reading.reader.boto3.client", return_value=counter),
     ):
         prepared = collector.get_dataset(source="s3", version=version)
         release = prepared.info["release_id"]

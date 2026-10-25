@@ -1,7 +1,14 @@
 import pytest
-from tests.integration.conftest import Replay, apple, apple_page, config, play, play_page
 
-from voc.collection.sources import Response
+from tests.integration.conftest import (
+    Replay,
+    apple,
+    apple_page,
+    config,
+    play,
+    play_page,
+)
+from voc.collection.update.sources import Response
 from voc.collector import update
 
 
@@ -108,8 +115,8 @@ def test_invalid_identity_and_operation_path_are_rejected(tmp_path, store):
 
 
 def test_boundary_bootstrap_uses_native_source_not_other_dates(tmp_path, store):
-    from voc.collection.service import _boundary
-    from voc.collection.config import validate_config
+    from voc.collection.shared.config import validate_config
+    from voc.collection.update.operations import _boundary
 
     cfg = config(tmp_path, store)
     del cfg["update"]["since"]

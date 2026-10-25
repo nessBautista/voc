@@ -13,7 +13,7 @@ import boto3
 from botocore.exceptions import ClientError
 
 from voc.storage import load_storage
-from voc.storage.objects import ReleaseObjects, _missing
+from voc.storage.shared.objects import ReleaseObjects, _missing
 
 from ..shared.contracts import (
     canonical_json,

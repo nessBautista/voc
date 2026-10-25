@@ -13,7 +13,7 @@ import pytest
 
 from voc.embeddings.shared.contracts import require_uuid
 from voc.storage.inspection import inspect_storage
-from voc.storage.settings import load_storage
+from voc.storage.shared.settings import load_storage
 
 
 @pytest.mark.live
