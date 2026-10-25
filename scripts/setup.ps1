@@ -42,7 +42,7 @@ $repo = (Get-Location).Path
     python scripts/configure.py --member $env:USERNAME
 if ($LASTEXITCODE -ne 0) { throw 'Configuration failed; review the preceding Docker error and rerun.' }
 Start-Process notepad.exe -ArgumentList ('"' + (Join-Path $repo 'config\aws.local.env') + '"')
-Write-Host 'Save your AWS keys in the opened file. Then open Git Bash in this repository and run: just up'
+Write-Host 'Leave AWS keys empty for local work. Then open Git Bash in this repository and run: just up'
 Write-Host 'If just is not found, close/reopen Git Bash so it reloads the installed PATH.'
 
 # Open the shell used by Justfile recipes, already positioned in this checkout.

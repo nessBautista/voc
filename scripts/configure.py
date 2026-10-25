@@ -27,16 +27,15 @@ def configure(root, member):
         "JUPYTER_TOKEN=\n", "JUPYTER_TOKEN=" + secrets.token_hex(24) + "\n"
     )
     credentials = (root / "config/aws.local.env.example").read_text()
-    env = env.replace("VOC_MEMBER_ID=ness-rebuild", f"VOC_MEMBER_ID={member}")
+    env = env.replace("VOC_MEMBER_ID=personal", f"VOC_MEMBER_ID={member}")
     result = {}
     for relative, content in ((".env", env), ("config/aws.local.env", credentials)):
         result[relative] = create_private(root / relative, content)
         print(("Created " if result[relative] else "Preserved existing ") + relative)
+    print("Leave config/aws.local.env keys empty for local work.")
     print(
-        "Open config/aws.local.env and fill AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY."
-    )
-    print(
-        "Use AWS_SESSION_TOKEN only if one was supplied. Review the generated member ID."
+        "Before using AWS, choose your own bucket and storage settings in .env, "
+        "then fill the private credential file. Review the generated member ID."
     )
     print("Then run just up. Open notebooks with just marimo or just jupyter.")
     return result

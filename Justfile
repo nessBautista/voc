@@ -1,5 +1,5 @@
 set dotenv-load
-compose := "docker compose -f compose.yaml"
+compose := "docker compose -p voc-main -f compose.yaml"
 
 # Load the selected credentials before Compose creates the container.
 up:
@@ -19,19 +19,19 @@ test:
     {{compose}} exec workspace pytest -q
 
 new-marimo $notebook_name:
-    @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+    @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2722")}} {{compose}}
 
 new-notebook $notebook_name:
-    @sh scripts/notebook.sh jupyter create {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @sh scripts/notebook.sh jupyter create {{env("VOC_JUPYTER_PORT", "8891")}} {{compose}}
 
 marimo:
-    @sh scripts/notebook.sh marimo open {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+    @sh scripts/notebook.sh marimo open {{env("VOC_MARIMO_PORT", "2722")}} {{compose}}
 
 jupyter:
-    @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8891")}} {{compose}}
 
 jupyter-reports:
-    @sh scripts/notebook.sh jupyter reports {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @sh scripts/notebook.sh jupyter reports {{env("VOC_JUPYTER_PORT", "8891")}} {{compose}}
 
 logs:
     {{compose}} exec workspace sh -c 'tail -n 60 /workspace/data/logs/*.log'

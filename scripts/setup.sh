@@ -27,8 +27,8 @@ docker run --rm --mount "type=bind,source=$PWD,target=/workspace" \
   --workdir /workspace python:3.12-slim-bookworm \
   python scripts/configure.py --member "$(id -un)"
 chmod 600 .env config/aws.local.env
-# No secret values are printed; the teammate edits this private file locally.
+# No secret values are printed; credentials can stay empty for local work.
 if ! open -e config/aws.local.env; then
-  echo 'Open config/aws.local.env in your editor to fill your AWS keys.'
+  echo 'Open config/aws.local.env in your editor when you choose to use AWS.'
 fi
-printf '\nSetup complete. Save your AWS keys in config/aws.local.env, then run: just up\n'
+printf '\nSetup complete. Leave AWS keys empty for local work, then run: just up\n'

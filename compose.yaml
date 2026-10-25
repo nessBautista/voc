@@ -1,3 +1,6 @@
+# Launchers also pass -p so inherited COMPOSE_PROJECT_NAME cannot select voc.
+name: voc-main
+
 services:
   workspace:
     # Build the image using the Dockerfile in this repository.
@@ -43,10 +46,10 @@ services:
         target: /workspace
     # Host browser ports map to the fixed ports used by all four servers.
     ports:
-      - "127.0.0.1:${VOC_ZENML_PORT:-8239}:8237"
-      - "127.0.0.1:${VOC_MLFLOW_PORT:-5002}:5000"
-      - "127.0.0.1:${VOC_JUPYTER_PORT:-8890}:8888"
-      - "127.0.0.1:${VOC_MARIMO_PORT:-2721}:2718"
+      - "127.0.0.1:${VOC_ZENML_PORT:-8240}:8237"
+      - "127.0.0.1:${VOC_MLFLOW_PORT:-5003}:5000"
+      - "127.0.0.1:${VOC_JUPYTER_PORT:-8891}:8888"
+      - "127.0.0.1:${VOC_MARIMO_PORT:-2722}:2718"
     healthcheck:
       # Healthy means ZenML, MLflow, Jupyter, and Marimo respond to HTTP requests.
       test: ["CMD", "python", "-c", "import urllib.request; [urllib.request.urlopen('http://127.0.0.1:'+str(p)+'/',timeout=5) for p in (8237,5000,8888)]; urllib.request.urlopen('http://127.0.0.1:2718/health',timeout=5)"]
