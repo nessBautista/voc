@@ -48,5 +48,7 @@ app_id = "com.citibanamex.banamexmobile"
 country = "mx"
 # Language code: two lowercase letters, optionally -XX, e.g. "es" or "es-MX".
 lang = "es"
-max_requests = 50
-max_items = 5000
+# Bounded catch-up headroom; Play requests return up to 100 reviews per page.
+# Keep both caps aligned so the item cap does not defeat the request increase.
+max_requests = 75
+max_items = 7500
