@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -28,6 +29,8 @@ def project(tmp_path):
     for name in (
         ".env.example",
         "config/aws.local.env.example",
+        "config/workspace.toml",
+        "config/storage.toml",
         "notebooks/templates/shared-dataset.py",
     ):
         shutil.copy(ROOT / name, tmp_path / name)
@@ -43,9 +46,9 @@ def test_setup_generates_private_settings_and_preserves_them_on_rerun(project, c
         for line in env.splitlines()
         if line.startswith("JUPYTER_TOKEN=")
     )
-    assert len(token) == 48
+    storage = tomllib.loads((project / "config/storage.local.toml").read_text())
     credentials = project / "config/aws.local.env"
-    assert 'VOC_MEMBER_ID=alice-example' in env
+    assert storage["member_id"] == "alice-example"
     credentials.write_text("AWS_SECRET_ACCESS_KEY='synthetic-existing-secret'\n")
     assert not any(configure_module.configure(project, "Another User").values())
     assert (project / ".env").read_text() == env
@@ -129,14 +132,22 @@ def test_just_creates_files_without_echoing_browser_token(project, recipe, suffi
     shutil.copy(ROOT / "Justfile", project / "Justfile")
     shutil.copytree(ROOT / "scripts", project / "scripts")
     (project / ".env").write_text(
-        "JUPYTER_TOKEN=synthetic-browser-secret\nVOC_MARIMO_PORT=2720\nVOC_JUPYTER_PORT=8889\n"
+        "JUPYTER_TOKEN=synthetic-browser-secret\n"
+    )
+    (project / "config/workspace.local.toml").write_text(
+        "marimo_port = 2720\njupyter_port = 8889\n"
     )
     binaries = project / "bin"
     binaries.mkdir()
     docker = binaries / "docker"
     docker.write_text(
         f"#!{sys.executable}\n"
-        "import sys\nfrom pathlib import Path\n"
+        "import os, subprocess, sys\nfrom pathlib import Path\n"
+        "if sys.argv[1] == 'run':\n"
+        "    args = sys.argv[sys.argv.index('python') + 1:]\n"
+        "    args = [str(Path.cwd()) + arg[len('/workspace'):] if arg.startswith('/workspace') else arg for arg in args]\n"
+        "    raise SystemExit(subprocess.call([sys.executable, *args]))\n"
+        "os.environ['JUPYTER_TOKEN'] = 'synthetic-browser-secret'\n"
         f"sys.path.insert(0, {str(ROOT / 'src')!r})\n"
         "from voc_dev import notebooks\n"
         f"notebooks.NOTEBOOKS=Path({str(project / 'notebooks')!r})\n"
@@ -160,7 +171,8 @@ def test_just_creates_files_without_echoing_browser_token(project, recipe, suffi
     assert result.returncode == 0, result.stderr
     assert (project / ("notebooks/alice/new-one" + suffix)).exists()
     assert "synthetic-browser-secret" not in result.stdout + result.stderr
-    assert "127.0.0.1:" in result.stdout
+    expected_port = 2720 if recipe == "new-marimo" else 8889
+    assert f"127.0.0.1:{expected_port}" in result.stdout
     if recipe == "new-marimo":
         assert "file=alice%2Fnew-one.py" in result.stdout
     malicious = subprocess.run(
@@ -247,7 +259,7 @@ def test_macos_setup_requires_prerequisites_without_installing_or_writing(projec
         path.chmod(0o755)
     result = subprocess.run(
         [shutil.which("bash"), "scripts/setup.sh"], cwd=project,
-        env=os.environ | {"PATH": str(binaries)}, capture_output=True, text=True,
+        env=os.environ | {"PATH": str(binaries)}, capture_output=True, text=True, check=False,
     )
     assert result.returncode != 0
     expected = {

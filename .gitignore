@@ -137,8 +137,11 @@ temp/
 .cache/
 
 # Rebuild runtime and local configuration
-*.local.env
-*.refs.env
+*.env
+*.local.toml
+# Private migration recovery copy (also covered by .env.*).
+.env.before-toml
+.voc-config-*
 data/
 site/
 .zen/

@@ -1,0 +1,26 @@
+# Nonsecret defaults. Put personal choices in workspace.local.toml.
+# The Compose project is always voc-main; there is no dataset dashboard service.
+# Copy only the settings you override; omitted local keys inherit these defaults.
+# After changing settings or credentials, run `just up` again.
+
+# Allowed: "env-file" or "1password".
+# "env-file": read literal secrets from credential_file; no 1Password required.
+# "1password": resolve op:// references with `op run`; requires the host op CLI.
+auth_mode = "1password"
+
+# Repository-relative path to the private credential file used by either mode.
+# Use forward slashes and a .env suffix; keep it inside the repo, outside data/.
+# Put AWS/OpenRouter secrets or references in that file, never in this TOML.
+# The separate root .env holds the notebook login token.
+credential_file = "config/aws.local.env"
+
+# Host ports: integers from 1 to 65535; all four must differ and be available.
+# Services bind to 127.0.0.1. These do not change their internal container ports.
+# ZenML UI (container port 8237).
+zenml_port = 8240
+# MLflow UI (container port 5000).
+mlflow_port = 5003
+# JupyterLab (container port 8888); `just jupyter` uses this host port.
+jupyter_port = 8891
+# Marimo (container port 2718); `just marimo` uses this host port.
+marimo_port = 2722

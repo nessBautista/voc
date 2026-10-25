@@ -20,7 +20,7 @@ DEFAULTS = {
     "embeddings_prefix": "voc/embeddings",
     "bucket": "",
     "region": "",
-    "member_id": "",
+    "member_id": "personal",
 }
 
 
@@ -112,26 +112,34 @@ def validate_prefixes(shared, members, embeddings):
 # --- Main configuration loader ---
 # path selects a TOML file; * makes destination a keyword-only argument.
 def load_storage(path=None, *, destination=None):
-    """Apply defaults -> TOML -> environment -> then an optional CLI destination override.
+    """Apply defaults -> base/local TOML -> environment -> explicit destination.
 
-    A missing default file uses local defaults for standalone library consumers.
-    An explicitly supplied file must exist. Only selecting personal S3 storage
-    creates an installation ID; loading local defaults has no filesystem effects.
+    Default config/storage.toml and its optional storage.local.toml overlay may
+    both be absent. An explicit path or VOC_STORAGE_CONFIG selects one required
+    standalone file without an implicit overlay. Only personal S3 storage creates
+    an installation ID; loading local defaults has no filesystem effects.
     """
     # 1. Choose the file. Explicit paths must exist; the default file is optional.
     explicit = path is not None or "VOC_STORAGE_CONFIG" in os.environ
     path = Path(path or os.environ.get("VOC_STORAGE_CONFIG", "config/storage.toml"))
 
-    # 2. Start with a copy of defaults, then merge recognized TOML settings.
+    # 2. Default selection overlays local choices; explicit files stay isolated.
     values = dict(DEFAULTS)
-    if explicit or path.exists():
-        with path.open("rb") as stream:
+    paths = [path]
+    if not explicit:
+        paths.append(path.with_name("storage.local.toml"))
+    for selected in paths:
+        if not explicit and not selected.exists():
+            continue
+        with selected.open("rb") as stream:
             supplied = tomllib.load(stream)
         if set(supplied) - set(DEFAULTS):
             raise ValueError(
-                "Unknown storage setting: "
+                "Unknown storage setting in TOML: "
                 + ", ".join(sorted(set(supplied) - set(DEFAULTS)))
             )
+        if any(not isinstance(value, str) for value in supplied.values()):
+            raise ValueError("Storage TOML settings must be strings")
         values.update(supplied)
 
     # 3. Nonempty environment values override the defaults and TOML.
@@ -152,7 +160,7 @@ def load_storage(path=None, *, destination=None):
 
     # 5. Validate types and allowed storage modes before creating any files.
     if any(not isinstance(v, str) for v in values.values()):
-        raise ValueError("Storage settings must be strings")
+        raise ValueError("Storage TOML settings and runtime overrides must be strings")
     # Preserve older configs while naming the dataset source by ownership.
     if values["dataset_source"] == "local":
         values["dataset_source"] = "personal"
@@ -176,14 +184,14 @@ def load_storage(path=None, *, destination=None):
     if uses_s3:
         if not re.fullmatch(r"[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]", values["bucket"]):
             raise ValueError(
-                "Set AWS_BUCKET to the bucket name, without s3:// or a path"
+                "Set bucket in storage TOML or AWS_BUCKET at runtime to a bucket name, without s3:// or a path"
             )
         if not re.fullmatch(r"[a-z]{2}(?:-[a-z]+)+-\d+", values["region"]):
-            raise ValueError("Set AWS_REGION to a region code, such as us-east-2")
+            raise ValueError("Set region in storage TOML or AWS_REGION at runtime to a region code, such as us-east-2")
     if values["artifact_destination"] == "s3" and not re.fullmatch(
         r"[A-Za-z0-9_-]+", values["member_id"]
     ):
-        raise ValueError("Set VOC_MEMBER_ID using letters, digits, _ or -")
+        raise ValueError("Set member_id in storage TOML or VOC_MEMBER_ID at runtime using letters, digits, _ or -")
 
     # 6. Resolve runtime storage; personal S3 mode creates/reuses its installation ID.
     root = data_root()

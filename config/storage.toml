@@ -1,5 +1,32 @@
-artifact_destination = "s3"
-dataset_source = "s3"
+# Safe local defaults. Override only your choices in storage.local.toml.
+# Keep credentials in the selected private .env file, not in storage TOML.
+
+# Allowed: "local" (artifacts under data/) or "s3" (personal S3 namespace).
+# This selects where new ZenML/MLflow artifacts go; it does not migrate old data.
+artifact_destination = "local"
+
+# Use "personal" (your local raw store/publication catalog) or "s3" (shared releases).
+# The legacy value "local" is also accepted as an alias for "personal".
+# This is independent of artifact_destination; it does not fetch new reviews.
+dataset_source = "personal"
+
+# Bucket name only, without s3:// or a path. Empty is valid for local-only work.
+# Required when either artifact_destination or dataset_source is "s3".
+bucket = ""
+# Bucket's approved AWS Region, e.g. "us-east-2"; empty for local-only work.
+# Required whenever either storage mode uses S3; this does not create resources.
+region = ""
+
+# Personal namespace label, NOT an AWS login or credential profile.
+# For S3 artifacts, use letters, digits, underscores or hyphens, e.g. "alice".
+member_id = "personal"
+
+# S3 key prefixes, not local directories. Use slash-separated path segments.
+# The three prefixes must be distinct and must not be nested inside one another.
+# Changing a prefix selects a different namespace; it does not move objects.
+# Shared raw/prepared dataset publications.
 shared_prefix = "voc/datasets"
+# Personal artifacts use <members_prefix>/<member_id>/<installation_id>/.
 members_prefix = "members"
+# Shared embedding publications.
 embeddings_prefix = "voc/embeddings"

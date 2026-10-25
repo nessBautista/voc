@@ -41,7 +41,9 @@ $repo = (Get-Location).Path
     --workdir /workspace python:3.12-slim-bookworm `
     python scripts/configure.py --member $env:USERNAME
 if ($LASTEXITCODE -ne 0) { throw 'Configuration failed; review the preceding Docker error and rerun.' }
-Start-Process notepad.exe -ArgumentList ('"' + (Join-Path $repo 'config\aws.local.env') + '"')
+# The selected file may be customized; do not silently open the default instead.
+Write-Host 'Open the credential_file selected by config/workspace.toml or config/workspace.local.toml in your editor.'
+Write-Host 'Keep literal keys for env-file mode, or op:// references for 1password mode.'
 Write-Host 'Leave AWS keys empty for local work. Then open Git Bash in this repository and run: just up'
 Write-Host 'If just is not found, close/reopen Git Bash so it reloads the installed PATH.'
 

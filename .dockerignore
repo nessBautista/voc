@@ -1,7 +1,9 @@
 .git
 .env
-**/*.local.env
-**/*.refs.env
+.env.*
+**/*.local.toml
+**/.voc-config-*
+**/*.env
 data
 .venv
 **/__pycache__
