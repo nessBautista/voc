@@ -6,11 +6,21 @@ import sqlite3
 
 import pandas as pd
 import pytest
-from tests.integration.conftest import Replay, apple, apple_page, config, play, play_page, row
 
-from voc.collection.service import _boundary, initialize_raw_store, update
-from voc.collection.config import validate_config
-from voc.collection.store import RawStore
+from tests.integration.conftest import (
+    Replay,
+    apple,
+    apple_page,
+    config,
+    play,
+    play_page,
+    row,
+)
+from voc.collection.raw import initialize_raw_store
+from voc.collection.raw.store import RawStore
+from voc.collection.shared.config import validate_config
+from voc.collection.update import update
+from voc.collection.update.operations import _boundary
 
 
 @pytest.mark.parametrize(

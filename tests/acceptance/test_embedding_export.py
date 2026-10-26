@@ -9,7 +9,7 @@ import sys
 import numpy as np
 import pytest
 
-from voc.embeddings.validation import load_release
+from voc.embeddings.shared.validation import load_release
 
 
 @pytest.mark.live

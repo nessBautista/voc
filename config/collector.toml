@@ -1,22 +1,54 @@
+# Live collection settings; changing this file alone does not fetch reviews.
+# The current collector requires exactly one "apple_rss" and one "play" source.
+# X and YouTube may exist in imported data, but are not collected here.
+
 [update]
+# Allowed: "incremental" or "backfill".
+# "incremental": resume from a saved checkpoint or native source timestamp.
+# "backfill": require an explicit `since` timestamp for the requested start.
 mode = "incremental"
+# "run_start" freezes the cutoff when config is loaded; alternatively use an
+# ISO 8601 timestamp with a timezone, e.g. "2026-10-31T23:59:59+00:00".
 until = "run_start"
+
+# Optional in incremental mode; required for backfill. Must precede `until`.
+# An explicit `since` overrides the checkpoint and does not subtract overlap.
+# since = "2026-10-01T00:00:00+00:00"
+
+# Nonnegative integer: days to recheck before the checkpoint/native timestamp.
+# 0 disables overlap; overlap helps revisit recently changed reviews.
 overlap_days = 7
+
+# Positive-integer budgets. Hitting a cap is not proof of complete history.
+# Total collection time budget across both sources, in seconds.
 max_seconds = 300
+# Maximum size of a single response, in bytes (2097152 = 2 MiB).
 max_response_bytes = 2097152
+# Maximum total captured response bytes across both sources (100 MiB here).
 max_capture_bytes = 104857600
 
+# Apple App Store RSS source. Its available feed may not reach the chosen start.
 [[sources]]
 provider = "apple_rss"
+# Numeric Apple app identifier, stored as a string.
 app_id = "498483038"
+# Two-letter lowercase storefront country, e.g. "mx" or "us".
 country = "mx"
+# Per-source request cap: positive integer.
 max_requests = 10
+# Per-source observation cap: positive integer, not the count of new stored rows.
 max_items = 500
 
+# Google Play source; the same per-source cap meanings apply below.
 [[sources]]
 provider = "play"
+# Android package identifier, not the app's display name.
 app_id = "com.citibanamex.banamexmobile"
+# Two-letter lowercase storefront country.
 country = "mx"
+# Language code: two lowercase letters, optionally -XX, e.g. "es" or "es-MX".
 lang = "es"
-max_requests = 50
-max_items = 5000
+# Bounded catch-up headroom; Play requests return up to 100 reviews per page.
+# Keep both caps aligned so the item cap does not defeat the request increase.
+max_requests = 75
+max_items = 7500

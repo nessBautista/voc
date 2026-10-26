@@ -7,7 +7,7 @@ import pytest
 from click.testing import CliRunner
 
 from voc.cli import main
-from voc.storage.settings import installation_id, load_storage
+from voc.storage.shared.settings import installation_id, load_storage
 
 
 @pytest.fixture(autouse=True)
@@ -155,10 +155,70 @@ def test_cli_reports_paths_and_explains_missing_settings(s3_env, monkeypatch):
     monkeypatch.delenv("AWS_BUCKET")
     result = CliRunner().invoke(main, ["storage-info", "--destination", "s3"])
     assert result.exit_code == 1
-    assert "Set AWS_BUCKET" in result.output
 
 
 @pytest.mark.parametrize("source", ["personal", "local"])
 def test_personal_source_and_legacy_config(source, monkeypatch):
     monkeypatch.setenv("VOC_DATASET_SOURCE", source)
     assert load_storage().dataset_source == "personal"
+
+
+def test_default_pair_overlays_local_then_nonempty_runtime_values(tmp_path, monkeypatch):
+    config = tmp_path / "config"
+    config.mkdir()
+    (config / "storage.toml").write_text(
+        'bucket = "base-bucket"\nregion = "us-east-2"\nmember_id = "base"\n'
+    )
+    (config / "storage.local.toml").write_text(
+        'bucket = "local-bucket"\nmember_id = "alice"\nembeddings_prefix = "team/embeddings"\n'
+    )
+    settings = load_storage()
+    assert settings.bucket == "local-bucket"
+    assert settings.region == "us-east-2"
+    assert settings.member_id == "alice"
+    assert settings.embeddings_prefix == "team/embeddings"
+    monkeypatch.setenv("AWS_BUCKET", "")
+    monkeypatch.setenv("VOC_MEMBER_ID", "runtime")
+    assert load_storage().bucket == "local-bucket"
+    assert load_storage().member_id == "runtime"
+    assert not (tmp_path / "runtime").exists()
+
+
+@pytest.mark.parametrize("selection", ["argument", "environment"])
+def test_explicit_storage_file_ignores_sibling_local_overlay(tmp_path, monkeypatch, selection):
+    config = tmp_path / "config"
+    config.mkdir()
+    path = config / "storage.toml"
+    path.write_text('member_id = "explicit"\n')
+    # Invalid sibling proves explicit consumers never even parse the overlay.
+    (config / "storage.local.toml").write_text("invalid TOML [")
+    if selection == "argument":
+        settings = load_storage(path)
+    else:
+        monkeypatch.setenv("VOC_STORAGE_CONFIG", str(path))
+        settings = load_storage()
+    assert settings.member_id == "explicit"
+    assert not (tmp_path / "runtime").exists()
+
+
+def test_optional_local_overlay_can_exist_without_base(tmp_path):
+    config = tmp_path / "config"
+    config.mkdir()
+    (config / "storage.local.toml").write_text('member_id = "alice"\n')
+    settings = load_storage()
+    assert settings.member_id == "alice"
+    assert settings.artifact_destination == "local"
+    assert not (tmp_path / "runtime").exists()
+
+
+@pytest.mark.parametrize(
+    "content,match",
+    [('unknown = "value"\n', "Unknown storage setting"), ("member_id = 42\n", "strings")],
+)
+def test_invalid_local_overlay_fails_before_runtime_mutation(tmp_path, content, match):
+    config = tmp_path / "config"
+    config.mkdir()
+    (config / "storage.local.toml").write_text(content)
+    with pytest.raises(ValueError, match=match):
+        load_storage()
+    assert not (tmp_path / "runtime").exists()

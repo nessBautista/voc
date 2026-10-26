@@ -8,14 +8,15 @@ from dataclasses import replace
 import pandas as pd
 import pytest
 from click.testing import CliRunner
+
 from tests.integration.test_shared_publication import MemoryS3, another
 from tests.integration.test_shared_publication import pair as pair_fixture
 from tests.unit.test_storage_bootstrap import storage
-
 from voc import collector
 from voc.datasets import get_dataset, resolve
-from voc.datasets.publisher import json_bytes, publish_release
-from voc.datasets.shared_reader import SharedDatasetReader
+from voc.datasets.publication import publish_release
+from voc.datasets.reading.reader import SharedDatasetReader
+from voc.datasets.shared.manifest import json_bytes
 
 
 @pytest.fixture
@@ -88,7 +89,7 @@ def test_pinned_a_survives_b_and_works_offline(published, pair, monkeypatch):
     with pytest.raises(OSError, match="network unavailable"):
         reader.read()
     # Construct a new reader with no SDK client; a pinned cache hit never creates one.
-    import voc.datasets.shared_reader as module
+    import voc.datasets.reading.reader as module
 
     monkeypatch.setattr(
         module.boto3,
@@ -160,15 +161,19 @@ def test_schema_mismatch_and_no_stale_latest_fallback(published):
 
 def test_facade_cli_default_and_explicit_local(published, monkeypatch, tmp_path):
     from voc import datasets
-    from voc.datasets import shared_reader
     from voc.cli import main
+    from voc.datasets.reading import reader as shared_reader
 
     client, settings, release, _ = published
-    factory = lambda: SharedDatasetReader(settings, client=client)
+
+    def factory():
+        return SharedDatasetReader(settings, client=client)
+
     monkeypatch.setattr(shared_reader, "SharedDatasetReader", factory)
     monkeypatch.setenv("VOC_DATASET_SOURCE", "s3")
     monkeypatch.setenv("AWS_BUCKET", settings.bucket)
     monkeypatch.setenv("AWS_REGION", settings.region)
+    monkeypatch.setenv("VOC_DATA_DIR", str(tmp_path / "personal"))
     assert collector.get_dataset().info["release_id"] == release["release_id"]
     assert (
         collector.get_dataset(stage="raw", version=release["release_id"]).info["stage"]
@@ -180,10 +185,18 @@ def test_facade_cli_default_and_explicit_local(published, monkeypatch, tmp_path)
         result = CliRunner().invoke(main, args)
         assert result.exit_code == 0, result.output
         assert release["release_id"] in result.output
-    monkeypatch.setattr(
-        datasets, "resolve_local", lambda *a, **k: {"artifact_id": "personal"}
-    )
-    assert resolve(source="personal")["artifact_id"] == "personal"
+    personal = {
+        "run_id": "local-run",
+        "artifact_id": "local-artifact",
+        "raw_revision_id": "local-revision",
+        "schema_version": "workable-v1",
+        "row_count": 1,
+    }
+    datasets.publish(personal)
+    assert resolve(source="personal") == personal
+    result = CliRunner().invoke(main, ["dataset-info", "--source", "personal"])
+    assert result.exit_code == 0
+    assert json.loads(result.output) == personal
     for kwargs in ({"source": "invalid"}, {"source": "s3", "store": "raw.db"}):
         with pytest.raises(ValueError):
             collector.get_dataset(**kwargs)

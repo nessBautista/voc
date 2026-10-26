@@ -11,8 +11,8 @@ from unittest.mock import Mock
 import pandas as pd
 import pytest
 
-from voc.datasets.manifest import frame_hash
-from voc.embeddings.contracts import (
+from voc.datasets.shared.manifest import frame_hash
+from voc.embeddings.shared.contracts import (
     SCHEMA_VERSION,
     canonical_json,
     encoder_identity,
@@ -21,8 +21,8 @@ from voc.embeddings.contracts import (
     ordered_rows_hash,
     text_hash,
 )
-from voc.embeddings.manifest import require_promotable, validate_manifest
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.manifest import require_promotable, validate_manifest
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.models import Snapshot
 from voc_ml.embeddings import InputValidationError, pin_input, select_snapshot
 
@@ -124,7 +124,7 @@ def release_for(pinned):
 
 def test_pin_latest_resolves_once_and_survives_changed_source(snapshot, monkeypatch):
     reader = Mock(return_value=snapshot)
-    monkeypatch.setattr("voc_ml.embeddings.selection.collector.get_dataset", reader)
+    monkeypatch.setattr("voc_ml.embeddings.selection.operations.collector.get_dataset", reader)
     pinned = pin_input()
     expected = pinned.selection.selection_id
     reader.assert_called_once_with(stage="prepared", version="latest", source="s3")
@@ -217,7 +217,7 @@ def test_missing_columns_and_reserved_outputs_rejected(snapshot):
 
 def test_source_and_metadata_required_before_selection(snapshot, monkeypatch):
     reader = Mock()
-    monkeypatch.setattr("voc_ml.embeddings.selection.collector.get_dataset", reader)
+    monkeypatch.setattr("voc_ml.embeddings.selection.operations.collector.get_dataset", reader)
     with pytest.raises(ValueError, match="shared S3"):
         pin_input(source="personal")
     reader.assert_not_called()
@@ -349,7 +349,7 @@ class NoML(importlib.abc.MetaPathFinder):
             raise AssertionError('Unexpected ML dependency: ' + fullname)
 sys.meta_path.insert(0, NoML())
 from voc.embeddings import resolve_profile
-from voc.embeddings.manifest import validate_manifest
+from voc.embeddings.shared.manifest import validate_manifest
 from voc_ml.embeddings import pin_input
 from voc_ml.embeddings.features import prepare_frame
 assert resolve_profile().dimensions == 384

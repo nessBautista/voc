@@ -24,14 +24,14 @@ from tests.unit.test_embedding_release import (  # noqa: F401
     runtime,
 )
 from tests.unit.test_storage_bootstrap import storage
-from voc.embeddings.contracts import (
+from voc.embeddings.shared.contracts import (
     DatasetIdentity,
     InputSelection,
     canonical_json,
     feature_identity,
 )
-from voc.embeddings.namespace import scope_prefix
-from voc.embeddings.profiles import resolve_profile
+from voc.embeddings.shared.namespace import scope_prefix
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.storage.inspection import inspect_storage
 from voc_dev.cli import main
 from voc_dev.storage_render import render_report
@@ -115,7 +115,7 @@ def settings(tmp_path, monkeypatch):
 def client(monkeypatch):
     client = ReadOnlyS3()
     monkeypatch.setattr(
-        "voc.storage.inspection.boto3.client", lambda *args, **kw: client
+        "voc.storage.inspection.operations.boto3.client", lambda *args, **kw: client
     )
     return client
 
@@ -492,7 +492,7 @@ def test_client_initialization_error_is_structured(settings, monkeypatch):
     def unavailable(*args, **kwargs):
         raise NoCredentialsError()
 
-    monkeypatch.setattr("voc.storage.inspection.boto3.client", unavailable)
+    monkeypatch.setattr("voc.storage.inspection.operations.boto3.client", unavailable)
     result = CliRunner().invoke(
         main, ["storage", "inspect", "--scope", "datasets", "--json"]
     )
@@ -516,3 +516,37 @@ def test_same_size_artifact_change_is_outside_metadata_check(settings, client, r
     detail = inspect_storage(settings, client=client, **args)["release"]
     assert detail["status"] == "metadata_consistent"
     assert detail["artifact_content_verified"] is False
+
+
+def test_unconfigured_personal_scope_does_not_create_sdk_client(settings, monkeypatch):
+    def unexpected_client(*args, **kwargs):
+        raise AssertionError("Unconfigured inspection must not resolve AWS credentials")
+
+    monkeypatch.setattr("voc.storage.inspection.operations.boto3.client", unexpected_client)
+    report = inspect_storage(settings, scope="personal")
+    assert report["state"] == "error"
+    assert report["scopes"][0]["status"] == "unconfigured"
+    assert not (settings.runtime_root / "storage").exists()
+
+
+def test_client_creation_failure_does_not_prevent_other_scopes(settings, monkeypatch):
+    available = ReadOnlyS3()
+    attempts = iter((NoCredentialsError(), available))
+
+    def connect(*args, **kwargs):
+        result = next(attempts)
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+    monkeypatch.setattr("voc.storage.inspection.operations.boto3.client", connect)
+    report = inspect_storage(settings)
+    assert report["state"] == "partial"
+    assert [branch["status"] for branch in report["scopes"]] == [
+        "error",
+        "ok",
+        "unconfigured",
+    ]
+    assert report["scopes"][0]["error"]["code"] == "NoCredentialsError"
+    assert report["scopes"][1]["listed_objects"] == 0
+    assert not (settings.runtime_root / "storage").exists()

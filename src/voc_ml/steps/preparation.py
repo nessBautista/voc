@@ -6,15 +6,15 @@ from typing import Annotated
 import pandas as pd
 from zenml import step
 
-from voc import collector
-from voc_ml.preparation.dataset import prepare_dataset
+from voc.collection.raw import get_raw_dataset
+from voc_ml.preparation import prepare_dataset
 
 
 @step(enable_cache=False)
 def prepare(
     reference: dict, rules: dict, project_identity: str
 ) -> tuple[Annotated[pd.DataFrame, "workable"], Annotated[dict, "preparation_report"]]:
-    raw = collector.get_raw_dataset(
+    raw = get_raw_dataset(
         reference["raw_store_id"], reference["raw_revision_id"]
     )
     result = prepare_dataset(raw.data, rules)

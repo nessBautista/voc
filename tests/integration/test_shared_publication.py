@@ -12,11 +12,13 @@ import pandas as pd
 import pytest
 from botocore.exceptions import ClientError
 from botocore.stub import ANY, Stubber
-from tests.unit.test_storage_bootstrap import storage
 
-from voc_ml.preparation.dataset import prepare_dataset
-from voc.datasets.publisher import PublicationConflict, ReleaseObjects, frame_hash, publish_release
-from voc.collection.store import Snapshot
+from tests.unit.test_storage_bootstrap import storage
+from voc.datasets.publication import publish_release
+from voc.datasets.shared.manifest import frame_hash
+from voc.models import Snapshot
+from voc.storage.shared.objects import PublicationConflict, ReleaseObjects
+from voc_ml.preparation import prepare_dataset
 
 
 def error(code):
@@ -292,10 +294,10 @@ def test_share_runner_requires_matching_local_publication_and_pins_raw(
 ):
     from unittest.mock import Mock
 
-    from voc_ml.publication import service as runner
     from voc import datasets
-    from voc.datasets import publisher as shared
     from voc import storage as storage_module
+    from voc.datasets import publication as shared
+    from voc_ml.publication import operations as runner
 
     raw, workable = pair
     monkeypatch.setattr(

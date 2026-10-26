@@ -37,7 +37,8 @@ pip-wheel-metadata/
 MANIFEST
 
 # --- uv / entornos virtuales ---
-.venv/
+# Ignore either a local environment directory or a link to an external one.
+.venv
 venv/
 env/
 ENV/
@@ -136,8 +137,11 @@ temp/
 .cache/
 
 # Rebuild runtime and local configuration
-*.local.env
-*.refs.env
+*.env
+*.local.toml
+# Private migration recovery copy (also covered by .env.*).
+.env.before-toml
+.voc-config-*
 data/
 site/
 .zen/

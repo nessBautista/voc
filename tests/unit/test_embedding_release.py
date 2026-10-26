@@ -18,17 +18,17 @@ from tests.unit.test_embedding_producer import (  # noqa: F401 - shared pytest f
     outputs,
     runtime,
 )
-from voc.datasets.manifest import file_hash
-from voc.embeddings.contracts import (
+from voc.datasets.shared.manifest import file_hash
+from voc.embeddings.shared.contracts import (
     canonical_json,
     feature_identity,
     ordered_rows_hash,
     text_hash,
 )
-from voc.embeddings.validation import load_release
+from voc.embeddings.shared.validation import load_release
 from voc_ml.cli import main
-from voc_ml.embeddings import export as exporter
-from voc_ml.embeddings import producer
+from voc_ml.embeddings.export import operations as exporter
+from voc_ml.embeddings.production import operations as producer
 
 VERIFY_TRACKING = exporter.verify_tracking
 
@@ -102,7 +102,7 @@ class Block(importlib.abc.MetaPathFinder):
         if fullname.split('.')[0] in {'voc_ml','zenml','mlflow','torch','transformers','sentence_transformers'}:
             raise RuntimeError('Unexpected producer/model import: ' + fullname)
 sys.meta_path.insert(0, Block())
-from voc.embeddings.validation import load_release
+from voc.embeddings.shared.validation import load_release
 bundle = load_release(sys.argv[1], manifest_sha256=sys.argv[2])
 assert bundle.vectors.shape == (3, 384)
 assert bundle.reviews.record_id.tolist() == ['a','b','c']
@@ -230,7 +230,7 @@ def test_source_anchor_rejects_self_consistent_different_ids(release, completed)
     frame = pd.read_parquet(path)
     original = frame.copy()
     frame.loc[0, "record_id"] = "different-valid-id"
-    from voc.embeddings.contracts import DatasetIdentity, InputSelection
+    from voc.embeddings.shared.contracts import DatasetIdentity, InputSelection
 
     selection = InputSelection(
         DatasetIdentity(**manifest["dataset"]),
@@ -299,7 +299,7 @@ def test_lost_completion_receipt_recovers_same_release(release, completed):
 
 
 def test_failed_shared_validation_leaves_no_final_directory(completed, monkeypatch):
-    import voc.embeddings.export as shared
+    import voc.embeddings.export.operations as shared
 
     original = shared.load_release
     monkeypatch.setattr(

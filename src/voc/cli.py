@@ -129,22 +129,12 @@ def embeddings_inspect(
     import sys
     from contextlib import redirect_stdout
 
-    from voc import collector, get_embeddings
-    from voc.embeddings.contracts import require_uuid
-    from voc.embeddings.profiles import resolve_profile
+    from voc.embeddings.inspection import inspect_embeddings
 
     try:
-        if dataset_version != "latest":
-            require_uuid(dataset_version, "dataset_version")
-        if version != "latest":
-            require_uuid(version, "embedding_release_id")
-        resolve_profile(profile)
         with redirect_stdout(sys.stderr):
-            dataset = collector.get_dataset(
-                stage="prepared", version=dataset_version, source=source
-            )
-            bundle = get_embeddings(
-                dataset=dataset,
+            result = inspect_embeddings(
+                dataset_version=dataset_version,
                 profile=profile,
                 version=version,
                 source=source,
@@ -152,16 +142,7 @@ def embeddings_inspect(
             )
     except (LookupError, ValueError, OSError, BotoCoreError, ClientError) as error:
         raise click.ClickException(str(error)) from error
-    click.echo(
-        json.dumps(
-            {
-                "state": "verified",
-                "artifact_content_verified": True,
-                "release": bundle.info,
-            },
-            indent=None if as_json else 2,
-        )
-    )
+    click.echo(json.dumps(result, indent=None if as_json else 2))
 
 
 if __name__ == "__main__":

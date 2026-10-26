@@ -5,8 +5,8 @@ import json
 
 import pytest
 
-from voc.embeddings.profiles import resolve_profile
-from voc_ml.embeddings.sentence_encoder import SentenceEncoder
+from voc.embeddings.shared.profiles import resolve_profile
+from voc_ml.embeddings.encoding.sentence_encoder import SentenceEncoder
 
 
 @pytest.mark.skipif(

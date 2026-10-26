@@ -1,7 +1,7 @@
-"""Shared embedding types and profiles; no encoding, publication or reader I/O."""
+"""Shared embedding contracts, profiles and reading API; imports perform no I/O."""
 
-from .contracts import DatasetIdentity, EmbeddingBundle, InputSelection
-from .profiles import EmbeddingProfile, resolve_profile
+from .shared.contracts import DatasetIdentity, EmbeddingBundle, InputSelection
+from .shared.profiles import EmbeddingProfile, resolve_profile
 
 __all__ = [
     "DatasetIdentity",
@@ -25,7 +25,7 @@ def get_embeddings(
 
     Explicit subset releases require allow_subset=True. Reading never runs models.
     """
-    from .reader import get_embeddings as read
+    from .reading import get_embeddings as read
 
     return read(
         dataset=dataset,

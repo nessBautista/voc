@@ -6,13 +6,13 @@ from typing import Annotated
 
 from zenml import get_step_context, step
 
-from voc_ml.embeddings.producer import load_run, update_run
+from voc_ml.embeddings.production import load_run, update_run
 
 
 @step(enable_cache=False)
 def pin_embedding_input(producer_run_id: str) -> Annotated[dict, "input_reference"]:
     from voc_ml.embeddings import pin_input
-    from voc_ml.embeddings.artifacts import write_input
+    from voc_ml.embeddings.shared.artifacts import write_input
 
     state = update_run(
         producer_run_id, zenml_run_id=str(get_step_context().pipeline_run.id)
@@ -32,9 +32,9 @@ def pin_embedding_input(producer_run_id: str) -> Annotated[dict, "input_referenc
 def prepare_embedding_features(
     input_reference: dict, producer_run_id: str
 ) -> Annotated[dict, "feature_reference"]:
-    from voc.embeddings.profiles import resolve_profile
+    from voc.embeddings.shared.profiles import resolve_profile
     from voc_ml.embeddings import FeatureConfig, prepare_features
-    from voc_ml.embeddings.artifacts import read_input
+    from voc_ml.embeddings.shared.artifacts import read_input
 
     state = load_run(producer_run_id)
     profile = resolve_profile(state["requested"]["profile"])
@@ -72,7 +72,7 @@ def encode_embedding_features(
 def validate_embedding_outputs(
     encoding_reference: dict, input_reference: dict, producer_run_id: str
 ) -> Annotated[dict, "validated_reference"]:
-    from voc_ml.embeddings.artifacts import read_encoding
+    from voc_ml.embeddings.shared.artifacts import read_encoding
 
     state = load_run(producer_run_id)
     read_encoding(
@@ -89,7 +89,7 @@ def track_embeddings(
 ) -> Annotated[dict, "tracking_report"]:
     import mlflow
 
-    from voc_ml.embeddings.artifacts import read_encoding
+    from voc_ml.embeddings.shared.artifacts import read_encoding
 
     active = mlflow.active_run()
     if active is None:

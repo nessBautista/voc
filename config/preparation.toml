@@ -1,4 +1,23 @@
+# Rules for producing a workable-v1 dataset from existing raw records.
+# Preparation does not fetch reviews or modify the raw source records.
+
+# Only supported value: "exclude_and_report".
+# Exclude records whose body text is missing/blank, and report their record IDs.
 blank_text = "exclude_and_report"
+
+# Boolean: false uses trimmed body text as model_text.
+# true prepends a nonblank title plus a newline; it does not rescue a blank body.
 combine_title_body = false
+
+# Keep any subset of these supported platforms; [] excludes every platform.
+# These select existing records, not collection providers to run.
 platforms = ["app_store", "google_play", "x", "youtube"]
-# Null filters are represented by omitted keys. All 18 workable-v1 columns are required.
+
+# Optional exact-value filters; omit their keys to disable filtering.
+# TOML has no null value. An empty list matches nothing, not every value.
+# language_filter = ["es"]
+# relevance_filter = ["app_target_match", "human_relevant"]
+# Supported relevance labels: "app_target_match", "human_relevant",
+# "human_irrelevant", "human_uncertain", "unreviewed".
+#
+# Leave `columns` omitted: workable-v1 requires all 18 columns in schema order.

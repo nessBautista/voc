@@ -10,18 +10,18 @@ import pandas as pd
 import pytest
 from click.testing import CliRunner
 
-from voc.datasets.manifest import file_hash, frame_hash
-from voc.embeddings.contracts import canonical_json
+from voc.datasets.shared.manifest import file_hash, frame_hash
+from voc.embeddings.shared.contracts import canonical_json
 from voc.models import Snapshot
 from voc_ml.cli import main
 from voc_ml.embeddings import (
     FeatureConfig,
     encode_features,
     prepare_features,
-    producer,
     select_snapshot,
 )
-from voc_ml.embeddings.artifacts import read_encoding, read_input, write_input
+from voc_ml.embeddings.production import operations as producer
+from voc_ml.embeddings.shared.artifacts import read_encoding, read_input, write_input
 
 
 @pytest.fixture
@@ -32,7 +32,8 @@ def runtime(tmp_path, monkeypatch):
 
 @pytest.fixture
 def outputs(runtime, monkeypatch):
-    from voc_ml.embeddings import sentence_encoder
+    from tests.unit.test_embedding_contracts import descriptor
+    from voc_ml.embeddings.encoding import sentence_encoder
 
     frame = pd.DataFrame(
         {"record_id": ["a", "b", "c"], "model_text": ["good", "bad", "good"]}
@@ -63,6 +64,10 @@ def outputs(runtime, monkeypatch):
             return vectors, [3] * len(texts)
 
     monkeypatch.setattr(sentence_encoder, "SentenceEncoder", Encoder)
+    # Synthetic vectors need synthetic provenance, not installed ML packages.
+    monkeypatch.setattr(
+        sentence_encoder, "encoder_descriptor", lambda profile: descriptor()
+    )
     state = producer.create_run()
     folder = Path(state["paths"]["run"])
     source = write_input(pinned, folder / "input")

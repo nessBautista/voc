@@ -185,7 +185,7 @@ def embeddings_workflow(
     import sys
     from contextlib import redirect_stdout
 
-    from .embeddings.producer import create_run, execute_run
+    from .embeddings.production import create_run, execute_run
 
     try:
         state = create_run(
@@ -216,7 +216,7 @@ def embeddings_workflow(
 def embeddings_inspect(producer_run_id, as_json):
     import sys
 
-    from .embeddings.producer import inspect_run
+    from .embeddings.production import inspect_run
 
     try:
         state = inspect_run(producer_run_id)

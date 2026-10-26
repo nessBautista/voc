@@ -1,16 +1,14 @@
-set dotenv-load
-compose := "docker compose -f compose.yaml"
+compose := "sh scripts/workspace.sh"
 
 # Load the selected credentials before Compose creates the container.
 up:
-    mkdir -p data
     sh scripts/start.sh
 
 down:
     {{compose}} down
 
 shell:
-    @if [ -n "${MSYSTEM:-}" ] && command -v winpty >/dev/null 2>&1; then winpty {{compose}} exec workspace bash; else {{compose}} exec workspace bash; fi
+    @{{compose}} shell
 
 status:
     {{compose}} ps
@@ -19,19 +17,19 @@ test:
     {{compose}} exec workspace pytest -q
 
 new-marimo $notebook_name:
-    @sh scripts/notebook.sh marimo create {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+    @{{compose}} notebook marimo create
 
 new-notebook $notebook_name:
-    @sh scripts/notebook.sh jupyter create {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @{{compose}} notebook jupyter create
 
 marimo:
-    @sh scripts/notebook.sh marimo open {{env("VOC_MARIMO_PORT", "2721")}} {{compose}}
+    @{{compose}} notebook marimo open
 
 jupyter:
-    @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @{{compose}} notebook jupyter open
 
 jupyter-reports:
-    @sh scripts/notebook.sh jupyter reports {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
+    @{{compose}} notebook jupyter reports
 
 logs:
     {{compose}} exec workspace sh -c 'tail -n 60 /workspace/data/logs/*.log'

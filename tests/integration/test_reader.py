@@ -1,10 +1,12 @@
 import uuid
-from dataclasses import replace
+
 import pandas as pd
-from voc.models import StorageSettings
-from voc.datasets.manifest import json_bytes, file_hash, frame_hash
-from voc.datasets.shared_reader import SharedDatasetReader
+
 from tests.support import MemoryS3
+from voc.datasets.reading.reader import SharedDatasetReader
+from voc.datasets.shared.manifest import file_hash, frame_hash, json_bytes
+from voc.models import StorageSettings
+
 
 def test_empty_reader_and_pinned_cache(tmp_path):
     settings = StorageSettings("local", "s3", tmp_path / "consumer", "team-test-bucket", "us-east-2", "reader", "voc/datasets", "members", None)

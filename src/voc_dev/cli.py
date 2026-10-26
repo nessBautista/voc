@@ -8,7 +8,7 @@ import click
 from click.core import ParameterSource
 
 from voc.storage.inspection import inspect_storage, validate_selectors
-from voc.storage.settings import load_storage
+from voc.storage.shared.settings import load_storage
 
 from .storage_render import render_report
 

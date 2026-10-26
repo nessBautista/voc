@@ -5,9 +5,10 @@ import sqlite3
 import numpy as np
 import pytest
 
-from voc.embeddings.contracts import text_hash
-from voc.embeddings.profiles import resolve_profile
-from voc_ml.embeddings.cache import EmbeddingCache, validate_vectors
+from voc.embeddings.shared.contracts import text_hash
+from voc.embeddings.shared.profiles import resolve_profile
+from voc_ml.embeddings.encoding.cache import EmbeddingCache
+from voc_ml.embeddings.shared.vectors import validate_vectors
 
 
 def descriptor():

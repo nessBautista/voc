@@ -2,9 +2,9 @@ import hashlib
 
 import pandas as pd
 import pytest
-from tests.integration.conftest import row
 
-from voc_ml.preparation.dataset import COLUMNS, prepare_dataset
+from tests.integration.conftest import row
+from voc_ml.preparation import COLUMNS, prepare_dataset
 
 
 def test_exact_schema_original_text_and_no_mutation():

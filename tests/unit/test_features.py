@@ -7,9 +7,9 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from voc.datasets.manifest import file_hash, frame_hash
-from voc.embeddings.contracts import text_hash
-from voc.embeddings.profiles import resolve_profile
+from voc.datasets.shared.manifest import file_hash, frame_hash
+from voc.embeddings.shared.contracts import text_hash
+from voc.embeddings.shared.profiles import resolve_profile
 from voc.models import Snapshot
 from voc_ml.embeddings import InputValidationError, select_snapshot
 from voc_ml.embeddings.features import (
@@ -184,7 +184,7 @@ def test_no_overwrite_or_partial_directory_after_failed_validation(reviews, tmp_
     read_features(saved)
     with (
         patch(
-            "voc_ml.embeddings.features.read_features",
+            "voc_ml.embeddings.features.operations.read_features",
             side_effect=ValueError("injected round-trip failure"),
         ),
         pytest.raises(ValueError, match="injected"),

@@ -6,7 +6,7 @@ from typing import Annotated
 from zenml import step
 
 from voc import collector
-from voc.collection.store import RawStore
+from voc.collection.raw.store import RawStore
 
 
 @step(enable_cache=False)

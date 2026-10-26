@@ -2,9 +2,9 @@ import json
 
 import pandas as pd
 import pytest
-from tests.integration.conftest import observation, report, row
 
-from voc.collection.store import RawStore
+from tests.integration.conftest import observation, report, row
+from voc.collection.raw.store import RawStore
 
 
 def test_delta_history_retry_and_fresh_connection(store):
