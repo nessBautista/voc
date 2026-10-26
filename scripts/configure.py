@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKSPACE_KEYS = {
     "auth_mode", "credential_file", "zenml_port", "mlflow_port",
-    "jupyter_port", "marimo_port",
+    "jupyter_port", "marimo_port", "editor",
 }
 STORAGE_KEYS = {
     "bucket", "region", "member_id", "dataset_source", "artifact_destination",
@@ -126,10 +126,13 @@ def validate(workspace, storage):
     """Validate resolved nonsecret settings before creating any private files."""
     if workspace.get("auth_mode") not in ("env-file", "1password"):
         raise ValueError("Invalid auth_mode in workspace TOML")
+    editor = workspace.get("editor", "none")
+    if type(editor) is not str or editor not in ("none", "nvim"):
+        raise ValueError("editor in workspace TOML must be none or nvim")
     if "credential_file" not in workspace:
         raise ValueError("Missing credential_file in workspace TOML")
     ports = []
-    for key in sorted(WORKSPACE_KEYS - {"auth_mode", "credential_file"}):
+    for key in sorted(key for key in WORKSPACE_KEYS if key.endswith("_port")):
         value = workspace.get(key)
         if type(value) is not int or not 1 <= value <= 65535:
             raise ValueError(key + " in workspace TOML must be an integer from 1 to 65535")

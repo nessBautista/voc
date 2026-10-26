@@ -40,6 +40,7 @@ def test_fresh_private_setup_and_rerun_preserve_user_choices(project, capsys):
     assert token and b"VOC_" not in env
     assert toml(project, "storage.local.toml") == {"member_id": "alice-example"}
     assert toml(project, "workspace.local.toml") == {}
+    assert toml(project, "workspace.toml")["editor"] == "none"
     for name in result:
         assert stat.S_IMODE((project / name).stat().st_mode) == 0o600
     credential = project / "config/aws.local.env"
@@ -192,5 +193,37 @@ def test_invalid_credential_parent_refuses_before_other_writes(project):
     )
     before = snapshot(project)
     with pytest.raises(ValueError, match="directory"):
+        setup.configure(project, "alice")
+    assert snapshot(project) == before
+
+
+@pytest.mark.parametrize("editor", ["none", "nvim"])
+def test_setup_preserves_personal_editor_selection(project, editor):
+    local = project / "config/workspace.local.toml"
+    original = f'# Personal editor choice\neditor = "{editor}"\n'.encode()
+    local.write_bytes(original)
+    setup.configure(project, "alice")
+    assert local.read_bytes() == original
+    before = snapshot(project)
+    assert not any(setup.configure(project, "alice").values())
+    assert snapshot(project) == before
+
+
+def test_setup_accepts_existing_configuration_without_editor(project):
+    tracked = project / "config/workspace.toml"
+    tracked.write_text("".join(
+        line for line in tracked.read_text().splitlines(keepends=True)
+        if not line.startswith("editor =")
+    ))
+    setup.configure(project, "alice")
+    assert "editor" not in toml(project, "workspace.toml")
+    assert toml(project, "workspace.local.toml") == {}
+
+
+@pytest.mark.parametrize("value", ["'vim'", "'NVIM'", "''", "true", "1", "[]", "{}"])
+def test_setup_rejects_invalid_editor_before_writes(project, value):
+    (project / "config/workspace.local.toml").write_text(f"editor = {value}\n")
+    before = snapshot(project)
+    with pytest.raises(ValueError):
         setup.configure(project, "alice")
     assert snapshot(project) == before

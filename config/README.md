@@ -54,3 +54,4 @@ Conflicting local overrides, unknown assignments, unsupported interpolation, inv
 The configuration refactor passed 159 focused offline tests covering setup, migration, storage precedence, launch validation, notebook creation, and storage inspection. A disposable-checkout smoke exercised the real setup and launch scripts with Docker Compose 5.6.1's configuration renderer: literal credentials, a simulated `op run` injection, custom paths/ports, inherited-environment isolation, and management without credentials. The real `voc storage-info` command consumed local TOML without creating runtime data.
 
 No Docker engine or 1Password vault was available in that verification environment. Actual service startup, vault authorization, and Windows filesystem/runtime behavior still require the host checkpoints in the installation guide.
+

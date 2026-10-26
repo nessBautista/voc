@@ -16,6 +16,10 @@ status:
 test:
     {{compose}} exec workspace pytest -q
 
+# Snapshot personal editor configuration without mounting it writable in the container.
+nvim-setup $nvim_config:
+    @python3 scripts/editor.py "$nvim_config"
+
 new-marimo $notebook_name:
     @{{compose}} notebook marimo create
 

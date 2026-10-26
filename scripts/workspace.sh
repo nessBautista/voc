@@ -15,6 +15,7 @@ unset JUPYTER_TOKEN AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AW
 unset AWS_REGION AWS_DEFAULT_REGION AWS_BUCKET VOC_MEMBER_ID VOC_EMBEDDINGS_PREFIX VOC_DATASET_SOURCE VOC_ARTIFACT_DESTINATION VOC_STORAGE_CONFIG VOC_STORAGE_MODE
 unset VOC_AWS_AUTH_MODE VOC_AWS_ENV_FILE COMPOSE_PROJECT_NAME COMPOSE_FILE COMPOSE_ENV_FILES COMPOSE_PROFILES
 unset VOC_ZENML_PORT VOC_MLFLOW_PORT VOC_JUPYTER_PORT VOC_MARIMO_PORT
+unset VOC_WORKSPACE_BUILD_TARGET
 if [ "$command" = up ]; then
   records=$(docker run --rm --network none --mount "type=bind,source=$host_root,target=/workspace,readonly" --workdir /workspace python:3.12-slim-bookworm python scripts/workspace.py --root /workspace --credentials)
 else
@@ -23,7 +24,7 @@ fi
 # Treat helper output as records, never as executable shell text.
 while IFS='=' read -r key value; do
   case "$key" in
-    VOC_WORKSPACE_AUTH_MODE|VOC_WORKSPACE_CREDENTIAL_FILE|VOC_ZENML_PORT|VOC_MLFLOW_PORT|VOC_JUPYTER_PORT|VOC_MARIMO_PORT|AWS_REGION|AWS_DEFAULT_REGION) export "$key=$value" ;;
+    VOC_WORKSPACE_AUTH_MODE|VOC_WORKSPACE_CREDENTIAL_FILE|VOC_WORKSPACE_BUILD_TARGET|VOC_ZENML_PORT|VOC_MLFLOW_PORT|VOC_JUPYTER_PORT|VOC_MARIMO_PORT|AWS_REGION|AWS_DEFAULT_REGION) export "$key=$value" ;;
     *) echo 'Unexpected workspace configuration record.' >&2; exit 1 ;;
   esac
 done <<EOF
