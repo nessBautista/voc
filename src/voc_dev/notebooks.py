@@ -117,7 +117,7 @@ def editor_url(kind, port, relative=None, token=""):
 
 
 def reports_directory(root):
-    """Expose the repo reports directory through the existing Jupyter root."""
+    """Expose the repo reports directory through the shared notebook root."""
     reports = root.parent / "reports"
     link = root / "reports"
     # Never replace an existing directory or a link pointing somewhere else.
@@ -146,7 +146,7 @@ def main(kind, name, port, reports):
         if reports:
             if kind != "jupyter" or name is not None:
                 raise ValueError("--reports opens Jupyter and cannot be combined with --name")
-            relative = reports_directory(NOTEBOOKS)
+            relative = "reports"
         if name is not None:
             relative, created = create_notebook(NOTEBOOKS, name, kind)
             print(
@@ -155,6 +155,10 @@ def main(kind, name, port, reports):
                 + relative,
                 file=sys.stderr,
             )
+        if kind == "jupyter":
+            reports_directory(NOTEBOOKS)
+        if kind == "marimo" and relative is not None:
+            relative = "notebooks/" + relative
         # stdout is captured by the host launcher, never echoed with its login token.
         click.echo(
             editor_url(kind, port, relative, os.environ.get("JUPYTER_TOKEN", ""))

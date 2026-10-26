@@ -12,6 +12,8 @@ from voc.paths import data_root
 from voc.storage import load_storage
 from voc_ml.tracking import server_command
 
+from .notebooks import reports_directory
+
 
 
 def main():
@@ -32,7 +34,7 @@ def main():
     bootstrap()
     # The repository is bind-mounted at /workspace; notebook saves reach the host.
     notebooks = Path(__file__).resolve().parents[2] / "notebooks"
-    notebooks.mkdir(parents=True, exist_ok=True)
+    reports_directory(notebooks)
     # The versioned example is already available in notebooks/templates/.
     py = sys.executable
     commands = {
@@ -42,12 +44,13 @@ def main():
         ],
         "mlflow": server_command(py, load_storage()),
         # Edit .py notebooks using the same installed VOC/ML environment as Jupyter.
+        # Marimo skips symlinks during discovery; scan both real notebook trees.
         "marimo": [
             py,
             "-m",
             "marimo",
             "edit",
-            str(notebooks),
+            str(notebooks.parent),
             "--host",
             "0.0.0.0",
             "--port",

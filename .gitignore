@@ -65,7 +65,7 @@ htmlcov/
 __marimo__/
 *.marimo.cache
 notebooks/nb
-# Created by just jupyter-reports to expose reports in the existing server.
+# Created by workspace startup or Jupyter launchers to expose reports.
 notebooks/reports
 
 # --- MLflow / experimentos / modelos ---

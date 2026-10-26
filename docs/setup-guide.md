@@ -152,7 +152,16 @@ Para abrir Jupyter, ejecuta desde la raíz:
 just jupyter
 ```
 
-Se abre el editor con autenticación. `just marimo` abre el otro editor. Para crear un notebook personal de Jupyter, sustituye `alice` por tu nombre:
+Se abre el editor con autenticación. `just marimo` abre el otro editor.
+
+- **Jupyter:** abre `reports/` en el explorador de archivos. `just jupyter-reports` abre esa carpeta directamente.
+- **Marimo:** abre `reports/` en la lista **Workspace**. Allí aparecen los notebooks de Marimo (`.py`), no los `.ipynb`; tus notebooks personales aparecen en `notebooks/`.
+
+Editas los archivos originales de `reports/`, sin copias. Jupyter accede mediante el enlace `notebooks/reports`; Marimo busca notebooks desde la raíz del repositorio porque ignora enlaces simbólicos. La autenticación no cambia.
+
+Si el workspace ya estaba iniciado al aplicar este cambio, guarda tu trabajo, termina las operaciones activas y ejecuta `just down` seguido de `just up`. Vuelve a abrir el editor: **comprobación:** puedes explorar `reports/` y abrir un notebook compatible. Esto habilita el acceso a los archivos, no instala dependencias ni migra las referencias de datos de cada reporte.
+
+Para crear un notebook personal de Jupyter, sustituye `alice` por tu nombre:
 
 ```sh
 just new-notebook alice/my-eda
