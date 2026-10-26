@@ -4,7 +4,9 @@ name: voc-main
 services:
   workspace:
     # Build the image using the Dockerfile in this repository.
-    build: .
+    build:
+      context: .
+      target: ${VOC_WORKSPACE_BUILD_TARGET:-workspace}
     # Add a small init process to forward signals and reap exited child processes.
     init: true
     environment:

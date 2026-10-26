@@ -11,6 +11,7 @@ from pathlib import Path
 DEFAULTS = {
     "auth_mode": "env-file",
     "credential_file": "config/aws.local.env",
+    "editor": "none",
     "zenml_port": 8240,
     "mlflow_port": 5003,
     "jupyter_port": 8891,
@@ -87,6 +88,8 @@ def load_configuration(root: Path, *, credentials: bool = False) -> dict[str, st
         settings.update(values)
     if settings["auth_mode"] not in ("env-file", "1password"):
         raise ConfigurationError("auth_mode must be env-file or 1password.")
+    if type(settings["editor"]) is not str or settings["editor"] not in ("none", "nvim"):
+        raise ConfigurationError("editor must be none or nvim.")
     ports = [settings[key] for key in DEFAULTS if key.endswith("_port")]
     if any(type(port) is not int or not 1 <= port <= 65535 for port in ports):
         raise ConfigurationError("Workspace ports must be integers between 1 and 65535.")
@@ -124,6 +127,7 @@ def load_configuration(root: Path, *, credentials: bool = False) -> dict[str, st
     return {
         "VOC_WORKSPACE_AUTH_MODE": settings["auth_mode"],
         "VOC_WORKSPACE_CREDENTIAL_FILE": raw_path,
+        "VOC_WORKSPACE_BUILD_TARGET": "nvim" if settings["editor"] == "nvim" else "workspace",
         **{f"VOC_{key.upper()}": str(settings[key]) for key in DEFAULTS if key.endswith("_port")},
         "AWS_REGION": region,
         "AWS_DEFAULT_REGION": region,

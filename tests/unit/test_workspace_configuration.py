@@ -1,5 +1,10 @@
 """Behavioral coverage of the secret-free host configuration bridge."""
+import json
+import os
 import runpy
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -23,6 +28,7 @@ def test_defaults_emit_only_nonsecret_records(root):
     records = load_configuration(root, credentials=True)
     assert not (MODULE["SECRET_KEYS"] | {"JUPYTER_TOKEN"}) & records.keys()
     assert "private" not in str(records)
+    assert records["VOC_WORKSPACE_BUILD_TARGET"] == "workspace"
 
 
 def test_local_overrides_ports_region_and_spaced_path(root):
@@ -33,6 +39,29 @@ def test_local_overrides_ports_region_and_spaced_path(root):
     assert records["VOC_JUPYTER_PORT"] == "9991"
     assert records["VOC_WORKSPACE_CREDENTIAL_FILE"] == "config/my keys.env"
     assert records["AWS_DEFAULT_REGION"] == "us-east-2"
+
+
+@pytest.mark.parametrize("editor,target", [("none", "workspace"), ("nvim", "nvim")])
+def test_editor_selection(root, editor, target):
+    (root / "config/workspace.toml").write_text(f"editor = '{editor}'\n")
+    assert load_configuration(root)["VOC_WORKSPACE_BUILD_TARGET"] == target
+
+
+@pytest.mark.parametrize("base,local,target", [
+    ("none", "nvim", "nvim"),
+    ("nvim", "none", "workspace"),
+])
+def test_local_editor_overrides_tracked_selection(root, base, local, target):
+    (root / "config/workspace.toml").write_text(f"editor = '{base}'\n")
+    (root / "config/workspace.local.toml").write_text(f"editor = '{local}'\n")
+    assert load_configuration(root)["VOC_WORKSPACE_BUILD_TARGET"] == target
+
+
+@pytest.mark.parametrize("value", ["'vim'", "'NVIM'", "''", "true", "1", "[]", "{}"])
+def test_editor_requires_supported_string(root, value):
+    (root / "config/workspace.local.toml").write_text(f"editor = {value}\n")
+    with pytest.raises(ConfigurationError, match="editor must be none or nvim"):
+        load_configuration(root)
 
 
 @pytest.mark.parametrize("setting", [
@@ -97,9 +126,11 @@ def test_environment_does_not_override_workspace_selection(root, monkeypatch):
     monkeypatch.setenv("VOC_JUPYTER_PORT", "1234")
     monkeypatch.setenv("AWS_REGION", "wrong-region")
     monkeypatch.setenv("VOC_STORAGE_CONFIG", "/outside.toml")
+    monkeypatch.setenv("VOC_WORKSPACE_BUILD_TARGET", "nvim")
     records = load_configuration(root)
     assert records["VOC_JUPYTER_PORT"] == "8891"
     assert records["AWS_REGION"] == "eu-west-1"
+    assert records["VOC_WORKSPACE_BUILD_TARGET"] == "workspace"
 
 
 def test_invalid_toml_does_not_disclose_contents(root):
@@ -128,3 +159,50 @@ def test_credential_symlink_target_requires_excluded_suffix(root):
     (root / "config/aws.local.env").symlink_to(target)
     with pytest.raises(ConfigurationError, match="symlink targets"):
         load_configuration(root)
+
+
+@pytest.mark.parametrize("command", ["up", "build", "down", "ps", "logs", "shell"])
+@pytest.mark.parametrize("editor,inherited,target", [
+    ("none", "nvim", "workspace"),
+    ("nvim", "workspace", "nvim"),
+])
+def test_launcher_exports_validated_target_to_compose(root, monkeypatch, command, editor, inherited, target):
+    repo = Path(__file__).resolve().parents[2]
+    scripts = root / "scripts"
+    scripts.mkdir()
+    for name in ("workspace.py", "workspace.sh"):
+        shutil.copyfile(repo / "scripts" / name, scripts / name)
+    (root / "config/workspace.local.toml").write_text(f"editor = '{editor}'\n")
+    binaries = root / "bin"
+    binaries.mkdir()
+    docker = binaries / "docker"
+    docker.write_text(
+        f"#!{sys.executable}\n"
+        "import json, os, runpy, sys\n"
+        "if sys.argv[1] == 'run':\n"
+        "    assert 'VOC_WORKSPACE_BUILD_TARGET' not in os.environ\n"
+        f"    helper = {str(scripts / 'workspace.py')!r}\n"
+        f"    sys.argv = [helper, '--root', {str(root)!r}] + "
+        "(['--credentials'] if '--credentials' in sys.argv else [])\n"
+        "    runpy.run_path(helper, run_name='__main__')\n"
+        "elif sys.argv[1] == 'compose':\n"
+        "    print(json.dumps({'target': os.environ.get('VOC_WORKSPACE_BUILD_TARGET'), "
+        "'args': sys.argv[2:]}))\n"
+        "else:\n"
+        "    raise SystemExit('Unexpected Docker invocation')\n"
+    )
+    docker.chmod(0o755)
+    monkeypatch.setenv("PATH", str(binaries) + os.pathsep + os.environ["PATH"])
+    monkeypatch.setenv("VOC_WORKSPACE_BUILD_TARGET", inherited)
+    monkeypatch.delenv("MSYSTEM", raising=False)
+    result = subprocess.run(
+        ["sh", str(scripts / "workspace.sh"), command],
+        capture_output=True, text=True, check=True,
+    )
+    consumer = json.loads(result.stdout)
+    assert consumer["target"] == target
+    args = consumer["args"]
+    assert args[args.index("-p") + 1] == "voc-main"
+    assert args[args.index("-f") + 1] == str(root / "compose.yaml")
+    expected = ["exec", "workspace", "bash"] if command == "shell" else [command]
+    assert args[args.index("-p") + 2:] == expected

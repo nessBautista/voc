@@ -14,6 +14,11 @@ auth_mode = "1password"
 # The separate root .env holds the notebook login token.
 credential_file = "config/aws.local.env"
 
+# Optional development editor: "none" (default) or "nvim".
+# Set editor = "nvim" in workspace.local.toml to build the editor-enabled image.
+# "none" keeps the normal workspace image without editor dependencies.
+editor = "none"
+
 # Host ports: integers from 1 to 65535; all four must differ and be available.
 # Services bind to 127.0.0.1. These do not change their internal container ports.
 # ZenML UI (container port 8237).

@@ -1,0 +1,16 @@
+#!/bin/sh
+# Editor state belongs to this repository, never to the host's Neovim directories.
+set -eu
+export XDG_CONFIG_HOME=/workspace/data/editor/config
+export XDG_DATA_HOME=/workspace/data/editor/data
+export XDG_STATE_HOME=/workspace/data/editor/state
+export XDG_CACHE_HOME=/workspace/data/editor/cache
+export NVIM_APPNAME=nvim
+export VIRTUAL_ENV=/opt/venv
+export PATH="/opt/venv/bin:$PATH"
+if [ ! -f "$XDG_CONFIG_HOME/nvim/init.lua" ]; then
+  echo 'Import your configuration on the host first: just nvim-setup /path/to/nvim-config' >&2
+  exit 1
+fi
+mkdir -p "$XDG_DATA_HOME" "$XDG_STATE_HOME" "$XDG_CACHE_HOME"
+exec /opt/nvim/bin/nvim --cmd 'set runtimepath^=/opt/voc-editor' -u /opt/voc-editor/init.lua "$@"
