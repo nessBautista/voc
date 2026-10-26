@@ -174,7 +174,7 @@ def test_just_creates_files_without_echoing_browser_token(project, recipe, suffi
     expected_port = 2720 if recipe == "new-marimo" else 8889
     assert f"127.0.0.1:{expected_port}" in result.stdout
     if recipe == "new-marimo":
-        assert "file=alice%2Fnew-one.py" in result.stdout
+        assert "file=notebooks%2Falice%2Fnew-one.py" in result.stdout
     malicious = subprocess.run(
         ["just", recipe, "$(touch PWNED)"],
         cwd=project,
