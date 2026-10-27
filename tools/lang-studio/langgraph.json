@@ -1,0 +1,17 @@
+{
+  "$schema": "https://langgra.ph/schema.json",
+  "dependencies": ["../..", "../../apps/voc-app/server"],
+  "graphs": {
+    "voc": "./graph.py:graph"
+  },
+  "checkpointer": {
+    "serde": {
+      "allowed_json_modules": [
+        ["voc_app", "agent", "contracts", "Plan"],
+        ["voc_app", "agent", "contracts", "Selection"],
+        ["voc_app", "agent", "contracts", "TopicReference"]
+      ],
+      "pickle_fallback": false
+    }
+  }
+}

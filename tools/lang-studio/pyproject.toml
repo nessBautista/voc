@@ -1,0 +1,26 @@
+# Development-only Agent Server; the deployed app keeps its own environment.
+[project]
+name = "voc-lang-studio"
+version = "0.1.0"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "voc-app",
+    "langgraph-cli[inmem]>=0.4,<0.5",
+    # Match the graph runtime in apps/voc-app/server/uv.lock.
+    "langgraph==1.2.16",
+    "langgraph-checkpoint==4.3.0",
+    "langgraph-prebuilt==1.1.1",
+    "langgraph-sdk==0.4.8",
+    "langchain-core==1.6.12",
+    "langsmith==0.14.11",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.12"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+voc-app = { path = "../../apps/voc-app/server", editable = true }
+voc = { path = "../..", editable = true }
