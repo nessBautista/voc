@@ -44,6 +44,10 @@ marimo:
 jupyter:
     @sh scripts/notebook.sh jupyter open {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
 
+# Local inspection and test runs of the app graph, independent of the AWS demo.
+lang-studio:
+    @sh scripts/lang-studio.sh
+
 jupyter-reports:
     @sh scripts/notebook.sh jupyter reports {{env("VOC_JUPYTER_PORT", "8890")}} {{compose}}
 

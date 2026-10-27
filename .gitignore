@@ -142,3 +142,6 @@ temp/
 data/
 site/
 .zen/
+
+# LangGraph development server checkpoints and run state.
+.langgraph_api/
