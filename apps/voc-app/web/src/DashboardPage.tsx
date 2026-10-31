@@ -30,9 +30,9 @@ export function DashboardPage() {
     return (
       <>
         <Header context={CONTEXT} />
-        <main id="content">
-          <div role="status" className="state-panel">
-            <span className="loader" aria-hidden="true" />
+        <main id="content" className="app-main">
+          <div role="status" className="app-state">
+            <span className="app-loader" aria-hidden="true" />
             <h2>Comprobando la sesión…</h2>
           </div>
         </main>
@@ -42,41 +42,41 @@ export function DashboardPage() {
     return <SignIn context={CONTEXT} message={notice} />;
   return (
     <>
-      <a className="skip-link" href="#content">
+      <a className="app-skip" href="#content">
         Saltar al contenido
       </a>
       <Header context={CONTEXT}>
-        <span className="badge">Datos publicados</span>
-        <a className="button-link nav-link" href="/">
+        <span className="voc-badge">Datos publicados</span>
+        <a className="voc-btn voc-btn-sm" href="/">
           Conversar con los datos
         </a>
         <SessionControls session={session} leave={leave} />
       </Header>
-      <main id="content">
+      <main id="content" className="app-main">
         {notice && (
-          <p role="alert" className="chat-error">
+          <p role="alert" className="app-notice is-error">
             {notice}
           </p>
         )}
         {selected && (
-          <div className="publication-line">
-            <span className="dot" aria-hidden="true" />
+          <div className="app-publication">
+            <span className="app-dot" aria-hidden="true" />
             <span>Publicación</span>
             <code>{selected.publication_id}</code>
-            <span className="activated">
+            <span className="app-publication-time">
               Activada {dateLabel(selected.activated_at, true)} UTC
             </span>
           </div>
         )}
         {state.status === "loading" && (
-          <div role="status" className="state-panel">
-            <span className="loader" aria-hidden="true" />
+          <div role="status" className="app-state">
+            <span className="app-loader" aria-hidden="true" />
             <h2>Cargando la publicación…</h2>
           </div>
         )}
         {state.status === "error" && (
-          <div role="alert" className="state-panel error-panel">
-            <p className="eyebrow">
+          <div role="alert" className="app-state is-error">
+            <p className="voc-eyebrow">
               {state.error.code === "no_active_publication"
                 ? "Sin publicación"
                 : "Consulta no disponible"}
@@ -87,18 +87,20 @@ export function DashboardPage() {
                 : "No pudimos mostrar los datos"}
             </h2>
             <p>{state.error.message}</p>
-            <button onClick={reload}>Reintentar</button>
+            <button className="voc-btn" onClick={reload}>
+              Reintentar
+            </button>
           </div>
         )}
         {state.status === "ready" && !hasAnalysis(state.snapshot.selection) && (
-          <div role="status" className="state-panel">
-            <p className="eyebrow">Sin análisis</p>
+          <div role="status" className="app-state">
+            <p className="voc-eyebrow">Sin análisis</p>
             <h2>Esta publicación no incluye temas ni sentimiento</h2>
             <p>
               El panel se activa cuando el Operador publica un paquete con
               análisis.
             </p>
-            <a className="button-link" href="/">
+            <a className="voc-btn" href="/">
               Ver el estado de los datos
             </a>
           </div>
@@ -109,12 +111,12 @@ export function DashboardPage() {
               key={state.snapshot.selection.publication_id}
               publicationId={state.snapshot.selection.publication_id}
             />
-            <details className="dataset-state">
+            <details className="app-fold">
               <summary>
-                <span className="eyebrow">Estado de los datos</span>
+                <span className="voc-eyebrow">Estado de los datos</span>
                 <span>Alcance y procedencia de la publicación</span>
               </summary>
-              <div className="dashboard-grid">
+              <div className="app-grid">
                 {dashboardViews(state.snapshot.results).map((spec) => (
                   <View
                     key={spec.component}
@@ -125,7 +127,10 @@ export function DashboardPage() {
                 ))}
               </div>
               {dedupedWarnings(state.snapshot).length > 0 && (
-                <aside className="warnings" aria-labelledby="warning-heading">
+                <aside
+                  className="app-warnings"
+                  aria-labelledby="warning-heading"
+                >
                   <h2 id="warning-heading">Antes de interpretar estos datos</h2>
                   <ul>
                     {dedupedWarnings(state.snapshot).map((warning) => (
@@ -139,7 +144,7 @@ export function DashboardPage() {
             </details>
           </>
         )}
-        <footer className="page-footer">
+        <footer className="app-footer">
           <span>VOC · Voz del cliente</span>
           <span>
             Las etiquetas y los nombres de los temas son resultados de modelos.
