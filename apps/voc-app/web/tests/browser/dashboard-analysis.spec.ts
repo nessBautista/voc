@@ -257,14 +257,10 @@ test("the data page links to the panel and the panel refuses a v1 package", asyn
 }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Estado de los datos" }),
+    page.getByRole("heading", { name: "Conversa con los datos" }),
   ).toBeVisible();
-  // Exact: "Abrir el panel de análisis" below the heading also carries the name.
   await expect(
     page.getByRole("link", { name: "Panel de análisis", exact: true }),
-  ).toHaveAttribute("href", "/dashboard/");
-  await expect(
-    page.getByRole("link", { name: "Abrir el panel de análisis" }),
   ).toHaveAttribute("href", "/dashboard/");
   await expect(
     page.getByRole("region", { name: "Indicadores de la selección" }),

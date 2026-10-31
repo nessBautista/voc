@@ -125,16 +125,17 @@ test("failed model turn leaves dashboard usable and permits a new question", asy
   const chat = page.getByRole("region", { name: "Conversa con los datos" });
   await expect(chat.getByText("El modelo no está disponible.")).toBeVisible();
   await expect(chat.getByLabel("Tu pregunta")).toBeEnabled();
-  await expect(
-    page
-      .getByRole("region", { name: "Una vista del dataset" })
-      .getByText("12", { exact: true }),
-  ).toBeVisible();
+  // The failed turn offers its question back; the page itself keeps working.
+  await chat.getByRole("button", { name: "Volver a preguntar" }).click();
+  await expect(chat.getByLabel("Tu pregunta")).toHaveValue(
+    saved.turns[0].question,
+  );
   await page.getByRole("button", { name: "Actualizar vista" }).click();
+  // The id is also in the conversation's details; check the publication line.
   await expect(
     page
-      .getByRole("region", { name: "Una vista del dataset" })
-      .getByText("12", { exact: true }),
+      .locator(".app-publication")
+      .getByText(a.selection.publication_id, { exact: true }),
   ).toBeVisible();
   await chat.getByRole("button", { name: "Nueva conversación" }).click();
   await expect(page).not.toHaveURL(/conversation=/);
@@ -181,8 +182,8 @@ for (const width of [560, 742]) {
     await page.goto(`/?conversation=${saved.conversation_id}`);
     const chat = page.getByRole("region", { name: "Conversa con los datos" });
     await expect(chat.getByText(/8 registros de Google Play/)).toBeVisible();
-    await page.getByRole("button", { name: "Ir al chat", exact: true }).click();
-    await expect(chat.getByLabel("Tu pregunta")).toBeFocused();
+    // The composer stays in reach at the bottom of the screen.
+    await expect(chat.getByLabel("Tu pregunta")).toBeInViewport();
     await chat.getByLabel("Tu pregunta").fill("¿y de App Store?");
     await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
     await expect(chat.getByText(/4 registros de App Store/)).toBeVisible();

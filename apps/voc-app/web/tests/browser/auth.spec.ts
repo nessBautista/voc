@@ -37,7 +37,7 @@ test("a signed-out visitor sees only the sign-in page", async ({ page }) => {
     page.getByRole("link", { name: "Iniciar sesión" }),
   ).toHaveAttribute("href", "/auth/login");
   await expect(
-    page.getByRole("heading", { name: "Estado de los datos" }),
+    page.getByRole("heading", { name: "Conversa con los datos" }),
   ).toHaveCount(0);
   expect(requests).toHaveLength(0);
 });
@@ -70,7 +70,7 @@ test("a signed-in person sees the data, their email and can sign out", async ({
   await publications(page);
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Estado de los datos" }),
+    page.getByRole("heading", { name: "Conversa con los datos" }),
   ).toBeVisible();
   await expect(page.getByText("a@example.com")).toBeVisible();
   await page.getByRole("button", { name: "Cerrar sesión" }).click();
@@ -103,7 +103,7 @@ test("local mode shows no sign-out control", async ({ page }) => {
   await publications(page);
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Estado de los datos" }),
+    page.getByRole("heading", { name: "Conversa con los datos" }),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Cerrar sesión" })).toHaveCount(
     0,

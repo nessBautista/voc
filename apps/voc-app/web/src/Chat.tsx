@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { View } from "./components/registry";
+import { useEffect, useId, useRef, useState } from "react";
+import {
+  ChatHeader,
+  RecoveryBanner,
+  SuggestionList,
+} from "./components/chat/ChatHeader";
+import { ChatTurn } from "./components/chat/ChatTurn";
+import { Composer } from "./components/chat/Composer";
 import {
   parseConversation,
   pendingKey,
-  planScope,
   readChat,
   type Ask,
   type Conversation,
@@ -62,6 +67,13 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
   const [error, setError] = useState("");
   const [refresh, setRefresh] = useState(0);
   const generation = useRef(0);
+  const input = useRef<HTMLTextAreaElement>(null);
+  const titleId = useId();
+  // A suggestion or "Volver a preguntar" fills the composer; the reader sends.
+  const prefill = (text: string) => {
+    setQuestion(text);
+    window.setTimeout(() => input.current?.focus(), 0);
+  };
   const running =
     conversation?.turns.some((turn) => turn.status === "running") ?? false;
 
@@ -155,8 +167,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       if (revision === generation.current) setBusy(false);
     }
   }
-  function submit(event: FormEvent) {
-    event.preventDefault();
+  function submit() {
     if (!question.trim() || busy || running || pending) return;
     void send({
       request_id: crypto.randomUUID(),
@@ -175,208 +186,62 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
     setError("");
     setBusy(false);
   }
+  const locked = busy || running || pending !== null;
   return (
-    <section className="chat voc-panel" aria-labelledby="chat-heading">
-      <div className="chat-heading">
-        <div>
-          <p className="voc-eyebrow">Pregunta sobre esta información</p>
-          <h2 id="chat-heading">Conversa con los datos</h2>
-        </div>
-        <button className="voc-btn" onClick={startNew} disabled={busy}>
-          Nueva conversación
-        </button>
-      </div>
-      <p>
-        {analysis
-          ? "Pregunta por el ánimo general, la queja principal, su evolución mensual y las reseñas de un tema; también por fuentes, cobertura y fechas. "
-          : "Consulta fuentes, cobertura, fechas y embeddings. "}
-        Cada conversación conserva la publicación seleccionada al comenzar.
-      </p>
-      {id && (
-        <div className="chat-identity">
-          <span>
-            Conversación <code>{id}</code>
-          </span>
-          {conversation && (
-            <span>
-              Publicación de la conversación{" "}
-              <code>{conversation.publication_id}</code>
-            </span>
-          )}
-          <button
-            className="voc-btn voc-btn-sm"
-            onClick={() => setRefresh((n) => n + 1)}
-          >
-            Actualizar conversación
-          </button>
-        </div>
-      )}
+    <section className="app-chat" aria-labelledby={titleId}>
+      <ChatHeader
+        titleId={titleId}
+        analysis={analysis}
+        conversationId={id}
+        publicationId={conversation?.publication_id}
+        busy={busy}
+        onNew={startNew}
+        onRefresh={() => setRefresh((n) => n + 1)}
+      />
       {!id && !pending && (
-        <div className="suggestions">
-          {(analysis ? DEMO_QUESTIONS : DATA_QUESTIONS).map((example) => (
-            <button
-              key={example}
-              className="voc-btn"
-              onClick={() => setQuestion(example)}
-            >
-              {example}
-            </button>
+        <SuggestionList
+          questions={analysis ? DEMO_QUESTIONS : DATA_QUESTIONS}
+          onPick={prefill}
+        />
+      )}
+      {conversation && conversation.turns.length > 0 && (
+        <div className="voc-thread">
+          {conversation.turns.map((turn) => (
+            <ChatTurn
+              key={turn.request_id}
+              turn={turn}
+              publicationId={conversation.publication_id}
+              runningMode={mode}
+              onAskAgain={locked ? undefined : prefill}
+            />
           ))}
         </div>
       )}
-      <div className="chat-turns">
-        {conversation?.turns.map((turn) => (
-          <article className="chat-turn" key={turn.request_id}>
-            <p className="chat-question">
-              <span>Tú</span>
-              {turn.question}
-            </p>
-            <p className="chat-mode">
-              {turn.answer?.steps
-                ? `Investigación · ${turn.answer.steps.length} pasos · `
-                : ""}
-              {turn.planner_mode === "fixture"
-                ? "Planificador de prueba · Sin llamadas a un modelo"
-                : "Intención interpretada por el modelo"}
-            </p>
-            {turn.status === "running" && (
-              <p role="status">
-                Consultando la publicación… Puedes volver a esta conversación
-                después.
-              </p>
-            )}
-            {turn.error && <p role="alert">{turn.error.message}</p>}
-            {turn.answer && (
-              <>
-                <p className="chat-answer">{turn.answer.text}</p>
-                <div className="chat-views">
-                  {turn.answer.views.map((spec) => (
-                    <div
-                      key={spec.component}
-                      className={`chat-view chat-view-${spec.component}`}
-                    >
-                      <View
-                        spec={spec}
-                        results={turn.answer!.results}
-                        publicationId={conversation.publication_id}
-                      />
-                    </div>
-                  ))}
-                </div>
-                {turn.answer.warnings.length > 0 && (
-                  <details>
-                    <summary>Advertencias de la publicación</summary>
-                    <ul>
-                      {turn.answer.warnings.map((item) => (
-                        <li key={item.code + item.message}>{item.message}</li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
-                <details className="chat-trace">
-                  <summary>Ver consultas y uso</summary>
-                  <p>
-                    Intención: {turn.answer.plan.intent}.{" "}
-                    {planScope(turn.answer.plan)}
-                  </p>
-                  <ul>
-                    {turn.answer.trace.map((item) => (
-                      <li key={item.result_id}>
-                        {item.operation} · {item.duration_ms} ms ·{" "}
-                        <code>{item.result_id}</code>
-                      </li>
-                    ))}
-                  </ul>
-                  <p>
-                    Solicitudes al modelo: {turn.answer.usage.requests}. Tokens
-                    de entrada:{" "}
-                    {turn.answer.usage.prompt_tokens ?? "no informados"};
-                    salida:{" "}
-                    {turn.answer.usage.completion_tokens ?? "no informados"}.
-                  </p>
-                  {turn.answer.usage.model && (
-                    <p>Modelo: {turn.answer.usage.model}</p>
-                  )}
-                </details>
-              </>
-            )}
-          </article>
-        ))}
-      </div>
       {error && (
         <p role="alert" className="app-notice is-error">
           {error}
         </p>
       )}
-      {pending && (
-        <div className="pending-request app-notice is-warning">
-          <p>
-            Envío sin confirmar: {pending.question}. Puedes recuperar la misma
-            petición sin duplicar su ejecución.
-          </p>
-          <button
-            className="voc-btn"
-            disabled={busy}
-            onClick={() => void send(pending)}
-          >
-            Reintentar el mismo envío
-          </button>
-          <button className="voc-btn" disabled={busy} onClick={startNew}>
-            Dejar esta petición y comenzar otra
-          </button>
-        </div>
-      )}
-      <form onSubmit={submit}>
-        <div className="chat-mode-toggle">
-          <div
-            className="voc-segmented"
-            role="group"
-            aria-label="Modo de la pregunta"
-          >
-            {(
-              [
-                ["daily", "Diaria"],
-                ["research", "Investigación"],
-              ] as const
-            ).map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={mode === value}
-                onClick={() => setMode(value)}
-                disabled={busy || running || pending !== null}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <span>
-            {mode === "research"
-              ? "Una pregunta mayor, respondida en hasta seis consultas encadenadas; hasta 90 segundos."
-              : "Una pregunta, un plan, una respuesta."}
-          </span>
-        </div>
-        <label htmlFor="chat-question">Tu pregunta</label>
-        <textarea
-          id="chat-question"
-          className="voc-input chat-input"
+      <div className="app-chat-dock">
+        {pending && (
+          <RecoveryBanner
+            question={pending.question}
+            busy={busy}
+            onRetry={() => void send(pending)}
+            onDiscard={startNew}
+          />
+        )}
+        <Composer
           value={question}
-          onChange={(event) => setQuestion(event.target.value)}
-          maxLength={1000}
-          rows={3}
-          disabled={busy || running || pending !== null}
+          onChange={setQuestion}
+          mode={mode}
+          onMode={setMode}
+          onSubmit={submit}
+          disabled={locked}
+          sending={busy}
+          inputRef={input}
         />
-        <div className="chat-submit">
-          <span>Una pregunta a la vez · hasta 1,000 caracteres</span>
-          <button
-            className="voc-btn voc-btn-primary"
-            disabled={!question.trim() || busy || running || pending !== null}
-            type="submit"
-          >
-            {busy ? "Enviando…" : "Preguntar"}
-          </button>
-        </div>
-      </form>
+      </div>
     </section>
   );
 }
