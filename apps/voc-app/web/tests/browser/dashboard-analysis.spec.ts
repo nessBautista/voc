@@ -73,12 +73,17 @@ test("renders tiles, topics, timeline, platforms and mood from a v2 package", as
   await expect(tiles.getByText("60", { exact: true })).toBeVisible();
   await expect(tiles.getByText("de 60 publicadas")).toBeVisible();
   await expect(tiles.getByText("34%", { exact: true })).toBeVisible();
+  // The strongest negative topic sits above the tiles, as its own alert.
+  const signal = page.getByRole("region", {
+    name: "Señal negativa más fuerte",
+  });
   await expect(
-    tiles.getByRole("button", {
-      name: "Lentitud al abrir y cargar la aplicación",
-    }),
+    signal.getByText("Lentitud al abrir y cargar la aplicación"),
   ).toBeVisible();
-  await expect(tiles.getByText(/al menos 49%/)).toBeVisible();
+  await expect(signal.getByText(/al menos 49%/)).toBeVisible();
+  await expect(
+    signal.getByRole("button", { name: "Ver tema →" }),
+  ).toBeVisible();
   const topics = page.getByRole("region", {
     name: "Temas por volumen y sentimiento",
   });
@@ -133,7 +138,7 @@ test("sorting, filtering and resetting send the canonical selection", async ({
     .poll(() => requested.some((u) => u.endsWith("/topic_list?sort=negative")))
     .toBe(true);
   // The legend is a list too; the topic rows have their own class.
-  const first = topics.locator(".topic-rows li").first();
+  const first = topics.locator(".voc-topics li").first();
   await expect(first).toContainText("Tema 0");
   await topics.getByRole("button", { name: "Volumen", exact: true }).click();
   // Turning off three platforms leaves Google Play; the query names it.
@@ -171,27 +176,34 @@ test("drilling into a topic shows its reviews with paging and evidence", async (
   const topics = page.getByRole("region", {
     name: "Temas por volumen y sentimiento",
   });
-  await topics
-    .getByRole("button", { name: /Tema 0 · Una funcionalidad/ })
-    .click();
+  const row = topics.getByRole("button", {
+    name: /Tema 0 · Una funcionalidad/,
+  });
+  await row.click();
+  // The detail opens in a sheet beside the list, which stays in place.
   const detail = page.getByRole("region", {
     name: "Lentitud al abrir y cargar la aplicación",
   });
   await expect(detail).toBeVisible();
+  await expect(row).toHaveAttribute("aria-current", "true");
   await expect(
-    detail.getByText(
-      "10 de 10 reseñas cumplen los filtros · negativas 8 · neutras 1 · positivas 1",
-    ),
+    detail.getByText("Tema 0 · Una funcionalidad · 10 reseñas"),
   ).toBeVisible();
+  // The model's interpretation leads; the summary tab holds the counts.
   await expect(
     detail.getByText("Descripción ficticia del tema 0 para pruebas."),
   ).toBeVisible();
+  await expect(detail.getByText("de las reseñas son negativas")).toBeVisible();
   await expect(
-    detail.getByRole("list", { name: "Palabras clave" }).getByText("lenta"),
+    detail.getByText("Al menos 49% con 95% de confianza"),
   ).toBeVisible();
+  await expect(
+    detail.getByText("lenta, tarda, abrir, carga, espera, lento"),
+  ).toBeVisible();
+  await detail.getByRole("tab", { name: /Reseñas/ }).click();
   await expect(detail.getByText("10 reseñas · página 1 de 2")).toBeVisible();
   await expect(detail.locator("blockquote")).toHaveCount(6);
-  await expect(detail.getByText("1 ★").first()).toBeVisible();
+  await expect(detail.getByText("★ 1").first()).toBeVisible();
   await detail.getByRole("button", { name: "Siguiente →" }).click();
   await expect(detail.getByText("10 reseñas · página 2 de 2")).toBeVisible();
   await expect(detail.locator("blockquote")).toHaveCount(4);
@@ -203,6 +215,8 @@ test("drilling into a topic shows its reviews with paging and evidence", async (
       name: "Lentitud al abrir y cargar la aplicación",
     }),
   ).toHaveCount(0);
+  // Focus returns to the row that opened the detail.
+  await expect(row).toBeFocused();
 });
 
 test("a refused selection is reported without losing the page", async ({

@@ -8,6 +8,7 @@ import {
   type Platform,
 } from "../../analysis";
 import { platformName } from "../format";
+import { useId } from "react";
 import { assessmentName, labelName, shortMonth } from "./shared";
 
 function Chips<T extends string>({
@@ -25,27 +26,32 @@ function Chips<T extends string>({
   swatch?: (value: T) => string;
   onToggle: (value: T) => void;
 }) {
+  const id = useId();
   return (
-    <fieldset className="chip-group">
-      <legend>{name}</legend>
-      {values.map((value) => {
-        const active = chosen.has(value);
-        return (
+    <div className="voc-chip-group" role="group" aria-labelledby={id}>
+      <span className="voc-eyebrow" id={id}>
+        {name}
+      </span>
+      <div className="voc-chip-row">
+        {values.map((value) => (
           <button
             key={value}
             type="button"
-            className={`chip${active ? " active" : ""}`}
-            aria-pressed={active}
+            className="voc-chip"
+            aria-pressed={chosen.has(value)}
             onClick={() => onToggle(value)}
           >
             {swatch && (
-              <span className={`swatch ${swatch(value)}`} aria-hidden="true" />
+              <span
+                className={`voc-swatch ${swatch(value)}`}
+                aria-hidden="true"
+              />
             )}
             {label(value)}
           </button>
-        );
-      })}
-    </fieldset>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -77,14 +83,15 @@ export function FilterBar({
   const last = months[months.length - 1];
   const from = filters.monthFrom ?? first;
   const to = filters.monthTo ?? last;
+  const monthsId = useId();
+  const searchId = useId();
   return (
-    <section className="filter-bar" aria-label="Filtros">
+    <section className="voc-filterbar" aria-label="Filtros">
       <Chips<Platform>
         name="Plataforma"
         values={platforms}
         chosen={filters.platforms}
         label={platformName}
-        swatch={(value) => `platform-${value}`}
         onToggle={(value) => toggle("platforms", value)}
       />
       <Chips<Label>
@@ -92,7 +99,7 @@ export function FilterBar({
         values={labels}
         chosen={filters.labels}
         label={(value) => labelName[value]}
-        swatch={(value) => `seg-${value}`}
+        swatch={(value) => `voc-fill-${value}`}
         onToggle={(value) => toggle("labels", value)}
       />
       <Chips<Assessment>
@@ -102,65 +109,77 @@ export function FilterBar({
         label={(value) => assessmentName[value]}
         onToggle={(value) => toggle("assessments", value)}
       />
-      <div className="filter-months">
-        <label>
-          Meses de
-          <select
-            value={from ?? ""}
-            disabled={months.length === 0}
-            onChange={(event) => {
-              const value = event.target.value;
-              onChange({
-                ...filters,
-                monthFrom: value === first ? null : value,
-                monthTo:
-                  to && value > to
-                    ? value === last
-                      ? null
-                      : value
-                    : filters.monthTo,
-              });
-            }}
-          >
-            {months.map((value) => (
-              <option key={value} value={value}>
-                {shortMonth(value)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          a
-          <select
-            value={to ?? ""}
-            disabled={months.length === 0}
-            onChange={(event) => {
-              const value = event.target.value;
-              onChange({
-                ...filters,
-                monthTo: value === last ? null : value,
-                monthFrom:
-                  from && value < from
-                    ? value === first
-                      ? null
-                      : value
-                    : filters.monthFrom,
-              });
-            }}
-          >
-            {months.map((value) => (
-              <option key={value} value={value}>
-                {shortMonth(value)}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="voc-field" role="group" aria-labelledby={monthsId}>
+        <span className="voc-eyebrow" id={monthsId}>
+          Meses
+        </span>
+        <div className="voc-field-row">
+          <span className="voc-select-wrap">
+            <select
+              className="voc-select"
+              aria-label="Desde"
+              value={from ?? ""}
+              disabled={months.length === 0}
+              onChange={(event) => {
+                const value = event.target.value;
+                onChange({
+                  ...filters,
+                  monthFrom: value === first ? null : value,
+                  monthTo:
+                    to && value > to
+                      ? value === last
+                        ? null
+                        : value
+                      : filters.monthTo,
+                });
+              }}
+            >
+              {months.map((value) => (
+                <option key={value} value={value}>
+                  {shortMonth(value)}
+                </option>
+              ))}
+            </select>
+          </span>
+          <span className="voc-meta">a</span>
+          <span className="voc-select-wrap">
+            <select
+              className="voc-select"
+              aria-label="Hasta"
+              value={to ?? ""}
+              disabled={months.length === 0}
+              onChange={(event) => {
+                const value = event.target.value;
+                onChange({
+                  ...filters,
+                  monthTo: value === last ? null : value,
+                  monthFrom:
+                    from && value < from
+                      ? value === first
+                        ? null
+                        : value
+                      : filters.monthFrom,
+                });
+              }}
+            >
+              {months.map((value) => (
+                <option key={value} value={value}>
+                  {shortMonth(value)}
+                </option>
+              ))}
+            </select>
+          </span>
+        </div>
       </div>
-      <div className="filter-search">
-        <label>
+      <div className="voc-field app-filter-search">
+        <span className="voc-eyebrow" id={searchId}>
           Buscar
+        </span>
+        <div className="voc-search">
           <input
+            className="voc-input"
             type="search"
+            aria-labelledby={searchId}
             maxLength={100}
             placeholder="texto en las reseñas"
             value={filters.search}
@@ -168,10 +187,10 @@ export function FilterBar({
               onChange({ ...filters, search: event.target.value })
             }
           />
-        </label>
-        <button type="button" onClick={onReset}>
-          Restablecer
-        </button>
+          <button type="button" className="voc-btn" onClick={onReset}>
+            Restablecer
+          </button>
+        </div>
       </div>
     </section>
   );

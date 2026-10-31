@@ -29,52 +29,65 @@ export const assessmentName: Record<Assessment, string> = {
   unassigned: "Sin asignar",
 };
 
+// One 8px bar: the fill is the row's total on the list's shared scale, each
+// segment its share of that total. Spans, so it can sit inside a row button.
 export function StackedBar({
   negative,
   neutral,
   positive,
   scale,
   title,
+  label,
 }: {
   negative: number;
   neutral: number;
   positive: number;
   scale: number;
   title?: string;
+  // With a label the bar is an image that names its counts; without one it is
+  // decoration beside numbers the row already shows.
+  label?: string;
 }) {
   const total = negative + neutral + positive;
-  const width = scale > 0 ? (total / scale) * 100 : 0;
+  const width = scale > 0 ? Math.min((total / scale) * 100, 100) : 0;
   const part = (value: number) => (total > 0 ? (value / total) * 100 : 0);
+  const segments = (
+    [
+      ["negative", negative],
+      ["neutral", neutral],
+      ["positive", positive],
+    ] as const
+  ).filter(([, value]) => value > 0);
   return (
-    <div
-      className="stacked-bar"
+    <span
+      className="voc-stacked"
       title={
         title ??
         `negativas ${negative} · neutras ${neutral} · positivas ${positive}`
       }
-      aria-hidden="true"
+      {...(label
+        ? { role: "img", "aria-label": label }
+        : { "aria-hidden": true })}
     >
-      <div className="stacked-bar-fill" style={{ width: `${width}%` }}>
-        <span
-          className="seg-negative"
-          style={{ width: `${part(negative)}%` }}
-        />
-        <span className="seg-neutral" style={{ width: `${part(neutral)}%` }} />
-        <span
-          className="seg-positive"
-          style={{ width: `${part(positive)}%` }}
-        />
-      </div>
-    </div>
+      <span className="voc-stacked-fill" style={{ width: `${width}%` }}>
+        {segments.map(([name, value]) => (
+          <span
+            key={name}
+            className={`voc-fill-${name}`}
+            style={{ width: `${part(value)}%` }}
+          />
+        ))}
+      </span>
+    </span>
   );
 }
 
 export function Legend() {
   return (
-    <ul className="legend" aria-label="Leyenda de sentimiento">
+    <ul className="voc-legend" aria-label="Leyenda de sentimiento">
       {labels.map((label) => (
         <li key={label}>
-          <span className={`swatch seg-${label}`} aria-hidden="true" />
+          <span className={`voc-swatch voc-fill-${label}`} aria-hidden="true" />
           {labelName[label]}
         </li>
       ))}
@@ -85,8 +98,9 @@ const labels: Label[] = ["negative", "neutral", "positive"];
 
 export function PlatformTag({ platform }: { platform: string }) {
   return (
-    <span className="platform-tag">
-      <span className={`swatch platform-${platform}`} aria-hidden="true" />
+    <span
+      className={`voc-platform${platform === "unknown" ? " is-unknown" : ""}`}
+    >
       {platformName(platform)}
     </span>
   );
