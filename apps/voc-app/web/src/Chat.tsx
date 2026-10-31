@@ -14,6 +14,7 @@ import {
   type Conversation,
   type Mode,
 } from "./conversation";
+import { warningText } from "./shell";
 
 // The six questions of the demo flow, suggested when the package carries analysis.
 const DEMO_QUESTIONS = [
@@ -187,6 +188,17 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
     setBusy(false);
   }
   const locked = busy || running || pending !== null;
+  // The server repeats the publication's warnings in every answer and once per
+  // platform; the conversation shows each once, in the dashboard's words.
+  const warnings = [
+    ...new Set(
+      (conversation?.turns ?? []).flatMap((turn) =>
+        (turn.answer?.warnings ?? []).map(
+          (item) => warningText[item.code] ?? item.message,
+        ),
+      ),
+    ),
+  ];
   return (
     <section className="app-chat" aria-labelledby={titleId}>
       <ChatHeader
@@ -194,6 +206,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         analysis={analysis}
         conversationId={id}
         publicationId={conversation?.publication_id}
+        warnings={warnings}
         busy={busy}
         onNew={startNew}
         onRefresh={() => setRefresh((n) => n + 1)}

@@ -5,6 +5,7 @@ export function ChatHeader({
   analysis,
   conversationId,
   publicationId,
+  warnings,
   busy,
   onNew,
   onRefresh,
@@ -13,6 +14,8 @@ export function ChatHeader({
   analysis: boolean;
   conversationId: string | null;
   publicationId?: string;
+  // The publication's warnings across the conversation's answers, once each.
+  warnings: string[];
   busy: boolean;
   onNew: () => void;
   onRefresh: () => void;
@@ -32,40 +35,56 @@ export function ChatHeader({
             Cada conversación conserva la publicación seleccionada al comenzar.
           </p>
         </div>
-        <div className="voc-chat-actions">
-          <button
-            type="button"
-            className="voc-btn"
-            onClick={onNew}
-            disabled={busy}
-          >
-            Nueva conversación
-          </button>
-        </div>
-      </div>
-      {conversationId && (
-        <details className="voc-chat-details">
-          <summary>Detalles de la conversación</summary>
-          <dl>
-            <dt>Conversación</dt>
-            <dd>{conversationId}</dd>
-            {publicationId && (
-              <>
-                <dt>Publicación</dt>
-                <dd>{publicationId}</dd>
-              </>
-            )}
-          </dl>
-          <p>
+        {conversationId && (
+          <div className="voc-chat-actions">
             <button
               type="button"
-              className="voc-btn voc-btn-sm"
-              onClick={onRefresh}
+              className="voc-btn"
+              onClick={onNew}
+              disabled={busy}
             >
-              Actualizar conversación
+              Nueva conversación
             </button>
-          </p>
-        </details>
+          </div>
+        )}
+      </div>
+      {conversationId && (
+        <div className="voc-chat-meta">
+          <details className="voc-chat-details">
+            <summary>Detalles de la conversación</summary>
+            <dl>
+              <dt>Conversación</dt>
+              <dd>{conversationId}</dd>
+              {publicationId && (
+                <>
+                  <dt>Publicación</dt>
+                  <dd>{publicationId}</dd>
+                </>
+              )}
+            </dl>
+            <p>
+              <button
+                type="button"
+                className="voc-btn voc-btn-sm"
+                onClick={onRefresh}
+              >
+                Actualizar conversación
+              </button>
+            </p>
+          </details>
+          {warnings.length > 0 && (
+            <details className="voc-chat-details">
+              <summary>
+                Advertencias de la publicación ({warnings.length})
+              </summary>
+              <ul>
+                {warnings.map((text) => (
+                  <li key={text}>{text}</li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </div>
       )}
     </>
   );

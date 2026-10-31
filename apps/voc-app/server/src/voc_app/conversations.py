@@ -7,6 +7,7 @@ import logging
 import sqlite3
 from contextlib import contextmanager
 from datetime import UTC, datetime, timedelta
+from time import monotonic
 from uuid import NAMESPACE_URL, uuid5
 
 from .agent.contracts import AgentError
@@ -296,6 +297,8 @@ class Conversations:
                         "memory": memory,
                         "publication_id": publication,
                         "mode": request.mode,
+                        # The optional opening uses only what is left of this budget.
+                        "deadline": monotonic() + timeout,
                     },
                     config={
                         "recursion_limit": RESEARCH_RECURSION_LIMIT

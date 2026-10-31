@@ -1,12 +1,17 @@
 """A bounded LangGraph: interpret, resolve, query, then compose; research loops through assess."""
 
+import asyncio
+import logging
+from time import monotonic
 from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
 from .answers import compose, compose_research, operations, summarize, validate_answer
-from .contracts import Plan
+from .contracts import ANALYSIS_INTENTS, AgentError, Plan
 from .memory import remember_steps, resolve
+
+logger = logging.getLogger(__name__)
 
 # Limits are constants, not settings: no request can raise them.
 MAX_STEPS = 6
@@ -14,6 +19,11 @@ DAILY_BUDGET, RESEARCH_BUDGET = 3, 6
 DAILY_RECURSION_LIMIT, RESEARCH_RECURSION_LIMIT = 8, 24
 RESEARCH_TIMEOUT_SECONDS = 90
 RECURSION_LIMIT = DAILY_RECURSION_LIMIT
+# The opening is optional: it gets what is left of the turn, at most this, and never
+# the last seconds, so a slow provider cannot cost the answer itself.
+LEAD_TIMEOUT_SECONDS = 15
+LEAD_MARGIN_SECONDS = 2
+LEAD_MINIMUM_SECONDS = 3
 
 
 class State(TypedDict, total=False):
@@ -29,6 +39,7 @@ class State(TypedDict, total=False):
     usage: dict
     next: bool
     answer: dict
+    deadline: float
 
 
 def merge_usage(first, second):
@@ -126,6 +137,43 @@ def build_graph(planner, client):
             )
         return {"answer": composed}
 
+    async def lead(state):
+        """Ask for the opening after validation: the verified composition stays as it is."""
+        answer = state["answer"]
+        # A planner injected for tests may not write openings.
+        write = getattr(planner, "lead", None)
+        intents = [plan.intent for plan, _ in state["steps"]]
+        if write is None:
+            return {}
+        # Only analysis answers have a finding to lead with; data answers are one sentence.
+        if not any(intent in ANALYSIS_INTENTS for intent in intents):
+            return {}
+        remaining = state.get("deadline", monotonic() + 60) - monotonic()
+        budget = min(LEAD_TIMEOUT_SECONDS, remaining - LEAD_MARGIN_SECONDS)
+        if budget < LEAD_MINIMUM_SECONDS:
+            return {}
+        summaries = [
+            {
+                "plan": step_plan.model_dump(),
+                "summary": {r["kind"]: summarize(r["kind"], r) for r in step_results},
+            }
+            for step_plan, step_results in state["steps"]
+        ]
+        try:
+            written, usage = await asyncio.wait_for(
+                write(state["question"], summaries, state["history"]), budget
+            )
+        except (AgentError, TimeoutError) as error:
+            # The answer stands without an opening; the page shows it in full.
+            logger.warning("Answer opening skipped: %s", type(error).__name__)
+            return {}
+        if usage["requests"] == 0:
+            return {}
+        answer = {**answer, "usage": merge_usage(answer["usage"], usage)}
+        if written is not None:
+            answer["lead"] = written.model_dump()
+        return {"answer": answer}
+
     def validate(state):
         plan = (
             state["steps"][0][0] if state.get("mode") == "research" else state["plan"]
@@ -142,6 +190,7 @@ def build_graph(planner, client):
         ("assess", assess),
         ("compose", answer),
         ("validate", validate),
+        ("lead", lead),
     ):
         graph.add_node(name, node)
     graph.add_edge(START, "interpret")
@@ -158,5 +207,6 @@ def build_graph(planner, client):
         {"resolve": "resolve", "compose": "compose"},
     )
     graph.add_edge("compose", "validate")
-    graph.add_edge("validate", END)
+    graph.add_edge("validate", "lead")
+    graph.add_edge("lead", END)
     return graph.compile()

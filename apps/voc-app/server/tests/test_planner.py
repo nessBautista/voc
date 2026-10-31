@@ -1,5 +1,6 @@
 """The planner classifies the demo flow in fixture mode and parses it in model mode."""
 
+import asyncio
 import json
 import logging
 from dataclasses import replace
@@ -10,7 +11,7 @@ from fastapi.testclient import TestClient
 from pydantic import ValidationError
 from test_chat import ask, payload
 from voc_app.agent.contracts import Plan, Selection, TopicReference
-from voc_app.agent.planner import SYSTEM, Planner, fixture_plan
+from voc_app.agent.planner import SYSTEM, SYSTEM_LEAD, Planner, fixture_plan
 from voc_app.main import create_app
 
 NONE = {"platform": None, "selection": None, "topic": None, "limit": None}
@@ -225,7 +226,9 @@ def test_model_mode_parses_the_new_schema(settings, v2_active, content, expected
         turn = ask(client, payload("¿Cuál es la queja principal en Google Play?"))[
             "turns"
         ][0]
-    assert len(requests) == 1
+    # A completed analysis answer also asks for its opening; this script answers that
+    # second call with a plan, so the opening is refused and the answer stands without it.
+    assert len(requests) == (2 if expected == "completed" else 1)
     assert requests[0]["max_tokens"] == 512
     assert (
         requests[0]["response_format"]["json_schema"]["schema"]["required"][-1]
@@ -238,6 +241,9 @@ def test_model_mode_parses_the_new_schema(settings, v2_active, content, expected
     assert turn["status"] == expected, turn
     if expected == "completed":
         assert turn["answer"]["plan"] == content
+        assert requests[1]["messages"][0]["content"] == SYSTEM_LEAD
+        assert "lead" not in turn["answer"]
+        assert turn["answer"]["usage"]["requests"] == 1
         assert [r["kind"] for r in turn["answer"]["results"]] == [
             "summary",
             "topic_list",
@@ -324,3 +330,74 @@ def test_provider_failures_log_status_and_fields_only(settings, v2_active, caplo
     joined = "\n".join(messages)
     assert "test-secret-key" not in joined
     assert "texto-privado" not in joined and "provider detail" not in joined
+
+
+def test_a_one_step_opening_keeps_no_chain(settings):
+    """The model may list steps for a daily answer; the server drops them."""
+    reply = {
+        "text": "El ánimo está dividido: 39% positivas y 35% negativas.",
+        "steps": ["Ánimo general: 39% positivo", "Negativas en X: 81%"],
+    }
+
+    def respond(request):
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {"finish_reason": "stop", "message": {"content": json.dumps(reply)}}
+                ],
+                "usage": {"prompt_tokens": 900, "completion_tokens": 60},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    steps = [
+        {
+            "plan": {"intent": "mood"},
+            "summary": {
+                "summary": {"negative_share": 0.349, "positive_share": 0.385},
+                "platforms": {"platforms": [{"platform": "x", "negative_share": 0.81}]},
+            },
+        }
+    ]
+    lead, usage = asyncio.run(planner.lead("¿Cómo se sienten?", steps, []))
+    assert lead is not None and lead.text == reply["text"]
+    assert lead.steps == []
+    assert usage["requests"] == 1
+
+
+def test_a_chain_that_does_not_match_the_steps_is_left_out(settings):
+    """Four lines for three steps: the opening stays, the chain goes."""
+    reply = {
+        "text": "Agosto de 2026 fue el mes más negativo, con 50%.",
+        "steps": ["Mes: agosto de 2026", "Tema 9", "Otros temas", "Reseñas del tema 9"],
+    }
+
+    def respond(request):
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {"finish_reason": "stop", "message": {"content": json.dumps(reply)}}
+                ],
+                "usage": {"prompt_tokens": 900, "completion_tokens": 60},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    steps = [
+        {"plan": {"intent": "trend"}, "summary": {"timeline": {"first": "2026-08"}}},
+        {
+            "plan": {"intent": "main_complaints"},
+            "summary": {"topic_list": {"topics": [{"topic_id": 9}]}},
+        },
+        {
+            "plan": {"intent": "topic_reviews"},
+            "summary": {"topic_detail": {"topic_id": 9, "x": 0.503}},
+        },
+    ]
+    lead, _ = asyncio.run(planner.lead("¿Qué mes?", steps, []))
+    assert lead is not None and lead.text == reply["text"]
+    assert lead.steps == []

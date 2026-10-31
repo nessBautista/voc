@@ -1,4 +1,11 @@
-import { useId, type FormEvent, type Ref } from "react";
+import {
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+  type FormEvent,
+  type Ref,
+} from "react";
 import type { Mode } from "../../conversation";
 import { number } from "../format";
 
@@ -40,6 +47,15 @@ export function Composer({
   inputRef?: Ref<HTMLTextAreaElement>;
 }) {
   const id = useId();
+  const box = useRef<HTMLTextAreaElement>(null);
+  useImperativeHandle(inputRef, () => box.current as HTMLTextAreaElement);
+  // One line at rest; the box grows with the text up to its maximum height.
+  useEffect(() => {
+    const field = box.current;
+    if (!field) return;
+    field.style.height = "auto";
+    field.style.height = `${field.scrollHeight}px`;
+  }, [value]);
   const current = modes.find(([key]) => key === mode) ?? modes[0];
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -56,8 +72,8 @@ export function Composer({
       </label>
       <textarea
         id={id}
-        ref={inputRef}
-        rows={3}
+        ref={box}
+        rows={1}
         maxLength={MAX}
         placeholder={current[3]}
         value={value}

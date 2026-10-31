@@ -105,6 +105,15 @@ const answerSchema = z
       .max(6)
       .optional(),
     text: z.string().min(1),
+    // The model's opening, written after the answer was verified. Older answers and
+    // the fixture planner have none.
+    lead: z
+      .object({
+        text: z.string().min(1).max(320),
+        steps: z.array(z.string().min(1).max(140)).max(6),
+      })
+      .strict()
+      .optional(),
     results: z.array(z.union([resultSchema, analysisResultSchema])).max(6),
     views: z
       .array(
@@ -144,7 +153,8 @@ const answerSchema = z
       .object({
         mode,
         model: z.string().nullable(),
-        requests: count.max(7),
+        // A plan, up to six assessments and the opening.
+        requests: count.max(8),
         prompt_tokens: count.nullable(),
         completion_tokens: count.nullable(),
         duration_ms: count,

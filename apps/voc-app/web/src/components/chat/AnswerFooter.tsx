@@ -1,11 +1,10 @@
 import { planScope, type Conversation } from "../../conversation";
-import { warningText } from "../../shell";
 import { number } from "../format";
 
 type Answer = NonNullable<Conversation["turns"][number]["answer"]>;
 
-// The evidence behind an answer, one click away: the queries that ran, what
-// the model used, and the publication's warnings in the dashboard's words.
+// The evidence behind an answer, one click away: the queries that ran and what
+// the model used. The publication's warnings show once, for the conversation.
 export function AnswerFooter({ answer }: { answer: Answer }) {
   const { usage, trace } = answer;
   const tokens =
@@ -23,12 +22,6 @@ export function AnswerFooter({ answer }: { answer: Answer }) {
         ]
           .filter(Boolean)
           .join(" · ");
-  // The server repeats a warning per platform; the reader needs it once.
-  const warnings = [
-    ...new Set(
-      answer.warnings.map((item) => warningText[item.code] ?? item.message),
-    ),
-  ];
   return (
     <div className="voc-answer-foot">
       <details>
@@ -55,16 +48,6 @@ export function AnswerFooter({ answer }: { answer: Answer }) {
         </p>
         {usage.model && <p>Modelo: {usage.model}</p>}
       </details>
-      {warnings.length > 0 && (
-        <details>
-          <summary>Advertencias de la publicación ({warnings.length})</summary>
-          <ul>
-            {warnings.map((text) => (
-              <li key={text}>{text}</li>
-            ))}
-          </ul>
-        </details>
-      )}
     </div>
   );
 }

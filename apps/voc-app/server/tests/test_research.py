@@ -9,14 +9,16 @@ import pytest
 from fastapi.testclient import TestClient
 from test_chat import app_for, ask, payload, wait
 from voc_app.agent.answers import validate_answer
-from voc_app.agent.contracts import Assessment, Plan
+from voc_app.agent.contracts import Assessment, Lead, Plan
 from voc_app.agent.graph import MAX_STEPS, RESEARCH_BUDGET
 from voc_app.agent.planner import (
     RESEARCH_FIRST,
     SYSTEM_ASSESS,
+    SYSTEM_LEAD,
     Planner,
     fixture_assess,
     fixture_plan,
+    grounded,
 )
 from voc_app.conversations import Conversations
 from voc_app.main import create_app
@@ -244,6 +246,16 @@ def test_model_mode_assesses_with_summaries_only(settings, v2_active):
             }
         },
         {"next": None},
+        # The opening, written from the same summaries: September 2025 had the most
+        # reviews (5) and no feature topic qualifies in that month.
+        {
+            "text": "En septiembre de 2025, el mes con más reseñas (5), ningún tema "
+            "de una funcionalidad reúne reseñas suficientes para destacarlo.",
+            "steps": [
+                "Mes con más reseñas: septiembre de 2025, con 5",
+                "Ningún tema destacado en ese mes",
+            ],
+        },
     ]
 
     def respond(request):
@@ -276,12 +288,24 @@ def test_model_mode_assesses_with_summaries_only(settings, v2_active):
     assert answer["usage"] == {
         "mode": "model",
         "model": settings.llm_model,
-        "requests": 3,
-        "prompt_tokens": 3000,
-        "completion_tokens": 150,
+        "requests": 4,
+        "prompt_tokens": 4000,
+        "completion_tokens": 200,
         "duration_ms": answer["usage"]["duration_ms"],
     }
-    assert len(requests) == 3
+    assert len(requests) == 4
+    assert answer["lead"] == scripted[3]
+    # The opening is asked for last, from the same summaries the assessments saw.
+    assert requests[3]["messages"][0]["content"] == SYSTEM_LEAD
+    opening = json.loads(requests[3]["messages"][1]["content"])
+    assert set(opening) == {"question", "steps", "history"}
+    assert [s["plan"]["intent"] for s in opening["steps"]] == [
+        "trend",
+        "main_complaints",
+    ]
+    flat = json.dumps(opening, ensure_ascii=False)
+    for forbidden in ("items", "keywords", "description", "text", "test-secret-key"):
+        assert forbidden not in flat, forbidden
     # The first call asks for the first step of a chain; the next two assess.
     assert requests[0]["messages"][0]["content"].endswith(RESEARCH_FIRST)
     assert "Return only the FIRST step" in requests[0]["messages"][0]["content"]
@@ -378,7 +402,45 @@ def test_model_mode_reference_in_a_chain_resolves_or_asks(settings, v2_active):
     }
     assert answer["steps"][2]["result_ids"] == []
     assert "Paso 3 · Aclaración. ¿A qué tema te refieres?" in answer["text"]
-    assert len(calls) == 3 and answer["usage"]["requests"] == 3
+    # The fourth call asks for the opening; the script has no reply for it, so the
+    # answer stands without one and the failed call is not counted.
+    assert len(calls) == 4 and answer["usage"]["requests"] == 3
+    assert "lead" not in answer
     validate_answer(
         answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
     )
+
+
+def test_an_opening_with_a_figure_the_steps_do_not_hold_is_refused():
+    steps = [
+        {
+            "plan": {"intent": "main_complaints"},
+            "summary": {
+                "summary": {"reviews_in_view": 264, "negative_share": 0.992},
+                "topic_list": {
+                    "topics": [{"topic_id": 73, "negative": 262, "classified": 264}]
+                },
+            },
+        }
+    ]
+
+    def opening(text, *lines):
+        return Lead(text=text, steps=list(lines))
+
+    assert grounded(opening("«Pagos», tema 73: 99% de 264 reseñas negativas."), steps)
+    assert grounded(
+        opening("262 de 264 son negativas, al menos 95% de confianza."), steps
+    )
+    # A share, a count or a decimal that no summary states is refused.
+    assert not grounded(opening("El 87% de las reseñas son negativas."), steps)
+    assert not grounded(opening("Hay 1,500 reseñas negativas."), steps)
+    assert not grounded(opening("Sube 2.5 puntos."), steps)
+    assert not grounded(opening("Bien.", "Cayó al 12%"), steps)
+
+
+def test_fixture_mode_writes_no_opening(settings, v2_active):
+    with TestClient(create_app(settings)) as client:
+        answer = ask(client, research())["turns"][0]["answer"]
+        daily = ask(client, payload("¿Cuál es la queja principal?"))["turns"][0]
+    assert "lead" not in answer and answer["usage"]["requests"] == 0
+    assert "lead" not in daily["answer"]

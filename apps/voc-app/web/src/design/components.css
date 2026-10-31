@@ -94,6 +94,7 @@
 .voc-suggestion:focus-visible,
 .voc-answer-foot summary:focus-visible,
 .voc-chat-details summary:focus-visible,
+.voc-answer-more > summary:focus-visible,
 .is-focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -1417,6 +1418,19 @@
   font-family: var(--font-mono);
   overflow-wrap: anywhere;
 }
+.voc-chat-details ul {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-5);
+}
+/* The conversation's details and its warnings share one quiet row */
+.voc-chat-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+.voc-chat-meta > details[open] {
+  flex-basis: 100%;
+}
 
 /* Suggested questions: a row-separated list, the whole row is the button */
 .voc-suggestions {
@@ -1565,6 +1579,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+}
+/* A part of the answer and the panels that follow it; text keeps a reading width */
+.voc-answer-part {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.voc-answer-section,
+.voc-answer-part > .voc-answer-text {
   max-width: 72ch;
 }
 .voc-answer-section {
@@ -1644,6 +1667,109 @@
   overflow-wrap: anywhere;
 }
 
+/* The model's opening: the answer first, then one line per research step */
+.voc-answer-lead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 72ch;
+}
+.voc-answer-lead-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 26px;
+  font-weight: 500;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.voc-answer-chain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: voc-step;
+}
+.voc-answer-chain li {
+  counter-increment: voc-step;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: var(--space-2);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink);
+}
+.voc-answer-chain li::before {
+  content: counter(voc-step);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.voc-answer-lead-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+/* The full analysis and its limits, folded under the opening */
+.voc-answer-folds {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.voc-answer-more {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.voc-answer-more > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  list-style: none;
+  cursor: pointer;
+}
+.voc-answer-more > summary::-webkit-details-marker {
+  display: none;
+}
+.voc-answer-more > summary::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 140ms ease-out;
+}
+.voc-answer-more[open] > summary::before {
+  transform: rotate(45deg);
+}
+.voc-answer-more > summary:hover {
+  color: var(--ink);
+}
+.voc-answer-more[open] > summary {
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.voc-answer-more > .voc-answer,
+.voc-answer-more > .voc-answer-text {
+  padding: var(--space-4);
+}
+.voc-answer-more > .voc-answer-text {
+  max-width: 72ch;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+
 /* Composer: the question box with the mode, the count and the send button */
 .voc-composer {
   display: flex;
@@ -1664,7 +1790,7 @@
   font: inherit;
   display: block;
   width: 100%;
-  min-height: 72px;
+  min-height: 32px;
   max-height: 240px;
   margin: 0;
   padding: var(--space-1) var(--space-2);
@@ -1673,7 +1799,8 @@
   color: var(--ink);
   font-size: 15px;
   line-height: 24px;
-  resize: vertical;
+  resize: none;
+  overflow-y: auto;
 }
 .voc-composer textarea:focus,
 .voc-composer textarea:focus-visible {
@@ -1692,7 +1819,9 @@
   align-items: center;
   gap: var(--space-2) var(--space-3);
 }
+/* Compact at rest: the mode's description shows while the composer is in use */
 .voc-composer-mode {
+  display: none;
   flex: 1 1 220px;
   min-width: 0;
   margin: 0;
@@ -1700,7 +1829,13 @@
   line-height: 16px;
   color: var(--ink-muted);
 }
+.voc-composer:hover .voc-composer-mode,
+.voc-composer:focus-within .voc-composer-mode,
+.voc-composer.is-focus .voc-composer-mode {
+  display: block;
+}
 .voc-composer-count {
+  margin-left: auto;
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-size: 11px;
@@ -1736,7 +1871,8 @@
   .voc-evidence summary::before,
   .voc-suggestion,
   .voc-chat-details summary::before,
-  .voc-answer-foot summary::before {
+  .voc-answer-foot summary::before,
+  .voc-answer-more > summary::before {
     transition: none;
   }
   .voc-pulse {
