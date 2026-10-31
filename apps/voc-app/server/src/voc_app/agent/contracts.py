@@ -198,6 +198,21 @@ class Assessment(Contract):
     next: Plan | None
 
 
+class Lead(Contract):
+    """What the model writes to open an answer: the finding first, then each research step.
+
+    Lengths are checked after parsing, not in the schema, so the provider's strict mode
+    sees only types it supports.
+    """
+
+    text: str
+    steps: list[str]
+
+
+LEAD_TEXT_CHARS = 320
+LEAD_STEP_CHARS = 140
+
+
 class AgentError(Exception):
     def __init__(self, code, message):
         super().__init__(message)
