@@ -41,6 +41,17 @@
   color: var(--ink-muted);
   overflow-wrap: anywhere;
 }
+/* Visually hidden, still read aloud */
+.voc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .voc-text-negative {
   color: var(--negative);
 }
@@ -80,6 +91,9 @@
 .voc-tab:focus-visible,
 .voc-evidence summary:focus-visible,
 .voc-link:focus-visible,
+.voc-suggestion:focus-visible,
+.voc-answer-foot summary:focus-visible,
+.voc-chat-details summary:focus-visible,
 .is-focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -1321,12 +1335,411 @@
   color: var(--ink-muted);
 }
 
+/* Chat: header, suggestions, turns, answers and composer */
+.voc-chat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.voc-chat-head > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.voc-chat-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.voc-chat-lede {
+  margin: 0;
+  max-width: 65ch;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+.voc-chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.voc-chat-details {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.voc-chat-details summary,
+.voc-answer-foot summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  list-style: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.voc-chat-details summary::-webkit-details-marker,
+.voc-answer-foot summary::-webkit-details-marker {
+  display: none;
+}
+.voc-chat-details summary::before,
+.voc-answer-foot summary::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 140ms ease-out;
+}
+.voc-chat-details[open] summary::before,
+.voc-answer-foot details[open] summary::before {
+  transform: rotate(45deg);
+}
+.voc-chat-details summary:hover,
+.voc-answer-foot summary:hover {
+  color: var(--ink);
+}
+.voc-chat-details dl {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-1) var(--space-3);
+  margin: var(--space-2) 0 0;
+}
+.voc-chat-details dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+/* Suggested questions: a row-separated list, the whole row is the button */
+.voc-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.voc-suggestions ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.voc-suggestions li + li {
+  border-top: 1px solid var(--line);
+}
+.voc-suggestion {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 140ms ease-out;
+}
+.voc-suggestion::after {
+  content: "→";
+  flex: none;
+  color: var(--ink-muted);
+}
+.voc-suggestion:hover,
+.voc-suggestion.is-hover {
+  background: var(--surface-raised);
+}
+.voc-suggestion:hover::after,
+.voc-suggestion.is-hover::after {
+  color: var(--accent);
+}
+
+/* A turn: the question, one status line, the answer and its footer */
+.voc-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.voc-turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.voc-turn-question {
+  align-self: flex-end;
+  max-width: min(80%, 60ch);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm)
+    var(--radius-lg);
+  background: var(--surface-raised);
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.voc-turn-status {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+.voc-turn-running {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+.voc-turn-running .voc-num {
+  color: var(--ink);
+}
+.voc-pulse {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-muted);
+  animation: voc-pulse 1.2s ease-in-out infinite;
+}
+@keyframes voc-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.voc-turn-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--negative) 35%, var(--line));
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink);
+}
+.voc-turn-error > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 240px;
+}
+.voc-turn-error > span:first-child::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--negative);
+}
+
+/* The answer: the server's labelled sections; the limits read as a callout */
+.voc-answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 72ch;
+}
+.voc-answer-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.voc-answer-label {
+  margin: 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.voc-answer-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.voc-answer-caveat {
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid var(--line-strong);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--surface);
+}
+.voc-answer-caveat .voc-answer-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+.voc-answer-views {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.voc-answer-views > * {
+  min-width: 0;
+}
+.voc-answer-views > .is-wide {
+  grid-column: 1 / -1;
+}
+.voc-answer-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.voc-answer-foot details {
+  min-width: 0;
+}
+.voc-answer-foot details[open] {
+  flex-basis: 100%;
+}
+.voc-answer-foot p {
+  margin: var(--space-2) 0 0;
+}
+.voc-answer-foot ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.voc-answer-foot li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+/* Composer: the question box with the mode, the count and the send button */
+.voc-composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.voc-composer:focus-within,
+.voc-composer.is-focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: var(--glow-sm);
+}
+.voc-composer textarea {
+  font: inherit;
+  display: block;
+  width: 100%;
+  min-height: 72px;
+  max-height: 240px;
+  margin: 0;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 24px;
+  resize: vertical;
+}
+.voc-composer textarea:focus,
+.voc-composer textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.voc-composer textarea::placeholder {
+  color: var(--ink-muted);
+}
+.voc-composer textarea:disabled {
+  cursor: not-allowed;
+}
+.voc-composer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+.voc-composer-mode {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.voc-composer-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+
+/* Recovery: a send that was not confirmed, pinned above the composer */
+.voc-recovery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ink);
+}
+.voc-recovery p {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .voc-btn,
   .voc-chip,
   .voc-topic-row,
   .voc-icon-btn,
-  .voc-evidence summary::before {
+  .voc-evidence summary::before,
+  .voc-suggestion,
+  .voc-chat-details summary::before,
+  .voc-answer-foot summary::before {
     transition: none;
+  }
+  .voc-pulse {
+    animation: none;
   }
 }

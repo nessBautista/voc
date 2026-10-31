@@ -48,16 +48,23 @@ test("suggests the six questions and answers mood with the ring and the platform
   await expect(
     chat.getByRole("button", { name: "¿Cuál es la queja principal?" }),
   ).toBeVisible();
-  await expect(chat.locator(".suggestions button")).toHaveCount(6);
+  await expect(chat.locator(".voc-suggestion")).toHaveCount(6);
   await chat
     .getByRole("button", {
       name: "¿Cómo se sienten, en general, quienes dejaron reseñas?",
     })
     .click();
   await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
-  await expect(chat.getByText(/Qué dicen los datos\./)).toBeVisible();
-  await expect(chat.getByText(/Interpretación\./)).toBeVisible();
-  await expect(chat.getByText(/Lo que no se puede afirmar\./)).toBeVisible();
+  // The answer's labelled paragraphs are drawn as sections.
+  await expect(
+    chat.getByRole("heading", { name: "Qué dicen los datos" }),
+  ).toBeVisible();
+  await expect(
+    chat.getByRole("heading", { name: "Interpretación" }),
+  ).toBeVisible();
+  await expect(
+    chat.getByRole("heading", { name: "Lo que no se puede afirmar" }),
+  ).toBeVisible();
   await expect(
     chat.getByRole("region", { name: "Ánimo general" }),
   ).toBeVisible();
@@ -68,7 +75,9 @@ test("suggests the six questions and answers mood with the ring and the platform
   ).toBeVisible();
   await chat.getByText("Ver consultas y uso").click();
   await expect(chat.getByText(/Intención: mood\./)).toBeVisible();
-  await expect(chat.locator(".chat-trace li").first()).toContainText("summary");
+  await expect(chat.locator(".voc-answer-foot li").first()).toContainText(
+    "summary",
+  );
   // Each block is the dashboard's panel, with its evidence drawer.
   await expect(chat.getByText("Ver evidencia", { exact: true })).toHaveCount(2);
 });
@@ -101,8 +110,12 @@ test("research mode sends the mode and renders the steps with their blocks", asy
   await chat.getByLabel("Tu pregunta").fill(research.turns[0].question);
   await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
   await expect(chat.getByText(/Investigación en 2 pasos\./)).toBeVisible();
-  await expect(chat.getByText(/Paso 1 · Evolución mensual\./)).toBeVisible();
-  await expect(chat.getByText(/Paso 2 · Queja principal\./)).toBeVisible();
+  await expect(
+    chat.getByRole("heading", { name: "Paso 1 · Evolución mensual" }),
+  ).toBeVisible();
+  await expect(
+    chat.getByRole("heading", { name: "Paso 2 · Queja principal" }),
+  ).toBeVisible();
   await expect(chat.getByText(/Investigación · 2 pasos/)).toBeVisible();
   await expect(
     chat.getByRole("region", { name: "Sentimiento en el tiempo" }),
