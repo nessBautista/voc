@@ -79,40 +79,6 @@ dd {
   white-space: nowrap;
 }
 
-/* Additions to the design system's components, until it covers them. */
-.voc-segmented button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-/* FilterBar, compact: each group's label sits beside its chips, so the bar
-   wraps in about two lines instead of stacking label over chips. This also
-   keeps the search box one line tall (as a column, its flex basis made it
-   240px high). */
-.voc-filterbar {
-  align-items: center;
-  gap: var(--space-3) var(--space-5);
-  padding: var(--space-3) var(--space-4);
-}
-.voc-filterbar .voc-chip-group,
-.voc-filterbar .voc-field {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-2) var(--space-3);
-}
-.voc-filterbar .voc-field .voc-search {
-  flex: 1 1 auto;
-}
-/* MoodSummary: counts reach six digits, so the count column is wider, and
-   the topic most cited takes its own line under its label. */
-.voc-mood-rows li {
-  grid-template-columns: 8px 80px 44px 64px;
-}
-.voc-mood-rows .voc-mood-driver {
-  grid-column: 2 / -1;
-}
-.voc-mood-rows .voc-mood-driver:empty {
-  display: none;
-}
 .eyebrow {
   margin: 0 0 var(--space-1);
   font-size: 11px;
