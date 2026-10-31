@@ -23,6 +23,7 @@ export function TopicDetail({
   onPage,
   tab,
   onTab,
+  initialTab = "summary",
   titleId,
   titleRef,
 }: {
@@ -38,11 +39,13 @@ export function TopicDetail({
   onPage?: (page: number) => void;
   // The tab can live with the caller, so it survives moving between topics.
   tab?: DetailTab;
+  // Where a detail with its own tab starts: a chat answer opens on the reviews.
+  initialTab?: DetailTab;
   onTab?: (tab: DetailTab) => void;
   titleId?: string;
   titleRef?: Ref<HTMLHeadingElement>;
 }) {
-  const [ownTab, setOwnTab] = useState<DetailTab>("summary");
+  const [ownTab, setOwnTab] = useState<DetailTab>(initialTab);
   const current = tab ?? ownTab;
   const choose = onTab ?? setOwnTab;
   const id = useId();

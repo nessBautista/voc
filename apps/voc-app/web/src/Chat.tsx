@@ -63,6 +63,8 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [question, setQuestion] = useState("");
   const [mode, setMode] = useState<Mode>("daily");
+  // The mode of the last question sent, for the running turn's label.
+  const [sentMode, setSentMode] = useState<Mode>("daily");
   const [pending, setPending] = useState<Ask | null>(pendingRequest);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -134,7 +136,9 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
     };
   }, [id, refresh]);
 
-  async function send(payload: Ask) {
+  // A follow-up sent from an answer keeps whatever the reader was drafting.
+  async function send(payload: Ask, keepDraft = false) {
+    setSentMode(payload.mode ?? "daily");
     const revision = ++generation.current;
     setBusy(true);
     setError("");
@@ -155,7 +159,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       accept(parseConversation(value));
       localStorage.removeItem(pendingKey);
       setPending(null);
-      setQuestion("");
+      if (!keepDraft) setQuestion("");
       setRefresh((n) => n + 1);
     } catch (failure) {
       if (revision === generation.current)
@@ -224,8 +228,23 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
               key={turn.request_id}
               turn={turn}
               publicationId={conversation.publication_id}
-              runningMode={mode}
+              runningMode={sentMode}
               onAskAgain={locked ? undefined : prefill}
+              onAsk={
+                locked
+                  ? undefined
+                  : (text) =>
+                      void send(
+                        {
+                          request_id: crypto.randomUUID(),
+                          question: text,
+                          conversation_id: id,
+                          // A topic's reviews are a daily question.
+                          mode: "daily",
+                        },
+                        true,
+                      )
+              }
             />
           ))}
         </div>
