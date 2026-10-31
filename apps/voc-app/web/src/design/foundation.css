@@ -1,0 +1,6 @@
+/* voc-design system foundation: self-hosted fonts, tokens and the base layer.
+   Imported first by styles.css, so both pages share it. */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "./tokens.css";
+@import "./base.css";

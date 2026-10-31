@@ -1,39 +1,25 @@
-/* VOC web theme: dark, Linear-like. Every colour is a token; components never
-   use a hex value. Light theme is deferred (dashboard bundle, guide 07). */
+/* VOC web theme on the voc-design system foundation (src/design). Every
+   colour is a token; components never use a hex value. The names below are
+   the old theme's, kept as aliases until each component moves to voc- classes. */
+@import "./design/foundation.css";
+
 :root {
-  --bg: #08090a;
-  --surface: #101113;
-  --raised: #17181b;
-  --border: #23252a;
-  --border-strong: #2e3137;
-  --text: #f7f8f8;
-  --muted: #8a8f98;
-  --faint: #62666e;
-  --accent: #5e6ad2;
-  --accent-soft: rgba(94, 106, 210, 0.18);
-  --warning: #f2c94c;
-  --warning-soft: rgba(242, 201, 76, 0.12);
-  --negative: #eb5757;
-  --neutral: #6b6f76;
-  --positive: #4ea7fc;
+  --raised: var(--surface-raised);
+  --border: var(--line);
+  --border-strong: var(--line-strong);
+  --text: var(--ink);
+  --muted: var(--ink-muted);
+  --faint: var(--ink-muted);
+  --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
+  --warning-soft: color-mix(in srgb, var(--warning) 12%, transparent);
+  --neutral: var(--line-strong);
   --google-play: #4ea7fc;
   --app-store: #f2994a;
   --x: #27ae60;
   --youtube: #f2c94c;
-  --radius: 6px;
-  font-family:
-    Inter,
-    ui-sans-serif,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  --radius: var(--radius-md);
   font-size: 13px;
   line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
-  color-scheme: dark;
-  font-synthesis: none;
 }
 * {
   box-sizing: border-box;
@@ -153,7 +139,7 @@ p {
   height: 26px;
   border-radius: var(--radius);
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 1rem;
 }
 .brand-divider {
@@ -244,7 +230,7 @@ main {
   height: 6px;
   width: 6px;
   border-radius: 50%;
-  background: var(--x);
+  background: var(--positive);
 }
 .activated {
   margin-left: auto;
@@ -859,7 +845,7 @@ button.topic-row:hover {
   display: block;
 }
 .topic-title.keywords {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.74rem;
   color: var(--muted);
 }
@@ -1025,7 +1011,7 @@ button.topic-row:hover {
   gap: 0.35rem;
 }
 .keyword-chips li {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   padding: 0.15rem 0.45rem;
   border: 1px solid var(--border-strong);
@@ -1086,7 +1072,7 @@ button.topic-row:hover {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #fff;
+  color: var(--bg);
   background: var(--faint);
 }
 .badge-label.seg-neutral {
