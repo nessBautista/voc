@@ -176,13 +176,13 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
     setBusy(false);
   }
   return (
-    <section className="chat" aria-labelledby="chat-heading">
+    <section className="chat voc-panel" aria-labelledby="chat-heading">
       <div className="chat-heading">
         <div>
-          <p className="eyebrow">Pregunta sobre esta información</p>
+          <p className="voc-eyebrow">Pregunta sobre esta información</p>
           <h2 id="chat-heading">Conversa con los datos</h2>
         </div>
-        <button onClick={startNew} disabled={busy}>
+        <button className="voc-btn" onClick={startNew} disabled={busy}>
           Nueva conversación
         </button>
       </div>
@@ -203,7 +203,10 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
               <code>{conversation.publication_id}</code>
             </span>
           )}
-          <button onClick={() => setRefresh((n) => n + 1)}>
+          <button
+            className="voc-btn voc-btn-sm"
+            onClick={() => setRefresh((n) => n + 1)}
+          >
             Actualizar conversación
           </button>
         </div>
@@ -211,7 +214,11 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       {!id && !pending && (
         <div className="suggestions">
           {(analysis ? DEMO_QUESTIONS : DATA_QUESTIONS).map((example) => (
-            <button key={example} onClick={() => setQuestion(example)}>
+            <button
+              key={example}
+              className="voc-btn"
+              onClick={() => setQuestion(example)}
+            >
               {example}
             </button>
           ))}
@@ -297,20 +304,24 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         ))}
       </div>
       {error && (
-        <p role="alert" className="chat-error">
+        <p role="alert" className="app-notice is-error">
           {error}
         </p>
       )}
       {pending && (
-        <div className="pending-request">
+        <div className="pending-request app-notice is-warning">
           <p>
             Envío sin confirmar: {pending.question}. Puedes recuperar la misma
             petición sin duplicar su ejecución.
           </p>
-          <button disabled={busy} onClick={() => void send(pending)}>
+          <button
+            className="voc-btn"
+            disabled={busy}
+            onClick={() => void send(pending)}
+          >
             Reintentar el mismo envío
           </button>
-          <button disabled={busy} onClick={startNew}>
+          <button className="voc-btn" disabled={busy} onClick={startNew}>
             Dejar esta petición y comenzar otra
           </button>
         </div>
@@ -318,7 +329,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       <form onSubmit={submit}>
         <div className="chat-mode-toggle">
           <div
-            className="segmented"
+            className="voc-segmented"
             role="group"
             aria-label="Modo de la pregunta"
           >
@@ -348,6 +359,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         <label htmlFor="chat-question">Tu pregunta</label>
         <textarea
           id="chat-question"
+          className="voc-input chat-input"
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           maxLength={1000}
@@ -357,6 +369,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         <div className="chat-submit">
           <span>Una pregunta a la vez · hasta 1,000 caracteres</span>
           <button
+            className="voc-btn voc-btn-primary"
             disabled={!question.trim() || busy || running || pending !== null}
             type="submit"
           >

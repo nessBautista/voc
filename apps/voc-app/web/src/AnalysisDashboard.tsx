@@ -174,15 +174,15 @@ export function AnalysisDashboard({
       ` · ${number(ready.summary.data.topics_total)} temas`
     : null;
   return (
-    <section className="analysis" aria-labelledby="analysis-heading">
-      <div className="page-heading">
+    <section className="app-analysis" aria-labelledby="analysis-heading">
+      <div className="app-page-head">
         <div>
-          <p className="eyebrow">Voz del cliente</p>
+          <p className="voc-eyebrow">Voz del cliente</p>
           <h1 id="analysis-heading">Qué dicen las reseñas</h1>
           {header && <p>{header}</p>}
         </div>
         {!isDefault(filters) && (
-          <button type="button" onClick={reset}>
+          <button type="button" className="voc-btn" onClick={reset}>
             Quitar filtros
           </button>
         )}
@@ -194,14 +194,14 @@ export function AnalysisDashboard({
         onReset={reset}
       />
       {state.status === "loading" && (
-        <div role="status" className="state-panel">
-          <span className="loader" aria-hidden="true" />
+        <div role="status" className="app-state">
+          <span className="app-loader" aria-hidden="true" />
           <h2>Consultando el análisis…</h2>
         </div>
       )}
       {state.status === "error" && (
-        <div role="alert" className="state-panel error-panel">
-          <p className="eyebrow">Consulta no disponible</p>
+        <div role="alert" className="app-state is-error">
+          <p className="voc-eyebrow">Consulta no disponible</p>
           <h2>No pudimos mostrar el análisis</h2>
           <p>{state.error.message}</p>
         </div>
@@ -237,17 +237,18 @@ export function AnalysisDashboard({
       )}
       <div id="topic-detail">
         {topic.status === "loading" && (
-          <div role="status" className="state-panel">
-            <span className="loader" aria-hidden="true" />
+          <div role="status" className="app-state">
+            <span className="app-loader" aria-hidden="true" />
             <h2>Abriendo el tema {topic.topicId}…</h2>
           </div>
         )}
         {topic.status === "error" && (
-          <div role="alert" className="state-panel error-panel">
+          <div role="alert" className="app-state is-error">
             <h2>No pudimos abrir el tema</h2>
             <p>{topic.error.message}</p>
             <button
               type="button"
+              className="voc-btn"
               onClick={() => setTopic({ status: "closed" })}
             >
               Cerrar
@@ -282,7 +283,7 @@ export function AnalysisDashboard({
           </Panel>
         )}
       </div>
-      <p className="note">
+      <p className="app-note">
         Las etiquetas de sentimiento y los nombres de los temas son resultados
         de modelos; las cifras describen la selección publicada.
       </p>

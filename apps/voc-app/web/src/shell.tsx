@@ -43,15 +43,12 @@ export function Header({
   children?: ReactNode;
 }) {
   return (
-    <header className="topbar">
-      <a href="/" className="brand" aria-label="VOC, inicio">
-        <span className="brand-mark" aria-hidden="true">
-          v.
-        </span>
-        VOC<span className="brand-divider">/</span>
-        <span className="brand-context">{context}</span>
+    <header className="app-topbar">
+      <a href="/" className="app-brand" aria-label="VOC, inicio">
+        VOC<span className="app-brand-divider">/</span>
+        <span className="app-brand-context">{context}</span>
       </a>
-      <nav className="workspace-navigation" aria-label="Navegación del espacio">
+      <nav className="app-nav" aria-label="Navegación del espacio">
         {children}
       </nav>
     </header>
@@ -67,21 +64,21 @@ export function SignIn({
 }) {
   return (
     <>
-      <a className="skip-link" href="#content">
+      <a className="app-skip" href="#content">
         Saltar al contenido
       </a>
       <Header context={context} />
-      <main id="content">
-        <div role="status" className="state-panel">
-          <p className="eyebrow">Acceso</p>
+      <main id="content" className="app-main">
+        <div role="status" className="app-state">
+          <p className="voc-eyebrow">Acceso</p>
           <h2>Inicia sesión para continuar</h2>
           <p>VOC muestra los datos publicados solo a personas invitadas.</p>
           {message && (
-            <p role="alert" className="chat-error">
+            <p role="alert" className="app-notice is-error">
               {message}
             </p>
           )}
-          <a className="button-link" href={signInPath}>
+          <a className="voc-btn voc-btn-primary" href={signInPath}>
             Iniciar sesión
           </a>
         </div>
@@ -198,8 +195,12 @@ export function SessionControls({
   if (session.mode !== "cognito") return null;
   return (
     <>
-      <span className="session-email">{session.email}</span>
-      <button type="button" onClick={leave}>
+      <span className="app-session">{session.email}</span>
+      <button
+        type="button"
+        className="voc-btn voc-btn-ghost voc-btn-sm"
+        onClick={leave}
+      >
         Cerrar sesión
       </button>
     </>

@@ -22,24 +22,29 @@ export function Panel({
 }) {
   const heading = useId();
   return (
-    <section className={`panel ${className}`} aria-labelledby={heading}>
-      <div className="panel-heading">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 id={heading}>{title}</h2>
+    <section className={`voc-panel ${className}`} aria-labelledby={heading}>
+      <div className="voc-panel-head">
+        <div>
+          <p className="voc-eyebrow">{eyebrow}</p>
+          <h2 id={heading} className="voc-panel-title">
+            {title}
+          </h2>
+        </div>
       </div>
       {children}
-      <details className="evidence">
+      <details className="voc-evidence">
         <summary>Ver evidencia</summary>
         <p>
-          Resultados de la publicación <code>{results[0].publication_id}</code>
+          Resultados de la publicación{" "}
+          <code className="voc-code">{results[0].publication_id}</code>
         </p>
         <ul>
           {results.map((result) => (
             <li key={result.result_id}>
               <span>{result.kind}</span>
-              <code>{result.result_id}</code>
+              <code className="voc-code">{result.result_id}</code>
               {result.selection && (
-                <code className="selection-echo">
+                <code className="voc-code">
                   {JSON.stringify(
                     Object.fromEntries(
                       Object.entries(result.selection).filter(

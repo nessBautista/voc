@@ -35,9 +35,9 @@ export function Dashboard() {
     return (
       <>
         <Header context={CONTEXT} />
-        <main id="content">
-          <div role="status" className="state-panel">
-            <span className="loader" aria-hidden="true" />
+        <main id="content" className="app-main">
+          <div role="status" className="app-state">
+            <span className="app-loader" aria-hidden="true" />
             <h2>Comprobando la sesión…</h2>
           </div>
         </main>
@@ -47,19 +47,20 @@ export function Dashboard() {
     return <SignIn context={CONTEXT} message={notice} />;
   return (
     <>
-      <a className="skip-link" href="#content">
+      <a className="app-skip" href="#content">
         Saltar al contenido
       </a>
       <Header context={CONTEXT}>
-        <span className="badge">Datos publicados</span>
+        <span className="voc-badge">Datos publicados</span>
         {selected && hasAnalysis(selected) && (
-          <a className="button-link nav-link" href="/dashboard/">
+          <a className="voc-btn voc-btn-sm" href="/dashboard/">
             Panel de análisis
           </a>
         )}
         <SessionControls session={session} leave={leave} />
         <button
           type="button"
+          className="voc-btn voc-btn-sm"
           onClick={() => {
             const question = document.getElementById("chat-question");
             question?.scrollIntoView({ block: "center" });
@@ -69,15 +70,15 @@ export function Dashboard() {
           Ir al chat
         </button>
       </Header>
-      <main id="content">
+      <main id="content" className="app-main">
         {notice && (
-          <p role="alert" className="chat-error">
+          <p role="alert" className="app-notice is-error">
             {notice}
           </p>
         )}
-        <div className="page-heading">
+        <div className="app-page-head">
           <div>
-            <p className="eyebrow">Tu punto de partida</p>
+            <p className="voc-eyebrow">Tu punto de partida</p>
             <h1>Estado de los datos</h1>
             <p>
               Conoce el alcance y la procedencia de la información disponible.
@@ -85,6 +86,7 @@ export function Dashboard() {
           </div>
           <button
             type="button"
+            className="voc-btn"
             onClick={reload}
             disabled={state.status === "loading"}
           >
@@ -92,27 +94,27 @@ export function Dashboard() {
           </button>
         </div>
         {publicationId && (
-          <div className="publication-line">
-            <span className="dot" aria-hidden="true" />
+          <div className="app-publication">
+            <span className="app-dot" aria-hidden="true" />
             <span>Publicación</span>
             <code>{publicationId}</code>
             {selected && (
-              <span className="activated">
+              <span className="app-publication-time">
                 Activada {dateLabel(selected.activated_at, true)} UTC
               </span>
             )}
           </div>
         )}
         {state.status === "loading" && (
-          <div role="status" className="state-panel">
-            <span className="loader" aria-hidden="true" />
+          <div role="status" className="app-state">
+            <span className="app-loader" aria-hidden="true" />
             <h2>Cargando datos publicados…</h2>
             <p>Consultando una misma versión para todas las secciones.</p>
           </div>
         )}
         {state.status === "error" && (
-          <div role="alert" className="state-panel error-panel">
-            <p className="eyebrow">
+          <div role="alert" className="app-state is-error">
+            <p className="voc-eyebrow">
               {state.error.code === "no_active_publication"
                 ? "Sin publicación"
                 : "Consulta no disponible"}
@@ -123,25 +125,29 @@ export function Dashboard() {
                 : "No pudimos mostrar los datos"}
             </h2>
             <p>{state.error.message}</p>
-            <button onClick={reload}>Reintentar</button>
+            <button className="voc-btn" onClick={reload}>
+              Reintentar
+            </button>
           </div>
         )}
         {state.status === "ready" && (
           <>
             {state.snapshot.results.find((result) => result.kind === "overview")
               ?.data.source_kind === "fixture" && (
-              <p className="fixture-notice">
+              <p className="app-notice is-warning">
                 Ejemplo sintético · Estos datos no provienen de una recolección
                 real.
               </p>
             )}
             {hasAnalysis(state.snapshot.selection) && (
-              <p className="analysis-link">
+              <p className="app-callout">
                 Esta publicación incluye el análisis de temas y sentimiento.{" "}
-                <a href="/dashboard/">Abrir el panel de análisis</a>
+                <a className="voc-link" href="/dashboard/">
+                  Abrir el panel de análisis
+                </a>
               </p>
             )}
-            <div className="dashboard-grid">
+            <div className="app-grid">
               {dashboardViews(state.snapshot.results).map((spec) => (
                 <View
                   key={spec.component}
@@ -152,7 +158,7 @@ export function Dashboard() {
               ))}
             </div>
             {warnings.length > 0 && (
-              <aside className="warnings" aria-labelledby="warning-heading">
+              <aside className="app-warnings" aria-labelledby="warning-heading">
                 <h2 id="warning-heading">Antes de interpretar estos datos</h2>
                 <ul>
                   {warnings.map((warning) => (
@@ -170,7 +176,7 @@ export function Dashboard() {
             state.status === "ready" && hasAnalysis(state.snapshot.selection)
           }
         />
-        <footer className="page-footer">
+        <footer className="app-footer">
           <span>VOC · Información con contexto</span>
           <span>Las cifras corresponden a una publicación guardada.</span>
         </footer>
