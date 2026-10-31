@@ -1,7 +1,7 @@
 /* voc-design system components, copied from the design system's
-   components/bundle.css (artifact 4BT9dXPJCgTuAPYFe4VZus, version
-   1793414886-e2ec) without its font import, body rule and preview stage.
-   Change a component in the design system first, then copy it here. */
+   components/bundle.css (artifact 4BT9dXPJCgTuAPYFe4VZus) without its font
+   import, body rule and preview stage. Change a component in the design
+   system first, then copy it here. */
 
 /* Shared text pieces */
 .voc-eyebrow {
@@ -241,6 +241,10 @@
   color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--line-strong);
 }
+.voc-segmented button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* Fields: search input and month select */
 .voc-field {
@@ -477,21 +481,29 @@
 }
 
 /* Filter bar */
+/* Compact: each group's label sits beside its chips, so the bar wraps in
+   about two lines instead of stacking every label over its chips. */
 .voc-filterbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-4) var(--space-5);
-  padding: var(--space-4);
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
+}
+.voc-filterbar .voc-chip-group,
+.voc-filterbar .voc-field {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
 }
 .voc-filterbar .voc-search {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  flex: 1 1 240px;
+  flex: 1 1 auto;
   min-width: 0;
 }
 .voc-filterbar .voc-search .voc-input {
@@ -761,9 +773,10 @@
   padding: 0;
   list-style: none;
 }
+/* Counts reach six digits; the topic most cited takes its own line. */
 .voc-mood-rows li {
   display: grid;
-  grid-template-columns: 8px 76px 44px 28px minmax(0, 1fr);
+  grid-template-columns: 8px 80px 44px 64px;
   align-items: baseline;
   gap: var(--space-2);
   font-size: 13px;
@@ -780,8 +793,12 @@
   color: var(--ink-muted);
 }
 .voc-mood-driver {
+  grid-column: 2 / -1;
   min-width: 0;
   color: var(--ink-muted);
+}
+.voc-mood-driver:empty {
+  display: none;
 }
 .voc-mood-driver .voc-link {
   font-size: 13px;
