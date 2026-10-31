@@ -132,14 +132,23 @@ export function resolveView(
   return { view, results: selected };
 }
 
+// The follow-up a topic in an answer asks, so its detail arrives as a new turn.
+export const askAboutTopic = (topicId: number, name?: string) =>
+  topicId === -1
+    ? "¿Qué dicen las reseñas que no se asignaron a ningún tema?"
+    : `¿Qué dicen los clientes del tema ${topicId}${name ? `, «${name}»` : ""}?`;
+
 export function View({
   spec,
   results,
   publicationId,
+  onAsk,
 }: {
   spec: ViewSpec;
   results: AnyResult[];
   publicationId: string;
+  // In a conversation, a topic can be asked about; without it, panels are read-only.
+  onAsk?: (question: string) => void;
 }) {
   const resolved = resolveView(spec, results, publicationId);
   const get = <K extends Kind>(kind: K) =>
@@ -149,7 +158,8 @@ export function View({
       (result) => result.kind === kind,
     ) as AnalysisResultOf<K>;
   const component = resolved.view.component;
-  // Analysis blocks are the dashboard's panels, read-only: no filters, sort or paging.
+  // Analysis blocks are the dashboard's panels, read-only: no filters, sort or
+  // paging. The one action is asking about a topic, as the next question.
   const panel = (name: keyof typeof analysisPanels, child: ReactNode) => (
     <Panel {...analysisPanels[name]} results={resolved.results}>
       {child}
@@ -161,14 +171,44 @@ export function View({
       return panel(
         component,
         <div className="app-overview">
-          <TopSignal result={analysis("summary")} />
+          <TopSignal
+            result={analysis("summary")}
+            onOpenTopic={
+              onAsk
+                ? (topicId) =>
+                    onAsk(
+                      askAboutTopic(
+                        topicId,
+                        analysis("summary").data.most_negative_feature
+                          ?.display_name,
+                      ),
+                    )
+                : undefined
+            }
+          />
           <KpiTiles result={analysis("summary")} />
         </div>,
       );
     case "topic_list":
       return panel(
         component,
-        <TopicList result={analysis("topic_list")} limit={8} />,
+        <TopicList
+          result={analysis("topic_list")}
+          limit={8}
+          onOpenTopic={
+            onAsk
+              ? (topicId) =>
+                  onAsk(
+                    askAboutTopic(
+                      topicId,
+                      analysis("topic_list").data.find(
+                        (row) => row.topic_id === topicId,
+                      )?.display_name,
+                    ),
+                  )
+              : undefined
+          }
+        />,
       );
     case "timeline":
       return panel(component, <Timeline data={analysis("timeline").data} />);
@@ -184,7 +224,12 @@ export function View({
           {...topicDetailPanel}
           results={resolved.results}
         >
-          <TopicDetail detail={detail} reviews={analysis("reviews")} />
+          {/* Drawn for "¿Qué dicen exactamente los clientes?": the reviews answer it. */}
+          <TopicDetail
+            detail={detail}
+            reviews={analysis("reviews")}
+            initialTab="reviews"
+          />
         </Panel>
       );
     }

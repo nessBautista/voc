@@ -89,16 +89,19 @@
 .voc-topic-row:focus-visible,
 .voc-icon-btn:focus-visible,
 .voc-tab:focus-visible,
-.voc-evidence summary:focus-visible,
 .voc-link:focus-visible,
 .voc-suggestion:focus-visible,
-.voc-answer-foot summary:focus-visible,
-.voc-chat-details summary:focus-visible,
-.voc-answer-more > summary:focus-visible,
 .is-focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   box-shadow: var(--glow-sm);
+}
+/* Disclosures sit in the text flow: a lighter ring, without the glow */
+summary:focus-visible,
+summary.is-focus {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 /* Button */

@@ -67,10 +67,12 @@ function Panels({
   views,
   answer,
   publicationId,
+  onAsk,
 }: {
   views: ViewSpec[];
   answer: Answer;
   publicationId: string;
+  onAsk?: (question: string) => void;
 }) {
   if (views.length === 0) return null;
   return (
@@ -84,6 +86,7 @@ function Panels({
             spec={spec}
             results={answer.results}
             publicationId={publicationId}
+            onAsk={onAsk}
           />
         </div>
       ))}
@@ -118,12 +121,15 @@ export function ChatTurn({
   publicationId,
   runningMode = "daily",
   onAskAgain,
+  onAsk,
 }: {
   turn: Turn;
   publicationId: string;
   // A running turn has no answer yet, so the page says which mode it sent.
   runningMode?: Mode;
   onAskAgain?: (question: string) => void;
+  // Sends a follow-up, such as the question a clicked topic asks.
+  onAsk?: (question: string) => void;
 }) {
   const answer = turn.answer;
   const research = answer?.mode === "research";
@@ -163,6 +169,7 @@ export function ChatTurn({
             views={byStep(step)}
             answer={answer}
             publicationId={publicationId}
+            onAsk={onAsk}
           />
         );
       }
@@ -178,7 +185,12 @@ export function ChatTurn({
       body = (
         <>
           <AnswerLead lead={answer.lead} />
-          <Panels views={key} answer={answer} publicationId={publicationId} />
+          <Panels
+            views={key}
+            answer={answer}
+            publicationId={publicationId}
+            onAsk={onAsk}
+          />
           <div className="voc-answer-folds">
             <details className="voc-answer-more">
               <summary>Ver el análisis completo</summary>
@@ -212,11 +224,17 @@ export function ChatTurn({
                   views={answer.views}
                   answer={answer}
                   publicationId={publicationId}
+                  onAsk={onAsk}
                 />
               ) : null
             }
           />
-          <Panels views={loose} answer={answer} publicationId={publicationId} />
+          <Panels
+            views={loose}
+            answer={answer}
+            publicationId={publicationId}
+            onAsk={onAsk}
+          />
           {limits && <AnswerSections parts={[limits]} />}
         </>
       );

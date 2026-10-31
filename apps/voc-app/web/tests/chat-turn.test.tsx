@@ -1,6 +1,7 @@
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { ChatTurn } from "../src/components/chat/ChatTurn";
+import { askAboutTopic } from "../src/components/registry";
 import { parseConversation } from "../src/conversation";
 import daily from "./fixtures/conversation_v2.json" with { type: "json" };
 import research from "./fixtures/conversation_research.json" with { type: "json" };
@@ -73,6 +74,30 @@ describe("chat turn layout", () => {
         "Temas por volumen y sentimiento",
       ),
     ).toBe(true);
+  });
+
+  it("lets a topic in an answer be asked about, only in a conversation", () => {
+    const conversation = parseConversation(research);
+    const turn = conversation.turns[0];
+    const read = renderToString(
+      <ChatTurn turn={turn} publicationId={conversation.publication_id} />,
+    );
+    const asking = renderToString(
+      <ChatTurn
+        turn={turn}
+        publicationId={conversation.publication_id}
+        onAsk={() => {}}
+      />,
+    );
+    expect(read).not.toContain('<button type="button" class="voc-topic-row"');
+    expect(asking).toContain('<button type="button" class="voc-topic-row"');
+    expect(asking).toContain("Elige un tema para ver sus reseñas.");
+    expect(askAboutTopic(73, "Pagos")).toBe(
+      "¿Qué dicen los clientes del tema 73, «Pagos»?",
+    );
+    expect(askAboutTopic(-1)).toBe(
+      "¿Qué dicen las reseñas que no se asignaron a ningún tema?",
+    );
   });
 
   it("with an opening shows the research outcome and folds the earlier steps", () => {
