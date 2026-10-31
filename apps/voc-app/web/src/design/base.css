@@ -1,0 +1,40 @@
+/* voc-design system base layer: page ground, type, focus and motion.
+   Values come from tokens.css; components add their own classes. */
+:root {
+  color-scheme: dark;
+  font-synthesis: none;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 22px;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+}
+/* One focus ring for every control: 2px accent plus the neon edge. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: var(--glow-sm);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
