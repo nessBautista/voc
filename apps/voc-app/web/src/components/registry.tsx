@@ -14,9 +14,10 @@ import {
   type AnalysisResultOf,
 } from "../analysis";
 import { KpiTiles } from "./analysis/KpiTiles";
-import { MoodRing } from "./analysis/MoodRing";
+import { MoodSummary } from "./analysis/MoodSummary";
 import { Platforms } from "./analysis/Platforms";
 import { Timeline } from "./analysis/Timeline";
+import { TopSignal } from "./analysis/TopSignal";
 import { TopicDetail } from "./analysis/TopicDetail";
 import { TopicList } from "./analysis/TopicList";
 import { Coverage } from "./Coverage";
@@ -156,7 +157,14 @@ export function View({
   );
   switch (component) {
     case "kpi_tiles":
-      return panel(component, <KpiTiles result={analysis("summary")} />);
+      // The strongest negative topic comes from the same summary result.
+      return panel(
+        component,
+        <div className="app-overview">
+          <TopSignal result={analysis("summary")} />
+          <KpiTiles result={analysis("summary")} />
+        </div>,
+      );
     case "topic_list":
       return panel(
         component,
@@ -167,7 +175,7 @@ export function View({
     case "platforms":
       return panel(component, <Platforms result={analysis("platforms")} />);
     case "mood_ring":
-      return panel(component, <MoodRing result={analysis("summary")} />);
+      return panel(component, <MoodSummary result={analysis("summary")} />);
     case "topic_detail": {
       const detail = analysis("topic_detail");
       return (

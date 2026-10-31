@@ -1,156 +1,142 @@
-import type { AnalysisResultOf, Review } from "../../analysis";
+import { useId, useState, type KeyboardEvent, type Ref } from "react";
+import type { AnalysisResultOf, Label } from "../../analysis";
+import { DetailIdentity } from "../detail/DetailHeader";
+import { InterpretationBlock } from "../detail/InterpretationBlock";
+import { PropertyList } from "../detail/PropertyList";
+import { ReviewFeed } from "../detail/ReviewFeed";
+import { SentimentSummary } from "../detail/SentimentSummary";
+import { TrendSparkline } from "../detail/TrendSparkline";
 import { number } from "../format";
-import { assessmentName, percent, PlatformTag, shortMonth } from "./shared";
-import { Timeline } from "./Timeline";
 
-export function ReviewList({
-  result,
-  onPage,
-}: {
-  result: AnalysisResultOf<"reviews">;
-  onPage?: (page: number) => void;
-}) {
-  const data = result.data;
-  return (
-    <div className="review-list">
-      {data.items.length === 0 && (
-        <p className="hint">Ninguna reseña cumple los filtros.</p>
-      )}
-      <ol>
-        {data.items.map((item: Review) => (
-          <li key={item.record_id} className="review">
-            <div className="review-meta">
-              <PlatformTag platform={item.platform} />
-              {item.label ? (
-                <span className={`badge-label seg-${item.label}`}>
-                  {item.label === "negative"
-                    ? "Negativa"
-                    : item.label === "neutral"
-                      ? "Neutra"
-                      : "Positiva"}
-                </span>
-              ) : (
-                <span className="badge-label">Sin clasificar</span>
-              )}
-              {item.month && <span>{shortMonth(item.month)}</span>}
-              {item.rating !== null && <span>{item.rating} ★</span>}
-              {item.confidence !== null && (
-                <span className="confidence">{percent(item.confidence)}</span>
-              )}
-            </div>
-            <blockquote lang="es">{item.text}</blockquote>
-          </li>
-        ))}
-      </ol>
-      {data.pages > 1 && onPage && (
-        <div className="pager">
-          <button
-            type="button"
-            disabled={data.page <= 1}
-            onClick={() => onPage(data.page - 1)}
-          >
-            ← Anterior
-          </button>
-          <span>
-            {number(data.total)} reseñas · página {data.page} de {data.pages}
-          </span>
-          <button
-            type="button"
-            disabled={data.page >= data.pages}
-            onClick={() => onPage(data.page + 1)}
-          >
-            Siguiente →
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
+export type DetailTab = "summary" | "reviews";
 
+// One topic's detail: identity, the model's interpretation as the lead, then
+// "Resumen" and "Reseñas" tabs. The dashboard puts it in the DetailSheet; a
+// chat answer draws it inline, read-only.
 export function TopicDetail({
   detail,
+  mix,
   timeline,
   reviews,
+  labels,
+  onLabels,
   onPage,
-  onClose,
+  tab,
+  onTab,
+  titleId,
+  titleRef,
 }: {
+  // Read with every filter: the identity line and the "Reseñas" count.
   detail: AnalysisResultOf<"topic_detail">;
+  // The same topic read without the sentiment filter, for the summary and the
+  // feed's filter counts. Without it, `detail` stands in.
+  mix?: AnalysisResultOf<"topic_detail">;
   timeline?: AnalysisResultOf<"timeline">;
   reviews?: AnalysisResultOf<"reviews">;
+  labels?: Set<Label>;
+  onLabels?: (next: Set<Label>) => void;
   onPage?: (page: number) => void;
-  onClose?: () => void;
+  // The tab can live with the caller, so it survives moving between topics.
+  tab?: DetailTab;
+  onTab?: (tab: DetailTab) => void;
+  titleId?: string;
+  titleRef?: Ref<HTMLHeadingElement>;
 }) {
+  const [ownTab, setOwnTab] = useState<DetailTab>("summary");
+  const current = tab ?? ownTab;
+  const choose = onTab ?? setOwnTab;
+  const id = useId();
+  const whole = mix ?? detail;
   const data = detail.data;
-  const mix = (value: number) =>
-    data.classified > 0 ? value / data.classified : null;
+  const tabs: [DetailTab, string][] = [
+    ["summary", "Resumen"],
+    ["reviews", "Reseñas"],
+  ];
+  // Left and right move between tabs; only the selected tab is in the tab order.
+  const arrows = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const next = current === "summary" ? "reviews" : "summary";
+    choose(next);
+    document.getElementById(`${id}-${next}`)?.focus();
+  };
   return (
-    <div className="topic-detail">
-      <div className="topic-detail-head">
-        <div>
-          <p className="eyebrow">
-            {data.topic_id === -1
-              ? "Sin asignar"
-              : `Tema ${data.topic_id} · ${assessmentName[data.assessment]}`}
-          </p>
-          <h3 className="topic-detail-title">{data.display_name}</h3>
-          <p className="meta">
-            {number(data.in_view)} de {number(data.member_count)} reseñas
-            cumplen los filtros · negativas {number(data.negative)} · neutras{" "}
-            {number(data.neutral)} · positivas {number(data.positive)}
-          </p>
-        </div>
-        {onClose && (
-          <button type="button" onClick={onClose}>
-            Cerrar
+    <>
+      <DetailIdentity detail={detail} titleId={titleId} titleRef={titleRef} />
+      <InterpretationBlock detail={detail} />
+      <div
+        className="voc-tabs"
+        role="tablist"
+        aria-label="Detalle del tema"
+        onKeyDown={arrows}
+      >
+        {tabs.map(([value, name]) => (
+          <button
+            key={value}
+            id={`${id}-${value}`}
+            type="button"
+            className="voc-tab"
+            role="tab"
+            aria-selected={current === value}
+            aria-controls={`${id}-panel`}
+            tabIndex={current === value ? 0 : -1}
+            onClick={() => choose(value)}
+          >
+            {name}
+            {value === "reviews" && (
+              <span className="voc-count-pill">{number(data.in_view)}</span>
+            )}
           </button>
+        ))}
+      </div>
+      <div
+        className="voc-tabpanel"
+        role="tabpanel"
+        id={`${id}-panel`}
+        aria-labelledby={`${id}-${current}`}
+      >
+        {current === "summary" ? (
+          <>
+            <SentimentSummary detail={whole} />
+            <PropertyList
+              rows={[
+                {
+                  label: "Por mes",
+                  chart: true,
+                  value: timeline ? (
+                    <TrendSparkline months={timeline.data.months} />
+                  ) : null,
+                },
+                {
+                  // An uninterpreted topic already shows them in the lead.
+                  label: "Palabras clave",
+                  value:
+                    data.wording_source === "generated"
+                      ? data.keywords.join(", ")
+                      : null,
+                },
+              ]}
+            />
+          </>
+        ) : reviews ? (
+          <ReviewFeed
+            result={reviews}
+            keywords={data.keywords}
+            supportingIds={data.supporting_review_ids}
+            counts={{
+              all: whole.data.in_view,
+              negative: whole.data.negative,
+              neutral: whole.data.neutral,
+              positive: whole.data.positive,
+            }}
+            labels={labels}
+            onLabels={onLabels}
+            onPage={onPage}
+          />
+        ) : (
+          <p className="voc-hint">Las reseñas no están disponibles aquí.</p>
         )}
       </div>
-      <div className="topic-detail-grid">
-        <div>
-          <p className="topic-description" lang="es">
-            {data.description}
-          </p>
-          {data.proposed_feature && (
-            <p className="meta">
-              Funcionalidad propuesta: <strong>{data.proposed_feature}</strong>
-            </p>
-          )}
-          <ul className="keyword-chips" aria-label="Palabras clave">
-            {data.keywords.map((keyword) => (
-              <li key={keyword}>{keyword}</li>
-            ))}
-          </ul>
-          <dl className="mix-bars">
-            {(["negative", "neutral", "positive"] as const).map((label) => (
-              <div key={label}>
-                <dt>
-                  {label === "negative"
-                    ? "negativas"
-                    : label === "neutral"
-                      ? "neutras"
-                      : "positivas"}
-                </dt>
-                <dd>
-                  <div className="mix-track">
-                    <div
-                      className={`seg-${label}`}
-                      style={{ width: `${(mix(data[label]) ?? 0) * 100}%` }}
-                    />
-                  </div>
-                  <span>{percent(mix(data[label]))}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        {timeline && (
-          <div>
-            <p className="eyebrow">Este tema en el tiempo</p>
-            <Timeline data={timeline.data} compact />
-          </div>
-        )}
-      </div>
-      {reviews && <ReviewList result={reviews} onPage={onPage} />}
-    </div>
+    </>
   );
 }

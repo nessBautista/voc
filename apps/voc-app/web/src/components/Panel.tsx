@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from "react";
 
-type Evidence = {
+export type Evidence = {
   kind: string;
   result_id: string;
   publication_id: string;
@@ -32,32 +32,40 @@ export function Panel({
         </div>
       </div>
       {children}
-      <details className="voc-evidence">
-        <summary>Ver evidencia</summary>
-        <p>
-          Resultados de la publicación{" "}
-          <code className="voc-code">{results[0].publication_id}</code>
-        </p>
-        <ul>
-          {results.map((result) => (
-            <li key={result.result_id}>
-              <span>{result.kind}</span>
-              <code className="voc-code">{result.result_id}</code>
-              {result.selection && (
-                <code className="voc-code">
-                  {JSON.stringify(
-                    Object.fromEntries(
-                      Object.entries(result.selection).filter(
-                        ([, v]) => v !== null,
-                      ),
-                    ),
-                  )}
-                </code>
-              )}
-            </li>
-          ))}
-        </ul>
-      </details>
+      <EvidenceFold results={results} />
     </section>
+  );
+}
+
+// The results behind a view, folded: the publication, each result's kind and
+// id, and the selection it was read with.
+export function EvidenceFold({ results }: { results: Evidence[] }) {
+  return (
+    <details className="voc-evidence">
+      <summary>Ver evidencia</summary>
+      <p>
+        Resultados de la publicación{" "}
+        <code className="voc-code">{results[0].publication_id}</code>
+      </p>
+      <ul>
+        {results.map((result) => (
+          <li key={result.result_id}>
+            <span>{result.kind}</span>
+            <code className="voc-code">{result.result_id}</code>
+            {result.selection && (
+              <code className="voc-code">
+                {JSON.stringify(
+                  Object.fromEntries(
+                    Object.entries(result.selection).filter(
+                      ([, v]) => v !== null,
+                    ),
+                  ),
+                )}
+              </code>
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
