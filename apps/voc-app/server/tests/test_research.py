@@ -9,13 +9,15 @@ import pytest
 from fastapi.testclient import TestClient
 from test_chat import app_for, ask, payload, wait
 from voc_app.agent.answers import validate_answer
-from voc_app.agent.contracts import Assessment, Lead, Plan
+from voc_app.agent.contracts import Assessment, Lead, Plan, Selection
 from voc_app.agent.graph import MAX_STEPS, RESEARCH_BUDGET
 from voc_app.agent.planner import (
     RESEARCH_FIRST,
     SYSTEM_ASSESS,
     SYSTEM_LEAD,
     Planner,
+    mend_plan,
+    mend_research_step,
     fixture_assess,
     fixture_plan,
     grounded,
@@ -134,8 +136,13 @@ def test_research_turn_chains_steps_on_the_fixture(settings, v2_active):
         assert daily["plan"]["intent"] == "trend" and len(daily["results"]) == 1
 
 
+# Distinct months, so each scripted step is a new plan rather than a repeat.
+MONTHS = ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04"]
+
+
 class ScriptedPlanner:
-    """A fixture planner whose assessment always wants one more step of a given intent."""
+    """A fixture planner whose assessment always wants one more step of a given intent,
+    each narrowed to the next month so no step repeats an earlier one."""
 
     def __init__(self, settings, intent, delay=0):
         self.delegate = Planner(settings)
@@ -150,8 +157,19 @@ class ScriptedPlanner:
         self.assessments += 1
         if self.delay:
             await asyncio.sleep(self.delay)
+        month = MONTHS[(self.assessments - 1) % len(MONTHS)]
         following = Plan(
-            intent=self.intent, platform=None, selection=None, topic=None, limit=None
+            intent=self.intent,
+            platform=None,
+            selection=Selection(
+                platforms=None,
+                labels=None,
+                month_from=month,
+                month_to=month,
+                search=None,
+            ),
+            topic=None,
+            limit=None,
         )
         return Assessment(next=following), {
             "mode": "fixture",
@@ -444,3 +462,337 @@ def test_fixture_mode_writes_no_opening(settings, v2_active):
         daily = ask(client, payload("¿Cuál es la queja principal?"))["turns"][0]
     assert "lead" not in answer and answer["usage"]["requests"] == 0
     assert "lead" not in daily["answer"]
+
+
+def test_a_next_step_filtered_to_negatives_is_mended_not_refused(
+    settings, v2_active, caplog
+):
+    """The log case: the model narrows a ranking step to negative reviews only."""
+    scripted = [
+        {
+            "intent": "trend",
+            "platform": None,
+            "selection": None,
+            "topic": None,
+            "limit": None,
+        },
+        {
+            "next": {
+                "intent": "main_complaints",
+                "platform": None,
+                "selection": {
+                    "platforms": None,
+                    "labels": ["negative"],
+                    "month_from": "2025-09",
+                    "month_to": "2025-09",
+                    "search": None,
+                },
+                "topic": None,
+                "limit": None,
+            }
+        },
+        {"next": None},
+    ]
+    calls = []
+
+    def respond(request):
+        calls.append(json.loads(request.content))
+        content = scripted[min(len(calls), len(scripted)) - 1]
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 100, "completion_tokens": 10},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, research())["turns"][0]
+    assert turn["status"] == "completed", turn
+    second = turn["answer"]["steps"][1]["plan"]
+    assert second["intent"] == "main_complaints"
+    assert second["selection"]["labels"] is None
+    assert second["selection"]["month_from"] == "2025-09"
+    assert "a label filter on main_complaints was dropped" in caplog.text
+
+
+def test_step_labels_and_limits_stay_where_they_belong():
+    reviews = {
+        "next": {
+            "intent": "topic_reviews",
+            "selection": {"labels": ["negative"]},
+            "limit": None,
+        }
+    }
+    assert mend_research_step(reviews) == reviews
+    assert mend_research_step({"next": None}) == {"next": None}
+    trend = {"next": {"intent": "trend", "selection": {"labels": ["negative"]}}}
+    assert mend_research_step(trend)["next"]["selection"]["labels"] is None
+    # The log case: a ranking's limit copied onto the next step.
+    copied = {"next": {"intent": "topic_reviews", "selection": None, "limit": 1}}
+    assert mend_research_step(copied)["next"]["limit"] is None
+    ranking = {"next": {"intent": "focus", "selection": None, "limit": 3}}
+    assert mend_research_step(ranking) == ranking
+    assert (
+        mend_research_step({"next": {"intent": "focus", "limit": 25}})["next"]["limit"]
+        == 10
+    )
+    assert (
+        mend_research_step({"next": {"intent": "focus", "limit": 0}})["next"]["limit"]
+        == 1
+    )
+
+
+class RepeatingPlanner(ScriptedPlanner):
+    """The log case: the model asks again for the step it just ran."""
+
+    async def assess(self, question, steps, history):
+        self.assessments += 1
+        return Assessment(next=Plan.model_validate(steps[-1]["plan"])), {
+            "mode": "fixture",
+            "model": None,
+            "requests": 0,
+            "prompt_tokens": None,
+            "completion_tokens": None,
+            "duration_ms": 0,
+        }
+
+
+def test_a_repeated_step_ends_the_chain_without_duplicate_evidence(
+    settings, v2_active, caplog
+):
+    planner = RepeatingPlanner(settings, "trend")
+    with TestClient(app_for(settings, planner)) as client:
+        turn = ask(client, research("¿Cuándo aumentaron las quejas?"))["turns"][0]
+    assert turn["status"] == "completed", turn
+    answer = turn["answer"]
+    assert len(answer["steps"]) == 1
+    ids = [r["result_id"] for r in answer["results"]]
+    assert len(ids) == len(set(ids))
+    assert "the next step repeats an earlier one" in caplog.text
+
+
+def test_a_limit_copied_onto_the_next_step_is_mended_not_refused(
+    settings, v2_active, caplog
+):
+    """The second log case: specific_problems with a limit, then reviews with the same limit."""
+    scripted = [
+        {
+            "intent": "specific_problems",
+            "platform": None,
+            "selection": None,
+            "topic": None,
+            "limit": 1,
+        },
+        {
+            "next": {
+                "intent": "topic_reviews",
+                "platform": None,
+                "selection": None,
+                "topic": {"topic_id": None, "reference": "last_highlighted"},
+                "limit": 1,
+            }
+        },
+        {"next": None},
+    ]
+    calls = []
+
+    def respond(request):
+        calls.append(json.loads(request.content))
+        content = scripted[min(len(calls), len(scripted)) - 1]
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 100, "completion_tokens": 10},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, research("¿Cuál es el problema más específico?"))["turns"][0]
+    assert turn["status"] == "completed", turn
+    assert "a limit on topic_reviews was dropped" in caplog.text
+    steps = turn["answer"]["steps"]
+    assert steps[0]["plan"]["intent"] == "specific_problems"
+    assert all(step["plan"]["limit"] in (None, 1) for step in steps)
+
+
+def test_research_plans_are_mended_field_by_field():
+    """Each slip is a field in the wrong place; the step's question stays the same."""
+    reference = {"topic_id": None, "reference": "last_highlighted"}
+    # The third log case: specific_problems pointing at the main complaint.
+    mended = mend_plan({"intent": "specific_problems", "topic": reference, "limit": 1})
+    assert mended["topic"] is None and mended["limit"] == 1
+    assert (
+        mend_plan({"intent": "topic_reviews", "topic": reference})["topic"] == reference
+    )
+    # A platform written at the top moves into an analysis step's selection.
+    moved = mend_plan({"intent": "mood", "platform": "x", "selection": None})
+    assert moved["platform"] is None
+    assert moved["selection"]["platforms"] == ["x"]
+    assert mend_plan({"intent": "sources", "platform": "x"})["platform"] == "x"
+    # A selection on an intent that takes none goes.
+    assert (
+        mend_plan({"intent": "overview", "selection": {"labels": None}})["selection"]
+        is None
+    )
+    # A valid plan comes back unchanged.
+    valid = {
+        "intent": "main_complaints",
+        "platform": None,
+        "selection": None,
+        "topic": None,
+        "limit": 3,
+    }
+    assert mend_plan(valid) == valid
+
+
+def test_a_topic_on_the_next_ranking_step_is_mended_not_refused(
+    settings, v2_active, caplog
+):
+    """The third log case, end to end."""
+    scripted = [
+        {
+            "intent": "main_complaints",
+            "platform": None,
+            "selection": None,
+            "topic": None,
+            "limit": None,
+        },
+        {
+            "next": {
+                "intent": "specific_problems",
+                "platform": None,
+                "selection": None,
+                "topic": {"topic_id": None, "reference": "last_highlighted"},
+                "limit": None,
+            }
+        },
+        {"next": None},
+    ]
+    calls = []
+
+    def respond(request):
+        calls.append(json.loads(request.content))
+        content = scripted[min(len(calls), len(scripted)) - 1]
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 100, "completion_tokens": 10},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, research("¿Cuál es el problema más específico?"))["turns"][0]
+    assert turn["status"] == "completed", turn
+    assert "a topic on specific_problems was dropped" in caplog.text
+    steps = turn["answer"]["steps"]
+    assert [s["plan"]["intent"] for s in steps] == [
+        "main_complaints",
+        "specific_problems",
+    ]
+    assert steps[1]["plan"]["topic"] is None
+
+
+def test_daily_plans_keep_the_contract_as_it_is(settings, v2_active):
+    """The repair is research only: a daily plan with a misplaced topic still fails."""
+    content = {
+        "intent": "specific_problems",
+        "platform": None,
+        "selection": None,
+        "topic": {"topic_id": None, "reference": "last_highlighted"},
+        "limit": None,
+    }
+
+    def respond(request):
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 100, "completion_tokens": 10},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, payload("¿Cuál es el problema más específico?"))["turns"][0]
+    assert turn["status"] == "failed"
+    assert turn["error"]["code"] == "invalid_plan"
+
+
+def test_steps_that_need_the_same_data_share_it(settings, v2_active):
+    """The fourth case: main_complaints, then specific_problems, which runs the same
+    queries. Each query runs once; the second step names the first step's results."""
+    plan = {"platform": None, "selection": None, "topic": None, "limit": None}
+    scripted = [
+        {"intent": "main_complaints", **plan},
+        {"next": {"intent": "specific_problems", **plan}},
+        {"next": None},
+    ]
+    calls = []
+
+    def respond(request):
+        calls.append(json.loads(request.content))
+        content = scripted[min(len(calls), len(scripted)) - 1]
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 100, "completion_tokens": 10},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, research("¿Cuál es el problema más específico?"))["turns"][0]
+    assert turn["status"] == "completed", turn
+    answer = turn["answer"]
+    first, second = answer["steps"]
+    assert second["plan"]["intent"] == "specific_problems"
+    assert second["result_ids"] == first["result_ids"]
+    ids = [r["result_id"] for r in answer["results"]]
+    assert ids == first["result_ids"] and len(ids) == len(set(ids))
+    assert len(answer["trace"]) == len(ids)
+    validate_answer(
+        answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
+    )
+    # Naming a result the answer does not carry is refused.
+    broken = {**answer, "steps": [first, {**second, "result_ids": ["0" * 64] * 2}]}
+    with pytest.raises(ValueError):
+        validate_answer(
+            broken, Plan.model_validate(answer["plan"]), answer["publication_id"]
+        )

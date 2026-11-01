@@ -1,6 +1,7 @@
 """A bounded LangGraph: interpret, resolve, query, then compose; research loops through assess."""
 
 import asyncio
+import json
 import logging
 from time import monotonic
 from typing import TypedDict
@@ -40,6 +41,8 @@ class State(TypedDict, total=False):
     next: bool
     answer: dict
     deadline: float
+    # Results a research chain already fetched, by query: a query runs once.
+    fetched: dict
 
 
 def merge_usage(first, second):
@@ -57,6 +60,11 @@ def merge_usage(first, second):
         "completion_tokens": add("completion_tokens"),
         "duration_ms": first["duration_ms"] + second["duration_ms"],
     }
+
+
+def query_key(kind, selection):
+    """One key per query: the kind and its selection, in a stable order."""
+    return json.dumps([kind, selection], sort_keys=True)
 
 
 def budget_for(mode):
@@ -79,20 +87,26 @@ def build_graph(planner, client):
 
     async def query(state):
         trace, results = state["trace"], []
+        # Within a research chain a query runs once: a later step that needs the same
+        # data (main_complaints, then specific_problems) reads what an earlier step
+        # fetched, so the evidence never repeats.
+        fetched = dict(state.get("fetched", {}))
         for kind, selection in operations(state["plan"]):
-            results.append(
-                await client.query(
+            key = query_key(kind, selection)
+            if key not in fetched:
+                fetched[key] = await client.query(
                     state["publication_id"],
                     kind,
                     trace,
                     selection,
                     budget_for(state.get("mode", "daily")),
                 )
-            )
+            results.append(fetched[key])
         return {
             "results": results,
             "trace": trace,
             "steps": [*state["steps"], (state["plan"], results)],
+            "fetched": fetched,
         }
 
     async def assess(state):
@@ -117,7 +131,17 @@ def build_graph(planner, client):
         following = resolve(
             following, state.get("memory", []) + remember_steps(state["steps"])
         )
-        affordable = len(state["trace"]) + len(operations(following)) <= RESEARCH_BUDGET
+        # The prompt asks for no repeats; a repeated step would run the same queries
+        # and carry the same evidence twice, which no reader can be shown. Stop there.
+        if any(following == step_plan for step_plan, _ in state["steps"]):
+            logger.warning(
+                "Research chain stopped: the next step repeats an earlier one"
+            )
+            return {"next": False, "usage": merged}
+        # Only queries not yet fetched cost budget.
+        fetched = state.get("fetched", {})
+        new = [op for op in operations(following) if query_key(*op) not in fetched]
+        affordable = len(state["trace"]) + len(new) <= RESEARCH_BUDGET
         if len(state["steps"]) >= MAX_STEPS or not affordable:
             return {"next": False, "usage": merged}
         return {"next": True, "plan": following, "usage": merged}

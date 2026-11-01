@@ -109,7 +109,8 @@ test("research mode sends the mode and renders the steps with their blocks", asy
   ).toBeVisible();
   await chat.getByLabel("Tu pregunta").fill(research.turns[0].question);
   await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
-  await expect(chat.getByText(/Investigación en 2 pasos\./)).toBeVisible();
+  // A research answer is a report: one block per step, each with a visual made
+  // for it, and the step's full text and panel folded.
   await expect(
     chat.getByRole("heading", { name: "Paso 1 · Evolución mensual" }),
   ).toBeVisible();
@@ -118,8 +119,18 @@ test("research mode sends the mode and renders the steps with their blocks", asy
   ).toBeVisible();
   await expect(chat.getByText(/Investigación · 2 pasos/)).toBeVisible();
   await expect(
+    chat.getByRole("img", { name: /Proporción de reseñas negativas por mes/ }),
+  ).toBeVisible();
+  await expect(chat.getByText("Tema destacado", { exact: true })).toHaveCount(
+    0,
+  );
+  const details = chat.getByText("Ver el detalle y el panel completo");
+  await expect(details).toHaveCount(2);
+  await details.nth(0).click();
+  await expect(
     chat.getByRole("region", { name: "Sentimiento en el tiempo" }),
   ).toBeVisible();
+  await details.nth(1).click();
   await expect(
     chat.getByRole("region", { name: "Temas por volumen y sentimiento" }),
   ).toBeVisible();

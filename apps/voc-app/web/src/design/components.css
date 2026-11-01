@@ -1866,6 +1866,218 @@ summary.is-focus {
   margin: 0;
 }
 
+/* Research report: one block per step on a numbered rail */
+.voc-research {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.voc-research-steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.voc-research-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-bottom: var(--space-6);
+}
+.voc-research-step::before {
+  content: "";
+  position: absolute;
+  left: 13.5px;
+  top: 32px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--line);
+}
+.voc-research-step:last-child {
+  padding-bottom: 0;
+}
+.voc-research-step:last-child::before {
+  display: none;
+}
+.voc-research-marker {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--ink);
+}
+.voc-research-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding-top: 4px;
+}
+.voc-research-label {
+  margin: 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.voc-research-finding {
+  margin: 0;
+  max-width: 72ch;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.voc-research-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+.voc-research-detail > .voc-answer-text {
+  max-width: 72ch;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+/* Step visuals share one quiet card */
+.voc-monthshare,
+.voc-compare,
+.voc-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+/* Month share: months muted, the chosen month in the negative color */
+.voc-chart .is-muted {
+  fill: var(--line-strong);
+}
+.voc-chart .neg.is-marked {
+  fill: var(--negative);
+}
+.voc-chart text.is-marked {
+  fill: var(--ink);
+  font-weight: 600;
+}
+.voc-chart .is-average line {
+  stroke: var(--ink-muted);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.voc-chart .is-average text {
+  fill: var(--ink-muted);
+}
+/* Topic compare: a short ranking, the featured topic marked */
+.voc-compare {
+  container-type: inline-size;
+}
+.voc-compare ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.voc-compare li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(80px, 30%) 96px;
+  align-items: center;
+  gap: var(--space-3);
+}
+.voc-compare-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink);
+}
+.voc-compare li.is-marked .voc-compare-name > span:nth-child(2) {
+  font-weight: 600;
+}
+.voc-compare-tag {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--negative);
+}
+.voc-compare-track {
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+}
+.voc-compare-track > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--line-strong);
+}
+.voc-compare li.is-marked .voc-compare-track > span {
+  background: var(--negative);
+}
+.voc-compare-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+@container (max-width: 520px) {
+  .voc-compare li {
+    grid-template-columns: minmax(0, 1fr) 80px;
+  }
+  .voc-compare-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+/* Review highlights: the topic's mix, then a few reviews verbatim */
+.voc-highlights-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.voc-highlights-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-muted);
+}
+.voc-highlights-stat .voc-num {
+  font-size: 20px;
+  line-height: 28px;
+}
+.voc-highlights ol {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .voc-btn,
   .voc-chip,

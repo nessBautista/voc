@@ -748,6 +748,7 @@ def compose_research(steps, publication_id, trace, usage):
     rest = []
     views = []
     results = []
+    seen = set()
     for number, (plan, step_results) in enumerate(steps, 1):
         daily = compose(plan, step_results, publication_id, [], usage)
         data_part, *rest = daily["text"].split("\n\n")
@@ -756,7 +757,11 @@ def compose_research(steps, publication_id, trace, usage):
             + data_part.removeprefix("Qué dicen los datos. ")
         )
         views.extend(daily["views"][:1])
-        results.extend(step_results)
+        # A step may reuse what an earlier step fetched; the evidence lists it once.
+        for result in step_results:
+            if result["result_id"] not in seen:
+                seen.add(result["result_id"])
+                results.append(result)
     parts.append(
         rest[0]
         if rest
@@ -822,17 +827,27 @@ def validate_answer(answer, plan, publication_id):
     """Validate evidence first, then require the exact deterministic composition."""
     results = answer["results"]
     if answer.get("mode") == "research":
-        # Rebuild the steps from the answer itself: plans and slices of the evidence.
-        steps, cursor = [], 0
+        # Rebuild the steps from the answer itself: plans and the evidence each names.
+        # A step may name results an earlier step fetched; the evidence lists each
+        # result once, in the order the steps first use it.
+        by_id = {r["result_id"]: r for r in results}
+        if len(by_id) != len(results):
+            raise ValueError("Research evidence repeats a result")
+        steps, order = [], []
         for stored in answer["steps"]:
             step_plan = plan_from_stored(stored["plan"])
-            step_results = results[cursor : cursor + len(stored["result_ids"])]
-            if [r["result_id"] for r in step_results] != stored["result_ids"]:
-                raise ValueError("Research steps do not partition the evidence")
+            try:
+                step_results = [by_id[i] for i in stored["result_ids"]]
+            except KeyError as error:
+                raise ValueError("Research steps name evidence it lacks") from error
             _check_evidence(step_results, step_plan, publication_id)
             steps.append((step_plan, step_results))
-            cursor += len(step_results)
-        if cursor != len(results) or not steps or steps[0][0] != plan:
+            order.extend(i for i in stored["result_ids"] if i not in order)
+        if (
+            order != [r["result_id"] for r in results]
+            or not steps
+            or steps[0][0] != plan
+        ):
             raise ValueError("Research steps do not match the plan or the evidence")
         _check_trace(answer, results, publication_id)
         expected = compose_research(
