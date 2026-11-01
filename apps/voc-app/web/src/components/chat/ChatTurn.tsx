@@ -1,14 +1,8 @@
 import type { Conversation, Mode } from "../../conversation";
 import { View, type ViewSpec } from "../registry";
 import { AnswerFooter } from "./AnswerFooter";
-import {
-  AnswerSections,
-  DATA,
-  LIMITS,
-  sections,
-  stepIndex,
-  type Section,
-} from "./AnswerSections";
+import { AnswerSections, DATA, LIMITS, sections } from "./AnswerSections";
+import { ResearchReport } from "./research/ResearchReport";
 import { TurnFailed, TurnRunning } from "./TurnStatus";
 
 type Turn = Conversation["turns"][number];
@@ -53,14 +47,6 @@ function elapsed(from: string, to: string | null) {
   if (s < 10) return `${seconds.format(Math.max(s, 0.1))} s`;
   if (s < 60) return `${Math.round(s)} s`;
   return `${Math.floor(s / 60)} min ${Math.round(s % 60)} s`;
-}
-
-// Which step drew a view: the step whose evidence holds all of the view's ids.
-function stepOf(answer: Answer, view: ViewSpec) {
-  const index = (answer.steps ?? []).findIndex((step) =>
-    view.result_ids.every((id) => step.result_ids.includes(id)),
-  );
-  return index < 0 ? null : index;
 }
 
 function Panels({
@@ -113,9 +99,10 @@ function AnswerLead({ lead }: { lead: NonNullable<Answer["lead"]> }) {
   );
 }
 
-// One question and its answer. With an opening, the answer leads with it and
-// its key panels, and folds the full analysis and its limits; without one, the
-// analysis shows in full with each panel beside the text it supports.
+// One question and its answer. A research answer is a short report of its
+// steps (ResearchReport). A daily answer with an opening leads with it and its
+// panels, and folds the full analysis and its limits; without one, the
+// analysis shows in full with the panels after "Qué dicen los datos".
 export function ChatTurn({
   turn,
   publicationId,
@@ -148,45 +135,27 @@ export function ChatTurn({
     : null;
 
   let body = null;
-  if (answer) {
+  if (answer && research) {
+    body = (
+      <ResearchReport
+        answer={answer}
+        publicationId={publicationId}
+        onAsk={onAsk}
+      />
+    );
+  } else if (answer) {
     const parts = sections(answer.text);
     const limits = parts.find(
       (part) => part.kind === "section" && part.label === LIMITS,
     );
     const analysis = parts.filter((part) => part !== limits);
-    // Research: each step's panels; the last step with panels is the outcome.
-    const byStep = (index: number) =>
-      answer.views.filter((view) => stepOf(answer, view) === index);
-    const outcome = research
-      ? Math.max(-1, ...answer.views.map((view) => stepOf(answer, view) ?? -1))
-      : -1;
-    const placed = (part: Section, shown: number | null) => {
-      if (research) {
-        const step = stepIndex(part);
-        if (step === null || step === shown) return null;
-        return (
-          <Panels
-            views={byStep(step)}
-            answer={answer}
-            publicationId={publicationId}
-            onAsk={onAsk}
-          />
-        );
-      }
-      return null;
-    };
-    // Views no step claims, so nothing is ever dropped.
-    const loose = research
-      ? answer.views.filter((view) => stepOf(answer, view) === null)
-      : [];
 
     if (answer.lead) {
-      const key = research ? byStep(outcome).concat(loose) : answer.views;
       body = (
         <>
           <AnswerLead lead={answer.lead} />
           <Panels
-            views={key}
+            views={answer.views}
             answer={answer}
             publicationId={publicationId}
             onAsk={onAsk}
@@ -194,10 +163,7 @@ export function ChatTurn({
           <div className="voc-answer-folds">
             <details className="voc-answer-more">
               <summary>Ver el análisis completo</summary>
-              <AnswerSections
-                parts={analysis}
-                after={(part) => placed(part, outcome)}
-              />
+              <AnswerSections parts={analysis} />
             </details>
             {limits && limits.kind === "section" && (
               <details className="voc-answer-more">
@@ -216,10 +182,8 @@ export function ChatTurn({
         <>
           <AnswerSections
             parts={analysis}
-            after={(part, index) =>
-              research ? (
-                placed(part, null)
-              ) : index === Math.max(data, 0) ? (
+            after={(_, index) =>
+              index === Math.max(data, 0) ? (
                 <Panels
                   views={answer.views}
                   answer={answer}
@@ -228,12 +192,6 @@ export function ChatTurn({
                 />
               ) : null
             }
-          />
-          <Panels
-            views={loose}
-            answer={answer}
-            publicationId={publicationId}
-            onAsk={onAsk}
           />
           {limits && <AnswerSections parts={[limits]} />}
         </>

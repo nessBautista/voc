@@ -59,21 +59,22 @@ describe("chat turn layout", () => {
     );
   });
 
-  it("puts each research step's panel after its step", () => {
+  it("draws a research answer as a report: a block per step, panels folded", () => {
     const page = html(research);
-    expect(
-      before(page, "Paso 1 · Evolución mensual", "Sentimiento en el tiempo"),
-    ).toBe(true);
-    expect(
-      before(page, "Sentimiento en el tiempo", "Paso 2 · Queja principal"),
-    ).toBe(true);
-    expect(
-      before(
-        page,
-        "Paso 2 · Queja principal",
-        "Temas por volumen y sentimiento",
-      ),
-    ).toBe(true);
+    expect(page.match(/class="voc-research-step"/g)).toHaveLength(2);
+    // Step 1 shows the monthly share, with the month step 2 narrowed to marked.
+    expect(page).toContain("Proporción de reseñas negativas por mes");
+    expect(page).toContain("is-marked");
+    // Step 2 compares the month's feature topics.
+    expect(page).toContain("voc-compare");
+    // The full panels sit inside each step's fold, after its summary line.
+    const fold = page.indexOf("Ver el detalle y el panel completo");
+    expect(fold).toBeGreaterThan(-1);
+    expect(page.indexOf(">Sentimiento en el tiempo</h2>")).toBeGreaterThan(
+      fold,
+    );
+    // Without an opening, each step's finding is the server's own paragraph.
+    expect(page).toContain("la serie cubre 13 meses");
   });
 
   it("lets a topic in an answer be asked about, only in a conversation", () => {
@@ -100,7 +101,7 @@ describe("chat turn layout", () => {
     );
   });
 
-  it("with an opening shows the research outcome and folds the earlier steps", () => {
+  it("with an opening, each step leads with the model's line for it", () => {
     const page = html(research, {
       text: "Septiembre de 2025 tuvo más reseñas, 5.",
       steps: [
@@ -108,10 +109,84 @@ describe("chat turn layout", () => {
         "Ningún tema destacado",
       ],
     });
-    const fold = page.indexOf("Ver el análisis completo");
-    // The last step's panel leads; the first step's panel sits inside the fold.
-    expect(page.indexOf("Temas por volumen y sentimiento")).toBeLessThan(fold);
-    expect(page.indexOf("Sentimiento en el tiempo")).toBeGreaterThan(fold);
-    expect(page).toContain("voc-answer-chain");
+    expect(before(page, "Septiembre de 2025 tuvo más reseñas", "Paso 1")).toBe(
+      true,
+    );
+    expect(before(page, "Mes con más reseñas", "Paso 2")).toBe(true);
+    // The rail replaces the numbered chain, and the server's paragraph moves
+    // into the step's fold.
+    expect(page).not.toContain("voc-answer-chain");
+    const fold = page.indexOf("Ver el detalle y el panel completo");
+    expect(page.indexOf("la serie cubre 13 meses")).toBeGreaterThan(fold);
+  });
+});
+
+describe("research step visuals", () => {
+  it("shows a count, not a share, when the step filtered by sentiment", async () => {
+    const { ReviewHighlights } =
+      await import("../src/components/chat/research/ReviewHighlights");
+    const detail = {
+      kind: "topic_detail",
+      data: {
+        classified: 168,
+        negative: 168,
+        neutral: 0,
+        positive: 0,
+        keywords: [],
+      },
+    } as never;
+    const reviews = {
+      kind: "reviews",
+      data: { total: 168, items: [] },
+    } as never;
+    const filtered = renderToString(
+      <ReviewHighlights
+        detail={detail}
+        reviews={reviews}
+        labels={["negative"]}
+      />,
+    );
+    expect(filtered).not.toContain("100%");
+    expect(filtered).toContain("solo negativas, como pidió el paso");
+    const whole = renderToString(
+      <ReviewHighlights detail={detail} reviews={reviews} labels={null} />,
+    );
+    expect(whole).toContain("100%");
+  });
+});
+
+describe("research steps that share evidence", () => {
+  // The fourth case: a step that reuses the results an earlier step fetched.
+  const shared = () => {
+    const copy = structuredClone(research) as typeof research;
+    const answer = copy.turns[0].answer!;
+    const second = answer.steps![1];
+    (answer.steps as unknown[]).push({
+      plan: { ...second.plan, intent: "specific_problems" },
+      result_ids: [...second.result_ids],
+    });
+    return copy;
+  };
+
+  it("are read, as long as each result is listed once", () => {
+    expect(() => parseConversation(shared())).not.toThrow();
+    const missing = shared();
+    missing.turns[0].answer!.steps![2].result_ids = [
+      "0".repeat(64),
+      "1".repeat(64),
+    ];
+    expect(() => parseConversation(missing)).toThrow();
+  });
+
+  it("note the reuse instead of drawing the same visual again", () => {
+    const conversation = parseConversation(shared());
+    const page = renderToString(
+      <ChatTurn
+        turn={conversation.turns[0]}
+        publicationId={conversation.publication_id}
+      />,
+    );
+    expect(page).toContain("Con los mismos datos del paso 2");
+    expect(page.match(/class="voc-compare"/g)).toHaveLength(1);
   });
 });

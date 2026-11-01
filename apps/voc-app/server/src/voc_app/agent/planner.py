@@ -83,8 +83,97 @@ Rules of the chain: never repeat a step whose plan equals an earlier step; narro
 selection with what a step found (a month from a trend as month_from and month_to, a
 platform from a mood); refer to a topic a step put first with
 {"topic_id": null, "reference": "last_highlighted"} instead of copying a number; stop when a
-step found nothing to continue from. Never return reasoning or code.
+step found nothing to continue from. Never set labels except for topic_reviews: a share of
+negative reviews, a trend or a ranking needs every label, so a question about "negative
+comments" never filters a mood, trend or topic step to negatives. Set limit only on
+main_complaints, specific_problems or focus, never copied onto the next step. Set topic only
+on topic_reviews; specific_problems already looks beyond the main complaint by itself. Never return
+reasoning or code.
 """
+
+
+ANALYSIS_PLATFORMS = ("google_play", "app_store", "x", "youtube")
+
+
+def mend_plan(plan):
+    """Mend the slips a model makes in a research plan, before the contract checks it.
+
+    Each one is a field in the wrong place, never a change of what the step asks:
+    - a topic belongs to topic_reviews (or clarify); elsewhere it is dropped, since
+      specific_problems already looks beyond the main complaint by itself;
+    - a label filter belongs to topic_reviews; elsewhere it would turn every share
+      into 100%, so it is dropped;
+    - a limit belongs to a ranking (main_complaints, specific_problems, focus), from
+      one to ten; elsewhere it is dropped, and out of range it is brought back;
+    - the top-level platform belongs to sources and freshness; an analysis step reads
+      its platform from selection.platforms, so it moves there, and elsewhere goes;
+    - a selection belongs to an analysis intent; elsewhere it is dropped.
+    The log says what changed. Anything else the contract refuses stays refused.
+    """
+    if not isinstance(plan, dict):
+        return plan
+    intent = plan.get("intent")
+    mended = dict(plan)
+    changes = []
+    platform = mended.get("platform")
+    if platform is not None and intent not in ("sources", "freshness"):
+        if intent in ANALYSIS_INTENTS and platform in ANALYSIS_PLATFORMS:
+            selection = dict(
+                mended.get("selection")
+                or {
+                    "platforms": None,
+                    "labels": None,
+                    "month_from": None,
+                    "month_to": None,
+                    "search": None,
+                }
+            )
+            if not selection.get("platforms"):
+                selection["platforms"] = [platform]
+            mended["selection"] = selection
+            changes.append("a platform on %s was moved into its selection")
+        else:
+            changes.append("a platform on %s was dropped")
+        mended["platform"] = None
+    selection = mended.get("selection")
+    if selection is not None and intent not in ANALYSIS_INTENTS:
+        mended["selection"] = None
+        changes.append("a selection on %s was dropped")
+    elif (
+        isinstance(selection, dict)
+        and selection.get("labels")
+        and intent != "topic_reviews"
+    ):
+        mended["selection"] = {**selection, "labels": None}
+        changes.append("a label filter on %s was dropped")
+    if mended.get("topic") is not None and intent not in ("topic_reviews", "clarify"):
+        mended["topic"] = None
+        changes.append("a topic on %s was dropped")
+    limit = mended.get("limit")
+    if limit is not None:
+        if intent not in LIMITED_INTENTS:
+            mended["limit"] = None
+            changes.append("a limit on %s was dropped")
+        elif (
+            isinstance(limit, int)
+            and not isinstance(limit, bool)
+            and not 1 <= limit <= 10
+        ):
+            mended["limit"] = min(max(limit, 1), 10)
+            changes.append("a limit on %s was brought into range")
+    for change in changes:
+        logger.warning("Research step adjusted: " + change, intent)
+    return mended
+
+
+def mend_research_step(raw):
+    """mend_plan for the next step an assessment proposes."""
+    step = raw.get("next") if isinstance(raw, dict) else None
+    if not isinstance(step, dict):
+        return raw
+    mended = mend_plan(step)
+    return raw if mended == step else {**raw, "next": mended}
+
 
 DENYLIST = (
     r"recalcul|regenera|recompute|recalculate|rerun|umap|cluster|pipeline|experimen|"
@@ -473,7 +562,12 @@ class Planner:
         # The first plan of a research chain is asked for as a first step, not an answer.
         system = SYSTEM + RESEARCH_FIRST if mode == "research" else SYSTEM
         plan, usage = await self._complete(
-            system, {"question": question, "history": history[-4:]}, Plan
+            system,
+            {"question": question, "history": history[-4:]},
+            Plan,
+            # Research plans are mended the way their next steps are; daily plans
+            # keep the contract as it is.
+            repair=mend_plan if mode == "research" else None,
         )
         return normalize(plan), usage
 
@@ -485,6 +579,7 @@ class Planner:
             SYSTEM_ASSESS,
             {"question": question, "steps": steps, "history": history[-4:]},
             Assessment,
+            repair=mend_research_step,
         )
         if assessment.next is not None:
             assessment = Assessment(next=normalize(assessment.next))
@@ -516,7 +611,7 @@ class Planner:
             return None, usage
         return Lead(text=text, steps=lines), usage
 
-    async def _complete(self, system, payload, contract):
+    async def _complete(self, system, payload, contract, repair=None):
         if not self.settings.llm_api_key or not self.settings.llm_model:
             raise AgentError(
                 "model_unavailable",
@@ -576,7 +671,11 @@ class Planner:
             choice = payload["choices"][0]
             if choice.get("finish_reason") != "stop":
                 raise ValueError("Incomplete model plan")
-            parsed = contract.model_validate_json(choice["message"]["content"])
+            content = choice["message"]["content"]
+            if repair is not None:
+                # A known, harmless slip is mended before the contract checks the rest.
+                content = json.dumps(repair(json.loads(content)), ensure_ascii=False)
+            parsed = contract.model_validate_json(content)
             usage = payload.get("usage") or {}
             counts = {}
             for field in ("prompt_tokens", "completion_tokens"):

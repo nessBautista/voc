@@ -235,18 +235,28 @@ export function parseConversation(
     const research = answer.mode === "research";
     if (research !== (answer.steps !== undefined))
       throw new Error("La respuesta no declara sus pasos.");
-    // A research answer's steps partition the results in order and start with its plan.
+    // A research answer's steps start with its plan and name the results they use.
+    // A step may reuse what an earlier step fetched; the results list each once, in
+    // the order the steps first use them.
     const steps = answer.steps ?? [{ plan: answer.plan, result_ids: [] }];
+    const byId = new Map(results.map((result) => [result.result_id, result]));
     if (
       research &&
       (JSON.stringify(steps[0].plan) !== JSON.stringify(answer.plan) ||
-        JSON.stringify(steps.flatMap((step) => step.result_ids)) !==
-          JSON.stringify(results.map((result) => result.result_id)))
+        JSON.stringify([
+          ...new Set(steps.flatMap((step) => step.result_ids)),
+        ]) !== JSON.stringify(results.map((result) => result.result_id)))
     )
       throw new Error("Los pasos no corresponden a la evidencia.");
-    const kinds = research
-      ? steps.flatMap((step) => expectedKinds[step.plan.intent])
-      : expectedKinds[intent];
+    // Each research step carries the kinds its intent queries; a daily answer, its own.
+    const kindsMatch = research
+      ? steps.every(
+          (step) =>
+            JSON.stringify(step.result_ids.map((id) => byId.get(id)?.kind)) ===
+            JSON.stringify(expectedKinds[step.plan.intent]),
+        )
+      : JSON.stringify(results.map((result) => result.kind)) ===
+        JSON.stringify(expectedKinds[intent]);
     // Version 1 intents draw one block; analysis intents one to three; a research
     // answer at most one per step; refusals none.
     const viewsExpected = research
@@ -254,12 +264,7 @@ export function parseConversation(
       : analysisIntents.has(intent)
         ? views >= 1 && views <= 3
         : views === (expectedKinds[intent].length === 0 ? 0 : 1);
-    if (
-      JSON.stringify(results.map((result) => result.kind)) !==
-        JSON.stringify(kinds) ||
-      answer.trace.length !== results.length ||
-      !viewsExpected
-    )
+    if (!kindsMatch || answer.trace.length !== results.length || !viewsExpected)
       throw new Error("La evidencia no corresponde al plan.");
     for (const [index, item] of answer.trace.entries()) {
       const result = results[index];
