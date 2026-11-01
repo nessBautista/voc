@@ -8,25 +8,30 @@ import {
 } from "react";
 import type { Mode } from "../../conversation";
 import { number } from "../format";
+import { Icon, type IconName } from "../icons";
 
 const MAX = 1000;
-const modes: [Mode, string, string, string][] = [
+const modes: [Mode, string, IconName, string, string][] = [
   [
     "daily",
     "Diaria",
-    "Una pregunta, un plan, una respuesta.",
+    "daily",
+    "Una pregunta, una consulta directa; responde en segundos.",
     "Pregunta sobre las reseñas, por ejemplo: ¿cuál es la queja principal?",
   ],
   [
     "research",
     "Investigación",
-    "Una pregunta mayor, respondida en hasta seis consultas encadenadas; hasta 90 segundos.",
+    "research",
+    "Una pregunta mayor, respondida con hasta seis consultas encadenadas; tarda hasta 90 segundos.",
     "Plantea una pregunta mayor, por ejemplo: ¿qué cambió en las quejas este año?",
   ],
 ];
 
 // The question box with the mode inside it, the count and the send button.
-// Enter adds a line; the button, or Ctrl/⌘ + Enter, sends.
+// The chosen mode is said in words beside the switch, and research marks the
+// box's border. On an empty conversation the box is larger: it is the page's
+// main control. Enter adds a line; the button, or Ctrl/⌘ + Enter, sends.
 export function Composer({
   value,
   onChange,
@@ -36,6 +41,7 @@ export function Composer({
   disabled,
   sending,
   inputRef,
+  start = false,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -45,6 +51,7 @@ export function Composer({
   disabled: boolean;
   sending: boolean;
   inputRef?: Ref<HTMLTextAreaElement>;
+  start?: boolean;
 }) {
   const id = useId();
   const box = useRef<HTMLTextAreaElement>(null);
@@ -63,7 +70,13 @@ export function Composer({
   };
   return (
     <form
-      className="voc-composer"
+      className={[
+        "voc-composer",
+        mode === "research" ? "is-research" : "",
+        start ? "is-start" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       aria-label="Nueva pregunta"
       onSubmit={submit}
     >
@@ -75,7 +88,7 @@ export function Composer({
         ref={box}
         rows={1}
         maxLength={MAX}
-        placeholder={current[3]}
+        placeholder={current[4]}
         value={value}
         disabled={disabled}
         onChange={(event) => onChange(event.target.value)}
@@ -88,11 +101,11 @@ export function Composer({
       />
       <div className="voc-composer-bar">
         <div
-          className="voc-segmented"
+          className="voc-segmented is-strong"
           role="group"
           aria-label="Modo de la pregunta"
         >
-          {modes.map(([key, label]) => (
+          {modes.map(([key, label, icon]) => (
             <button
               key={key}
               type="button"
@@ -100,11 +113,12 @@ export function Composer({
               onClick={() => onMode(key)}
               disabled={disabled}
             >
+              <Icon name={icon} />
               {label}
             </button>
           ))}
         </div>
-        <p className="voc-composer-mode">{current[2]}</p>
+        <p className="voc-composer-mode">{current[3]}</p>
         <span className="voc-composer-count">
           {number(value.length)} / {number(MAX)}
         </span>

@@ -8,6 +8,7 @@ import {
   type Platform,
 } from "../../analysis";
 import { platformName } from "../format";
+import { Icon } from "../icons";
 import { useId } from "react";
 import { assessmentName, labelName, shortMonth } from "./shared";
 
@@ -41,6 +42,8 @@ function Chips<T extends string>({
             aria-pressed={chosen.has(value)}
             onClick={() => onToggle(value)}
           >
+            {/* On reads at a glance: a check, besides the accent and the solid border. */}
+            {chosen.has(value) && <Icon name="check" />}
             {swatch && (
               <span
                 className={`voc-swatch ${swatch(value)}`}

@@ -49,6 +49,11 @@ test("suggests the six questions and answers mood with the ring and the platform
     chat.getByRole("button", { name: "¿Cuál es la queja principal?" }),
   ).toBeVisible();
   await expect(chat.locator(".voc-suggestion")).toHaveCount(6);
+  // An empty conversation starts with the composer under the title, larger.
+  await expect(chat.locator(".voc-composer.is-start")).toBeVisible();
+  await expect(
+    chat.getByRole("button", { name: /^Ánimo general/ }),
+  ).toBeVisible();
   await chat
     .getByRole("button", {
       name: "¿Cómo se sienten, en general, quienes dejaron reseñas?",
@@ -107,6 +112,8 @@ test("research mode sends the mode and renders the steps with their blocks", asy
   await expect(
     chat.getByText(/hasta seis consultas encadenadas/),
   ).toBeVisible();
+  // Research is marked on the switch and on the composer's border.
+  await expect(chat.locator(".voc-composer")).toHaveClass(/is-research/);
   await chat.getByLabel("Tu pregunta").fill(research.turns[0].question);
   await chat.getByRole("button", { name: "Preguntar", exact: true }).click();
   // A research answer is a report: one block per step, each with a visual made

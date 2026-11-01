@@ -682,6 +682,17 @@ tbody th {
   gap: var(--space-5);
   margin-top: var(--space-2);
 }
+/* An empty conversation: the title, the composer and the suggestions, centred
+   in one narrower column, a little below the top of the page. */
+.app-chat.is-start {
+  width: 100%;
+  max-width: 760px;
+  margin: clamp(var(--space-5), 10vh, 96px) auto var(--space-6);
+  gap: var(--space-4);
+}
+.app-chat.is-start .voc-chat-head {
+  margin-bottom: var(--space-2);
+}
 .app-chat-dock {
   position: sticky;
   bottom: 0;

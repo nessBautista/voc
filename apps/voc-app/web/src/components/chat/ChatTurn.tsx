@@ -1,4 +1,5 @@
 import type { Conversation, Mode } from "../../conversation";
+import { Icon } from "../icons";
 import { View, type ViewSpec } from "../registry";
 import { AnswerFooter } from "./AnswerFooter";
 import { AnswerSections, DATA, LIMITS, sections } from "./AnswerSections";
@@ -199,8 +200,21 @@ export function ChatTurn({
     }
   }
 
+  // The mode the question was asked in: the answer's, or while it runs, the
+  // mode the page sent. A failed turn has neither, so it shows no tag.
+  const askedIn: Mode | null = answer
+    ? (answer.mode ?? "daily")
+    : turn.status === "running"
+      ? runningMode
+      : null;
   return (
     <article className="voc-turn">
+      {askedIn && (
+        <p className="voc-turn-mode">
+          <Icon name={askedIn} />
+          {askedIn === "research" ? "Investigación" : "Diaria"}
+        </p>
+      )}
       <p className="voc-turn-question">
         <span className="voc-sr">Tú: </span>
         {turn.question}
