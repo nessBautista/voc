@@ -38,14 +38,16 @@ Intents, with one Spanish example each:
 - topic_reviews: one topic's description and its reviews. "¿Qué dicen exactamente los clientes?"
 - specific_problems: narrower single-feature problems behind the main complaint. "¿Qué problemas más específicos aparecen?"
 - focus: a ranked list of topics to act on first. "¿Dónde convendría poner atención primero?"
+- praise: the best-rated topics, those with the most reliably positive reviews; what
+  customers value most. "¿Qué es lo que más valoran los clientes?"
 - unsupported: anything else: SQL, pipelines, experiments, recomputation, raw dumps,
   comparisons as one answer, custom charts, or work the Operator does.
 - clarify: an ambiguous question, or a greeting.
 Fields, all required, null when not named by the question:
 - platform: only for sources and freshness; one of google_play, app_store, x, youtube,
   unknown. It selects a row of the source table.
-- selection: only for mood, main_complaints, trend, topic_reviews, specific_problems and
-  focus. platforms is a list of google_play, app_store, x, youtube. labels is a list of
+- selection: only for mood, main_complaints, trend, topic_reviews, specific_problems,
+  focus and praise. platforms is a list of google_play, app_store, x, youtube. labels is a list of
   negative, neutral, positive, only for topic_reviews when the person asks to see
   reviews of one sentiment. month_from and month_to are YYYY-MM, only when the question
   names a month with its year; a month without a year is ambiguous: use clarify.
@@ -54,7 +56,7 @@ Fields, all required, null when not named by the question:
   named; otherwise {"topic_id": null, "reference": "last_highlighted"} for the topic the
   previous answer put first, or "last_opened" for the topic whose reviews were last
   shown. Never guess a number.
-- limit: only for main_complaints, specific_problems and focus; how many topics the
+- limit: only for main_complaints, specific_problems, focus and praise; how many topics the
   person asked for, 1 to 10.
 Normalize Google Play/Play Store to google_play and Apple App Store to app_store.
 For an explicit follow-up such as "¿y App Store?" reuse the last plan's intent with the
@@ -67,7 +69,8 @@ RESEARCH_FIRST = """
 Research mode: this question will be answered in a chain of up to six steps, each a plan
 from the list above, chosen one at a time. Return only the FIRST step: the first query the
 research needs, such as the trend when the question starts from a month, or the mood when
-it starts from a platform. A question that compares, chains or asks several things is
+it starts from a platform, or praise when it asks about the best-rated topic or what
+customers value. A question that compares, chains or asks several things is
 expected here and is never unsupported for that reason; later steps will narrow the
 selection and open topics. Use unsupported only when no first step from the list exists.
 """
@@ -86,7 +89,7 @@ platform from a mood); refer to a topic a step put first with
 step found nothing to continue from. Never set labels except for topic_reviews: a share of
 negative reviews, a trend or a ranking needs every label, so a question about "negative
 comments" never filters a mood, trend or topic step to negatives. Set limit only on
-main_complaints, specific_problems or focus, never copied onto the next step. Set topic only
+main_complaints, specific_problems, focus or praise, never copied onto the next step. Set topic only
 on topic_reviews; specific_problems already looks beyond the main complaint by itself. Never return
 reasoning or code.
 """
@@ -103,7 +106,7 @@ def mend_plan(plan):
       specific_problems already looks beyond the main complaint by itself;
     - a label filter belongs to topic_reviews; elsewhere it would turn every share
       into 100%, so it is dropped;
-    - a limit belongs to a ranking (main_complaints, specific_problems, focus), from
+    - a limit belongs to a ranking (main_complaints, specific_problems, focus, praise), from
       one to ten; elsewhere it is dropped, and out of range it is brought back;
     - the top-level platform belongs to sources and freshness; an analysis step reads
       its platform from selection.platforms, so it moves there, and elsewhere goes;
@@ -179,8 +182,16 @@ DENYLIST = (
     r"recalcul|regenera|recompute|recalculate|rerun|umap|cluster|pipeline|experimen|"
     r"\bsql\b|borra|elimina|entrena"
 )
-# One expression per intent, in the order they are tried.
+# One expression per intent, in the order they are tried. Praise comes first:
+# "qué dicen las reseñas positivas del tema mejor valorado" starts from the ranking.
 ANALYSIS = (
+    (
+        "praise",
+        (
+            r"mejor valorad|mas valorad|mejor calificad|lo que mas (les )?gusta"
+            r"|que (es lo que )?(mas )?valoran|temas? (mas )?positiv"
+        ),
+    ),
     (
         "topic_reviews",
         (
@@ -464,6 +475,24 @@ def fixture_assess(question, steps):
             return Assessment(next=None)
         topic = TopicReference(topic_id=None, reference="last_highlighted")
         return Assessment(next=_plan("topic_reviews", topic=topic))
+    if intent == "praise":
+        if not last["summary"].get("topic_list", {}).get("topics"):
+            return Assessment(next=None)
+        topic = TopicReference(topic_id=None, reference="last_highlighted")
+        # Asked for its positive reviews, the next step shows only those.
+        positive = "positiv" in _normalize(question)
+        selection = (
+            Selection(
+                platforms=None,
+                labels=["positive"],
+                month_from=None,
+                month_to=None,
+                search=None,
+            )
+            if positive
+            else None
+        )
+        return Assessment(next=_plan("topic_reviews", selection=selection, topic=topic))
     return Assessment(next=None)
 
 

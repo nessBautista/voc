@@ -20,8 +20,9 @@ ANALYSIS_INTENTS = (
     "topic_reviews",
     "specific_problems",
     "focus",
+    "praise",
 )
-LIMITED_INTENTS = ("main_complaints", "specific_problems", "focus")
+LIMITED_INTENTS = ("main_complaints", "specific_problems", "focus", "praise")
 PLATFORMS = {
     "google_play": "Google Play",
     "app_store": "App Store",
@@ -130,6 +131,7 @@ class Plan(Contract):
         "topic_reviews",
         "specific_problems",
         "focus",
+        "praise",
         "unsupported",
         "clarify",
     ]

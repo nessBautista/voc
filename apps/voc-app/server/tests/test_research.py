@@ -796,3 +796,69 @@ def test_steps_that_need_the_same_data_share_it(settings, v2_active):
         validate_answer(
             broken, Plan.model_validate(answer["plan"]), answer["publication_id"]
         )
+
+
+def test_best_rated_topic_reviews_chain_on_the_fixture(settings, v2_active):
+    """The question that failed: praise first, then the best-rated topic's positive reviews."""
+    with TestClient(create_app(settings)) as client:
+        turn = ask(
+            client,
+            research("¿Qué dicen las reseñas positivas del tema mejor valorado?"),
+        )["turns"][0]
+    assert turn["status"] == "completed", turn
+    answer = turn["answer"]
+    intents = [s["plan"]["intent"] for s in answer["steps"]]
+    assert intents == ["praise", "topic_reviews"]
+    reviews = answer["steps"][1]["plan"]
+    assert reviews["selection"]["labels"] == ["positive"]
+    assert "Paso 1 · Temas mejor valorados." in answer["text"]
+    assert (
+        "El tema mejor valorado entre los de una funcionalidad es el tema"
+        in answer["text"]
+    )
+    # The reviews step opens the topic the praise step put first.
+    named = [
+        line for line in answer["text"].split("\n\n") if line.startswith("Paso 1")
+    ][0]
+    assert f"tema {reviews['topic']['topic_id']}," in named
+    validate_answer(
+        answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
+    )
+
+
+def test_praise_is_a_daily_answer_too(settings, v2_active):
+    with TestClient(create_app(settings)) as client:
+        answer = ask(client, payload("¿Qué es lo que más valoran los clientes?"))[
+            "turns"
+        ][0]["answer"]
+    assert answer["plan"]["intent"] == "praise"
+    assert [v["component"] for v in answer["views"]] == ["topic_list"]
+    assert answer["text"].startswith("Qué dicen los datos.")
+    assert "proporción positiva" in answer["text"]
+
+
+def test_memory_reads_research_steps_that_share_results():
+    """A step that reuses an earlier step's results is remembered with them."""
+    from voc_app.agent.memory import answer_steps
+
+    plan = {"platform": None, "selection": None, "topic": None, "limit": None}
+    answer = {
+        "mode": "research",
+        "plan": {"intent": "main_complaints", **plan},
+        "steps": [
+            {"plan": {"intent": "main_complaints", **plan}, "result_ids": ["a", "b"]},
+            {"plan": {"intent": "specific_problems", **plan}, "result_ids": ["a", "b"]},
+            {"plan": {"intent": "trend", **plan}, "result_ids": ["c"]},
+        ],
+        "results": [
+            {"result_id": "a", "kind": "summary"},
+            {"result_id": "b", "kind": "topic_list"},
+            {"result_id": "c", "kind": "timeline"},
+        ],
+    }
+    steps = answer_steps(answer)
+    assert [[r["result_id"] for r in results] for _, results in steps] == [
+        ["a", "b"],
+        ["a", "b"],
+        ["c"],
+    ]

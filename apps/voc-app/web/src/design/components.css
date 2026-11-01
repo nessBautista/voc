@@ -2036,6 +2036,13 @@ summary.is-focus {
 .voc-compare li.is-marked .voc-compare-track > span {
   background: var(--negative);
 }
+/* A praise step marks its best-rated topic in the positive color */
+.voc-compare.is-positive li.is-marked .voc-compare-track > span {
+  background: var(--positive);
+}
+.voc-compare.is-positive .voc-compare-tag {
+  color: var(--positive);
+}
 .voc-compare-value {
   display: flex;
   flex-direction: column;

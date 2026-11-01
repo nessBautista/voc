@@ -116,7 +116,9 @@ def build_graph(planner, client):
         summaries = [
             {
                 "plan": step_plan.model_dump(),
-                "summary": {r["kind"]: summarize(r["kind"], r) for r in step_results},
+                "summary": {
+                    r["kind"]: summarize(r["kind"], r, step_plan) for r in step_results
+                },
             }
             for step_plan, step_results in state["steps"]
         ]
@@ -179,7 +181,9 @@ def build_graph(planner, client):
         summaries = [
             {
                 "plan": step_plan.model_dump(),
-                "summary": {r["kind"]: summarize(r["kind"], r) for r in step_results},
+                "summary": {
+                    r["kind"]: summarize(r["kind"], r, step_plan) for r in step_results
+                },
             }
             for step_plan, step_results in state["steps"]
         ]

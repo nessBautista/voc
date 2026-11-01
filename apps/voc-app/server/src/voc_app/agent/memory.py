@@ -18,14 +18,15 @@ def answer_steps(answer):
     results = answer["results"]
     if answer.get("mode") != "research":
         return [(plan_from_stored(answer["plan"]), results)]
-    steps, cursor = [], 0
-    for stored in answer["steps"]:
-        count = len(stored["result_ids"])
-        steps.append(
-            (plan_from_stored(stored["plan"]), results[cursor : cursor + count])
+    # Each step names its results by id; a step may reuse an earlier step's results.
+    by_id = {result["result_id"]: result for result in results}
+    return [
+        (
+            plan_from_stored(stored["plan"]),
+            [by_id[i] for i in stored["result_ids"] if i in by_id],
         )
-        cursor += count
-    return steps
+        for stored in answer["steps"]
+    ]
 
 
 def remember(turns):

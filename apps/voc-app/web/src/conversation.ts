@@ -25,6 +25,7 @@ const intents = [
   "topic_reviews",
   "specific_problems",
   "focus",
+  "praise",
   "unsupported",
   "clarify",
 ] as const;
@@ -42,6 +43,7 @@ const expectedKinds: Record<Intent, string[]> = {
   topic_reviews: ["topic_detail", "reviews"],
   specific_problems: ["summary", "topic_list"],
   focus: ["summary", "topic_list"],
+  praise: ["summary", "topic_list"],
   unsupported: [],
   clarify: [],
 };
@@ -52,6 +54,7 @@ const analysisIntents = new Set<Intent>([
   "topic_reviews",
   "specific_problems",
   "focus",
+  "praise",
 ]);
 const mode = z.enum(["fixture", "model"]);
 const count = z.number().int().nonnegative();
