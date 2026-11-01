@@ -65,8 +65,11 @@ describe("chat turn layout", () => {
     // Step 1 shows the monthly share, with the month step 2 narrowed to marked.
     expect(page).toContain("Proporción de reseñas negativas por mes");
     expect(page).toContain("is-marked");
-    // Step 2 compares the month's feature topics.
-    expect(page).toContain("voc-compare");
+    // Step 2 compares the month's feature topics; in this tiny month none has
+    // the five classified reviews a ranking needs, so it says so.
+    expect(page).toContain(
+      "Ningún tema de una funcionalidad tiene al menos 5 reseñas clasificadas aquí.",
+    );
     // The full panels sit inside each step's fold, after its summary line.
     const fold = page.indexOf("Ver el detalle y el panel completo");
     expect(fold).toBeGreaterThan(-1);
@@ -187,6 +190,48 @@ describe("research steps that share evidence", () => {
       />,
     );
     expect(page).toContain("Con los mismos datos del paso 2");
-    expect(page.match(/class="voc-compare"/g)).toHaveLength(1);
+    // Step 2's comparison (here, its hint) appears once, not again in step 3.
+    expect(
+      page.match(/Ningún tema de una funcionalidad tiene al menos/g),
+    ).toHaveLength(1);
+  });
+});
+
+describe("the praise step", () => {
+  it("ranks by the positive share at 95% confidence and marks the best rated", async () => {
+    const { TopicCompare } =
+      await import("../src/components/chat/research/TopicCompare");
+    const row = (topic_id: number, positive: number, classified: number) => ({
+      topic_id,
+      display_name: `Tema de prueba ${topic_id}`,
+      assessment: "single_feature",
+      classified,
+      negative: classified - positive,
+      neutral: 0,
+      positive,
+      negative_share: (classified - positive) / classified,
+      positive_share: positive / classified,
+      wilson_lower: 0,
+    });
+    // 6 of 6 positive ranks below 95 of 100: the bound discounts small topics.
+    const result = {
+      kind: "topic_list",
+      data: [row(1, 6, 6), row(2, 95, 100), row(3, 3, 4)],
+    } as never;
+    const page = renderToString(
+      <TopicCompare
+        result={result}
+        featured={null}
+        scope={null}
+        measure="positive"
+      />,
+    );
+    expect(page.indexOf("Tema de prueba 2")).toBeLessThan(
+      page.indexOf("Tema de prueba 1"),
+    );
+    // Four classified reviews are too few to rank.
+    expect(page).not.toContain("Tema de prueba 3");
+    expect(page).toContain("Mejor valorado");
+    expect(page).toContain("is-positive");
   });
 });

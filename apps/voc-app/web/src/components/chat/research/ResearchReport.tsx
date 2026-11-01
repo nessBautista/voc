@@ -28,6 +28,7 @@ const STEP_NAME: Record<string, string> = {
   topic_reviews: "Reseñas del tema",
   specific_problems: "Problemas específicos",
   focus: "Prioridades",
+  praise: "Temas mejor valorados",
   unsupported: "Fuera de alcance",
   clarify: "Aclaración",
 };
@@ -78,6 +79,19 @@ function StepVisual({
         result={topics}
         featured={featured}
         scope={month ? longMonth(month) : null}
+      />
+    );
+  }
+  if (intent === "praise") {
+    const topics = find("topic_list");
+    if (!topics) return null;
+    const month = monthOf(step);
+    return (
+      <TopicCompare
+        result={topics}
+        featured={next?.plan.topic?.topic_id ?? null}
+        scope={month ? longMonth(month) : null}
+        measure="positive"
       />
     );
   }

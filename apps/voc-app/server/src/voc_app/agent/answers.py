@@ -1,5 +1,7 @@
 """Compose factual Spanish answers from saved evidence and closed visual descriptors."""
 
+from voc.analysis.highlight import wilson_lower
+
 from .contracts import (
     ANALYSIS_INTENTS,
     PLATFORMS,
@@ -8,7 +10,7 @@ from .contracts import (
     validate_result,
 )
 
-DEFAULT_LIMIT = {"main_complaints": 3, "specific_problems": 5, "focus": 5}
+DEFAULT_LIMIT = {"main_complaints": 3, "specific_problems": 5, "focus": 5, "praise": 3}
 # A topic needs this many classified reviews before a ranking names it.
 FEATURE_MINIMUM = 5
 SPECIFIC_MINIMUM = 100
@@ -20,6 +22,7 @@ INTENT_VIEWS = {
     "topic_reviews": ["topic_detail"],
     "specific_problems": ["topic_list"],
     "focus": ["topic_list", "kpi_tiles"],
+    "praise": ["topic_list"],
 }
 LABEL_WORDS = {"negative": "negativas", "neutral": "neutras", "positive": "positivas"}
 INTENT_LABELS = {
@@ -34,6 +37,7 @@ INTENT_LABELS = {
     "topic_reviews": "Reseñas del tema",
     "specific_problems": "Problemas específicos",
     "focus": "Prioridades",
+    "praise": "Temas mejor valorados",
     "unsupported": "Fuera de alcance",
     "clarify": "Aclaración",
 }
@@ -74,6 +78,8 @@ def operations(plan):
             ("topic_detail", topic),
             ("reviews", {**topic, "page": 1, "page_size": REVIEW_PAGE}),
         ]
+    if plan.intent == "praise":
+        return [("summary", base), ("topic_list", {**base, "sort": "positive"})]
     return [("summary", base), ("topic_list", {**base, "sort": "negative"})]
 
 
@@ -88,6 +94,21 @@ def feature_ranking(rows, minimum=FEATURE_MINIMUM, single_only=False):
         and r["classified"] >= minimum
     ]
     eligible.sort(key=lambda r: (-r["wilson_lower"], -r["classified"], r["topic_id"]))
+    return eligible
+
+
+def praise_ranking(rows, minimum=FEATURE_MINIMUM):
+    """Feature topics by how reliably their reviews are positive: the Wilson bound of
+    the positive share, the mirror of the complaint ranking, so a small topic with
+    every review positive does not outrank a large one with nearly every review."""
+    eligible = [
+        {**r, "positive_lower": wilson_lower(r["positive"], r["classified"])}
+        for r in rows
+        if r["topic_id"] >= 0
+        and r["assessment"] in ("single_feature", "mixed")
+        and r["classified"] >= minimum
+    ]
+    eligible.sort(key=lambda r: (-r["positive_lower"], -r["classified"], r["topic_id"]))
     return eligible
 
 
@@ -108,6 +129,8 @@ def ranked_rows(plan, results):
         ranked.sort(
             key=lambda r: (-r["negative"], -(r["negative_share"] or 0), r["topic_id"])
         )
+    elif plan.intent == "praise":
+        ranked = praise_ranking(rows)
     else:
         ranked = feature_ranking(rows)
     return ranked[: plan.limit or DEFAULT_LIMIT[plan.intent]]
@@ -526,6 +549,59 @@ def focus_text(plan, by_kind, results):
     return three_parts(data_part, interpretation, limits)
 
 
+PRAISE_BOUND_SENTENCE = (
+    "El orden usa el límite inferior de Wilson al 95% de la proporción positiva, que "
+    "descuenta a los temas pequeños: un tema con pocas reseñas y todas positivas no supera "
+    "a uno grande con casi todas positivas."
+)
+
+
+def praise_text(plan, by_kind, results):
+    summary = by_kind["summary"]["data"]
+    rows = by_kind["topic_list"]["data"]
+    named = ranked_rows(plan, results)
+    data_part = scope_sentence(plan, summary)
+    left_out, unassigned = outside_ranking(rows)
+    if not named:
+        data_part += f" No hay temas de una funcionalidad con al menos {FEATURE_MINIMUM} reseñas clasificadas en esta selección."
+        interpretation = PRAISE_BOUND_SENTENCE
+    else:
+        first = named[0]
+        data_part += (
+            f" El tema mejor valorado entre los de una funcionalidad es el tema "
+            f"{first['topic_id']}, «{first['display_name']}»: {first['positive']:,} de "
+            f"{first['classified']:,} reseñas clasificadas son positivas "
+            f"({pct(first['positive_share'])}; al menos {pct(first['positive_lower'])} con 95% de confianza)."
+        )
+        if len(named) > 1:
+            data_part += (
+                " Le siguen "
+                + join_words(
+                    f"«{row['display_name']}» (tema {row['topic_id']}, {pct(row['positive_share'])}, {counted(row['positive'], 'positiva')})"
+                    for row in named[1:]
+                )
+                + "."
+            )
+        keywords = join_words(first["keywords"][:3])
+        interpretation = (
+            "Los nombres de los temas son generados por un modelo a partir de sus reseñas"
+            + (
+                f"; «{first['display_name']}» reúne reseñas con palabras clave como {keywords}."
+                if keywords
+                else "."
+            )
+            + " "
+            + PRAISE_BOUND_SENTENCE
+        )
+    limits = (
+        f"{left_out} temas en vista no tienen un nombre generado, no describen una funcionalidad "
+        f"o tienen menos de {FEATURE_MINIMUM} reseñas clasificadas, y no participan en este orden. "
+        f"{unassigned:,} reseñas en vista no están asignadas a ningún tema. "
+        "Una proporción alta de positivas no mide cuántas personas están satisfechas."
+    )
+    return three_parts(data_part, interpretation, limits)
+
+
 def analysis_text(plan, by_kind, results):
     if plan.intent == "mood":
         return mood_text(plan, by_kind)
@@ -537,6 +613,8 @@ def analysis_text(plan, by_kind, results):
         return topic_reviews_text(plan, by_kind)
     if plan.intent == "specific_problems":
         return specific_problems_text(plan, by_kind, results)
+    if plan.intent == "praise":
+        return praise_text(plan, by_kind, results)
     return focus_text(plan, by_kind, results)
 
 
@@ -545,7 +623,7 @@ def compose(plan, results, publication_id, trace, usage):
     by_kind = {result["kind"]: result for result in results}
     views = []
     if plan.intent == "unsupported":
-        text = "Esta versión consulta el estado de los datos publicados y su análisis: ánimo general, quejas principales, evolución mensual, reseñas de un tema, problemas específicos y prioridades. No ofrece ese análisis ni ejecuta pipelines o experimentos. No apliqué filtros adicionales."
+        text = "Esta versión consulta el estado de los datos publicados y su análisis: ánimo general, quejas principales, temas mejor valorados, evolución mensual, reseñas de un tema, problemas específicos y prioridades. No ofrece ese análisis ni ejecuta pipelines o experimentos. No apliqué filtros adicionales."
     elif plan.intent == "clarify":
         if plan.topic is not None:
             text = "¿A qué tema te refieres? Pregunta primero por la queja principal, o indica el número del tema."
@@ -657,9 +735,26 @@ def compose(plan, results, publication_id, trace, usage):
     }
 
 
-def summarize(kind, result):
+def summarize(kind, result, plan=None):
     """The few numbers and names an assessment needs; never a review text or a description."""
     data = result["data"]
+    if kind == "topic_list" and plan is not None and plan.intent == "praise":
+        # A praise step ranks by positives; its summary says what it found.
+        return {
+            "topics": [
+                {
+                    k: r[k]
+                    for k in (
+                        "topic_id",
+                        "display_name",
+                        "positive",
+                        "classified",
+                        "positive_share",
+                    )
+                }
+                for r in praise_ranking(data)[:5]
+            ]
+        }
     if kind == "summary":
         tile = data["most_negative_feature"]
         return {
