@@ -24,6 +24,10 @@ test:
 server-test:
     {{compose}} exec -e UV_PROJECT_ENVIRONMENT=/workspace/data/venvs/voc-app-server -e UV_CACHE_DIR=/workspace/data/venvs/uv-cache workspace uv run --project apps/voc-app/server --group dev --locked pytest -q apps/voc-app/server/tests
 
+# Register an app-dependent kernel in the Operator's Jupyter, separate from ML and tests.
+agent-notebook-kernel:
+    {{compose}} exec -e UV_PROJECT_ENVIRONMENT=/workspace/data/venvs/voc-agent-notebook -e UV_CACHE_DIR=/workspace/data/venvs/uv-cache workspace uv run --project apps/voc-app/server --no-default-groups --group notebook --locked python -m ipykernel install --user --name voc-agent --display-name 'VOC · Agentes'
+
 # Web unit tests and the production build in a throwaway Node container; nothing installs on the host.
 web-test:
     docker run --rm -v "{{justfile_directory()}}/apps/voc-app/web:/web" -w /web node:22-bookworm-slim sh -c "npm ci --no-fund --no-audit && npm test && npm run build"
