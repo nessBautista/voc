@@ -6,8 +6,13 @@ const clock = (ms: number) => {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 };
 
-// A running turn: the elapsed time, counted in the page from when it started.
-// Research answers bring their steps when they finish, so time is what we have.
+// The research limit the server enforces; the card measures time against it.
+const RESEARCH_SECONDS = 90;
+
+// A running turn. The page knows only that the turn runs and since when: the
+// steps of a research answer arrive with the answer. Daily: the answer's place,
+// held by its status and three placeholder lines. Research: a card with the
+// time spent against the 90 s limit and what the agent is doing.
 export function TurnRunning({
   mode,
   createdAt,
@@ -21,23 +26,52 @@ export function TurnRunning({
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
   }, []);
-  const research = mode === "research";
+  const elapsed = Number.isFinite(started) ? Math.max(0, now - started) : null;
+  if (mode === "research") {
+    const seconds = elapsed === null ? 0 : Math.floor(elapsed / 1000);
+    return (
+      <div className="voc-turn-progress" role="status">
+        <p className="voc-turn-progress-head">
+          <span className="voc-pulse" aria-hidden="true" />
+          <span>Investigando en varios pasos…</span>
+          {elapsed !== null && (
+            <span className="voc-turn-clock">
+              <span className="voc-num">{clock(elapsed)}</span> de ~90 s
+            </span>
+          )}
+        </p>
+        <div
+          className="voc-progress"
+          role="progressbar"
+          aria-label="Tiempo de la investigación"
+          aria-valuemin={0}
+          aria-valuemax={RESEARCH_SECONDS}
+          aria-valuenow={Math.min(seconds, RESEARCH_SECONDS)}
+        >
+          <span
+            style={{
+              width: `${(Math.min(seconds, RESEARCH_SECONDS) / RESEARCH_SECONDS) * 100}%`,
+            }}
+          />
+        </div>
+        <p className="voc-turn-progress-note">
+          Elige cada consulta según el resultado de la anterior, hasta seis.
+          Puedes volver a esta conversación después.
+        </p>
+      </div>
+    );
+  }
   return (
-    <p className="voc-turn-running" role="status">
-      <span className="voc-pulse" aria-hidden="true" />
-      <span>
-        {research
-          ? "Investigando en varios pasos…"
-          : "Consultando la publicación…"}
-      </span>
-      {Number.isFinite(started) && (
-        <span>
-          <span className="voc-num">{clock(now - started)}</span>
-          {research ? " de ~90 s" : ""}
-        </span>
-      )}
-      <span>Puedes volver a esta conversación después.</span>
-    </p>
+    <div className="voc-turn-wait" role="status">
+      <p className="voc-turn-wait-head">
+        <span className="voc-pulse" aria-hidden="true" />
+        <span>Consultando la publicación…</span>
+        {elapsed !== null && <span className="voc-num">{clock(elapsed)}</span>}
+      </p>
+      <span className="voc-skeleton" aria-hidden="true" />
+      <span className="voc-skeleton" aria-hidden="true" />
+      <span className="voc-skeleton" aria-hidden="true" />
+    </div>
   );
 }
 

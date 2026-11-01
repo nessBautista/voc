@@ -1,5 +1,8 @@
+import { Icon, type IconName } from "../icons";
+
 // Opens the chat page: what the conversation is for, a way to start over, and
-// the ids that pin it to one publication.
+// the ids that pin it to one publication. While the conversation is empty it is
+// the page's hero, centred above the composer.
 export function ChatHeader({
   titleId,
   analysis,
@@ -9,6 +12,7 @@ export function ChatHeader({
   busy,
   onNew,
   onRefresh,
+  start = false,
 }: {
   titleId: string;
   analysis: boolean;
@@ -19,10 +23,11 @@ export function ChatHeader({
   busy: boolean;
   onNew: () => void;
   onRefresh: () => void;
+  start?: boolean;
 }) {
   return (
     <>
-      <div className="voc-chat-head">
+      <div className={start ? "voc-chat-head is-start" : "voc-chat-head"}>
         <div>
           <p className="voc-eyebrow">Pregunta sobre esta información</p>
           <h1 className="voc-chat-title" id={titleId}>
@@ -90,27 +95,33 @@ export function ChatHeader({
   );
 }
 
-// Ready questions while the conversation is empty. Picking one fills the
-// composer without sending, so the reader can edit it or change the mode.
+export type Suggestion = { label: string; question: string; icon: IconName };
+
+// Ready questions while the conversation is empty: short buttons, each named
+// for its topic and carrying the full question, which is also its accessible
+// name. Picking one fills the composer without sending, so the reader can edit
+// it or change the mode.
 export function SuggestionList({
-  questions,
+  suggestions,
   onPick,
 }: {
-  questions: string[];
+  suggestions: Suggestion[];
   onPick: (question: string) => void;
 }) {
   return (
     <section className="voc-suggestions" aria-label="Preguntas sugeridas">
-      <p className="voc-eyebrow">Prueba con una pregunta</p>
       <ul>
-        {questions.map((question) => (
+        {suggestions.map(({ label, question, icon }) => (
           <li key={question}>
             <button
               type="button"
               className="voc-suggestion"
+              title={question}
               onClick={() => onPick(question)}
             >
-              {question}
+              <Icon name={icon} />
+              {label}
+              <span className="voc-sr">{`: ${question}`}</span>
             </button>
           </li>
         ))}

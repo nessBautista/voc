@@ -3,6 +3,7 @@ import {
   ChatHeader,
   RecoveryBanner,
   SuggestionList,
+  type Suggestion,
 } from "./components/chat/ChatHeader";
 import { ChatTurn } from "./components/chat/ChatTurn";
 import { Composer } from "./components/chat/Composer";
@@ -17,18 +18,54 @@ import {
 import { warningText } from "./shell";
 
 // The six questions of the demo flow, suggested when the package carries analysis.
-const DEMO_QUESTIONS = [
-  "¿Cómo se sienten, en general, quienes dejaron reseñas?",
-  "¿Cuál es la queja principal?",
-  "¿Cuándo aumentaron las quejas?",
-  "¿Qué dicen exactamente los clientes?",
-  "¿Qué problemas más específicos aparecen?",
-  "¿Dónde convendría poner atención primero?",
+const DEMO_QUESTIONS: Suggestion[] = [
+  {
+    label: "Ánimo general",
+    question: "¿Cómo se sienten, en general, quienes dejaron reseñas?",
+    icon: "mood",
+  },
+  {
+    label: "Queja principal",
+    question: "¿Cuál es la queja principal?",
+    icon: "complaint",
+  },
+  {
+    label: "Cuándo aumentaron",
+    question: "¿Cuándo aumentaron las quejas?",
+    icon: "trend",
+  },
+  {
+    label: "Qué dicen los clientes",
+    question: "¿Qué dicen exactamente los clientes?",
+    icon: "reviews",
+  },
+  {
+    label: "Problemas específicos",
+    question: "¿Qué problemas más específicos aparecen?",
+    icon: "specific",
+  },
+  {
+    label: "Prioridades",
+    question: "¿Dónde convendría poner atención primero?",
+    icon: "focus",
+  },
 ];
-const DATA_QUESTIONS = [
-  "¿De dónde provienen los datos?",
-  "¿Cuál es la última actualización?",
-  "¿Qué cobertura mensual tenemos?",
+const DATA_QUESTIONS: Suggestion[] = [
+  {
+    label: "Fuentes",
+    question: "¿De dónde provienen los datos?",
+    icon: "sources",
+  },
+  {
+    label: "Última actualización",
+    question: "¿Cuál es la última actualización?",
+    icon: "updated",
+  },
+  {
+    label: "Cobertura mensual",
+    question: "¿Qué cobertura mensual tenemos?",
+    icon: "coverage",
+  },
 ];
 
 function urlId() {
@@ -203,6 +240,48 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
       ),
     ),
   ];
+  const composer = (start: boolean) => (
+    <Composer
+      value={question}
+      onChange={setQuestion}
+      mode={mode}
+      onMode={setMode}
+      onSubmit={submit}
+      disabled={locked}
+      sending={busy}
+      inputRef={input}
+      start={start}
+    />
+  );
+  // An empty conversation is a start page: the title, the composer under it
+  // and the suggestions below. The first question turns it into a thread with
+  // the composer pinned to the bottom.
+  if (!id && !pending)
+    return (
+      <section className="app-chat is-start" aria-labelledby={titleId}>
+        <ChatHeader
+          titleId={titleId}
+          analysis={analysis}
+          conversationId={id}
+          publicationId={conversation?.publication_id}
+          warnings={warnings}
+          busy={busy}
+          onNew={startNew}
+          onRefresh={() => setRefresh((n) => n + 1)}
+          start
+        />
+        {composer(true)}
+        <SuggestionList
+          suggestions={analysis ? DEMO_QUESTIONS : DATA_QUESTIONS}
+          onPick={prefill}
+        />
+        {error && (
+          <p role="alert" className="app-notice is-error">
+            {error}
+          </p>
+        )}
+      </section>
+    );
   return (
     <section className="app-chat" aria-labelledby={titleId}>
       <ChatHeader
@@ -215,12 +294,6 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
         onNew={startNew}
         onRefresh={() => setRefresh((n) => n + 1)}
       />
-      {!id && !pending && (
-        <SuggestionList
-          questions={analysis ? DEMO_QUESTIONS : DATA_QUESTIONS}
-          onPick={prefill}
-        />
-      )}
       {conversation && conversation.turns.length > 0 && (
         <div className="voc-thread">
           {conversation.turns.map((turn) => (
@@ -263,16 +336,7 @@ export function Chat({ analysis = false }: { analysis?: boolean }) {
             onDiscard={startNew}
           />
         )}
-        <Composer
-          value={question}
-          onChange={setQuestion}
-          mode={mode}
-          onMode={setMode}
-          onSubmit={submit}
-          disabled={locked}
-          sending={busy}
-          inputRef={input}
-        />
+        {composer(false)}
       </div>
     </section>
   );

@@ -80,6 +80,13 @@
   border-radius: 2px;
 }
 
+/* Icons: one outline family, 16px with a 1.5px stroke, in the text's color */
+.voc-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
 /* Focus: one ring for every control */
 .voc-btn:focus-visible,
 .voc-chip:focus-visible,
@@ -207,12 +214,22 @@ summary.is-focus {
 }
 .voc-chip:hover,
 .voc-chip.is-hover {
-  color: var(--ink);
-}
-.voc-chip[aria-pressed="true"] {
-  border-style: solid;
   background: var(--surface-raised);
   color: var(--ink);
+}
+/* On: a check, an accent tint, a solid accent border and accent text, so a
+   filter's state reads at a glance and never by color alone */
+.voc-chip[aria-pressed="true"] {
+  border-style: solid;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  font-weight: 600;
+}
+.voc-chip .voc-icon {
+  width: 14px;
+  height: 14px;
+  margin-left: calc(-1 * var(--space-1));
 }
 .voc-chip[aria-pressed="true"] .voc-swatch {
   opacity: 1;
@@ -262,6 +279,22 @@ summary.is-focus {
 .voc-segmented button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+/* Strong: a choice that changes what happens next, such as the composer's
+   mode. Icons, a taller target, and the chosen option tinted with accent. */
+.voc-segmented.is-strong button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.voc-segmented.is-strong button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 
 /* Fields: search input and month select */
@@ -1367,6 +1400,26 @@ summary.is-focus {
   line-height: 22px;
   color: var(--ink-muted);
 }
+/* An empty conversation: the header is the page's hero, centred, with the
+   composer and the suggestions below it */
+.voc-chat-head.is-start {
+  justify-content: center;
+  text-align: center;
+}
+.voc-chat-head.is-start > div {
+  align-items: center;
+  gap: var(--space-3);
+}
+.voc-chat-head.is-start .voc-chat-title {
+  font-size: 40px;
+  line-height: 48px;
+}
+.voc-chat-head.is-start .voc-chat-lede {
+  max-width: 60ch;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--ink);
+}
 .voc-chat-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1435,53 +1488,44 @@ summary.is-focus {
   flex-basis: 100%;
 }
 
-/* Suggested questions: a row-separated list, the whole row is the button */
-.voc-suggestions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
+/* Suggested questions: short buttons under the composer, each with its icon;
+   the full question is the button's accessible name and fills the composer */
 .voc-suggestions ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-.voc-suggestions li + li {
-  border-top: 1px solid var(--line);
 }
 .voc-suggestion {
   font: inherit;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+  gap: var(--space-2);
+  height: 32px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
   color: var(--ink);
-  font-size: 14px;
-  line-height: 20px;
-  text-align: left;
+  font-size: 13px;
+  line-height: 18px;
   cursor: pointer;
-  transition: background-color 140ms ease-out;
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out;
 }
-.voc-suggestion::after {
-  content: "→";
-  flex: none;
+.voc-suggestion .voc-icon {
   color: var(--ink-muted);
 }
 .voc-suggestion:hover,
 .voc-suggestion.is-hover {
   background: var(--surface-raised);
 }
-.voc-suggestion:hover::after,
-.voc-suggestion.is-hover::after {
+.voc-suggestion:hover .voc-icon,
+.voc-suggestion.is-hover .voc-icon {
   color: var(--accent);
 }
 
@@ -1511,6 +1555,22 @@ summary.is-focus {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+/* The mode a question was asked in, above its bubble */
+.voc-turn-mode {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0 0 calc(-1 * var(--space-2));
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+.voc-turn-mode .voc-icon {
+  width: 14px;
+  height: 14px;
+}
 .voc-turn-status {
   margin: 0;
   font-size: 12px;
@@ -1518,18 +1578,102 @@ summary.is-focus {
   font-weight: 500;
   color: var(--ink-muted);
 }
-.voc-turn-running {
+/* Running, daily: the answer's place, held by its status and three
+   placeholder lines */
+.voc-turn-wait {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 60ch;
+}
+.voc-turn-wait-head {
+  display: flex;
   align-items: center;
-  gap: var(--space-1) var(--space-3);
+  gap: var(--space-2);
+  margin: 0 0 var(--space-1);
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink);
+}
+.voc-turn-wait-head .voc-num {
+  color: var(--ink-muted);
+}
+.voc-skeleton {
+  display: block;
+  height: 10px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--surface-raised) 0%,
+    var(--line) 50%,
+    var(--surface-raised) 100%
+  );
+  background-size: 200% 100%;
+  animation: voc-shimmer 1.6s ease-in-out infinite;
+}
+.voc-turn-wait .voc-skeleton:nth-of-type(1) {
+  width: 92%;
+}
+.voc-turn-wait .voc-skeleton:nth-of-type(2) {
+  width: 78%;
+}
+.voc-turn-wait .voc-skeleton:nth-of-type(3) {
+  width: 56%;
+}
+@keyframes voc-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+/* Running, research: a card with the time spent against the 90 s limit and
+   what the agent is doing; the steps arrive with the answer */
+.voc-turn-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 60ch;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.voc-turn-progress-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin: 0;
   font-size: 14px;
   line-height: 22px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.voc-turn-progress-head .voc-turn-clock {
+  margin-left: auto;
+  font-weight: 400;
   color: var(--ink-muted);
 }
-.voc-turn-running .voc-num {
+.voc-turn-progress-head .voc-num {
   color: var(--ink);
+}
+.voc-progress {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--surface-raised);
+}
+.voc-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--ink-muted);
+}
+.voc-turn-progress-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--ink-muted);
 }
 .voc-pulse {
   flex: none;
@@ -1822,9 +1966,8 @@ summary.is-focus {
   align-items: center;
   gap: var(--space-2) var(--space-3);
 }
-/* Compact at rest: the mode's description shows while the composer is in use */
+/* The chosen mode, said in words beside the switch */
 .voc-composer-mode {
-  display: none;
   flex: 1 1 220px;
   min-width: 0;
   margin: 0;
@@ -1832,10 +1975,19 @@ summary.is-focus {
   line-height: 16px;
   color: var(--ink-muted);
 }
-.voc-composer:hover .voc-composer-mode,
-.voc-composer:focus-within .voc-composer-mode,
-.voc-composer.is-focus .voc-composer-mode {
-  display: block;
+/* Research is a choice the reader made: the box carries it in its border */
+.voc-composer.is-research {
+  border-color: var(--accent);
+}
+/* An empty conversation: the composer is the hero's main control */
+.voc-composer.is-start {
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+.voc-composer.is-start textarea {
+  min-height: 78px;
+  font-size: 16px;
+  line-height: 26px;
 }
 .voc-composer-count {
   margin-left: auto;
@@ -2097,7 +2249,8 @@ summary.is-focus {
   .voc-answer-more > summary::before {
     transition: none;
   }
-  .voc-pulse {
+  .voc-pulse,
+  .voc-skeleton {
     animation: none;
   }
 }
