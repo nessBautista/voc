@@ -235,3 +235,30 @@ describe("the praise step", () => {
     expect(page).toContain("is-positive");
   });
 });
+
+describe("a one-step research answer", () => {
+  it("counts one paso, not pasos", () => {
+    const copy = structuredClone(research) as typeof research;
+    const answer = copy.turns[0].answer!;
+    const first = answer.steps![0];
+    answer.steps = [first];
+    answer.results = answer.results.filter((result) =>
+      first.result_ids.includes(result.result_id),
+    );
+    answer.views = answer.views.filter((view) =>
+      view.result_ids.every((id) => first.result_ids.includes(id)),
+    );
+    answer.trace = answer.trace.filter((item) =>
+      first.result_ids.includes(item.result_id),
+    );
+    const conversation = parseConversation(copy);
+    const page = renderToString(
+      <ChatTurn
+        turn={conversation.turns[0]}
+        publicationId={conversation.publication_id}
+      />,
+    );
+    expect(page).toContain("Investigación · 1 paso ·");
+    expect(page).not.toContain("1 pasos");
+  });
+});

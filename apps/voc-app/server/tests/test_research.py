@@ -9,18 +9,20 @@ import pytest
 from fastapi.testclient import TestClient
 from test_chat import app_for, ask, payload, wait
 from voc_app.agent.answers import validate_answer
-from voc_app.agent.contracts import Assessment, Lead, Plan, Selection
+from voc_app.agent.contracts import Assessment, Lead, Plan, Selection, TopicReference
 from voc_app.agent.graph import MAX_STEPS, RESEARCH_BUDGET
 from voc_app.agent.planner import (
     RESEARCH_FIRST,
+    RESEARCH_LEAD,
     SYSTEM_ASSESS,
     SYSTEM_LEAD,
     Planner,
-    mend_plan,
-    mend_research_step,
     fixture_assess,
     fixture_plan,
     grounded,
+    mend_plan,
+    mend_research_step,
+    ungrounded,
 )
 from voc_app.conversations import Conversations
 from voc_app.main import create_app
@@ -313,8 +315,8 @@ def test_model_mode_assesses_with_summaries_only(settings, v2_active):
     }
     assert len(requests) == 4
     assert answer["lead"] == scripted[3]
-    # The opening is asked for last, from the same summaries the assessments saw.
-    assert requests[3]["messages"][0]["content"] == SYSTEM_LEAD
+    # The opening is asked for last, with the research rules added to its contract.
+    assert requests[3]["messages"][0]["content"] == SYSTEM_LEAD + RESEARCH_LEAD
     opening = json.loads(requests[3]["messages"][1]["content"])
     assert set(opening) == {"question", "steps", "history"}
     assert [s["plan"]["intent"] for s in opening["steps"]] == [
@@ -454,6 +456,30 @@ def test_an_opening_with_a_figure_the_steps_do_not_hold_is_refused():
     assert not grounded(opening("Hay 1,500 reseñas negativas."), steps)
     assert not grounded(opening("Sube 2.5 puntos."), steps)
     assert not grounded(opening("Bien.", "Cayó al 12%"), steps)
+    # The check names the first figure it cannot find, for the log.
+    assert ungrounded(opening("Entre 90% y 99%."), steps) == "90%"
+    assert ungrounded(opening("«Pagos»: 99%."), steps) is None
+
+
+def test_a_rejected_opening_says_why():
+    from voc_app.agent.planner import rejection
+
+    steps = [
+        {
+            "plan": {"intent": "main_complaints"},
+            "summary": {
+                "topic_list": {"topics": [{"negative": 262, "classified": 264}]}
+            },
+        }
+    ]
+    assert rejection("x" * 400, [], steps) == "text of 400 characters, over 320"
+    assert rejection("Bien.", ["y" * 150], steps) == (
+        "a step line of 150 characters, over 140"
+    )
+    assert rejection("El 87% son negativas.", [], steps) == (
+        "the figure 87% is in no step summary"
+    )
+    assert rejection("262 de 264 son negativas.", [], steps) is None
 
 
 def test_fixture_mode_writes_no_opening(settings, v2_active):
@@ -817,9 +843,9 @@ def test_best_rated_topic_reviews_chain_on_the_fixture(settings, v2_active):
         in answer["text"]
     )
     # The reviews step opens the topic the praise step put first.
-    named = [
+    named = next(
         line for line in answer["text"].split("\n\n") if line.startswith("Paso 1")
-    ][0]
+    )
     assert f"tema {reviews['topic']['topic_id']}," in named
     validate_answer(
         answer, Plan.model_validate(answer["plan"]), answer["publication_id"]
@@ -862,3 +888,144 @@ def test_memory_reads_research_steps_that_share_results():
         ["a", "b"],
         ["c"],
     ]
+
+
+def test_a_one_step_research_answer_says_one_step(settings, v2_active):
+    with TestClient(create_app(settings)) as client:
+        answer = ask(client, research("Ejecuta el pipeline de entrenamiento"))["turns"][
+            0
+        ]["answer"]
+    assert [s["plan"]["intent"] for s in answer["steps"]] == ["unsupported"]
+    assert answer["text"].startswith("Investigación en 1 paso.\n\n")
+
+
+def _topic_row(topic_id, positive, classified):
+    return {
+        "topic_id": topic_id,
+        "display_name": f"Tema de prueba {topic_id}",
+        "assessment": "single_feature",
+        "total": classified,
+        "classified": classified,
+        "negative": classified - positive,
+        "neutral": 0,
+        "positive": positive,
+        "negative_share": (classified - positive) / classified,
+        "positive_share": positive / classified,
+        "wilson_lower": 0.0,
+    }
+
+
+def test_the_research_opening_sees_a_ranking_in_its_order_and_no_further():
+    """Topic 2 has the higher share, but topic 1 ranks first at 95% confidence;
+    the opening gets the three topics the text names, ranked, never the fourth."""
+    from voc_app.agent.answers import lead_summary
+
+    rows = [
+        _topic_row(1, 1210, 1271),
+        _topic_row(2, 168, 175),
+        _topic_row(3, 429, 460),
+        _topic_row(4, 1122, 1241),
+    ]
+    plan = Plan(intent="praise", platform=None, selection=None, topic=None, limit=None)
+    summary = lead_summary(plan, [{"kind": "topic_list", "data": rows}])
+    assert summary["topic_list"]["topics"] == [
+        {
+            "rank": rank,
+            "topic_id": topic_id,
+            "display_name": f"Tema de prueba {topic_id}",
+            "positive": positive,
+            "classified": classified,
+            "positive_share": positive / classified,
+        }
+        for rank, (topic_id, positive, classified) in enumerate(
+            [(1, 1210, 1271), (2, 168, 175), (3, 429, 460)], 1
+        )
+    ]
+
+
+def test_the_research_opening_never_sees_the_counts_a_filter_left_out():
+    from voc_app.agent.answers import lead_summary
+
+    detail = {
+        "topic_id": 6,
+        "display_name": "Tema de prueba 6",
+        "assessment": "single_feature",
+        "in_view": 1210,
+        "negative": 0,
+        "neutral": 0,
+        "positive": 1210,
+    }
+    plan = Plan(
+        intent="topic_reviews",
+        platform=None,
+        selection=Selection(
+            platforms=None,
+            labels=["positive"],
+            month_from=None,
+            month_to=None,
+            search=None,
+        ),
+        topic=TopicReference(topic_id=6, reference=None),
+        limit=None,
+    )
+    summary = lead_summary(
+        plan,
+        [
+            {"kind": "topic_detail", "data": detail},
+            {"kind": "reviews", "data": {"total": 1210, "pages": 202}},
+        ],
+    )
+    assert summary["topic_detail"] == {
+        "topic_id": 6,
+        "display_name": "Tema de prueba 6",
+        "assessment": "single_feature",
+        "in_view": 1210,
+        "positive": 1210,
+        "only_labels": ["positive"],
+    }
+    # Unfiltered, the step keeps all three counts.
+    plain = lead_summary(
+        plan.model_copy(update={"selection": None}),
+        [{"kind": "topic_detail", "data": detail}],
+    )
+    assert {"negative", "neutral", "positive"} <= set(plain["topic_detail"])
+
+
+def test_a_daily_opening_keeps_its_contract(settings, v2_active):
+    """The research rules never reach a daily answer's opening."""
+    requests = []
+
+    def respond(request):
+        body = json.loads(request.content)
+        requests.append(body)
+        content = (
+            {
+                "intent": "main_complaints",
+                "platform": None,
+                "selection": None,
+                "topic": None,
+                "limit": None,
+            }
+            if len(requests) == 1
+            else {"text": "La queja principal no tiene temas suficientes.", "steps": []}
+        )
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "stop",
+                        "message": {"content": json.dumps(content)},
+                    }
+                ],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 5},
+            },
+        )
+
+    settings = replace(settings, planner_mode="model", llm_api_key="test-secret-key")
+    planner = Planner(settings, httpx.MockTransport(respond))
+    with TestClient(create_app(settings, planner=planner)) as client:
+        turn = ask(client, payload("¿Cuál es la queja principal?"))["turns"][0]
+    assert turn["status"] == "completed", turn
+    assert len(requests) == 2
+    assert requests[1]["messages"][0]["content"] == SYSTEM_LEAD

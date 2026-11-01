@@ -123,7 +123,7 @@ export function ChatTurn({
   const status = answer
     ? [
         research
-          ? `Investigación · ${answer.steps?.length ?? 0} pasos`
+          ? `Investigación · ${answer.steps?.length ?? 0} ${answer.steps?.length === 1 ? "paso" : "pasos"}`
           : "Diaria",
         elapsed(turn.created_at, turn.finished_at),
         turn.planner_mode === "fixture"

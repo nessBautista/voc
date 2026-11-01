@@ -8,7 +8,14 @@ from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
-from .answers import compose, compose_research, operations, summarize, validate_answer
+from .answers import (
+    compose,
+    compose_research,
+    lead_summary,
+    operations,
+    summarize,
+    validate_answer,
+)
 from .contracts import ANALYSIS_INTENTS, AgentError, Plan
 from .memory import remember_steps, resolve
 
@@ -178,10 +185,15 @@ def build_graph(planner, client):
         budget = min(LEAD_TIMEOUT_SECONDS, remaining - LEAD_MARGIN_SECONDS)
         if budget < LEAD_MINIMUM_SECONDS:
             return {}
+        # A research opening reads rankings in their order and filtered counts as
+        # filtered; a daily opening gets the summaries as they were.
+        research = state.get("mode") == "research"
         summaries = [
             {
                 "plan": step_plan.model_dump(),
-                "summary": {
+                "summary": lead_summary(step_plan, step_results)
+                if research
+                else {
                     r["kind"]: summarize(r["kind"], r, step_plan) for r in step_results
                 },
             }
@@ -189,7 +201,10 @@ def build_graph(planner, client):
         ]
         try:
             written, usage = await asyncio.wait_for(
-                write(state["question"], summaries, state["history"]), budget
+                write(state["question"], summaries, state["history"], research=research)
+                if research
+                else write(state["question"], summaries, state["history"]),
+                budget,
             )
         except (AgentError, TimeoutError) as error:
             # The answer stands without an opening; the page shows it in full.
