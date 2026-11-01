@@ -17,6 +17,11 @@ dependencies = [
 # Test tools are excluded from the application image.
 [dependency-groups]
 dev = ["pytest>=8,<10", "ruff>=0.12", "pyyaml>=6,<7"]
+# Optional Jupyter kernel for studying the app graph inside the Operator container.
+notebook = [
+    "ipykernel>=6,<8",
+    "langchain-openrouter>=0.2,<1",
+]
 
 [build-system]
 requires = ["hatchling"]
