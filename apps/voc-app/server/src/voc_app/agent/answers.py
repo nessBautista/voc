@@ -837,9 +837,39 @@ def summarize(kind, result, plan=None):
     return {"kind": kind}
 
 
+def lead_summary(plan, results):
+    """A research step as its opening sees it. A ranking lists the topics its text
+    names, in that order and with their rank; a step filtered by sentiment keeps only
+    the counts of the labels it kept, and says which."""
+    summary = {r["kind"]: summarize(r["kind"], r, plan) for r in results}
+    if "topic_list" in summary and plan.intent in DEFAULT_LIMIT:
+        side = "positive" if plan.intent == "praise" else "negative"
+        summary["topic_list"] = {
+            "topics": [
+                {
+                    "rank": rank,
+                    "topic_id": row["topic_id"],
+                    "display_name": row["display_name"],
+                    side: row[side],
+                    "classified": row["classified"],
+                    f"{side}_share": row[f"{side}_share"],
+                }
+                for rank, row in enumerate(ranked_rows(plan, results), 1)
+            ]
+        }
+    labels = plan.selection.labels if plan.selection else None
+    if "topic_detail" in summary and labels:
+        detail = summary["topic_detail"]
+        summary["topic_detail"] = {
+            **{k: v for k, v in detail.items() if k not in LABEL_WORDS or k in labels},
+            "only_labels": list(labels),
+        }
+    return summary
+
+
 def compose_research(steps, publication_id, trace, usage):
     """One answer from several Daily plans: each step's finding, then the last step's reading."""
-    parts = [f"Investigación en {len(steps)} pasos."]
+    parts = [f"Investigación en {len(steps)} {'paso' if len(steps) == 1 else 'pasos'}."]
     rest = []
     views = []
     results = []

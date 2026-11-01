@@ -521,11 +521,31 @@ answer first.
 - No markdown, no emoji, no greeting, no reasoning.
 """
 
+# Added to the opening's contract for a research answer only.
+RESEARCH_LEAD = """In research, read each step's summary with its plan:
+- A ranking step's topic_list holds the topics its text names, with their rank. Rank 1 is
+  the one the step puts first: the most negative, or for praise the best rated, at 95%
+  confidence. Name them in rank order and call only rank 1 the first, the main or the best
+  one; a higher share further down the list does not move a topic up. Name no topic the
+  summaries do not list.
+- Topic names are long and the opening is short: name at most three topics in text and
+  at most one in each step line. When the question compares rankings, name the first of
+  each; the report lists the rest.
+- A topic_detail with only_labels counts only the reviews with those labels. Its counts
+  say nothing about the other labels: never say the topic has no reviews of another kind,
+  or that all of its reviews are of that kind.
+"""
+
 _FIGURE = re.compile(r"\d[\d,]*(?:\.\d+)?%?")
 
 
 def grounded(lead, steps):
     """Every figure in the opening must come from the step summaries it was written from."""
+    return ungrounded(lead, steps) is None
+
+
+def ungrounded(lead, steps):
+    """The first figure in the opening that no step summary states, or None."""
     counts, shares, years = set(), set(), set()
 
     def collect(value):
@@ -552,14 +572,31 @@ def grounded(lead, steps):
         for figure in _FIGURE.findall(part):
             number = float(figure.rstrip("%").replace(",", ""))
             if not number.is_integer():
-                return False
+                return figure
             number = int(number)
             if figure.endswith("%"):
                 if number not in shares:
-                    return False
+                    return figure
             elif number not in counts and number not in years:
-                return False
-    return True
+                return figure
+    return None
+
+
+def rejection(text, lines, steps):
+    """Why an opening cannot be shown, or None when it can."""
+    if not text:
+        return "no text"
+    if len(text) > LEAD_TEXT_CHARS:
+        return f"text of {len(text)} characters, over {LEAD_TEXT_CHARS}"
+    if len(lines) > 6:
+        return f"{len(lines)} step lines, over 6"
+    long = next((line for line in lines if len(line) > LEAD_STEP_CHARS), None)
+    if long is not None:
+        return f"a step line of {len(long)} characters, over {LEAD_STEP_CHARS}"
+    figure = ungrounded(Lead(text=text, steps=lines), steps)
+    if figure is not None:
+        return f"the figure {figure} is in no step summary"
+    return None
 
 
 def normalize(plan):
@@ -614,12 +651,12 @@ class Planner:
             assessment = Assessment(next=normalize(assessment.next))
         return assessment, usage
 
-    async def lead(self, question, steps, history):
-        """The opening of an answer, from the same summaries an assessment sees; or None."""
+    async def lead(self, question, steps, history, research=False):
+        """The opening of an answer, from its steps' summaries; or None."""
         if self.settings.planner_mode == "fixture":
             return None, dict(FIXTURE_USAGE)
         lead, usage = await self._complete(
-            SYSTEM_LEAD,
+            SYSTEM_LEAD + RESEARCH_LEAD if research else SYSTEM_LEAD,
             {"question": question, "steps": steps, "history": history[-4:]},
             Lead,
         )
@@ -629,14 +666,10 @@ class Planner:
         lines = [line.strip() for line in lead.steps if line.strip()]
         if len(steps) < 2 or len(lines) != len(steps):
             lines = []
-        if (
-            not text
-            or len(text) > LEAD_TEXT_CHARS
-            or len(lines) > 6
-            or any(len(line) > LEAD_STEP_CHARS for line in lines)
-            or not grounded(Lead(text=text, steps=lines), steps)
-        ):
-            logger.warning("Model opening rejected: length or an ungrounded figure")
+        reason = rejection(text, lines, steps)
+        if reason:
+            # Counts and lengths only: the opening's text stays out of the log.
+            logger.warning("Model opening rejected: %s", reason)
             return None, usage
         return Lead(text=text, steps=lines), usage
 
