@@ -1,0 +1,13 @@
+# Experimental variant, not a selected production configuration.
+sample_size = 1000
+sample_seed = 42
+n_neighbors = 15
+n_components = 5
+min_dist = 0.0
+random_state = 42
+min_cluster_size = 10
+min_samples = 3
+cluster_selection_method = "leaf"
+top_n_words = 10
+timeout_seconds = 600
+threads = 4

@@ -28,3 +28,15 @@ La sección final exporta PNG/PDF y CSV a una carpeta nueva en `data/reports/top
 Los CSV privados contienen textos e IDs para revisión y permanecen bajo `data/`. Revisa o limpia las salidas de la libreta antes de versionarla en un repositorio público. La revisión humana de ejemplos sigue pendiente y los conteos no constituyen una evaluación de calidad.
 
 La copia ejecutada anterior se conservó en `data/reports/topics/notebook-backups/` antes de reorganizar las celdas y antes de compartir las funciones con producción. La libreta revisada se entrega sin salidas antiguas para que puedas ejecutarla en orden.
+
+## Comparación de configuraciones
+
+`comparacion-de-configuraciones.ipynb` es la libreta de resultados del estudio G/R. Tiene fijado el estudio `066c6cfc-49ef-40bc-b548-c3eee3dfeced`, cuyo protocolo conserva la muestra de G0. Lee cada release con su hash y muestra también los intentos fallidos o pendientes. La libreta didáctica anterior permanece independiente.
+
+Los ajustes se ejecutan con `voc-ml topics study`, uno por comando. `create` fija las entradas, `run` consume un intento, `inspect` lee resultados, `preselect` congela hasta dos variantes para las semillas 13 y 73 y `select-parent` fija el agrupamiento de R. Usa `--help` en cada subcomando. No repitas un intento fallido ni crees otro estudio para eludir el presupuesto.
+
+G1 cambia UMAP a cuatro dimensiones, G2 cambia el tamaño mínimo de HDBSCAN a 20 y G3 usa `leaf`. R0 reutiliza c-TF-IDF, R1 usa KeyBERTInspired y R2 añade MMR. Los refinamientos generan releases autocontenidos, con identidad propia y manifiesto padre, conservando byte a byte selección, asignaciones y coordenadas. Su lectura no necesita el modelo ni el directorio del padre. La producción sí requiere los archivos de trabajo verificados y pesos locales.
+
+La sección de revisión incluye una variable `REVIEW_ENTRY` para mostrar los ejemplos de cada variante. La autoría, puntuaciones y notas comienzan vacías. La preselección requiere una revisión explícita y un motivo, no se calcula un ganador automático por cobertura.
+
+Al final se exportan CSV, PNG/PDF, plantillas de revisión y un manifiesto de procedencia a una carpeta nueva en `data/reports/topics/studies/<study_id>/`. No se ejecutan modelos al regenerar estas figuras. Las plantillas contienen reseñas privadas y deben permanecer fuera de Git. La publicación de figuras en el artículo requiere revisar sus textos y dejar claro que son resultados de una muestra.

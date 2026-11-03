@@ -67,7 +67,19 @@ def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None
     state = store.load(run_id)
     if state["state"] not in ("created", "running") or state.get("input"):
         raise ValueError("Input is already pinned or producer cannot be started")
-    if snapshot is None:
+    if state.get("parent"):
+        parent = state["parent"]
+        # Resolve from this store, never from a stale absolute path in another host.
+        bundle = read_topics(
+            store.directory(parent["run_id"]) / "release",
+            manifest_sha256=parent["manifest_sha256"],
+        )
+        inputs = read_run_input(parent["run_id"], store=store)
+        if inputs.info != bundle.info["input"] or not inputs.reviews.equals(
+            bundle.reviews
+        ):
+            raise ValueError("Parent working input differs from its verified release")
+    elif snapshot is None:
         if read_dataset is None:
             from voc.datasets import get_dataset
 
@@ -77,21 +89,40 @@ def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None
             version=state["requested"]["dataset_version"],
             source="personal",
         )
-    if snapshot.info["artifact_id"] != state["requested"]["dataset_version"]:
-        raise ValueError("Resolved dataset differs from request")
-    request = state["requested"]
-    inputs = select(
-        snapshot,
-        request["embedding_directory"],
-        request["embedding_manifest_sha256"],
-        TopicConfig(**state["configuration"]),
-    )
+    if not state.get("parent"):
+        if snapshot.info["artifact_id"] != state["requested"]["dataset_version"]:
+            raise ValueError("Resolved dataset differs from request")
+        request = state["requested"]
+        inputs = select(
+            snapshot,
+            request["embedding_directory"],
+            request["embedding_manifest_sha256"],
+            TopicConfig(**state["configuration"]),
+        )
+    if state.get("expected_input") and inputs.info != state["expected_input"]:
+        raise ValueError("Study input differs from frozen protocol")
     folder = store.directory(run_id) / "work"
     folder.mkdir()
     inputs.reviews.to_parquet(folder / "input.parquet", index=False)
     np.save(folder / "vectors.npy", inputs.vectors, allow_pickle=False)
     (folder / "request.json").write_bytes(
-        canonical_json({"input": inputs.info, "configuration": state["configuration"]})
+        canonical_json(
+            {
+                "input": inputs.info,
+                "configuration": state["configuration"],
+                "operation": state.get("operation", "grouping"),
+                "parent": state.get("parent"),
+                "parent_directory": str(
+                    store.directory(state["parent"]["run_id"]) / "release"
+                )
+                if state.get("parent")
+                else None,
+                "representation_config": state.get("representation_config"),
+                "expected_software": state.get("expected_software"),
+                "expected_encoder": state.get("expected_encoder"),
+                "models_directory": str(store.root / "models/sentence-transformers"),
+            }
+        )
     )
     store.update(run_id, state="running", started_at=now(), input=inputs.info)
     return {"run_id": run_id, "selection_sha256": inputs.info["selection_sha256"]}
@@ -135,6 +166,20 @@ def finish_run(run_id, *, store=None):
             "worker_wall_seconds",
         )
     }
+    if state.get("operation") == "representation":
+        from .representation_artifacts import export_representation
+
+        execution["representation_config"] = state["representation_config"]
+        reference = export_representation(
+            store.directory(state["parent"]["run_id"]) / "release",
+            state["parent"]["manifest_sha256"],
+            json.loads((folder / "topics.json").read_bytes()),
+            execution,
+            store.directory(run_id) / "release",
+        )
+        return store.update(
+            run_id, state="completed", completed_at=now(), result=reference
+        )
     reference = export_topics(
         inputs,
         pd.read_parquet(folder / "assignments.parquet"),
@@ -193,3 +238,54 @@ def read_run_input(run_id, *, store=None):
     )
     inputs.validate()
     return inputs
+
+
+def create_variant(
+    parent_run_id,
+    parent_manifest_sha256,
+    config,
+    *,
+    store,
+    representation_config=None,
+    provenance=None,
+):
+    """Create a fresh run with a verified immutable parent and identical input."""
+    parent = read_topics(
+        store.directory(parent_run_id) / "release",
+        manifest_sha256=parent_manifest_sha256,
+    )
+    if parent.info["run_id"] != parent_run_id:
+        raise ValueError("Parent producer identity differs from release")
+    if parent.info["schema_version"] != "voc-local-topics-v1":
+        raise ValueError("Variant parent must be a grouping result")
+    inputs = read_run_input(parent_run_id, store=store)
+    if inputs.info != parent.info["input"] or not inputs.reviews.equals(parent.reviews):
+        raise ValueError("Parent input differs from release")
+    if (
+        config.sample_size != inputs.info["sample_size"]
+        or config.sample_seed != inputs.info["sample_seed"]
+    ):
+        raise ValueError("Variant must preserve selection")
+    if representation_config is not None:
+        representation_config.__post_init__()
+        if config.as_dict() != parent.info["configuration"]:
+            raise ValueError("Representation must preserve grouping configuration")
+    original = store.load(parent_run_id)
+    state = create_run(
+        inputs.info["dataset"]["artifact_id"],
+        original["requested"]["embedding_directory"],
+        inputs.info["embedding_manifest_sha256"],
+        config,
+        store=store,
+        provenance=provenance,
+    )
+    return store.update(
+        state["run_id"],
+        operation="representation" if representation_config else "grouping",
+        parent={"run_id": parent_run_id, "manifest_sha256": parent_manifest_sha256},
+        expected_input=inputs.info,
+        expected_software=parent.execution["fit"]["software"],
+        representation_config=representation_config.as_dict()
+        if representation_config
+        else None,
+    )
