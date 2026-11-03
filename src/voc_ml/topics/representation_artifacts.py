@@ -10,13 +10,20 @@ from voc.embeddings.shared.contracts import canonical_json, fingerprint
 from voc.embeddings.shared.filesystem import sync_directory
 from voc.topics import read_topics
 from voc.topics.reading import FILES
-from voc.topics.representation import REPRESENTATION_SCHEMA, topic_skeleton
+from voc.topics.representation import (
+    REPRESENTATION_SCHEMA,
+    REPRESENTATION_SCHEMA_V2,
+    topic_skeleton,
+)
 
 
 def export_representation(parent_directory, parent_hash, topics, execution, directory):
     parent_directory, destination = Path(parent_directory), Path(directory)
     parent = read_topics(parent_directory, manifest_sha256=parent_hash)
-    if parent.info["schema_version"] != "voc-local-topics-v1":
+    if parent.info["schema_version"] not in (
+        "voc-local-topics-v1",
+        "voc-local-topics-v2",
+    ):
         raise ValueError("Expected grouping parent")
     if topic_skeleton(topics) != topic_skeleton(parent.topics):
         raise ValueError("Refinement changed parent topic membership or evidence")
@@ -44,7 +51,9 @@ def export_representation(parent_directory, parent_hash, topics, execution, dire
         (staging / "execution.json").write_bytes(canonical_json(execution))
         manifest = {
             **parent.info,
-            "schema_version": REPRESENTATION_SCHEMA,
+            "schema_version": REPRESENTATION_SCHEMA_V2
+            if parent.info["schema_version"] == "voc-local-topics-v2"
+            else REPRESENTATION_SCHEMA,
             "run_id": execution["run_id"],
             "files": {
                 name: {

@@ -2,6 +2,8 @@
 
 from voc.embeddings.shared.contracts import fingerprint, require_digest
 
+REPRESENTATION_SCHEMA_V2 = "voc-local-topic-representation-v2"
+
 REPRESENTATION_SCHEMA = "voc-local-topic-representation-v1"
 
 
@@ -13,12 +15,16 @@ def topic_skeleton(topics):
 
 
 def validate_representation(manifest, execution, topics):
+    expected_parent = {
+        REPRESENTATION_SCHEMA: "voc-local-topics-v1",
+        REPRESENTATION_SCHEMA_V2: "voc-local-topics-v2",
+    }[manifest["schema_version"]]
     parent = execution["parent_manifest"]
     digest = execution["parent_manifest_sha256"]
     require_digest(digest, "parent_manifest_sha256")
     if (
         fingerprint(parent) != digest
-        or parent["schema_version"] != "voc-local-topics-v1"
+        or parent["schema_version"] != expected_parent
         or parent["state"] != "completed"
     ):
         raise ValueError("Invalid grouping parent manifest")

@@ -1,6 +1,7 @@
 """Reusable topic lifecycle. Storage and fitting processes are explicit collaborators."""
 
 import json
+from dataclasses import replace
 from pathlib import Path
 from time import monotonic
 from uuid import uuid4
@@ -13,6 +14,7 @@ from voc.topics import read_topics
 
 from .artifacts import export_topics
 from .config import TopicConfig
+from .corpus_config import CorpusConfig, resolve_config
 from .executor import bounded_worker
 from .provenance import code_provenance
 from .selection import TopicInput, select_input
@@ -63,8 +65,16 @@ def create_run(
 
 def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None):
     store = store if store is not None else local_store()
-    select = select if select is not None else select_input
+    phase_started = monotonic()
     state = store.load(run_id)
+    config = resolve_config(state["configuration"])
+    if select is None:
+        if isinstance(config, CorpusConfig):
+            from .preflight import select_corpus_input
+
+            select = select_corpus_input
+        else:
+            select = select_input
     if state["state"] not in ("created", "running") or state.get("input"):
         raise ValueError("Input is already pinned or producer cannot be started")
     if state.get("parent"):
@@ -85,7 +95,6 @@ def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None
 
             read_dataset = get_dataset
         snapshot = read_dataset(
-            stage="prepared",
             version=state["requested"]["dataset_version"],
             source="personal",
         )
@@ -97,7 +106,7 @@ def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None
             snapshot,
             request["embedding_directory"],
             request["embedding_manifest_sha256"],
-            TopicConfig(**state["configuration"]),
+            config.selection if isinstance(config, CorpusConfig) else config,
         )
     if state.get("expected_input") and inputs.info != state["expected_input"]:
         raise ValueError("Study input differs from frozen protocol")
@@ -124,7 +133,13 @@ def pin_run(run_id, snapshot=None, *, store=None, read_dataset=None, select=None
             }
         )
     )
-    store.update(run_id, state="running", started_at=now(), input=inputs.info)
+    store.update(
+        run_id,
+        state="running",
+        started_at=now(),
+        input=inputs.info,
+        preparation_seconds=monotonic() - phase_started,
+    )
     return {"run_id": run_id, "selection_sha256": inputs.info["selection_sha256"]}
 
 
@@ -137,7 +152,12 @@ def fit_run(run_id, *, store=None, worker=None):
     store.update(run_id, fit_started_at=now())
     folder = store.directory(run_id) / "work"
     started = monotonic()
-    worker(folder, TopicConfig(**state["configuration"]))
+    config = resolve_config(state["configuration"])
+    if state.get("operation_budget"):
+        config = replace(
+            config, timeout_seconds=state["operation_budget"]["worker_seconds"]
+        )
+    worker(folder, config)
     report = json.loads((folder / "fit.json").read_bytes())
     store.update(run_id, fit=report, worker_wall_seconds=monotonic() - started)
     return {"run_id": run_id, "counts": report["counts"]}
@@ -166,6 +186,11 @@ def finish_run(run_id, *, store=None):
             "worker_wall_seconds",
         )
     }
+    if state.get("operation_budget"):
+        execution["operation_budget"] = state["operation_budget"]
+    execution["preparation_seconds"] = state.get("preparation_seconds")
+    if state.get("corpus_protocol_sha256"):
+        execution["corpus_protocol_sha256"] = state["corpus_protocol_sha256"]
     if state.get("operation") == "representation":
         from .representation_artifacts import export_representation
 
@@ -233,7 +258,7 @@ def read_run_input(run_id, *, store=None):
     folder = store.directory(run_id) / "work"
     inputs = TopicInput(
         pd.read_parquet(folder / "input.parquet"),
-        np.load(folder / "vectors.npy", allow_pickle=False),
+        np.load(folder / "vectors.npy", allow_pickle=False, mmap_mode="r"),
         state["input"],
     )
     inputs.validate()
@@ -256,12 +281,20 @@ def create_variant(
     )
     if parent.info["run_id"] != parent_run_id:
         raise ValueError("Parent producer identity differs from release")
-    if parent.info["schema_version"] != "voc-local-topics-v1":
+    if parent.info["schema_version"] not in (
+        "voc-local-topics-v1",
+        "voc-local-topics-v2",
+    ):
         raise ValueError("Variant parent must be a grouping result")
     inputs = read_run_input(parent_run_id, store=store)
     if inputs.info != parent.info["input"] or not inputs.reviews.equals(parent.reviews):
         raise ValueError("Parent input differs from release")
-    if (
+    if isinstance(config, CorpusConfig):
+        if config.selection.as_dict() != inputs.info.get(
+            "selection"
+        ) or config.rows != len(inputs.reviews):
+            raise ValueError("Variant must preserve selection")
+    elif (
         config.sample_size != inputs.info["sample_size"]
         or config.sample_seed != inputs.info["sample_seed"]
     ):

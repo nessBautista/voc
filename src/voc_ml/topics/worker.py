@@ -11,7 +11,10 @@ from time import monotonic
 def main():
     folder = Path(sys.argv[1])
     request = json.loads((folder / "request.json").read_bytes())
-    threads = request["configuration"]["threads"]
+    from .corpus_config import resolve_config
+
+    config = resolve_config(request["configuration"])
+    threads = config.threads
     affinity = None
     if hasattr(os, "sched_getaffinity"):
         affinity = sorted(os.sched_getaffinity(0))[:threads]
@@ -21,13 +24,12 @@ def main():
 
     from voc.embeddings.shared.contracts import canonical_json
 
-    from .config import TopicConfig
     from .discovery import discover
     from .selection import TopicInput
 
     inputs = TopicInput(
         pd.read_parquet(folder / "input.parquet"),
-        np.load(folder / "vectors.npy", allow_pickle=False),
+        np.load(folder / "vectors.npy", allow_pickle=False, mmap_mode="r"),
         request["input"],
     )
     from importlib.metadata import version
@@ -63,9 +65,7 @@ def main():
         )
         assignments, coordinates = parent.assignments, parent.coordinates
     else:
-        assignments, topics, coordinates, report = discover(
-            inputs, TopicConfig(**request["configuration"])
-        )
+        assignments, topics, coordinates, report = discover(inputs, config)
     report["fit_seconds_including_imports"] = monotonic() - started
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     report["peak_worker_rss_bytes"] = int(

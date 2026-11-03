@@ -9,7 +9,7 @@ import click
 
 @click.group()
 def topics():
-    """Fit and inspect small local topic analyses."""
+    """Fit and inspect bounded local topic analyses."""
 
 
 @topics.command("workflow")
@@ -137,3 +137,117 @@ def study_parent(study_id, variant, reviewer, rationale):
     from .studies import select_representation_parent
 
     _study_call(select_representation_parent, study_id, variant, reviewer, rationale)
+
+
+@topics.command("preflight")
+@click.option("--dataset-version", required=True)
+@click.option(
+    "--embeddings", required=True, type=click.Path(exists=True, file_okay=False)
+)
+@click.option("--manifest-sha256", required=True)
+@click.option(
+    "--scope", type=click.Choice(["pilot", "full"]), default="pilot", show_default=True
+)
+def preflight_command(dataset_version, embeddings, manifest_sha256, scope):
+    """Verify a 5,000-row pilot or full input, without fitting or creating runs."""
+    from voc.topics.scope import TopicSelection
+
+    from .preflight import preflight
+
+    # Resolve an explicit scope before reading any input.
+    selection = (
+        TopicSelection() if scope == "pilot" else TopicSelection("full", None, None)
+    )
+    try:
+        with redirect_stdout(sys.stderr):
+            result = preflight(dataset_version, embeddings, manifest_sha256, selection)
+    except (ValueError, LookupError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=2))
+
+
+@topics.command("resources")
+def resources_command():
+    """Observe memory, CPU and disk for the pilot. Does not reserve resources."""
+    from voc.paths import data_root
+
+    from .resources import resource_preflight
+
+    try:
+        result = resource_preflight(data_root())
+    except (ValueError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=2))
+
+
+@topics.group("corpus")
+def corpus_command():
+    """Freeze and execute a corpus pilot or an explicit full-population study."""
+
+
+@corpus_command.command("create")
+@click.option("--dataset-version", required=True)
+@click.option(
+    "--embeddings", required=True, type=click.Path(exists=True, file_okay=False)
+)
+@click.option("--manifest-sha256", required=True)
+def corpus_create(dataset_version, embeddings, manifest_sha256):
+    """Freeze inputs and budget without fitting models."""
+    from .corpus import create_pilot
+
+    _study_call(create_pilot, dataset_version, embeddings, manifest_sha256)
+
+
+@corpus_command.command("run")
+@click.argument("variant", type=click.Choice(["G0", "G3", "R2"]))
+def corpus_run(variant):
+    """Execute one supervised pilot attempt. No retries or full-corpus fitting."""
+    from .corpus import run_pilot
+
+    _study_call(run_pilot, variant)
+
+
+@corpus_command.command("inspect")
+def corpus_inspect():
+    """Verify and summarize the saved pilot results."""
+    from .corpus import inspect_pilot
+
+    _study_call(inspect_pilot)
+
+
+@corpus_command.group("full")
+def full_command():
+    """Explicit full-population study, independent of the completed pilot."""
+
+
+@full_command.command("resources")
+def full_resources_command():
+    """Observe the full budget without starting models or reserving memory."""
+    from .full_corpus import full_resources
+
+    _study_call(full_resources)
+
+
+@full_command.command("create")
+def full_create_command():
+    """Verify the completed pilot and freeze a new full-population protocol."""
+    from .full_corpus import create_full
+
+    _study_call(create_full)
+
+
+@full_command.command("run")
+@click.argument("variant", type=click.Choice(["G0", "G3", "R2"]))
+def full_run_command(variant):
+    """Execute exactly one full-population attempt, with no automatic retries."""
+    from .full_corpus import run_full
+
+    _study_call(run_full, variant)
+
+
+@full_command.command("inspect")
+def full_inspect_command():
+    """Verify saved full-population results without fitting models."""
+    from .full_corpus import inspect_full
+
+    _study_call(inspect_full)

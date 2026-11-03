@@ -18,6 +18,11 @@ def _stop(process):
 
 def bounded_worker(folder, config):
     """No shell, no retries. Timeout includes process startup and all model imports."""
+    from .corpus_config import CorpusConfig
+
+    supervised = isinstance(config, CorpusConfig)
+    if supervised and os.environ.get("VOC_TOPIC_SUPERVISED_GROUP") != str(os.getpgrp()):
+        raise RuntimeError("Corpus fitting requires the supervised workflow")
     env = os.environ.copy()
     for name in (
         "OMP_NUM_THREADS",
@@ -35,7 +40,7 @@ def bounded_worker(folder, config):
             env=env,
             stdout=log,
             stderr=subprocess.STDOUT,
-            start_new_session=True,
+            start_new_session=not supervised,
         )
         try:
             code = process.wait(timeout=config.timeout_seconds)
@@ -44,10 +49,23 @@ def bounded_worker(folder, config):
                     f"Topic worker exited {code}. Inspect {folder / 'worker.log'}"
                 )
         except subprocess.TimeoutExpired as error:
-            _stop(process)
+            _stop_worker(process, supervised)
             raise TimeoutError(
                 "Topic fit exceeded its configured wall-time limit"
             ) from error
         except BaseException:
-            _stop(process)
+            _stop_worker(process, supervised)
             raise
+
+
+def _stop_worker(process, supervised):
+    if not supervised:
+        return _stop(process)
+    # The outer supervisor owns the group. Terminate this direct child only here.
+    if process.poll() is None:
+        process.terminate()
+        try:
+            process.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()

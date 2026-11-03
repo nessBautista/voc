@@ -16,7 +16,12 @@ from voc.topics.reading import FILES
 
 def export_topics(inputs, assignments, topics, coordinates, execution, directory):
     inputs.validate()
-    counts = validate_results(inputs.reviews, assignments, topics, coordinates)
+    from voc.topics.scope import INPUT_SCHEMA, SCHEMA_V2
+
+    schema = SCHEMA_V2 if inputs.info.get("schema_version") == INPUT_SCHEMA else SCHEMA
+    counts = validate_results(
+        inputs.reviews, assignments, topics, coordinates, schema=schema
+    )
     destination = Path(directory)
     if destination.exists():
         raise FileExistsError(destination)
@@ -29,7 +34,7 @@ def export_topics(inputs, assignments, topics, coordinates, execution, directory
         (staging / "topics.json").write_bytes(canonical_json(topics))
         (staging / "execution.json").write_bytes(canonical_json(execution))
         manifest = {
-            "schema_version": SCHEMA,
+            "schema_version": schema,
             "state": "completed",
             "run_id": execution["run_id"],
             "input": inputs.info,

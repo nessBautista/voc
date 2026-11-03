@@ -19,6 +19,16 @@ class TopicInput:
     info: dict
 
     def validate(self):
+        if self.info.get("schema_version") == "voc-topic-input-v2":
+            from voc.topics.scope import SCHEMA_V2, validate_scope, vector_hash
+
+            validate_selection(self.reviews, schema=SCHEMA_V2)
+            validate_scope(self.reviews, self.info, self.info["dataset"]["row_count"])
+            if vector_hash(self.vectors) != self.info["vectors_sha256"]:
+                raise ValueError("Topic input vectors changed")
+            return
+        if "schema_version" in self.info:
+            raise ValueError("Unsupported topic input schema")
         validate_selection(self.reviews)
         if selection_hash(self.reviews) != self.info["selection_sha256"]:
             raise ValueError("Topic input text/order/metadata changed")
