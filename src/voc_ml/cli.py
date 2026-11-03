@@ -267,5 +267,10 @@ def embeddings_publish(producer_run_id, promote, as_json):
     click.echo(json.dumps(result, indent=None if as_json else 2))
 
 
+from voc_ml.topics.cli import topics as topic_commands
+
+main.add_command(topic_commands)
+
+
 if __name__ == "__main__":
     main()

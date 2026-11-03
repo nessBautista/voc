@@ -6,9 +6,9 @@ from unittest.mock import Mock
 
 import pytest
 from mlflow.tracking import MlflowClient
-from tests.unit.test_storage_bootstrap import storage
 
 from tests.acceptance.test_mlflow import CONTENT, create_check, verify_run
+from tests.unit.test_storage_bootstrap import storage
 from voc_ml.tracking import (
     ensure_experiment,
     experiment_name,
@@ -100,3 +100,19 @@ def test_failed_upload_is_marked_failed(tmp_path):
     with pytest.raises(OSError, match="simulated upload"):
         create_check(client, storage(tmp_path, "local"))
     client.set_terminated.assert_called_once_with("failed-run", status="FAILED")
+
+
+def test_topic_experiment_reuses_identity_and_rejects_other_locations(tmp_path):
+    from voc_ml.tracking import ensure_topic_experiment
+
+    settings = storage(tmp_path, "local")
+    client = MlflowClient(tracking_uri="sqlite:///" + str(tmp_path / "topics.db"))
+    identifier = ensure_topic_experiment(client, settings)
+    assert ensure_topic_experiment(client, settings) == identifier
+    assert client.get_experiment(identifier).name == "voc-topics"
+    with pytest.raises(ValueError, match="artifact path differs"):
+        ensure_topic_experiment(
+            client, replace(settings, runtime_root=tmp_path / "other")
+        )
+    with pytest.raises(ValueError, match="local artifact"):
+        ensure_topic_experiment(client, replace(settings, artifact_destination="s3"))
