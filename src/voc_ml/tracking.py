@@ -31,6 +31,13 @@ def ensure_embedding_experiment(client, storage):
     return _ensure_experiment(client, storage, embedding_experiment_name(storage))
 
 
+def ensure_topic_experiment(client, storage):
+    """Create or verify the local topic experiment without changing its location."""
+    if storage.artifact_destination != "local":
+        raise ValueError("Topic tracking requires local artifact storage")
+    return _ensure_experiment(client, storage, "voc-topics")
+
+
 def _ensure_experiment(client, storage, name):
     experiment = client.get_experiment_by_name(name)
     if experiment is None:
