@@ -6,7 +6,8 @@ from importlib.metadata import version
 import numpy as np
 import pandas as pd
 
-from voc.topics.contracts import validate_results
+from voc.topics.contracts import SCHEMA, validate_results
+from voc.topics.scope import INPUT_SCHEMA, SCHEMA_V2
 
 from .models import build_topic_model, representation_policy
 
@@ -52,8 +53,8 @@ def discover(inputs, config):
         }
     )
     topics = []
-    for tid in sorted(set(labels)):
-        members = inputs.reviews.loc[assignments.topic_id.eq(tid)]
+    groups = inputs.reviews.groupby(assignments.topic_id, sort=True)
+    for tid, members in groups:
         first_ids = {}
         for rid, text in zip(members.record_id, members.model_text, strict=True):
             first_ids.setdefault(text, rid)
@@ -78,7 +79,15 @@ def discover(inputs, config):
             }
         )
     coordinates = np.asarray(reducer.embedding_, dtype=np.float32)
-    counts = validate_results(inputs.reviews, assignments, topics, coordinates)
+    counts = validate_results(
+        inputs.reviews,
+        assignments,
+        topics,
+        coordinates,
+        schema=SCHEMA_V2
+        if inputs.info.get("schema_version") == INPUT_SCHEMA
+        else SCHEMA,
+    )
     mapping = sorted(set(zip(clusterer.labels_.tolist(), labels, strict=True)))
     if (
         len(mapping) != len(set(clusterer.labels_))

@@ -40,3 +40,19 @@ G1 cambia UMAP a cuatro dimensiones, G2 cambia el tamaño mínimo de HDBSCAN a 2
 La sección de revisión incluye una variable `REVIEW_ENTRY` para mostrar los ejemplos de cada variante. La autoría, puntuaciones y notas comienzan vacías. La preselección requiere una revisión explícita y un motivo, no se calcula un ganador automático por cobertura.
 
 Al final se exportan CSV, PNG/PDF, plantillas de revisión y un manifiesto de procedencia a una carpeta nueva en `data/reports/topics/studies/<study_id>/`. No se ejecutan modelos al regenerar estas figuras. Las plantillas contienen reseñas privadas y deben permanecer fuera de Git. La publicación de figuras en el artículo requiere revisar sus textos y dejar claro que son resultados de una muestra.
+
+
+## Resultados del piloto de 5.000 reseñas
+
+Abre `resultados-del-piloto.ipynb` en `topics/` desde `just jupyter-reports`. Lee el protocolo `55822245-4bb3-4f97-89ac-58d536bb2fed` y los tres releases fijados por hash. Reutiliza `inspect_pilot`, `read_topics`, `compare_assignments` y `review_sample`, sin ajustar modelos ni cargar pesos.
+
+La libreta compara cobertura, tamaños y recursos. Presenta G3/c-TF-IDF y R2 sobre los mismos ejemplos, con textos completos. También permite revisar G0 y cinco casos sin asignación. La revisión exploratoria usa la pauta del incremento y no asigna puntuaciones automáticamente.
+
+La exportación final guarda tablas, figuras y un manifiesto en `data/reports/topics/corpus/<study_id>/<ejecución>/`. Las notas completas pueden guardarse en `data/reports/topics/corpus/pilot-review.json`. No cambian el protocolo experimental ni habilitan el corpus completo. Las salidas de revisión contienen reseñas privadas, por lo que deben limpiarse antes de publicar la libreta en GitHub.
+
+
+## Procesamiento completo
+
+El recorrido completo se inicia de forma explícita con `voc-ml topics corpus full`. `resources` consulta el presupuesto, `create` verifica el piloto y congela la selección completa, `run G0`, `run G3` y `run R2` ejecutan una operación por comando y `inspect` verifica lo guardado. Revisa cada resultado antes de iniciar el siguiente. Los fallos consumen intentos y no se repiten automáticamente.
+
+El estudio completo se guarda en `data/topics/corpus/full-v1/full.json`, con referencias al piloto y presupuestos por operación. R2 deriva del nuevo G3 completo y conserva sus pertenencias. La libreta del piloto permanece como evidencia de su propia población. Abre `resultados-del-corpus-completo.ipynb` para revisar los tres releases completos, fijados por identidad y hash. No ejecuta modelos. Exporta las figuras, tablas, ejemplos privados y procedencia a `data/reports/topics/corpus/<study_id>/<ejecución>/`. La pauta de revisión conserva los textos completos. El gráfico de tamaños usa escala logarítmica y la comparación advierte que las coordenadas UMAP de G0 y G3 no son idénticas. Las observaciones pueden guardarse en `data/reports/topics/corpus/full-review.json`.

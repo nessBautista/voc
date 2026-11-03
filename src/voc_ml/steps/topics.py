@@ -4,6 +4,7 @@ from typing import Annotated
 
 from zenml import get_step_context, step
 
+from voc_ml.topics.corpus_config import tracking_parameters
 from voc_ml.topics.production import fit_run, pin_run
 from voc_ml.topics.store import TopicRunStore
 
@@ -47,7 +48,7 @@ def track_topics(
         }
     )
     mlflow.log_params(
-        state["configuration"]
+        tracking_parameters(state["configuration"])
         | {
             "dataset_artifact_id": state["input"]["dataset"]["artifact_id"],
             "embedding_release_id": state["input"]["embedding_release_id"],

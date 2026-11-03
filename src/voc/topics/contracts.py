@@ -26,8 +26,13 @@ def selection_hash(frame):
     )
 
 
-def validate_selection(frame):
-    if tuple(frame.columns) != SELECTION_COLUMNS or not 1 <= len(frame) <= 1000:
+def validate_selection(frame, *, schema=SCHEMA):
+    from .scope import MAX_ROWS, SCHEMA_V2
+
+    if schema not in (SCHEMA, SCHEMA_V2):
+        raise ValueError("Unsupported selection schema")
+    limit = MAX_ROWS if schema == SCHEMA_V2 else 1000
+    if tuple(frame.columns) != SELECTION_COLUMNS or not 1 <= len(frame) <= limit:
         raise ValueError("Invalid selection columns or size")
     for name in ("record_id", "model_text", "platform", "period"):
         if not frame[name].map(lambda x: isinstance(x, str) and bool(x.strip())).all():
@@ -52,9 +57,9 @@ def validate_selection(frame):
         raise ValueError("Period differs from recorded date")
 
 
-def validate_results(selection, assignments, topics, coordinates):
+def validate_results(selection, assignments, topics, coordinates, *, schema=SCHEMA):
     """Reconcile all memberships and references, including the unassigned group."""
-    validate_selection(selection)
+    validate_selection(selection, schema=schema)
     if tuple(assignments.columns) != ASSIGNMENT_COLUMNS:
         raise ValueError("Invalid assignment columns")
     if assignments.record_id.tolist() != selection.record_id.tolist():
@@ -83,6 +88,7 @@ def validate_results(selection, assignments, topics, coordinates):
         raise ValueError("Invalid grouping coordinates")
     if not isinstance(topics, list):
         raise TypeError("Topics must be a list")
+    sizes = ids.value_counts().to_dict()
     seen = set()
     membership = dict(zip(assignments.record_id, ids, strict=True))
     texts = dict(zip(selection.record_id, selection.model_text, strict=True))
@@ -95,7 +101,7 @@ def validate_results(selection, assignments, topics, coordinates):
         seen.add(tid)
         if (
             type(topic["size"]) is not int
-            or topic["size"] != int((ids == tid).sum())
+            or topic["size"] != sizes.get(tid, 0)
             or topic["size"] < 1
         ):
             raise ValueError("Topic size differs from assignments")

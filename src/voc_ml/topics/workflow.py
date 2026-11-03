@@ -1,5 +1,7 @@
 """Tracked production use case, independent of tracking client construction."""
 
+from time import monotonic
+
 from .production import finish_run
 from .store import local_store
 from .tracking import run_tracked_pipeline
@@ -19,7 +21,9 @@ def execute_workflow(run_id, *, store=None, run_workflow=None):
             or current["mlflow_run_id"] != receipt["mlflow_run_id"]
         ):
             raise ValueError("Tracking lineage or completion mismatch")
-        return finish_run(run_id, store=store)
+        began = monotonic()
+        finish_run(run_id, store=store)
+        return store.update(run_id, export_seconds=monotonic() - began)
     except (Exception, KeyboardInterrupt) as error:
         store.update(
             run_id,

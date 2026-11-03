@@ -15,7 +15,12 @@ from voc.embeddings.shared.contracts import (
 )
 
 from .contracts import SCHEMA, selection_hash, validate_results
-from .representation import REPRESENTATION_SCHEMA, validate_representation
+from .representation import (
+    REPRESENTATION_SCHEMA,
+    REPRESENTATION_SCHEMA_V2,
+    validate_representation,
+)
+from .scope import SCHEMA_V2, validate_coverage, validate_scope
 
 FILES = {
     "selection.parquet",
@@ -60,40 +65,61 @@ def read_topics(directory, *, manifest_sha256):
         raise ValueError("Topic manifest checksum or size mismatch")
     manifest = json.loads(path.read_bytes())
     if (
-        manifest["schema_version"] not in (SCHEMA, REPRESENTATION_SCHEMA)
+        manifest["schema_version"]
+        not in (SCHEMA, REPRESENTATION_SCHEMA, SCHEMA_V2, REPRESENTATION_SCHEMA_V2)
         or manifest["state"] != "completed"
     ):
         raise ValueError("Unsupported or incomplete topic artifact")
     require_uuid(manifest["run_id"], "run_id")
     if set(manifest["files"]) != FILES:
         raise ValueError("Unexpected topic artifact files")
+    is_v2 = manifest["schema_version"] in (SCHEMA_V2, REPRESENTATION_SCHEMA_V2)
+    from .files import FILE_LIMITS, read_tables
+
     for name, item in manifest["files"].items():
         path = directory / name
         if (
             path.is_symlink()
-            or not 0 < path.stat().st_size <= 64 * 2**20
+            or not 0
+            < path.stat().st_size
+            <= (FILE_LIMITS[name] if is_v2 else 64 * 2**20)
             or path.stat().st_size != item["size_bytes"]
             or file_hash(path) != item["sha256"]
         ):
             raise ValueError(f"Topic artifact checksum or size mismatch: {name}")
-    selection = pd.read_parquet(directory / "selection.parquet")
-    assignments = pd.read_parquet(directory / "assignments.parquet")
+    if is_v2:
+        selection, assignments, coordinates = read_tables(directory)
+    else:
+        selection = pd.read_parquet(directory / "selection.parquet")
+        assignments = pd.read_parquet(directory / "assignments.parquet")
+        coordinates = np.load(directory / "coordinates.npy", allow_pickle=False)
     topics = json.loads((directory / "topics.json").read_bytes())
     execution = json.loads((directory / "execution.json").read_bytes())
-    coordinates = np.load(directory / "coordinates.npy", allow_pickle=False)
-    counts = validate_results(selection, assignments, topics, coordinates)
+    counts = validate_results(
+        selection,
+        assignments,
+        topics,
+        coordinates,
+        schema=SCHEMA_V2 if is_v2 else SCHEMA,
+    )
     inputs = manifest["input"]
     from voc.embeddings.shared.profiles import resolve_profile
 
     if inputs["profile"] != resolve_profile().as_dict():
         raise ValueError("Unsupported topic input embedding profile")
-    if inputs["selection_policy"] != "platform-month-proportional-largest-remainder-v1":
+    if (
+        not is_v2
+        and inputs["selection_policy"]
+        != "platform-month-proportional-largest-remainder-v1"
+    ):
         raise ValueError("Unsupported topic selection policy")
     identity = dataset_identity(inputs["dataset"])
     require_uuid(inputs["embedding_release_id"], "embedding_release_id")
     require_digest(inputs["embedding_manifest_sha256"], "embedding_manifest_sha256")
     require_digest(inputs["vectors_sha256"], "vectors_sha256")
-    if (
+    if is_v2:
+        validate_scope(selection, inputs, identity.row_count)
+    elif (
         (selection.source_row >= identity.row_count).any()
         or inputs["sample_size"] != len(selection)
         or inputs["selection_sha256"] != selection_hash(selection)
@@ -107,32 +133,21 @@ def read_topics(directory, *, manifest_sha256):
     ):
         raise ValueError("Execution lineage differs from manifest")
     config = manifest["configuration"]
-    if (
+    if is_v2:
+        if config["selection"] != inputs["selection"]:
+            raise ValueError("Configuration differs from selection")
+        dimensions = config["model"]["n_components"]
+        if type(dimensions) is not int or not 2 <= dimensions <= 20:
+            raise ValueError("Invalid model dimensions")
+    elif (
         config["sample_size"] != len(selection)
         or config["sample_seed"] != inputs["sample_seed"]
     ):
         raise ValueError("Configuration differs from selection")
-    if coordinates.shape[1] != config["n_components"]:
+    if coordinates.shape[1] != (dimensions if is_v2 else config["n_components"]):
         raise ValueError("Coordinates differ from reduction dimensions")
-    # Reconcile per-stratum counts, including strata absent from the sample.
-    coverage = inputs["coverage"]
-    keys = [(row["platform"], row["period"]) for row in coverage]
-    if (
-        len(keys) != len(set(keys))
-        or sum(row["population"] for row in coverage) != identity.row_count
-    ):
-        raise ValueError("Invalid population coverage")
-    actual = selection.groupby(["platform", "period"]).size().to_dict()
-    if not set(actual) <= set(keys):
-        raise ValueError("Sample contains unknown stratum")
-    for row in coverage:
-        if (
-            type(row["population"]) is not int
-            or type(row["selected"]) is not int
-            or not 0 <= row["selected"] <= row["population"]
-            or row["selected"] != actual.get((row["platform"], row["period"]), 0)
-        ):
-            raise ValueError("Sample coverage differs from selection")
-    if manifest["schema_version"] == REPRESENTATION_SCHEMA:
+    if not is_v2:
+        validate_coverage(selection, inputs["coverage"], identity.row_count)
+    if manifest["schema_version"] in (REPRESENTATION_SCHEMA, REPRESENTATION_SCHEMA_V2):
         validate_representation(manifest, execution, topics)
     return TopicBundle(selection, assignments, topics, coordinates, execution, manifest)

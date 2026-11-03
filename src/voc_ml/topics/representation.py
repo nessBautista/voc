@@ -117,12 +117,11 @@ def refine(parent, config, models_directory, *, embedder_factory=None):
     labels = parent.assignments.topic_id.tolist()
     vectorizer = build_vectorizer(policy)
     # Check vocabulary before loading local weights.
-    vectorizer.fit(
-        [
-            " ".join(d for d, label in zip(docs, labels, strict=True) if label == t)
-            for t in sorted(set(labels))
-        ]
-    )
+    grouped = {}
+    for text, label in zip(docs, labels, strict=True):
+        grouped.setdefault(label, []).append(text)
+    vectorizer.fit([" ".join(grouped[t]) for t in sorted(grouped)])
+    del grouped
     factory = embedder_factory if embedder_factory is not None else local_embedder
     embedder = (
         None
