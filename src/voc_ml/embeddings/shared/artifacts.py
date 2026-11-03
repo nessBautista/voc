@@ -9,8 +9,8 @@ import pandas as pd
 from voc.datasets.shared.manifest import MAX_FILE_BYTES, MAX_JSON_BYTES, file_hash
 from voc.embeddings.shared.contracts import (
     REVIEW_COLUMNS,
-    DatasetIdentity,
     InputSelection,
+    dataset_identity,
     encoder_identity,
 )
 from voc.embeddings.shared.profiles import resolve_profile
@@ -48,7 +48,7 @@ def read_input(reference):
         raise ValueError("Pinned input checksum or size mismatch")
     meta = reference["selection"]
     selection = InputSelection(
-        DatasetIdentity(**reference["dataset"]),
+        dataset_identity(reference["dataset"]),
         meta["row_count"],
         meta["rows_sha256"],
         meta["limit"],

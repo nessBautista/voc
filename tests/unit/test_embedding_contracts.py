@@ -218,8 +218,8 @@ def test_missing_columns_and_reserved_outputs_rejected(snapshot):
 def test_source_and_metadata_required_before_selection(snapshot, monkeypatch):
     reader = Mock()
     monkeypatch.setattr("voc_ml.embeddings.selection.operations.collector.get_dataset", reader)
-    with pytest.raises(ValueError, match="shared S3"):
-        pin_input(source="personal")
+    with pytest.raises(ValueError, match="source=s3 or personal"):
+        pin_input(source="unsupported")
     reader.assert_not_called()
     del snapshot.info["content_sha256"]
     with pytest.raises(ValueError, match="missing required shared metadata"):

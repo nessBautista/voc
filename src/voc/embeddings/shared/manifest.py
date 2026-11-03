@@ -8,10 +8,11 @@ import re
 from datetime import datetime
 
 from .contracts import (
+    LOCAL_SCHEMA_VERSION,
     SCHEMA_VERSION,
-    DatasetIdentity,
     InputSelection,
     canonical_json,
+    dataset_identity,
     encoder_identity,
     feature_identity,
     require_digest,
@@ -43,14 +44,16 @@ def validate_manifest(manifest):
         },
         "manifest",
     )
-    if manifest["schema_version"] != SCHEMA_VERSION:
+    if manifest["schema_version"] not in (SCHEMA_VERSION, LOCAL_SCHEMA_VERSION):
         raise ValueError("Unsupported embedding manifest schema")
     if len(canonical_json(manifest)) > MAX_JSON_BYTES:
         raise ValueError("Embedding manifest exceeds metadata size limit")
     release = manifest["embedding_release_id"]
     require_uuid(release, "embedding_release_id")
-    require_fields(manifest["dataset"], DatasetIdentity.__dataclass_fields__, "dataset")
-    dataset = DatasetIdentity(**manifest["dataset"])
+    dataset = dataset_identity(manifest["dataset"])
+    expected_schema = SCHEMA_VERSION if dataset.source == "s3" else LOCAL_SCHEMA_VERSION
+    if manifest["schema_version"] != expected_schema:
+        raise ValueError("Manifest schema differs from its dataset source")
     selected = manifest["selection"]
     require_fields(
         selected,
@@ -154,6 +157,8 @@ def validate_manifest(manifest):
 def require_promotable(manifest):
     """Publication must call this before updating a compatible full-release pointer."""
     validate_manifest(manifest)
+    if manifest["dataset"]["source"] != "s3":
+        raise ValueError("Personal datasets cannot promote a shared release pointer")
     if manifest["selection"]["kind"] != "full":
         raise ValueError(
             "Subset/test selections cannot promote the full-release pointer"

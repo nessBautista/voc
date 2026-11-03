@@ -118,7 +118,16 @@ def track_embeddings(
             "feature_id": report["feature"]["feature_id"],
             "selection_kind": report["selection"]["kind"],
             "selection_id": report["selection"]["selection_id"],
-            "dataset_release_id": report["dataset"]["release_id"],
+            "dataset_source": report["dataset"]["source"],
+            **(
+                {"dataset_release_id": report["dataset"]["release_id"]}
+                if report["dataset"]["source"] == "s3"
+                else {
+                    "dataset_artifact_id": report["dataset"]["artifact_id"],
+                    "dataset_raw_revision_id": report["dataset"]["raw_revision_id"],
+                    "dataset_run_id": report["dataset"]["run_id"],
+                }
+            ),
             "encoder_id": report["encoder_id"],
             "batch_size": report["batch_size"],
         }
