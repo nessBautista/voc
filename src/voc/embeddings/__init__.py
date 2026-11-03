@@ -1,6 +1,11 @@
 """Shared embedding contracts, profiles and reading API; imports perform no I/O."""
 
-from .shared.contracts import DatasetIdentity, EmbeddingBundle, InputSelection
+from .shared.contracts import (
+    DatasetIdentity,
+    EmbeddingBundle,
+    InputSelection,
+    PersonalDatasetIdentity,
+)
 from .shared.profiles import EmbeddingProfile, resolve_profile
 
 __all__ = [
@@ -8,7 +13,9 @@ __all__ = [
     "EmbeddingBundle",
     "EmbeddingProfile",
     "InputSelection",
+    "PersonalDatasetIdentity",
     "get_embeddings",
+    "get_local_embeddings",
     "resolve_profile",
 ]
 
@@ -32,5 +39,25 @@ def get_embeddings(
         profile=profile,
         version=version,
         source=source,
+        allow_subset=allow_subset,
+    )
+
+
+def get_local_embeddings(
+    *,
+    dataset,
+    directory,
+    manifest_sha256,
+    profile="minilm-verbatim-v1",
+    allow_subset=False,
+):
+    """Read a verified personal export using the hash from its completion receipt."""
+    from .reading.local import get_local_embeddings as read
+
+    return read(
+        dataset=dataset,
+        directory=directory,
+        manifest_sha256=manifest_sha256,
+        profile=profile,
         allow_subset=allow_subset,
     )

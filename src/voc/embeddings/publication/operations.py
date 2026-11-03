@@ -57,6 +57,8 @@ def publish_release(
     manifest = load_release(
         directory, manifest_sha256=reference["manifest_sha256"]
     ).info
+    if manifest["dataset"]["source"] != "s3":
+        raise ValueError("Personal dataset exports cannot be published as shared releases")
     expected = {
         "schema_version": "voc-embedding-export-v1",
         "state": "exported",

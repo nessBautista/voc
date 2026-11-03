@@ -2,18 +2,16 @@
 
 from voc.datasets.shared.manifest import frame_hash
 
-from ..shared.contracts import REVIEW_COLUMNS, DatasetIdentity
+from ..shared.contracts import REVIEW_COLUMNS, snapshot_identity
 
 
-def validate_snapshot(dataset):
+def validate_snapshot(dataset, *, source="s3"):
     """Check all source rows, not only the selected prefix, before any request."""
     try:
-        identity = DatasetIdentity(
-            **{key: dataset.info[key] for key in DatasetIdentity.__dataclass_fields__}
-        )
+        identity = snapshot_identity(dataset.info, source=source)
         frame = dataset.data.copy(deep=True)
     except (KeyError, AttributeError, TypeError) as error:
-        raise ValueError("A verified shared workable Snapshot is required") from error
+        raise ValueError("A verified workable Snapshot is required") from error
     if not frame.columns.is_unique or not {"record_id", "model_text"}.issubset(
         frame.columns
     ):

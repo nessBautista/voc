@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     import pandas as pd
 
 SCHEMA_VERSION = "voc-embeddings-v1"
+LOCAL_SCHEMA_VERSION = "voc-local-embeddings-v1"
 REVIEW_COLUMNS = (
     "record_id",
     "source_row",
@@ -134,14 +135,96 @@ class DatasetIdentity:
 
 
 @dataclass(frozen=True)
+class PersonalDatasetIdentity:
+    """Personal catalog lineage, without inventing a shared release or file URI."""
+
+    artifact_id: str
+    raw_revision_id: str
+    run_id: str
+    content_sha256: str
+    row_count: int
+    schema_version: str = "workable-v1"
+    source: str = "personal"
+    stage: str = "prepared"
+
+    def __post_init__(self):
+        for field in ("artifact_id", "raw_revision_id", "run_id"):
+            require_uuid(getattr(self, field), "dataset." + field)
+        require_digest(self.content_sha256, "dataset.content_sha256")
+        require_positive_int(self.row_count, "dataset.row_count")
+        if (self.schema_version, self.source, self.stage) != (
+            "workable-v1",
+            "personal",
+            "prepared",
+        ):
+            raise ValueError(
+                "Personal embeddings require a prepared workable-v1 dataset"
+            )
+
+    def as_dict(self):
+        return asdict(self)
+
+
+def dataset_identity(value):
+    """Parse a stored identity strictly, keeping personal and shared origins distinct."""
+    if not isinstance(value, dict):
+        raise TypeError("Dataset identity must be an object")
+    identity_type = {
+        "s3": DatasetIdentity,
+        "personal": PersonalDatasetIdentity,
+    }.get(value.get("source"))
+    if identity_type is None:
+        raise ValueError("Dataset source must be s3 or personal")
+    require_fields(value, identity_type.__dataclass_fields__, "dataset")
+    return identity_type(**value)
+
+
+def snapshot_identity(info, *, source="s3"):
+    """Extract the selected catalog's identity without guessing from UUID shape."""
+    if source == "s3":
+        try:
+            values = {key: info[key] for key in DatasetIdentity.__dataclass_fields__}
+        except KeyError as error:
+            raise ValueError("Snapshot is missing required shared metadata") from error
+    elif source == "personal":
+        if info.get("source", "personal") != "personal" or "release_id" in info:
+            raise ValueError(
+                "A shared release cannot be treated as a personal artifact"
+            )
+        try:
+            values = {
+                key: info[key]
+                for key in (
+                    "artifact_id",
+                    "raw_revision_id",
+                    "run_id",
+                    "content_sha256",
+                    "row_count",
+                    "schema_version",
+                )
+            }
+        except KeyError as error:
+            raise ValueError(
+                "Snapshot is missing required personal metadata"
+            ) from error
+        values.update(source="personal", stage=info.get("stage", "prepared"))
+    else:
+        raise ValueError("Dataset source must be s3 or personal")
+    identity = dataset_identity(values)
+    if identity.source != source:
+        raise ValueError("Snapshot source differs from the requested source")
+    return identity
+
+
+@dataclass(frozen=True)
 class InputSelection:
-    dataset: DatasetIdentity
+    dataset: DatasetIdentity | PersonalDatasetIdentity
     row_count: int
     rows_sha256: str
     limit: int | None = None
 
     def __post_init__(self):
-        if not isinstance(self.dataset, DatasetIdentity):
+        if not isinstance(self.dataset, (DatasetIdentity, PersonalDatasetIdentity)):
             raise TypeError("selection.dataset must be a DatasetIdentity")
         require_positive_int(self.row_count, "selection.row_count")
         require_digest(self.rows_sha256, "selection.rows_sha256")
@@ -162,7 +245,7 @@ class InputSelection:
 
     @property
     def promotable(self):
-        return self.kind == "full"
+        return self.kind == "full" and self.dataset.source == "s3"
 
     def descriptor(self):
         return {

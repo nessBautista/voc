@@ -9,6 +9,7 @@ from uuid import uuid4
 from voc.datasets.shared.manifest import file_hash
 from voc.embeddings.export import write_release
 from voc.embeddings.shared.contracts import (
+    LOCAL_SCHEMA_VERSION,
     SCHEMA_VERSION,
     canonical_json,
     fingerprint,
@@ -84,7 +85,11 @@ def _manifest(state, report, release_id):
         order="C",
     )
     return {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": (
+            SCHEMA_VERSION
+            if report["dataset"]["source"] == "s3"
+            else LOCAL_SCHEMA_VERSION
+        ),
         "embedding_release_id": release_id,
         **{key: report[key] for key in ("dataset", "selection", "feature", "profile")},
         "encoder": {
@@ -185,13 +190,21 @@ def export_run(producer_run_id):
     if canonical_json(bundle.info) != canonical_json(manifest):
         raise ValueError("Existing release differs from the pinned export")
     reference: ExportReference = {
-        "schema_version": "voc-embedding-export-v1",
+        "schema_version": (
+            "voc-embedding-export-v1"
+            if report["dataset"]["source"] == "s3"
+            else "voc-local-embedding-export-v1"
+        ),
         "state": "exported",
         "producer_run_id": producer_run_id,
         "embedding_release_id": intent["embedding_release_id"],
         "directory": str(destination),
         "manifest_sha256": file_hash(destination / "manifest.json"),
-        "dataset_release_id": report["dataset"]["release_id"],
+        **(
+            {"dataset_release_id": report["dataset"]["release_id"]}
+            if report["dataset"]["source"] == "s3"
+            else {"dataset_artifact_id": report["dataset"]["artifact_id"]}
+        ),
         "profile_id": report["profile"]["profile_id"],
         "coverage": manifest["coverage"],
     }

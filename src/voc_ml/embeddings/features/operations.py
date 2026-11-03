@@ -9,9 +9,9 @@ import pandas as pd
 
 from voc.datasets.shared.manifest import MAX_FILE_BYTES, MAX_JSON_BYTES, file_hash
 from voc.embeddings.shared.contracts import (
-    DatasetIdentity,
     InputSelection,
     canonical_json,
+    dataset_identity,
     feature_identity,
     ordered_rows_hash,
     require_digest,
@@ -202,10 +202,7 @@ def read_features(
     )
     if report["schema_version"] != SCHEMA_VERSION:
         raise ValueError("Unsupported feature schema")
-    require_fields(
-        report["dataset"], DatasetIdentity.__dataclass_fields__, "feature dataset"
-    )
-    dataset = DatasetIdentity(**report["dataset"])
+    dataset = dataset_identity(report["dataset"])
     selection_meta = report["selection"]
     require_fields(
         selection_meta,

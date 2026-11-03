@@ -168,8 +168,11 @@ def embeddings():
 
 
 @embeddings.command("workflow")
-@click.option("--dataset-version", default="latest", show_default=True)
-@click.option("--source", type=click.Choice(["s3"]), default="s3")
+@click.option(
+    "--dataset-version", default="latest", show_default=True,
+    help="Personal artifact UUID or shared release UUID, according to --source.",
+)
+@click.option("--source", type=click.Choice(["s3", "personal"]), default="s3")
 @click.option("--profile", default="minilm-verbatim-v1", show_default=True)
 @click.option("--limit", type=click.IntRange(min=1), default=None)
 @click.option("--batch-size", type=click.IntRange(min=1), default=32, show_default=True)

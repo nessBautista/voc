@@ -1,6 +1,6 @@
 """The durable create-only export intent and completed local release receipt."""
 
-from typing import Literal, TypedDict
+from typing import Literal, NotRequired, TypedDict
 
 
 class ExportIntent(TypedDict):
@@ -11,12 +11,13 @@ class ExportIntent(TypedDict):
 
 
 class ExportReference(TypedDict):
-    schema_version: Literal["voc-embedding-export-v1"]
+    schema_version: Literal["voc-embedding-export-v1", "voc-local-embedding-export-v1"]
     state: Literal["exported"]
     producer_run_id: str
     embedding_release_id: str
     directory: str
     manifest_sha256: str
-    dataset_release_id: str
+    dataset_release_id: NotRequired[str]
+    dataset_artifact_id: NotRequired[str]
     profile_id: str
     coverage: dict[str, int]

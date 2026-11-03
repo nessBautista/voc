@@ -2,24 +2,14 @@
 
 from voc import collector
 from voc.datasets.shared.manifest import frame_hash
-from voc.embeddings.shared.contracts import DatasetIdentity, InputSelection
+from voc.embeddings.shared.contracts import InputSelection, snapshot_identity
 
 from .contracts import RESERVED_COLUMNS, PinnedInput, _rows_digest, validate_reviews
 
 
-def select_snapshot(snapshot, *, limit=None):
-    """Verify an unmodified shared Snapshot, then copy a full or explicit first-N selection."""
-    try:
-        dataset = DatasetIdentity(
-            **{
-                field: snapshot.info[field]
-                for field in DatasetIdentity.__dataclass_fields__
-            }
-        )
-    except KeyError as exc:
-        raise ValueError(
-            f"Snapshot is missing required shared metadata: {exc.args[0]}"
-        ) from exc
+def select_snapshot(snapshot, *, limit=None, source="s3"):
+    """Verify a full Snapshot, then copy its full or explicit first-N selection."""
+    dataset = snapshot_identity(snapshot.info, source=source)
     frame = snapshot.data
     validate_reviews(frame)
     if len(frame) != dataset.row_count or frame_hash(frame) != dataset.content_sha256:
@@ -40,9 +30,14 @@ def select_snapshot(snapshot, *, limit=None):
 
 def pin_input(*, version="latest", source="s3", limit=None):
     """One dataset read/resolve per call; later stages use the returned pin, never latest."""
-    if source != "s3":
-        raise ValueError("The initial embedding producer requires a shared S3 dataset")
+    if source not in ("s3", "personal"):
+        raise ValueError("Embedding inputs require source=s3 or personal")
     if limit is not None and (type(limit) is not int or limit <= 0):
         raise ValueError("limit must be a positive integer")
     snapshot = collector.get_dataset(stage="prepared", version=version, source=source)
-    return select_snapshot(snapshot, limit=limit)
+    pinned = select_snapshot(snapshot, limit=limit, source=source)
+    identity = pinned.selection.dataset
+    resolved_version = identity.release_id if source == "s3" else identity.artifact_id
+    if version != "latest" and version != resolved_version:
+        raise ValueError("Resolved dataset identity differs from the requested version")
+    return pinned

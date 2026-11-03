@@ -70,8 +70,8 @@ def create_run(
     local_files_only=False,
 ):
     resolve_profile(profile)
-    if source != "s3":
-        raise ValueError("Embedding inputs must use source=s3")
+    if source not in ("s3", "personal"):
+        raise ValueError("Embedding inputs must use source=s3 or personal")
     if dataset_version != "latest":
         require_uuid(dataset_version, "dataset_version")
     if limit is not None:
