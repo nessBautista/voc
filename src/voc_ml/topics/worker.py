@@ -30,10 +30,42 @@ def main():
         np.load(folder / "vectors.npy", allow_pickle=False),
         request["input"],
     )
+    from importlib.metadata import version
+
+    from voc.topics import read_topics
+
+    # Refuse an environment drift before either fit or semantic inference.
+    for name, expected in (request.get("expected_software") or {}).items():
+        if version(name) != expected:
+            raise ValueError(f"Study environment changed: {name}")
+    if request.get("expected_encoder") is not None:
+        from voc.embeddings.shared.profiles import resolve_profile
+        from voc_ml.embeddings.encoding.sentence_encoder import encoder_descriptor
+
+        if encoder_descriptor(resolve_profile()) != request["expected_encoder"]:
+            raise ValueError("Study semantic encoder environment changed")
     started = monotonic()
-    assignments, topics, coordinates, report = discover(
-        inputs, TopicConfig(**request["configuration"])
-    )
+    if request.get("operation") == "representation":
+        from .representation import RepresentationConfig, refine
+
+        parent = read_topics(
+            request["parent_directory"],
+            manifest_sha256=request["parent"]["manifest_sha256"],
+        )
+        if inputs.info != parent.info["input"] or not inputs.reviews.equals(
+            parent.reviews
+        ):
+            raise ValueError("Refinement input differs from parent")
+        topics, report = refine(
+            parent,
+            RepresentationConfig(**request["representation_config"]),
+            Path(request["models_directory"]),
+        )
+        assignments, coordinates = parent.assignments, parent.coordinates
+    else:
+        assignments, topics, coordinates, report = discover(
+            inputs, TopicConfig(**request["configuration"])
+        )
     report["fit_seconds_including_imports"] = monotonic() - started
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     report["peak_worker_rss_bytes"] = int(

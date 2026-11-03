@@ -42,6 +42,8 @@ def track_topics(
             "topic_run_id": state["run_id"],
             "zenml_run_id": state["zenml_run_id"],
             "code_identity": state["code_identity"],
+            "topic_operation": state.get("operation", "grouping"),
+            "parent_run_id": state.get("parent", {}).get("run_id", "none"),
         }
     )
     mlflow.log_params(
@@ -59,6 +61,13 @@ def track_topics(
             "peak_worker_rss_bytes": state["fit"]["peak_worker_rss_bytes"],
         }
     )
+    if state.get("representation_config"):
+        mlflow.log_params(
+            {
+                "representation_" + k: v
+                for k, v in state["representation_config"].items()
+            }
+        )
     mlflow.log_dict(state["fit"], "topic-fit.json")
     mlflow.log_dict(state["input"], "topic-input.json")
     return {"run_id": state["run_id"], "mlflow_run_id": active.info.run_id}

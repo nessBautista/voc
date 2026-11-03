@@ -15,6 +15,7 @@ from voc.embeddings.shared.contracts import (
 )
 
 from .contracts import SCHEMA, selection_hash, validate_results
+from .representation import REPRESENTATION_SCHEMA, validate_representation
 
 FILES = {
     "selection.parquet",
@@ -58,7 +59,10 @@ def read_topics(directory, *, manifest_sha256):
     ):
         raise ValueError("Topic manifest checksum or size mismatch")
     manifest = json.loads(path.read_bytes())
-    if manifest["schema_version"] != SCHEMA or manifest["state"] != "completed":
+    if (
+        manifest["schema_version"] not in (SCHEMA, REPRESENTATION_SCHEMA)
+        or manifest["state"] != "completed"
+    ):
         raise ValueError("Unsupported or incomplete topic artifact")
     require_uuid(manifest["run_id"], "run_id")
     if set(manifest["files"]) != FILES:
@@ -129,4 +133,6 @@ def read_topics(directory, *, manifest_sha256):
             or row["selected"] != actual.get((row["platform"], row["period"]), 0)
         ):
             raise ValueError("Sample coverage differs from selection")
+    if manifest["schema_version"] == REPRESENTATION_SCHEMA:
+        validate_representation(manifest, execution, topics)
     return TopicBundle(selection, assignments, topics, coordinates, execution, manifest)
