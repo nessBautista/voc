@@ -127,3 +127,7 @@ El protocolo fija hashes y el estado impide repetir ajustes inadvertidamente.
 Hay progreso de sentimiento por lote y seguimiento local MLflow. No se solicitan
 interpretaciones LLM en esta comparación. Los temas requieren revisión de su
 contenido: contar grupos no demuestra que sean funcionalidades de la aplicación.
+
+## Demostración con los análisis nuevos
+
+La [guía de demostración](difusion-demo.md) documenta la publicación local, selección base/alternativa, arranque y parada de la interfaz existente y su comprobación de extremo a extremo. No requiere ejecutar modelos.

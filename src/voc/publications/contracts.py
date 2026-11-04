@@ -434,8 +434,8 @@ def _analysis(description, dataset, evidence, warnings):
         _identifier(row["parent_analysis_id"], "analysis.parent_analysis_id")
     if not isinstance(row["embedding_profile"], str) or not row["embedding_profile"]:
         raise ValueError("analysis.embedding_profile must be text")
-    if row["selection_kind"] not in ("full", "first-n", "stratified"):
-        raise ValueError("analysis.selection_kind must be full, first-n or stratified")
+    if row["selection_kind"] not in ("full", "first-n", "stratified", "explicit"):
+        raise ValueError("analysis.selection_kind must be full, first-n, stratified or explicit")
     for name in (
         "selection_size",
         "selected_reviews",

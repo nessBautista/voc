@@ -29,8 +29,8 @@ export function InterpretationBlock({
       ) : (
         <>
           <p className="voc-lead-text is-empty">
-            El modelo no pudo nombrar este tema; su nombre se forma con sus
-            palabras clave.
+            Este tema no tiene una interpretación publicada; su nombre se forma
+            con sus palabras clave.
           </p>
           {data.keywords.length > 0 && (
             <dl className="voc-lead-feature">

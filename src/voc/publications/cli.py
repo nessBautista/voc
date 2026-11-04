@@ -16,7 +16,7 @@ def publication():
 @publication.command("build")
 @click.option(
     "--source",
-    type=click.Choice(["personal", "s3"]),
+    type=click.Choice(["personal", "s3", "local"]),
     required=True,
 )
 @click.option(
@@ -37,9 +37,14 @@ def publication():
     "--analysis",
     "analysis_id",
     default=None,
-    help="Completed analysis candidate UUID; produces a voc-data-state-v2 package. Requires --source s3.",
+    help="Completed analysis candidate UUID; produces a voc-data-state-v2 package. Requires --source s3 or local.",
 )
-def build(source, dataset_version, output, analysis_id):
+@click.option(
+    "--local-inputs",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Verified local input TOML; required with --source local.",
+)
+def build(source, dataset_version, output, analysis_id, local_inputs):
     """Export saved dataset state; does not collect, train, upload or activate."""
     import sys
     from contextlib import redirect_stdout
@@ -50,10 +55,12 @@ def build(source, dataset_version, output, analysis_id):
     try:
         # Validate explicit identities before touching storage or optional tools.
         canonical_id(dataset_version)
+        if (source == "local") != (local_inputs is not None):
+            raise ValueError("--local-inputs is required only with --source local")
         if analysis_id is not None:
             canonical_id(analysis_id)
-            if source != "s3":
-                raise ValueError("An analysis package requires --source s3")
+            if source not in ("s3", "local"):
+                raise ValueError("An analysis package requires --source s3 or local")
         if output.exists() or output.is_symlink():
             raise FileExistsError(f"Publication destination already exists: {output}")
         import duckdb
@@ -72,13 +79,19 @@ def build(source, dataset_version, output, analysis_id):
     try:
         # Keep incidental reader output off the machine-readable JSON response.
         with redirect_stdout(sys.stderr):
-            snapshot = get_dataset(
-                dataset_version,
-                source=source,
-            )
+            if source == "local":
+                from voc.analysis.local_inputs import (
+                    load_local_config,
+                    read_local_inputs,
+                )
+
+                snapshot, _ = read_local_inputs(load_local_config(local_inputs))
+            else:
+                snapshot = get_dataset(dataset_version, source=source)
             description = describe_dataset(snapshot)
             if (
-                description["dataset"]["source_kind"] != source
+                description["dataset"]["source_kind"]
+                != ("s3" if source == "local" else source)
                 or description["dataset"]["source_version"] != dataset_version
             ):
                 raise ValueError(

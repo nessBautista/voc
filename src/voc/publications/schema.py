@@ -201,7 +201,7 @@ CREATE TABLE analysis (
     parent_analysis_id VARCHAR,
     embedding_release_id VARCHAR NOT NULL,
     embedding_profile VARCHAR NOT NULL,
-    selection_kind VARCHAR NOT NULL CHECK (selection_kind IN ('full', 'first-n', 'stratified')),
+    selection_kind VARCHAR NOT NULL CHECK (selection_kind IN ('full', 'first-n', 'stratified', 'explicit')),
     selection_size BIGINT NOT NULL CHECK (selection_size > 0),
     selected_reviews BIGINT NOT NULL CHECK (selected_reviews > 0),
     assigned_reviews BIGINT NOT NULL CHECK (assigned_reviews >= 0),
