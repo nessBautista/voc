@@ -1,0 +1,8 @@
+# Paths are relative to this configuration file. No model or provider is invoked.
+grouping_directory = "../../data/topics/runs/05f1f058-fff3-497a-b9d7-5ede22030138/release"
+grouping_manifest_sha256 = "98452db63615d4d3535af99d50b87646d87c63d2f8ac6819f2deadc34e3b3d73"
+representation_directory = "../../data/topics/runs/86ba2e67-cf1f-484a-bfde-fa20c4dd7f76/release"
+representation_manifest_sha256 = "9bdd876eb46614031ac8900c26dca564d6c275a342f6841bbef44b84978b20fd"
+max_reviews = 3
+max_chars = 900
+max_topics = 12

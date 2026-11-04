@@ -1,0 +1,8 @@
+# Fixed configuration from voc-dev config/analysis/interpretation.toml.
+# Prompt is versioned in code and is not an experimental option.
+model = "google/gemini-2.5-flash"
+max_topics = 20
+max_reviews = 6
+max_chars = 900
+max_tokens = 800
+temperature = 0.0

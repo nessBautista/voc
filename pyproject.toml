@@ -27,7 +27,7 @@ ml = [
     "bertopic==0.17.4",
     "umap-learn==0.5.12",
     "hdbscan==0.8.44",
-    "openai>=1.60,<3",  # Optional OpenRouter client in the teaching notebook.
+    "openai>=1.60,<3",  # OpenRouter transport for fixed-prompt topic interpretation.
     "jsonschema>=4,<5",  # Check the optional structured topic interpretation.
     "pysentimiento==0.7.3",  # RoBERTuito Spanish text preprocessing in notebooks.
     "datasets>=3,<6",  # Avoid legacy datasets 2.x APIs removed by current PyArrow.

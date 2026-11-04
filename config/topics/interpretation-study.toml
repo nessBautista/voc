@@ -1,0 +1,140 @@
+# Offline draft plan. No model availability, price or spending authorization is implied.
+inputs = "interpretation-inputs.toml"
+seed = 42
+known_development_topics = [0, 1, 2, 198, 1440, 1701]
+candidate_model = "google/gemini-2.5-flash"
+temperature = 0.0
+max_tokens = 800
+max_provider_attempts = 72
+proposed_max_cost_usd = 1.0
+
+[prompts.P0]
+path = "prompts/p0.txt"
+version = "voc-topic-es-v3"
+sha256 = "36287305fc812f7e67edf3a011412f1351ca3af4b0a143b646c8932648df550b"
+
+[prompts.P1]
+path = "prompts/p1.txt"
+version = "voc-topic-es-v3-feature-v1"
+sha256 = "6eaffc193f965cad533ae9f3293e2f04f0778997e61573d83318b08bd19d3ad8"
+
+[prompts.P2]
+path = "prompts/p2.txt"
+version = "voc-topic-es-v3-feature-evidence-v1"
+sha256 = "dd4ba6114b90b7d89897c9093fec3bd866fbc21cade44f65743bbe606d0fa550"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T164643Z-2885268d/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T164643Z-2885268d/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T165347Z-5e84eac0/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T165347Z-5e84eac0/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170519Z-75af35bf/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170519Z-75af35bf/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170649Z-f0e580e8/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170649Z-f0e580e8/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170924Z-1502ce92/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T170924Z-1502ce92/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T171025Z-3f86d681/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T171025Z-3f86d681/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T174422Z-29fb4a15/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T174422Z-29fb4a15/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T175140Z-3c153f4a/revision_ejemplos_privados.csv"
+sha256 = "1395d0ac4c6aaccfbfdb6ea8944e916dc7b8d9bea2a1ebcbe32a4eea69ea4a8a"
+
+[[exposure_files]]
+path = "../../data/reports/topics/20261103T175140Z-3c153f4a/revision_sin_asignacion_privados.csv"
+sha256 = "2db8897117dc40c6b768fd7a29fc226c427a6e960a7512eb1825439e5a24eda7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/corpus/1d255e30-7273-427f-b1a1-4cb70912faec/20261103T221954Z-d4d28363/ejemplos-privados.json"
+sha256 = "ff50b0060a2a04811486b063e4f83b9f43be394a1ba30a407156185186f57bd7"
+
+[[exposure_files]]
+path = "../../data/reports/topics/corpus/55822245-4bb3-4f97-89ac-58d536bb2fed/20261103T201916Z-ffd2e281/ejemplos-privados.json"
+sha256 = "4f071b905847e1e2155146ad471ede37228214215a7c43f1e2997a40e9c71dee"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/06ba18d1-5dc8-4980-a38f-b1effcb5f714/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/0985ce4b-3f91-408e-91cf-5f100ff02dd4/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/1035d7ee-683e-4ec7-ac4b-df5536f29597/review-templates.json"
+sha256 = "9833722b305c47b03850d52a7ed236d6d82c32a4215b99b549661f8fb5e31c09"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/15f0a94a-eee6-4f14-be5d-776fb8044057/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/2335d4ed-c070-4d3e-90b4-c1656193dc18/review-templates.json"
+sha256 = "065de2483340bbdfacdebc9b11190af7c1a2bcf5d208905693bd2fa4d7bea24d"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/3218ad55-5d4a-4ed7-831b-bf75b7458898/review-templates.json"
+sha256 = "9833722b305c47b03850d52a7ed236d6d82c32a4215b99b549661f8fb5e31c09"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/6b48935d-1bdf-48f4-8124-6e859f2c938f/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/a5ee1123-2404-4848-a6b6-9e8297d5cd46/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/d7541e4c-0200-4cca-8a2d-4f1a6eafa706/review-templates.json"
+sha256 = "065de2483340bbdfacdebc9b11190af7c1a2bcf5d208905693bd2fa4d7bea24d"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/db276257-3c7d-4deb-97af-8eef9b9994e2/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"
+
+[[exposure_files]]
+path = "../../data/reports/topics/studies/066c6cfc-49ef-40bc-b548-c3eee3dfeced/eb535ad4-fbdd-410d-9d0b-752b02e60fde/review-templates.json"
+sha256 = "e6abec853dbaec68c8d536cd3f5b61ca280a16f922eae5d9a31243dc949bf93c"

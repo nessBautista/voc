@@ -6,6 +6,8 @@ from contextlib import redirect_stdout
 
 import click
 
+from .interpretation.cli import interpretation
+
 
 @click.group()
 def topics():
@@ -251,3 +253,7 @@ def full_inspect_command():
     from .full_corpus import inspect_full
 
     _study_call(inspect_full)
+
+
+# Interpretation preparation is independent of the fitting and tracking paths.
+topics.add_command(interpretation)
