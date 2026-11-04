@@ -17,7 +17,16 @@ class WorkflowCommands(click.Group):
     def invoke(self, ctx):
         args = ctx.meta["workflow_args"]
         try:
-            options = [a.split("=", 1)[0] for a in args if a.startswith("--")]
+            repeatable = (
+                {"--platform"}
+                if ctx.info_name == "sentiment" and args[:1] == ["workflow"]
+                else set()
+            )
+            options = [
+                a.split("=", 1)[0]
+                for a in args
+                if a.startswith("--") and a.split("=", 1)[0] not in repeatable
+            ]
             if len(options) != len(set(options)):
                 raise click.UsageError("Specify each workflow option only once")
             return super().invoke(ctx)
@@ -151,10 +160,39 @@ def analysis_run(**kwargs):
 
 
 @sentiment.command("workflow")
+@click.option(
+    "--platform",
+    "platforms",
+    multiple=True,
+    type=click.Choice(["app_store", "google_play", "x", "youtube"]),
+    help="Restrict sentiment inputs before applying --limit. Repeat for multiple platforms.",
+)
 @common_options
 def sentiment_workflow(**kwargs):
     """Classify prepared dataset reviews and populate the shared prediction cache."""
     launch("sentiment", config=None, **kwargs)
+
+
+@sentiment.command("prepare-model")
+@click.option("--config", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.option(
+    "--download",
+    is_flag=True,
+    help="Explicitly allow downloading the pinned checkpoint; otherwise check the local cache.",
+)
+def prepare_sentiment_model(config, download):
+    """Prepare model files without training or classifying reviews."""
+    from voc_ml.sentiment import load_config
+    from voc_ml.sentiment.preparation import prepare_model
+
+    try:
+        with redirect_stdout(sys.stderr):
+            result = prepare_model(load_config(config), download=download)
+    except Exception as error:  # noqa: BLE001 -- do not expose authenticated request details
+        raise click.ClickException(
+            f"Model preparation failed ({type(error).__name__})"
+        ) from None
+    click.echo(json.dumps(result, indent=2))
 
 
 def inspect(kind, run_id, as_json):

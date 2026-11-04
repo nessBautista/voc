@@ -329,3 +329,31 @@ def test_read_only_model_cache_can_be_separate_from_writable_predictions(
         frame(["a different input"]), model_dir=explicit, classifier_factory=classifier
     )
     assert classifier.call_args.args[1] == explicit
+
+
+def test_stores_v3_has_separate_cache_and_reuses_its_predictions(runtime):
+    reviews = frame(["buena app"])
+    reviews["platform"] = "app_store"
+    base = run(reviews, CountingClassifier())
+    config = r.SentimentConfig(model=r.STORES_MODEL, revision=r.STORES_V3_REVISION)
+    adapted_classifier = CountingClassifier()
+    adapted = run(reviews, adapted_classifier, config)
+    assert adapted_classifier.calls == [["buena app"]]
+    assert adapted.report["classifier_id"] != base.report["classifier_id"]
+    again = run(reviews, CountingClassifier(), config)
+    assert again.report["counts"]["reused_unique"] == 1
+
+
+@pytest.mark.parametrize("platform", ["x", "youtube", None])
+def test_stores_v3_rejects_unconfirmed_domain_before_writes(runtime, platform):
+    reviews = frame(["buena app"])
+    reviews["platform"] = platform
+    config = r.SentimentConfig(model=r.STORES_MODEL, revision=r.STORES_V3_REVISION)
+    with pytest.raises(ValueError, match="store-only"):
+        run(reviews, CountingClassifier(), config)
+    assert not list(runtime.iterdir())
+
+
+def test_stores_v3_revision_is_fixed():
+    with pytest.raises(ValueError):
+        r.SentimentConfig(model=r.STORES_MODEL, revision="a" * 40)

@@ -122,3 +122,34 @@ def test_sentiment_can_pin_same_local_corpus(local_files):
     reviews, identity = workflow.read_sentiment_input(reference)
     assert len(reviews) == 8
     assert identity["dataset"]["row_count"] == 48
+
+
+def test_platform_selection_precedes_limit_and_cli_accepts_repeatable_option(
+    local_files, monkeypatch
+):
+    state = producer.create_run(
+        kind="sentiment",
+        source="local",
+        local_inputs=local_files,
+        platforms=("google_play", "app_store"),
+        limit=8,
+    )
+    reference = workflow.pin(state["run_id"])
+    reviews, identity = workflow.read_sentiment_input(reference)
+    assert set(reviews.platform) <= {"google_play", "app_store"}
+    assert identity["selection"]["platforms"] == ["app_store", "google_play"]
+    launch = Mock()
+    monkeypatch.setattr("voc_ml.analysis.cli.launch", launch)
+    result = CliRunner().invoke(
+        main,
+        [
+            "sentiment",
+            "workflow",
+            "--platform",
+            "app_store",
+            "--platform",
+            "google_play",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    assert launch.call_args.kwargs["platforms"] == ("app_store", "google_play")

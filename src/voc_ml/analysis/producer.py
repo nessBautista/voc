@@ -74,10 +74,18 @@ def create_run(
     sentiment_config=None,
     local_files_only=True,
     local_inputs=None,
+    platforms=(),
 ):
     if kind not in ("analysis", "sentiment") or source not in ("s3", "local"):
         raise ValueError(
             "Use an analysis or sentiment workflow with source=s3 or local"
+        )
+    if platforms and (
+        kind != "sentiment"
+        or not set(platforms) <= {"app_store", "google_play", "x", "youtube"}
+    ):
+        raise ValueError(
+            "Platform filtering is supported for sentiment with known platforms only"
         )
     if (source == "local") != (local_inputs is not None):
         raise ValueError("source=local requires --local-inputs; source=s3 forbids it")
@@ -125,6 +133,7 @@ def create_run(
             "limit": limit,
             "local_files_only": local_files_only,
             "local_inputs": pinned_local,
+            "platforms": sorted(set(platforms)),
         },
         "configuration": {
             "analysis": config.as_dict(),

@@ -75,6 +75,9 @@ def pin(run_id):
             ).all()
         ):
             raise ValueError("Invalid sentiment dataset review identity")
+        platforms = request.get("platforms", [])
+        if platforms:
+            frame = frame.loc[frame.platform.isin(platforms)].reset_index(drop=True)
         limit = request["limit"]
         if limit is not None and limit > len(frame):
             raise ValueError("Requested sample exceeds dataset rows")
@@ -89,6 +92,7 @@ def pin(run_id):
                 "kind": "full" if limit is None else "first-n",
                 "size": len(reviews),
                 "ordered_ids_sha256": fingerprint(reviews.record_id.tolist()),
+                "platforms": platforms,
             },
             "reviews_sha256": frame_hash(reviews),
         }

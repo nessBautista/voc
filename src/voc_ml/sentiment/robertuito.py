@@ -25,6 +25,8 @@ from .cache import PredictionCache, prediction
 
 MODEL = "pysentimiento/robertuito-sentiment-analysis"
 REVISION = "a2cc0f67ebd705c55191e25a05ba23d885fcc09b"
+STORES_MODEL = "Banamex-voc-sentiment/voc-robertuito-sentiment-stores-es"
+STORES_V3_REVISION = "ff48c25f016499fc40d910f2a2a50072c706cdee"
 LABEL_MAP = {"NEG": "negative", "NEU": "neutral", "POS": "positive"}
 
 
@@ -36,9 +38,11 @@ class SentimentConfig:
     batch_size: int = 16
 
     def __post_init__(self):
-        if self.model != MODEL:
+        if self.model not in (MODEL, STORES_MODEL):
+            raise ValueError("Unsupported RoBERTuito checkpoint")
+        if self.model == STORES_MODEL and self.revision != STORES_V3_REVISION:
             raise ValueError(
-                "This adapter supports the RoBERTuito sentiment model only"
+                "The adapted stores model must use the verified v3 revision"
             )
         if not isinstance(self.revision, str) or not re.fullmatch(
             r"[0-9a-f]{40}", self.revision
@@ -111,7 +115,7 @@ class RobertuitoClassifier:
                 revision=config.revision,
                 cache_dir=str(model_dir),
                 local_files_only=local_files_only,
-                token=False,
+                token=bool(not local_files_only and config.model == STORES_MODEL),
                 allow_patterns=["*.json", "*.safetensors", "*.txt", "*.model"],
             )
         )
@@ -226,6 +230,13 @@ def classify_reviews(
         or not {"record_id", "model_text"} <= set(reviews.columns)
     ):
         raise ValueError("Expected nonempty reviews with record_id and model_text")
+    if config.model == STORES_MODEL and (
+        "platform" not in reviews.columns
+        or not reviews.platform.isin(("app_store", "google_play")).all()
+    ):
+        raise ValueError(
+            "Stores v3 requires store-only reviews; social checkpoint selection is not configured"
+        )
     ids = reviews.record_id.tolist()
     if any(not isinstance(rid, str) or not rid.strip() for rid in ids) or len(
         set(ids)
