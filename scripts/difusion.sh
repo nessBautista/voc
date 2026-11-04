@@ -25,6 +25,11 @@ export MLFLOW_REGISTRY_URI="$MLFLOW_TRACKING_URI"
 export MLFLOW_DISABLE_AGENT_HINT=1 MLFLOW_ENABLE_TRACING=false
 export MLFLOW_ENABLE_TELEMETRY=false
 export HF_HOME="$VOC_DATA_DIR/cache/huggingface"
+# Argo persists this private cache across container recreation. Keep the secret
+# outside the checkout and pass only its path, never its value, to child processes.
+unset HF_TOKEN HUGGING_FACE_HUB_TOKEN
+export HF_TOKEN_PATH="$HOME/.cache/voc-difusion/hf-token"
+export HF_HUB_DISABLE_IMPLICIT_TOKEN=1
 export HF_HUB_CACHE="$HF_HOME/hub" HF_ASSETS_CACHE="$HF_HOME/assets"
 export SENTENCE_TRANSFORMERS_HOME="$VOC_DATA_DIR/models/sentence-transformers"
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HUB_DISABLE_TELEMETRY=1

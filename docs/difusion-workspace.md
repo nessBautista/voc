@@ -21,6 +21,32 @@ bash scripts/difusion.sh bash --noprofile --norc
 
 El lanzador selecciona `.venv`, limpia las variables heredadas `VOC_*`, `DEMO_*`, `ZENML_*` y `MLFLOW_*`, fija las rutas de esta copia y activa el modo offline de Hugging Face. No carga `.env`. Activar solo `.venv` no sustituye al lanzador: dejaría sin fijar el almacenamiento.
 
+## Token de Hugging Face entre sesiones de Argo
+
+El lanzador fija `HF_TOKEN_PATH` a `$HOME/.cache/voc-difusion/hf-token`, fuera del repositorio. En Argo esa carpeta pertenece al volumen persistente `argo-v2_cache`. El `just down` de Argo ejecuta Compose sin eliminar volúmenes: después de `just up`, el archivo permanece disponible. No es necesario volver a transferirlo en cada sesión. No se verificó un apagado real durante esta preparación; se comprobó el montaje activo y el comando de apagado.
+
+El archivo tiene permisos `600`. El lanzador elimina tokens heredados en variables de entorno y desactiva el envío implícito del token. Las operaciones autenticadas deben solicitarlo explícitamente (`token=True`); los modelos base siguen usando `token=False`. El modo offline continúa activo por defecto.
+
+Comprobar disponibilidad local sin mostrar el secreto ni acceder a la red:
+
+```bash
+bash scripts/difusion.sh python scripts/check_hf_access.py
+```
+
+Comprobar acceso a ambas versiones privadas, sin descargar pesos:
+
+```bash
+bash scripts/difusion.sh env HF_HUB_OFFLINE=0 python scripts/check_hf_access.py --remote
+```
+
+La fuente de la credencial es `op://VAULT/ITEM/FIELD`. La copia local no se actualiza automáticamente si se rota o revoca el token en 1Password. Para renovarla, desde el Mac, sustituir `ARGO_CONTAINER_ID` por el ID actual mostrado por `docker ps` y ejecutar:
+
+```bash
+op read 'op://VAULT/ITEM/FIELD' | docker exec -i ARGO_CONTAINER_ID sh -c 'umask 077; mkdir -p /home/node/.cache/voc-difusion; tmp=$(mktemp /home/node/.cache/voc-difusion/hf-token.XXXXXX); cat > "$tmp"; if test -s "$tmp"; then chmod 600 "$tmp"; mv "$tmp" /home/node/.cache/voc-difusion/hf-token; else rm -f "$tmp"; exit 1; fi'
+```
+
+Esta transferencia no muestra el valor ni lo escribe en el historial de comandos. Conservar el volumen de caché: borrarlo elimina esta copia de la credencial. En ese caso se repite la transferencia desde 1Password.
+
 ## Reconstruir y verificar
 
 Instalar las versiones fijadas, sin modificar el lock:
