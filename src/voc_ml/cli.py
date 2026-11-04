@@ -269,9 +269,11 @@ def embeddings_publish(producer_run_id, promote, as_json):
 
 
 from .analysis.cli import analysis, sentiment
+from .relevance.cli import relevance
 
 main.add_command(analysis)
 main.add_command(sentiment)
+main.add_command(relevance)
 
 
 if __name__ == "__main__":
