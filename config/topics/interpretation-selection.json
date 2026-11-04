@@ -1,0 +1,7 @@
+{
+  "prompt": "P0",
+  "development_protocol_sha256": "59dd25185e6a4b02166e7558d78e90043ff87167d112ec3ab1d1f5f2c5c5c676",
+  "selected_by": "project_owner",
+  "selected_at": "2026-11-04",
+  "rationale": "Continuidad con el primer prototipo. El responsable del proyecto considera P0 suficientemente estable para la integración previa. No se afirma superioridad experimental sobre P1/P2 ni validación humana de las puntuaciones asistidas."
+}

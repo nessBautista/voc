@@ -72,3 +72,10 @@ def server_command(python, storage):
         "--workers",
         "1",
     ]
+
+
+def ensure_interpretation_experiment(client, storage):
+    """Interpretation metadata uses the existing local artifact destination."""
+    if storage.artifact_destination != "local":
+        raise ValueError("Interpretation tracking requires local artifact storage")
+    return _ensure_experiment(client, storage, "voc-interpretations")

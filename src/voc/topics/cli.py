@@ -24,3 +24,17 @@ def read(directory, manifest_sha256, topic_id):
     except (ValueError, LookupError, TypeError, OSError) as error:
         raise click.ClickException(str(error)) from error
     click.echo(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@topics.command("interpretation-read")
+@click.argument("directory", type=click.Path(exists=True, file_okay=False))
+@click.option("--manifest-sha256", required=True)
+def interpretation_read(directory, manifest_sha256):
+    """Verify an interpretation receipt without a producer or provider SDK."""
+    from .interpretation_results import read_interpretation
+
+    try:
+        result = read_interpretation(directory, manifest_sha256=manifest_sha256)
+    except (ValueError, KeyError, TypeError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(json.dumps(result, indent=2, ensure_ascii=False))
