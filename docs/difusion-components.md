@@ -73,3 +73,21 @@ F1 relevante del SVM: 0,92708. Matriz global `[[57, 7], [7, 89]]`, orden irrelev
 La aplicación operativa a 80.079 registros conserva 78.476 y marca 1.603 para exclusión: 420 de X y 1.183 de YouTube. Todas las 72.198 reseñas de tiendas pasan intactas. Son decisiones del clasificador, no irrelevancias confirmadas; esta aplicación incluye entrenamiento y no constituye evaluación independiente. No se borró el corpus ni se ejecutó todavía la comparación BERTopic/sentimiento.
 
 La evidencia agregada, hashes y comprobaciones quedan versionados en [relevance-v1.json](evidence/relevance-v1.json). Los textos, decisiones individuales y coeficientes permanecen en `data/` persistente, fuera de Git. La siguiente comparación debe fijar su muestra inicial y registrar exclusiones sin ocultar esta limitación.
+
+### Comparación adicional con regresión logística
+
+A petición del equipo se entrenó una alternativa con `StandardScaler` + `LogisticRegression(C=1, class_weight="balanced", solver="lbfgs", max_iter=5000, random_state=42)`. Conserva los 160 textos y **exactamente los mismos folds**, comprobados por ID, texto, etiqueta y asignación. El escalado se ajustó dentro de cada fold. No se ajustaron parámetros para mejorar los resultados observados.
+
+```sh
+bash scripts/difusion.sh voc-ml relevance train --local-inputs config/analysis/difusion-local-inputs.toml --annotations data/relevance/reconstruction/annotations-reviewed.csv --classifier logreg --reference-validation data/relevance/model-v1/validation.csv --output data/relevance/model-logreg-v1
+```
+
+| Modelo | Accuracy | Balanced accuracy | Precisión relevante | Recall relevante | F1 relevante |
+|---|---:|---:|---:|---:|---:|
+| SVM | 0,9125 | 0,9089 | 0,9271 | 0,9271 | 0,9271 |
+| Regresión logística | 0,9250 | 0,9167 | 0,9200 | 0,9583 | 0,9388 |
+| Control por plataforma | 0,9313 | 0,9271 | 0,9381 | 0,9479 | 0,9430 |
+
+La logística dejó pasar ocho irrelevantes y perdió cuatro relevantes; SVM dejó pasar siete y perdió siete. Se conserva **provisionalmente SVM** por el criterio previo de reducir falsos positivos, a costa de perder tres relevantes más para evitar un irrelevante adicional. La logística es preferible si se prioriza recuperar comentarios útiles. Esta elección operativa no equivale a superioridad estadística: ambos fallaron los seis negativos de X y ninguno superó al control en accuracy/balanced accuracy. La selección usa la misma validación exploratoria, no un test independiente.
+
+El modelo logístico también se exportó y recargó con decisiones equivalentes; no se volvió a aplicar al corpus completo ni se sustituyó el SVM. Los márgenes exportados son valores de decisión (logits en logística), no probabilidades calibradas. Evidencia verificable: [relevance-comparison-v1.json](evidence/relevance-comparison-v1.json). Once pruebas de relevancia pasan, incluida identidad de folds y rechazo de referencias alteradas.

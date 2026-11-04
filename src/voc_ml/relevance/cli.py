@@ -37,15 +37,28 @@ def prepare_annotations(local_inputs, notebook, output):
     "--annotations", required=True, type=click.Path(exists=True, dir_okay=False)
 )
 @click.option("--output", required=True, type=click.Path())
-def train_filter(local_inputs, annotations, output):
+@click.option(
+    "--classifier",
+    type=click.Choice(["svm", "logreg"]),
+    default="svm",
+    show_default=True,
+)
+@click.option("--reference-validation", type=click.Path(exists=True, dir_okay=False))
+def train_filter(local_inputs, annotations, output, classifier, reference_validation):
     from .training import train
 
     click.echo(
-        "Verifying annotations; fitting five validation folds and final linear SVM.",
+        f"Verifying annotations/folds; fitting five validation folds and final {classifier}.",
         err=True,
     )
     try:
-        result = train(local_inputs, annotations, output)
+        result = train(
+            local_inputs,
+            annotations,
+            output,
+            classifier=classifier,
+            reference_validation=reference_validation,
+        )
     except (ValueError, OSError, KeyError) as error:
         raise click.ClickException(str(error)) from error
     click.echo(json.dumps(result, indent=2))

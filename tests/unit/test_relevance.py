@@ -190,3 +190,38 @@ def test_proposals_require_explicit_review_and_preserve_ids(tmp_path):
     review.to_csv(path, index=False)
     with pytest.raises(ValueError, match="text/platform"):
         preparation.import_review(annotations, path, tmp_path / "another.csv")
+
+
+def test_logreg_uses_same_folds_and_exports_reloadable_model(annotated, tmp_path):
+    path, _, _ = annotated
+    svm = tmp_path / "svm"
+    training.train("unused", path, svm)
+    logreg = tmp_path / "logreg"
+    result = training.train(
+        "unused",
+        path,
+        logreg,
+        classifier="logreg",
+        reference_validation=svm / "validation.csv",
+    )
+    assert result["estimator"]["classifier"] == "LogisticRegression"
+    assert result["portable_roundtrip_verified"]
+    assert result["reference_validation_sha256"] == file_hash(svm / "validation.csv")
+    left, right = (
+        pd.read_csv(svm / "validation.csv"),
+        pd.read_csv(logreg / "validation.csv"),
+    )
+    pd.testing.assert_frame_equal(
+        left[["record_id", "fold", "target"]], right[["record_id", "fold", "target"]]
+    )
+    left.loc[0, "fold"] = 99
+    left.to_csv(tmp_path / "changed.csv", index=False)
+    with pytest.raises(ValueError, match="folds"):
+        training.train(
+            "unused",
+            path,
+            tmp_path / "bad",
+            classifier="logreg",
+            reference_validation=tmp_path / "changed.csv",
+        )
+    assert not (tmp_path / "bad").exists()

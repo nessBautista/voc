@@ -1,4 +1,4 @@
-"""Reconstruct the notebook's scaler + balanced linear SVM with fold provenance."""
+"""Train the notebook's scaled linear classifiers with shared fold provenance."""
 
 import json
 from importlib.metadata import version
@@ -12,7 +12,14 @@ from voc.datasets.manifest import file_hash
 from voc.relevance import decisions, load_model
 
 
-def train(local_inputs, annotations, output):
+def train(
+    local_inputs, annotations, output, *, classifier="svm", reference_validation=None
+):
+    if classifier not in {"svm", "logreg"}:
+        raise ValueError("Unknown relevance classifier")
+    if Path(output).exists():
+        raise ValueError("Output already exists; preserve previous experiments")
+    from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import (
         accuracy_score,
         balanced_accuracy_score,
@@ -85,15 +92,34 @@ def train(local_inputs, annotations, output):
     )
 
     def estimator():
-        return make_pipeline(
-            StandardScaler(),
-            LinearSVC(class_weight="balanced", random_state=42, max_iter=10000),
+        model = (
+            LinearSVC(class_weight="balanced", random_state=42, max_iter=10000)
+            if classifier == "svm"
+            else LogisticRegression(
+                C=1.0,
+                solver="lbfgs",
+                class_weight="balanced",
+                random_state=42,
+                max_iter=5000,
+            )
         )
+        return make_pipeline(StandardScaler(), model)
+
+    splits = list(StratifiedKFold(5, shuffle=True, random_state=42).split(x, strata))
+    for fold, (_, validation) in enumerate(splits):
+        folds[validation] = fold
+    if reference_validation is not None:
+        reference = pd.read_csv(reference_validation, keep_default_na=False)
+        for column in ("record_id", "platform", "model_text", "label"):
+            if reference[column].tolist() != clean[column].tolist():
+                raise ValueError("Reference validation rows differ")
+        if not np.array_equal(reference.fold.to_numpy(), folds) or not np.array_equal(
+            reference.target.to_numpy(), y
+        ):
+            raise ValueError("Reference validation folds or targets differ")
 
     baseline = np.zeros(len(y), dtype=int)
-    for fold, (training, validation) in enumerate(
-        StratifiedKFold(5, shuffle=True, random_state=42).split(x, strata)
-    ):
+    for fold, (training, validation) in enumerate(splits):
         fitted = estimator().fit(x[training], y[training])
         predictions[validation] = fitted.predict(x[validation])
         margins[validation] = fitted.decision_function(x[validation])
@@ -103,7 +129,7 @@ def train(local_inputs, annotations, output):
             valid_mask = clean.iloc[validation].platform.eq(platform).to_numpy()
             baseline[validation[valid_mask]] = int(y[training[train_mask]].mean() > 0.5)
     fitted = estimator().fit(x, y)
-    scaler, svm = fitted.steps[0][1], fitted.steps[1][1]
+    scaler, classifier_model = fitted.steps[0][1], fitted.steps[1][1]
     report = {
         "schema_version": "voc-relevance-training-v1",
         "annotation_sha256": file_hash(annotations),
@@ -116,11 +142,11 @@ def train(local_inputs, annotations, output):
         "validation": "five-fold-platform-class-stratified-seed42-oof-v1",
         "estimator": {
             "scaler": "StandardScaler",
-            "classifier": "LinearSVC",
+            "classifier": "LinearSVC" if classifier == "svm" else "LogisticRegression",
             "C": 1.0,
             "class_weight": "balanced",
             "random_state": 42,
-            "max_iter": 10000,
+            "max_iter": 10000 if classifier == "svm" else 5000,
             "threshold": 0.0,
         },
         "duplicate_policy": "exact-model-text-v1",
@@ -137,6 +163,11 @@ def train(local_inputs, annotations, output):
         },
         "historical_result_reproduction": False,
     }
+    if classifier == "logreg":
+        report["estimator"].update(solver="lbfgs", penalty="l2")
+    report["reference_validation_sha256"] = (
+        file_hash(reference_validation) if reference_validation else None
+    )
     report["per_platform"] = {
         platform: {
             "rows": int((clean.platform == platform).sum()),
@@ -162,11 +193,11 @@ def train(local_inputs, annotations, output):
         "profile_id": bundle.info["profile"]["profile_id"],
         "dimensions": x.shape[1],
         "platforms": ["x", "youtube"],
-        "classes": svm.classes_.tolist(),
+        "classes": classifier_model.classes_.tolist(),
         "mean": scaler.mean_.tolist(),
         "scale": scaler.scale_.tolist(),
-        "coefficients": svm.coef_[0].tolist(),
-        "intercept": float(svm.intercept_[0]),
+        "coefficients": classifier_model.coef_[0].tolist(),
+        "intercept": float(classifier_model.intercept_[0]),
         "training_record_ids": clean.record_id.tolist(),
         "training_model_texts_sha256": [],
         "training": report,

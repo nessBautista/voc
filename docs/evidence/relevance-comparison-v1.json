@@ -1,0 +1,216 @@
+{
+  "schema_version": "voc-relevance-comparison-v1",
+  "plan": {
+    "models": [
+      "existing balanced LinearSVC C=1",
+      "balanced LogisticRegression C=1 solver=lbfgs max_iter=5000 random_state=42"
+    ],
+    "annotations_sha256": "793fad21615037059f12fcd19c3661643a5df2695448bb9ff305dee81e7459ea",
+    "reference_validation_sha256": "caa7e88ae5c2a2075e80b60914a53a5b1b71f2ca1dea85c797e726660de3c52a",
+    "folds": "identical to saved SVM folds; no retuning",
+    "choice": "Compare precision and relevant recall, alongside balanced accuracy and platform-specific errors. Prefer fewer irrelevant records passed; if tied, fewer relevant records lost. Retain platform baseline and qualify exploratory selection on these same OOF results.",
+    "independent_test": false
+  },
+  "rows": 160,
+  "svm": {
+    "schema_version": "voc-relevance-training-v1",
+    "annotation_sha256": "793fad21615037059f12fcd19c3661643a5df2695448bb9ff305dee81e7459ea",
+    "dataset_release_id": "b7a61a8b-27d8-46a7-b2ce-67d97268b741",
+    "embedding_release_id": "23243c6e-7787-463c-ac3b-bfe950060d6e",
+    "rows_annotated": 205,
+    "uncertain_excluded": 45,
+    "duplicates_removed": 0,
+    "rows_trained": 160,
+    "validation": "five-fold-platform-class-stratified-seed42-oof-v1",
+    "estimator": {
+      "scaler": "StandardScaler",
+      "classifier": "LinearSVC",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "random_state": 42,
+      "max_iter": 10000,
+      "threshold": 0.0
+    },
+    "duplicate_policy": "exact-model-text-v1",
+    "computation_dtype": "float64",
+    "near_duplicate_screening": false,
+    "accuracy": 0.9125,
+    "balanced_accuracy": 0.9088541666666667,
+    "precision_relevant": 0.9270833333333334,
+    "recall_relevant": 0.9270833333333334,
+    "f1_relevant": 0.9270833333333334,
+    "confusion_matrix": [
+      [
+        57,
+        7
+      ],
+      [
+        7,
+        89
+      ]
+    ],
+    "software": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.3",
+      "pandas": "2.3.3"
+    },
+    "historical_result_reproduction": false,
+    "per_platform": {
+      "x": {
+        "rows": 97,
+        "confusion_matrix": [
+          [
+            0,
+            6
+          ],
+          [
+            6,
+            85
+          ]
+        ],
+        "balanced_accuracy": 0.46703296703296704
+      },
+      "youtube": {
+        "rows": 63,
+        "confusion_matrix": [
+          [
+            57,
+            1
+          ],
+          [
+            1,
+            4
+          ]
+        ],
+        "balanced_accuracy": 0.8913793103448275
+      }
+    },
+    "platform_majority_control": {
+      "policy": "majority-per-platform-learned-inside-each-fold",
+      "accuracy": 0.93125,
+      "balanced_accuracy": 0.9270833333333333,
+      "confusion_matrix": [
+        [
+          58,
+          6
+        ],
+        [
+          5,
+          91
+        ]
+      ]
+    },
+    "model_sha256": "f8e24c1403a1103d4384863687d33308a343eef6064279a5bf5f612842b203d8",
+    "portable_roundtrip_verified": true
+  },
+  "logistic_regression": {
+    "schema_version": "voc-relevance-training-v1",
+    "annotation_sha256": "793fad21615037059f12fcd19c3661643a5df2695448bb9ff305dee81e7459ea",
+    "dataset_release_id": "b7a61a8b-27d8-46a7-b2ce-67d97268b741",
+    "embedding_release_id": "23243c6e-7787-463c-ac3b-bfe950060d6e",
+    "rows_annotated": 205,
+    "uncertain_excluded": 45,
+    "duplicates_removed": 0,
+    "rows_trained": 160,
+    "validation": "five-fold-platform-class-stratified-seed42-oof-v1",
+    "estimator": {
+      "scaler": "StandardScaler",
+      "classifier": "LogisticRegression",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "random_state": 42,
+      "max_iter": 5000,
+      "threshold": 0.0,
+      "solver": "lbfgs",
+      "penalty": "l2"
+    },
+    "duplicate_policy": "exact-model-text-v1",
+    "computation_dtype": "float64",
+    "near_duplicate_screening": false,
+    "accuracy": 0.925,
+    "balanced_accuracy": 0.9166666666666667,
+    "precision_relevant": 0.92,
+    "recall_relevant": 0.9583333333333334,
+    "f1_relevant": 0.9387755102040817,
+    "confusion_matrix": [
+      [
+        56,
+        8
+      ],
+      [
+        4,
+        92
+      ]
+    ],
+    "software": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.3",
+      "pandas": "2.3.3"
+    },
+    "historical_result_reproduction": false,
+    "reference_validation_sha256": "caa7e88ae5c2a2075e80b60914a53a5b1b71f2ca1dea85c797e726660de3c52a",
+    "per_platform": {
+      "x": {
+        "rows": 97,
+        "confusion_matrix": [
+          [
+            0,
+            6
+          ],
+          [
+            4,
+            87
+          ]
+        ],
+        "balanced_accuracy": 0.47802197802197804
+      },
+      "youtube": {
+        "rows": 63,
+        "confusion_matrix": [
+          [
+            56,
+            2
+          ],
+          [
+            0,
+            5
+          ]
+        ],
+        "balanced_accuracy": 0.9827586206896552
+      }
+    },
+    "platform_majority_control": {
+      "policy": "majority-per-platform-learned-inside-each-fold",
+      "accuracy": 0.93125,
+      "balanced_accuracy": 0.9270833333333333,
+      "confusion_matrix": [
+        [
+          58,
+          6
+        ],
+        [
+          5,
+          91
+        ]
+      ]
+    },
+    "model_sha256": "f1e204332a6ac11cdec53d53375d082adf2e9bfd79880c44d2092a4f8b824f22",
+    "portable_roundtrip_verified": true
+  },
+  "platform_control": {
+    "accuracy": 0.93125,
+    "balanced_accuracy": 0.9270833333333333,
+    "precision_relevant": 0.9381443298969072,
+    "recall_relevant": 0.9479166666666666,
+    "f1_relevant": 0.9430051813471502
+  },
+  "identical_order_targets_folds": true,
+  "svm_validation_sha256": "caa7e88ae5c2a2075e80b60914a53a5b1b71f2ca1dea85c797e726660de3c52a",
+  "logreg_validation_sha256": "06de4773289ec7d3faf78d75b7f9ccdc248b2444d1590af151bf2e746492e57a",
+  "paired_errors": {
+    "svm_only_correct": 1,
+    "logreg_only_correct": 3
+  },
+  "provisional_choice": "svm",
+  "rationale": "Priority retained: fewer irrelevant texts admitted (7 vs 8); logistic regression loses fewer relevant texts (4 vs 7) and has higher F1/recall. No universal winner or independent selection validation. Neither exceeds platform control on accuracy or balanced accuracy."
+}
