@@ -1,0 +1,636 @@
+{
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "sampling": {
+    "annotation_overlap_excluded": 29,
+    "coverage": [
+      {
+        "eligible": 390,
+        "month": "2026-07",
+        "platform": "app_store",
+        "selected": 25
+      },
+      {
+        "eligible": 383,
+        "month": "2026-08",
+        "platform": "app_store",
+        "selected": 24
+      },
+      {
+        "eligible": 6130,
+        "month": "2026-07",
+        "platform": "google_play",
+        "selected": 393
+      },
+      {
+        "eligible": 7535,
+        "month": "2026-08",
+        "platform": "google_play",
+        "selected": 483
+      },
+      {
+        "eligible": 494,
+        "month": "2026-07",
+        "platform": "x",
+        "selected": 32
+      },
+      {
+        "eligible": 498,
+        "month": "2026-08",
+        "platform": "x",
+        "selected": 32
+      },
+      {
+        "eligible": 73,
+        "month": "2026-07",
+        "platform": "youtube",
+        "selected": 5
+      },
+      {
+        "eligible": 94,
+        "month": "2026-08",
+        "platform": "youtube",
+        "selected": 6
+      }
+    ],
+    "eligible": 15597,
+    "in_window": 15626,
+    "independent_sentiment_test": false,
+    "near_duplicate_screening": false,
+    "policy": "platform-month-proportional-largest-remainder-v1",
+    "reason": "sentiment training record IDs unavailable",
+    "seed": 42,
+    "size": 1000,
+    "unit": "records; duplicate texts retained except annotation overlap",
+    "weekly_selected": [
+      {
+        "platform": "app_store",
+        "rows": 3,
+        "week": "2026-W27"
+      },
+      {
+        "platform": "app_store",
+        "rows": 3,
+        "week": "2026-W28"
+      },
+      {
+        "platform": "app_store",
+        "rows": 7,
+        "week": "2026-W29"
+      },
+      {
+        "platform": "app_store",
+        "rows": 8,
+        "week": "2026-W30"
+      },
+      {
+        "platform": "app_store",
+        "rows": 5,
+        "week": "2026-W31"
+      },
+      {
+        "platform": "app_store",
+        "rows": 4,
+        "week": "2026-W32"
+      },
+      {
+        "platform": "app_store",
+        "rows": 9,
+        "week": "2026-W33"
+      },
+      {
+        "platform": "app_store",
+        "rows": 5,
+        "week": "2026-W34"
+      },
+      {
+        "platform": "app_store",
+        "rows": 4,
+        "week": "2026-W35"
+      },
+      {
+        "platform": "app_store",
+        "rows": 1,
+        "week": "2026-W36"
+      },
+      {
+        "platform": "google_play",
+        "rows": 52,
+        "week": "2026-W27"
+      },
+      {
+        "platform": "google_play",
+        "rows": 61,
+        "week": "2026-W28"
+      },
+      {
+        "platform": "google_play",
+        "rows": 60,
+        "week": "2026-W29"
+      },
+      {
+        "platform": "google_play",
+        "rows": 96,
+        "week": "2026-W30"
+      },
+      {
+        "platform": "google_play",
+        "rows": 152,
+        "week": "2026-W31"
+      },
+      {
+        "platform": "google_play",
+        "rows": 116,
+        "week": "2026-W32"
+      },
+      {
+        "platform": "google_play",
+        "rows": 126,
+        "week": "2026-W33"
+      },
+      {
+        "platform": "google_play",
+        "rows": 132,
+        "week": "2026-W34"
+      },
+      {
+        "platform": "google_play",
+        "rows": 73,
+        "week": "2026-W35"
+      },
+      {
+        "platform": "google_play",
+        "rows": 8,
+        "week": "2026-W36"
+      },
+      {
+        "platform": "x",
+        "rows": 8,
+        "week": "2026-W27"
+      },
+      {
+        "platform": "x",
+        "rows": 4,
+        "week": "2026-W28"
+      },
+      {
+        "platform": "x",
+        "rows": 9,
+        "week": "2026-W29"
+      },
+      {
+        "platform": "x",
+        "rows": 6,
+        "week": "2026-W30"
+      },
+      {
+        "platform": "x",
+        "rows": 6,
+        "week": "2026-W31"
+      },
+      {
+        "platform": "x",
+        "rows": 10,
+        "week": "2026-W32"
+      },
+      {
+        "platform": "x",
+        "rows": 11,
+        "week": "2026-W33"
+      },
+      {
+        "platform": "x",
+        "rows": 2,
+        "week": "2026-W34"
+      },
+      {
+        "platform": "x",
+        "rows": 7,
+        "week": "2026-W35"
+      },
+      {
+        "platform": "x",
+        "rows": 1,
+        "week": "2026-W36"
+      },
+      {
+        "platform": "youtube",
+        "rows": 1,
+        "week": "2026-W27"
+      },
+      {
+        "platform": "youtube",
+        "rows": 1,
+        "week": "2026-W30"
+      },
+      {
+        "platform": "youtube",
+        "rows": 3,
+        "week": "2026-W31"
+      },
+      {
+        "platform": "youtube",
+        "rows": 3,
+        "week": "2026-W32"
+      },
+      {
+        "platform": "youtube",
+        "rows": 1,
+        "week": "2026-W33"
+      },
+      {
+        "platform": "youtube",
+        "rows": 1,
+        "week": "2026-W34"
+      },
+      {
+        "platform": "youtube",
+        "rows": 1,
+        "week": "2026-W35"
+      }
+    ],
+    "window_end_exclusive": "2026-09-01",
+    "window_start_inclusive": "2026-07-01"
+  },
+  "systems": [
+    {
+      "system": "base",
+      "assigned_reviews": 953,
+      "classified": 1000,
+      "excluded": 0,
+      "failed": 0,
+      "selected_reviews": 1000,
+      "topic_count": 18,
+      "unassigned_reviews": 47,
+      "wall_seconds": 51.4268464170018
+    },
+    {
+      "system": "alternative",
+      "assigned_reviews": 846,
+      "classified": 987,
+      "excluded": 0,
+      "failed": 0,
+      "selected_reviews": 987,
+      "topic_count": 28,
+      "unassigned_reviews": 141,
+      "wall_seconds": 45.18391749999864
+    }
+  ],
+  "retention": [
+    {
+      "platform": "app_store",
+      "initial": 49,
+      "retained": 49,
+      "removed": 0
+    },
+    {
+      "platform": "google_play",
+      "initial": 876,
+      "retained": 876,
+      "removed": 0
+    },
+    {
+      "platform": "x",
+      "initial": 64,
+      "retained": 62,
+      "removed": 2
+    },
+    {
+      "platform": "youtube",
+      "initial": 11,
+      "retained": 0,
+      "removed": 11
+    }
+  ],
+  "sentiment_all": {
+    "base": {
+      "negative": 476,
+      "positive": 287,
+      "neutral": 237
+    },
+    "alternative": {
+      "positive": 531,
+      "negative": 409,
+      "neutral": 47
+    }
+  },
+  "common_rows": 987,
+  "common_counts": {
+    "Original": {
+      "negative": 466,
+      "neutral": 236,
+      "positive": 285
+    },
+    "Tiendas v3": {
+      "negative": 409,
+      "neutral": 47,
+      "positive": 531
+    }
+  },
+  "transitions": {
+    "negative": {
+      "negative": 384,
+      "neutral": 25,
+      "positive": 0
+    },
+    "neutral": {
+      "negative": 43,
+      "neutral": 4,
+      "positive": 0
+    },
+    "positive": {
+      "negative": 39,
+      "neutral": 207,
+      "positive": 285
+    }
+  },
+  "changed_labels": 314,
+  "sentiment_by_platform": {
+    "base": {
+      "negative": {
+        "app_store": 38,
+        "google_play": 372,
+        "x": 58,
+        "youtube": 8
+      },
+      "neutral": {
+        "app_store": 5,
+        "google_play": 225,
+        "x": 6,
+        "youtube": 1
+      },
+      "positive": {
+        "app_store": 6,
+        "google_play": 279,
+        "x": 0,
+        "youtube": 2
+      }
+    },
+    "alternative": {
+      "negative": {
+        "app_store": 32,
+        "google_play": 327,
+        "x": 50
+      },
+      "neutral": {
+        "app_store": 3,
+        "google_play": 43,
+        "x": 1
+      },
+      "positive": {
+        "app_store": 14,
+        "google_play": 506,
+        "x": 11
+      }
+    }
+  },
+  "topics": {
+    "base": [
+      {
+        "topic_id": 0,
+        "size": 529,
+        "keywords": "app, aplicación, no abre, tarjeta, banamex, abrir, no puedo, abre, no deja, puedo"
+      },
+      {
+        "topic_id": 1,
+        "size": 56,
+        "keywords": "excelentes excelente, perfeccion excelente, excelente siempre, siempre excelentes, tal perfeccion, perfeccion, seria perfecto, perfecto no, existe tal, no existe"
+      },
+      {
+        "topic_id": 2,
+        "size": 38,
+        "keywords": "excelente aplicación, buena aplicación, aplicación muy, accesible, operatividad app, seguridad excelente, muy segura, recomendada, mucha seguridad, muy buena"
+      },
+      {
+        "topic_id": 3,
+        "size": 34,
+        "keywords": "todo bien, excelente bien, bien funciona, gracias mejorarla, mejorado todo, funciona muy, mejorar mucho, operacion vamos, mejoraron muchísimo, funciona cuando"
+      },
+      {
+        "topic_id": 4,
+        "size": 30,
+        "keywords": "excelente servicio, servicio excelente, servicio buen, buen servicio, servicio muy, muy buenos, muy profesional, profesional amabilidad, otorga empresa, operaciones teléfono"
+      },
+      {
+        "topic_id": 5,
+        "size": 30,
+        "keywords": "fácil usar, usar fácil, útil sencilla, muy fácil, fácil rápida, fácil muy, fácil rápido, práctica fácil, rápido fácil, necesita sencilla"
+      },
+      {
+        "topic_id": 6,
+        "size": 30,
+        "keywords": "app buena, buena app, app excelente, excelente app, encanta app, ya mejoró, mejoró, día mejorando, está buena, calidad"
+      },
+      {
+        "topic_id": 7,
+        "size": 28,
+        "keywords": "muy buena, muy bueno, buena muy, buena buena, buena excelente, buena gusta, buena apiclascion, excelente tarjeta, tarjeta tengo, cambiaría nada"
+      },
+      {
+        "topic_id": 8,
+        "size": 25,
+        "keywords": "excelente aplicación, excelente aplicacion, aplicación buena, buena aplicación, aplicación excelente, maravillosa aplicación, gran utilidad, funcionalidades muy, excelente organización, excelente todas"
+      },
+      {
+        "topic_id": 9,
+        "size": 23,
+        "keywords": "exelente exelenete, exelente exelente, mala execelente, versatil didáctica, satisfecho magnigico, pesima versatil, datos confusos, mercado exelente, rateros rateros, peor mercado"
+      },
+      {
+        "topic_id": 10,
+        "size": 22,
+        "keywords": "eficiente gracias, gracias fabulosa, gracias exelente, exelente gracias, muchas gracias, gracias muy, genial gracias, gracias gracias, gracias tu, les agradece"
+      },
+      {
+        "topic_id": 11,
+        "size": 22,
+        "keywords": "bien muy, bien bien, bien cumple, mu bien, propósito bien, bien bueno, buena bueno, bien rápido, bien basuraaaaaa, basuraaaaaa mu"
+      },
+      {
+        "topic_id": 12,
+        "size": 17,
+        "keywords": "buena, buena buena, buena ap, ap buena, excelente, buena cool, cool excelente, excelente opción, opción buena, opción"
+      },
+      {
+        "topic_id": 13,
+        "size": 17,
+        "keywords": "rápida efectiva, rápida eficaz, muy eficiente, rápida axesible, mejoraron rapidez, práctica rápida, práctico eficiente, eficiente, eficiente práctica, información rápida"
+      },
+      {
+        "topic_id": 14,
+        "size": 15,
+        "keywords": "buena app, gusta app, recomiendo aplicación, fácil usar, funcionalidad aplicación, facil consultar, fácil confiable, eficiente recomiendo, fácil entender, sencilla administrar"
+      },
+      {
+        "topic_id": 15,
+        "size": 13,
+        "keywords": "excelente super, genial excelente, cool excelentes, excelente excelente, muy bien, excelente muchas, gracias genial, muchas felicidades, felicidades gracias, excelentes movimientos"
+      },
+      {
+        "topic_id": 16,
+        "size": 13,
+        "keywords": "útil buena, muy práctica, eficas buena, confiable clara, práctica confiable, cómoda práctica, segura practico, siempre confiable, buena relación, usarla funcional"
+      },
+      {
+        "topic_id": 17,
+        "size": 11,
+        "keywords": "felicidades banamex, banamex excelente, excelente desde, mejor excelente, limpieza todos, mejor publicidad, muchos anuncios, información todo, millón cuenta, estreso https"
+      }
+    ],
+    "alternative": [
+      {
+        "topic_id": 0,
+        "size": 105,
+        "keywords": "app queda, abrir app, app, abre, pantalla, pantalla azul, actualización, congelada, azul, 2026"
+      },
+      {
+        "topic_id": 1,
+        "size": 73,
+        "keywords": "tarda mucho, no deja, tener esperar, abre tarda, 15 días, cualquier hora, mucho abrir, nunca abre, algunas veces, movimientos no"
+      },
+      {
+        "topic_id": 2,
+        "size": 66,
+        "keywords": "app banco, app tarda, aplicación banco, banca móvil, bancaria, banca, otros bancos, entrar banca, acceso, hacer transferencias"
+      },
+      {
+        "topic_id": 3,
+        "size": 61,
+        "keywords": "móvil banamex, banamex app, app banamex, aplicación banamex, banamex no, app no, banamexcontacto, app ya, no funciona, audiomatico"
+      },
+      {
+        "topic_id": 4,
+        "size": 54,
+        "keywords": "excelentes excelente, perfeccion excelente, excelente siempre, siempre excelentes, tal perfeccion, perfecto, perfeccion, seria perfecto, perfecto no, no existe"
+      },
+      {
+        "topic_id": 5,
+        "size": 35,
+        "keywords": "muy eficiente, muy eficas, mejoraron rapidez, eficiente buena, rápida muy, eficiente, muy útil, eficiente práctica, información rápida, funcional práctica"
+      },
+      {
+        "topic_id": 6,
+        "size": 34,
+        "keywords": "servicio buen, buen servicio, excelente servicio, servicio excelente, servicio muy, muy recomendable, clientes, otorga empresa, nuestras necesidades, necesidades ojo"
+      },
+      {
+        "topic_id": 7,
+        "size": 32,
+        "keywords": "todo bien, bien funciona, excelente bien, funciona muy, gracias mejorarla, mejorado todo, mejorar mucho, satisfecho debe, funciona cuando, operacion vamos"
+      },
+      {
+        "topic_id": 8,
+        "size": 32,
+        "keywords": "mejoró app, app buena, buena app, app excelente, mejoraron aplicación, mejoró, mejorando excelente, mejor calidad, mejorado muchisimo, mejorado"
+      },
+      {
+        "topic_id": 9,
+        "size": 29,
+        "keywords": "muy buena, muy bueno, buena muy, buena buena, buena excelente, buena apiclascion, excelente tarjeta, buena practica, tarjeta tengo, cambiaría nada"
+      },
+      {
+        "topic_id": 10,
+        "size": 28,
+        "keywords": "fácil usar, usar fácil, útil fácil, sencilla usar, muy fácil, fácil rápida, fácil muy, fácil rápido, práctica fácil, rápida sencilla"
+      },
+      {
+        "topic_id": 11,
+        "size": 25,
+        "keywords": "abrir aplicacion, abre app, abrir aplicación, abre aplicación, aplicación no, porque aplicación, aplicacion no, no abre, puede abrir, wifi"
+      },
+      {
+        "topic_id": 12,
+        "size": 24,
+        "keywords": "excelente aplicación, excelente aplicacion, aplicación buena, buena aplicación, aplicación excelente, maravillosa aplicación, bien aplicación, útil funcionalidades, mejor aplicación, excelente organización"
+      },
+      {
+        "topic_id": 13,
+        "size": 24,
+        "keywords": "muchas fallas, tiene fallas, fallas demás, hay fallas, fallas capacidad, fallas siempre, fallas problemas, fallando pésima, servicio pésimo, mucho aplicación"
+      },
+      {
+        "topic_id": 14,
+        "size": 22,
+        "keywords": "nada amigable, ninguna seguridad, mucho no, hay ninguna, mala seguridad, no intuitiva, te roban, necesita muy, mucha experiencia, mil pesos"
+      },
+      {
+        "topic_id": 15,
+        "size": 22,
+        "keywords": "exelente exelente, didáctica exelente, mala execelente, confusos grandioso, satisfecho magnigico, pesima versatil, datos confusos, mercado exelente, rateros rateros, peor mercado"
+      },
+      {
+        "topic_id": 16,
+        "size": 21,
+        "keywords": "excelente atención, eficiente gracias, contenta atención, genial gracias, exelente gracias, gracias exelente, gracias muy, excelente asesoró, rapido amables, cliente todo"
+      },
+      {
+        "topic_id": 17,
+        "size": 21,
+        "keywords": "bien cumple, bien bien, muy bien, segura bien, propósito bien, bien bueno, bien buena, buena bueno, bien rápido, rápido segura"
+      },
+      {
+        "topic_id": 18,
+        "size": 18,
+        "keywords": "falla mucho, bastante traba, traba poco, mucho falla, traba simplemente, traba tratar, demasiado falla, traba mucho, deficiente traba, noches fatal"
+      },
+      {
+        "topic_id": 19,
+        "size": 18,
+        "keywords": "buena, buena cool, buena buena, buena ap, ap buena, excelente opción, opción buena, cool end, day buena, opción"
+      },
+      {
+        "topic_id": 20,
+        "size": 17,
+        "keywords": "tarjeta digital, tarjeta, no tarjeta, tarjeta no, apps, bloquear, generando clave, clave dinámica, necesidad deslizar, estados cuenta"
+      },
+      {
+        "topic_id": 21,
+        "size": 15,
+        "keywords": "buena aplicación, excelente aplicación, segura eficiente, segura excelente, excelente seguridad, fiable rspida, segura amigable, operatividad app, seguridad tus, seguridad transacciones"
+      },
+      {
+        "topic_id": 22,
+        "size": 14,
+        "keywords": "excelente super, excelentes, cool excelentes, excelente excelente, muy bien, excelente muchas, gracias excelente, muchas felicidades, felicidades gracias, excelentes movimientos"
+      },
+      {
+        "topic_id": 23,
+        "size": 12,
+        "keywords": "lenta abrir, muy lento, muy lenta, lenta abre, lenta interfaz, lenta urgencia, algo lenta, bien lenta, lenta muy, lenta muchas"
+      },
+      {
+        "topic_id": 24,
+        "size": 12,
+        "keywords": "magnífica aplicación, pagos excelente, facilita operaciones, eficiente magnífica, facilita realizar, eficaz eficiente, enviar recibir, operaciones transferencias, extranjero excelente, final liquido"
+      },
+      {
+        "topic_id": 25,
+        "size": 11,
+        "keywords": "gusta app, usar apps, fácil usar, funcionalidad aplicación, facil consultar, fácil confiable, fácil entender, sencilla administrar, interfase fácil, usar amigable"
+      },
+      {
+        "topic_id": 26,
+        "size": 11,
+        "keywords": "felicidades banamex, banamex excelente, excelente desde, mejor excelente, limpieza todos, mejor publicidad, muchos anuncios, información todo, millón cuenta, estreso https"
+      },
+      {
+        "topic_id": 27,
+        "size": 10,
+        "keywords": "segura facil, accesible rapida, rapida segura, seguridad fácil, rápido uso, fácil acceso, mucha seguridad, rápida facil, mejorar seguridad, fotografía muy"
+      }
+    ]
+  },
+  "artifacts": {
+    "base": {
+      "run_id": "4012cc27-38a5-49ad-a1ed-8464d375cf3e",
+      "analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+      "manifest_sha256": "4315d2b34056f102f43bd9891dd1bfb583eed8692d20eedfb7e73c75bb2b6e1f"
+    },
+    "alternative": {
+      "run_id": "6b8d4762-e02c-4e2e-93b9-7d199aaea664",
+      "analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+      "manifest_sha256": "16586216f0526f8791355ad48b17f3cda8c1d2553b80b42a9163f91392f5c28f"
+    }
+  },
+  "llm_requests": 0,
+  "independent_accuracy_evaluation": false
+}
