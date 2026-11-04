@@ -357,3 +357,14 @@ def test_stores_v3_rejects_unconfirmed_domain_before_writes(runtime, platform):
 def test_stores_v3_revision_is_fixed():
     with pytest.raises(ValueError):
         r.SentimentConfig(model=r.STORES_MODEL, revision="a" * 40)
+
+
+def test_explicit_social_transfer_uses_same_model_cache(runtime):
+    reviews = frame(["same text"])
+    reviews["platform"] = "app_store"
+    config = r.SentimentConfig(model=r.STORES_MODEL, revision=r.STORES_V3_REVISION)
+    first = run(reviews, CountingClassifier(), config)
+    reviews["platform"] = "youtube"
+    second = run(reviews, CountingClassifier(), replace(config, allow_social=True))
+    assert second.report["classifier_id"] == first.report["classifier_id"]
+    assert second.report["counts"]["reused_unique"] == 1

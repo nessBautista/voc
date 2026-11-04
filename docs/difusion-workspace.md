@@ -100,3 +100,30 @@ El preflight no crea runs ni ejecuta modelos. `analysis run` sí ajusta tópicos
 Los checkpoints adaptados de Robertuito y el filtro de relevancia todavía no están integrados. Las 1.000 filas históricas se conservan como antecedente; no constituyen por defecto la muestra de la nueva comparación. Esta preparación no ejecutó ajustes, predicciones del corpus ni solicitudes a proveedores LLM.
 
 Validación inicial: 77 pruebas de almacenamiento/configuración aprobadas, chequeo de sintaxis Bash y Ruff, carga offline de ambos modelos y comprobación de que las variables de almacenamiento de otra instalación no se heredan.
+
+## Comparación integrada por CLI
+
+Actualización: el filtro SVM y Robertuito tiendas v3 ya están integrados. La
+alternativa usa tiendas v3 también en X/YouTube por decisión explícita del equipo;
+la evaluación publicada del checkpoint corresponde a tiendas, no valida este traslado.
+
+`voc-ml experiment prepare` fija primero los IDs comunes, estratificados por
+plataforma y mes, excluyendo IDs anotados para relevancia y textos exactamente
+iguales. Luego aplica el filtro solo a X/YouTube y conserva los vectores por ID.
+No se conocen los IDs del entrenamiento de sentimiento: la comparación es
+operativa y descriptiva, no un test independiente de exactitud.
+
+```bash
+bash scripts/difusion.sh voc-ml experiment prepare --local-inputs config/analysis/difusion-local-inputs.toml --annotations data/relevance/reconstruction/annotations-reviewed.csv --relevance-model data/relevance/model-v1/model.json --relevance-sha256 f8e24c1403a1103d4384863687d33308a343eef6064279a5bf5f612842b203d8 --output data/experiments/julaug-2026 --start 2026-07-01 --end 2026-09-01 --size 1000 --seed 42
+bash scripts/difusion.sh voc-ml experiment run base --directory data/experiments/julaug-2026
+bash scripts/difusion.sh voc-ml experiment run alternative --directory data/experiments/julaug-2026
+```
+
+Julio y agosto son los últimos dos meses completos de la copia histórica;
+septiembre contiene una recolección parcial. Cada sistema ajusta BERTopic mediante
+ZenML, calcula sentimiento y refina palabras clave con KeyBERTInspired + MMR.
+Usan los mismos parámetros de agrupamiento (UMAP 5D; HDBSCAN eom, mínimo 10).
+El protocolo fija hashes y el estado impide repetir ajustes inadvertidamente.
+Hay progreso de sentimiento por lote y seguimiento local MLflow. No se solicitan
+interpretaciones LLM en esta comparación. Los temas requieren revisión de su
+contenido: contar grupos no demuestra que sean funcionalidades de la aplicación.

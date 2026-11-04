@@ -116,7 +116,7 @@ def validate_input_identity(info):
         "analysis selection",
     )
     kind, size, seed = selection["kind"], selection["size"], selection["seed"]
-    if kind not in ("full", "first-n", "stratified"):
+    if kind not in ("full", "first-n", "stratified", "explicit"):
         raise ValueError("Unknown analysis selection kind")
     require_positive_int(size, "selection.size")
     if size > embedding["row_count"] or (
@@ -131,6 +131,9 @@ def validate_input_identity(info):
             != "platform-month-proportional-largest-remainder-v1"
         ):
             raise ValueError("Unknown stratified allocation policy")
+    elif kind == "explicit":
+        if seed is not None or selection["allocation_policy"] != "frozen-record-ids-v1":
+            raise ValueError("Explicit selection requires frozen IDs and no seed")
     elif seed is not None or selection["allocation_policy"] != "bundle-order-v1":
         raise ValueError("Full/first-n selection must use bundle order and no seed")
     ids, positions = selection["record_ids"], selection["positions"]

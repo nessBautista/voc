@@ -22,18 +22,21 @@ def pin(run_id):
     request = state["requested"]
     if state["kind"] == "analysis":
         config = AnalysisConfig.from_dict(state["configuration"]["analysis"])
-        inputs = pin_inputs(
-            dataset_version=request["dataset_version"],
-            embedding_version=request["embedding_version"],
-            profile=request["profile"],
-            source=request["source"],
-            selection=config.selection,
-            **(
-                {"local_inputs": request["local_inputs"]}
-                if request.get("local_inputs")
-                else {}
-            ),
-        )
+        if request.get("pinned_input"):
+            inputs = artifacts.read_input(request["pinned_input"])
+        else:
+            inputs = pin_inputs(
+                dataset_version=request["dataset_version"],
+                embedding_version=request["embedding_version"],
+                profile=request["profile"],
+                source=request["source"],
+                selection=config.selection,
+                **(
+                    {"local_inputs": request["local_inputs"]}
+                    if request.get("local_inputs")
+                    else {}
+                ),
+            )
         config.validate_row_count(len(inputs.reviews))
         reference = artifacts.write_input(inputs, run_directory(run_id) / "input")
         identity = inputs.info
@@ -162,6 +165,11 @@ def sentiment(input_reference, run_id):
             reviews,
             SentimentConfig(**state["configuration"]["sentiment"]),
             local_files_only=state["requested"]["local_files_only"],
+            progress_callback=lambda c: print(
+                f"Sentiment: {c['classified']}/{c['rows']} classified; {c['reused_unique']} cached texts",
+                file=sys.stderr,
+                flush=True,
+            ),
         )
     except Exception as error:
         if hasattr(error, "report"):

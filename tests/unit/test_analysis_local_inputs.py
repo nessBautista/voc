@@ -153,3 +153,20 @@ def test_platform_selection_precedes_limit_and_cli_accepts_repeatable_option(
     )
     assert result.exit_code == 0, result.output
     assert launch.call_args.kwargs["platforms"] == ("app_store", "google_play")
+
+
+def test_explicit_input_alignment_and_pipeline_reuse(local_files):
+    from voc_ml.analysis import artifacts
+    from voc_ml.analysis.inputs import select_record_ids
+
+    full = pin_inputs(source="local", local_inputs=load_local_config(local_files))
+    selected = select_record_ids(full, full.reviews.record_id.iloc[5:35].tolist())
+    np.testing.assert_array_equal(selected.vectors, full.vectors[5:35])
+    reference = artifacts.write_input(selected, local_files.parent / "frozen")
+    state = producer.create_run(
+        source="local", local_inputs=local_files, pinned_input=reference
+    )
+    result = artifacts.read_input(workflow.pin(state["run_id"]))
+    assert result.info == selected.info
+    with pytest.raises(ValueError, match="absent"):
+        select_record_ids(full, ["absent"])

@@ -22,8 +22,10 @@ class SelectionConfig:
     seed: int | None = None
 
     def __post_init__(self):
-        if self.kind not in ("full", "first-n", "stratified"):
-            raise ValueError("Selection kind must be full, first-n or stratified")
+        if self.kind not in ("full", "first-n", "stratified", "explicit"):
+            raise ValueError(
+                "Selection kind must be full, first-n, stratified or explicit"
+            )
         if self.kind == "full":
             if self.size is not None:
                 raise ValueError("Full selection cannot specify size")

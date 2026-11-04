@@ -411,3 +411,46 @@ def pin_inputs(
         allow_subset=allow_subset,
     )
     return select_inputs(snapshot, bundle, selection=selection)
+
+
+def select_record_ids(inputs, record_ids):
+    """Select a frozen set in original vector order without pretending it is a prefix."""
+    inputs.validate()
+    if not record_ids or len(set(record_ids)) != len(record_ids):
+        raise ValueError("Explicit selection requires distinct nonempty IDs")
+    if not set(record_ids) <= set(inputs.reviews.record_id):
+        raise ValueError("Explicit selection includes absent IDs")
+    positions = np.flatnonzero(inputs.reviews.record_id.isin(record_ids))
+    reviews = inputs.reviews.iloc[positions].copy().reset_index(drop=True)
+    vectors = np.array(inputs.vectors[positions], dtype="<f4", order="C", copy=True)
+    vectors.flags.writeable = False
+    info = deepcopy(inputs.info)
+    info.pop("input_id")
+    selected_groups = _strata(reviews)
+    strata = [
+        {
+            **row,
+            "selected": len(selected_groups.get((row["platform"], row["month"]), [])),
+        }
+        for row in info["selection"]["strata"]
+    ]
+    info["selection"] = {
+        "kind": "explicit",
+        "size": len(reviews),
+        "seed": None,
+        "allocation_policy": "frozen-record-ids-v1",
+        "record_ids": reviews.record_id.tolist(),
+        "positions": reviews.vector_row.tolist(),
+        "ordered_ids_sha256": fingerprint(reviews.record_id.tolist()),
+        "strata": strata,
+    }
+    info.update(
+        reviews_sha256=frame_hash(reviews),
+        vectors_sha256=_npy_identity(vectors)[0],
+        vector_shape=list(vectors.shape),
+        vector_dtype=vectors.dtype.str,
+    )
+    info["input_id"] = fingerprint(info)
+    result = AnalysisInput(reviews, vectors, info)
+    result.validate()
+    return result

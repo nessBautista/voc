@@ -36,8 +36,11 @@ class SentimentConfig:
     revision: str = REVISION
     max_length: int = 128
     batch_size: int = 16
+    allow_social: bool = False
 
     def __post_init__(self):
+        if type(self.allow_social) is not bool:
+            raise ValueError("allow_social must be boolean")
         if self.model not in (MODEL, STORES_MODEL):
             raise ValueError("Unsupported RoBERTuito checkpoint")
         if self.model == STORES_MODEL and self.revision != STORES_V3_REVISION:
@@ -209,6 +212,7 @@ def classify_reviews(
     run_root=None,
     local_files_only=True,
     classifier_factory=None,
+    progress_callback=None,
 ):
     """Classify a selected DataFrame, preserving order and every unique review ID.
 
@@ -230,9 +234,13 @@ def classify_reviews(
         or not {"record_id", "model_text"} <= set(reviews.columns)
     ):
         raise ValueError("Expected nonempty reviews with record_id and model_text")
-    if config.model == STORES_MODEL and (
-        "platform" not in reviews.columns
-        or not reviews.platform.isin(("app_store", "google_play")).all()
+    if (
+        config.model == STORES_MODEL
+        and not config.allow_social
+        and (
+            "platform" not in reviews.columns
+            or not reviews.platform.isin(("app_store", "google_play")).all()
+        )
     ):
         raise ValueError(
             "Stores v3 requires store-only reviews; social checkpoint selection is not configured"
@@ -401,6 +409,8 @@ def classify_reviews(
                         apply(key, value, "computed")
                         computed.add(key)
                     save_progress("running")
+                    if progress_callback is not None:
+                        progress_callback(dict(report["counts"]))
         save_progress("completed")
     except Exception as error:
         # Keep failures out of the successful prediction cache. Pending IDs and

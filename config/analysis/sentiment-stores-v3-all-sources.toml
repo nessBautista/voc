@@ -1,0 +1,8 @@
+# Evaluated on App Store / Google Play only. No implicit social model fallback.
+model = "Banamex-voc-sentiment/voc-robertuito-sentiment-stores-es"
+revision = "ff48c25f016499fc40d910f2a2a50072c706cdee"
+max_length = 128
+batch_size = 8
+
+# Explicit team decision: experimental transfer to X/YouTube, not validated there.
+allow_social = true

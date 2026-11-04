@@ -75,6 +75,7 @@ def create_run(
     local_files_only=True,
     local_inputs=None,
     platforms=(),
+    pinned_input=None,
 ):
     if kind not in ("analysis", "sentiment") or source not in ("s3", "local"):
         raise ValueError(
@@ -113,6 +114,16 @@ def create_run(
         config = replace(config, selection=SelectionConfig("first-n", limit))
     if kind == "analysis" and config.selection.kind != "full":
         config.validate_row_count(config.selection.size)
+    if pinned_input is not None:
+        if kind != "analysis" or limit is not None:
+            raise ValueError("Pinned inputs require analysis without --limit")
+        pinned = artifacts.read_input(pinned_input)
+        config = replace(
+            config, selection=SelectionConfig("explicit", len(pinned.reviews))
+        )
+        config.validate_row_count(len(pinned.reviews))
+    elif config.selection.kind == "explicit":
+        raise ValueError("Explicit configuration requires pinned input")
     run_id = str(uuid4())
     run_directory(run_id).mkdir(parents=True, exist_ok=False)
     state = {
@@ -134,6 +145,7 @@ def create_run(
             "local_files_only": local_files_only,
             "local_inputs": pinned_local,
             "platforms": sorted(set(platforms)),
+            "pinned_input": pinned_input,
         },
         "configuration": {
             "analysis": config.as_dict(),
