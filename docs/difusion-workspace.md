@@ -89,7 +89,13 @@ ZenML usa el stack `voc-local` y una base SQLite bajo `data/zenml-client`. MLflo
 
 ## Alcance de esta preparación
 
-La lectura portable de embeddings funciona mediante `voc.embeddings.validation.load_release`. Copiar el corpus no lo registra automáticamente en el catálogo personal de ZenML. Algunos comandos heredados de análisis todavía exigen entradas S3: la integración siguiente deberá permitirles consumir estas entradas locales verificadas.
+La lectura portable de embeddings funciona mediante `voc.embeddings.validation.load_release`. Copiar el corpus no lo registra automáticamente en el catálogo personal de ZenML. Los comandos `voc-ml analysis run` y `voc-ml sentiment workflow` aceptan ahora `--source local --local-inputs config/analysis/difusion-local-inputs.toml`. Ese TOML fija rutas relativas y hashes de manifiestos; cada ejecución vuelve a verificar archivos y alineación. Se conserva la identidad histórica de publicación como procedencia, sin consultar S3.
+
+```bash
+bash scripts/difusion.sh voc-ml analysis preflight-local --local-inputs config/analysis/difusion-local-inputs.toml
+```
+
+El preflight no crea runs ni ejecuta modelos. `analysis run` sí ajusta tópicos y calcula sentimiento mediante el pipeline ZenML existente; `sentiment workflow` calcula solo sentimiento. Sus opciones `--limit` sirven para pruebas técnicas pequeñas, no sustituyen al diseño de la muestra experimental. Todavía no ejecutar la comparación completa con la selección predeterminada de primeras filas.
 
 Los checkpoints adaptados de Robertuito y el filtro de relevancia todavía no están integrados. Las 1.000 filas históricas se conservan como antecedente; no constituyen por defecto la muestra de la nueva comparación. Esta preparación no ejecutó ajustes, predicciones del corpus ni solicitudes a proveedores LLM.
 

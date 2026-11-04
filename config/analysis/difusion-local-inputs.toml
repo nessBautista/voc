@@ -1,0 +1,6 @@
+# Historical copies; paths resolve relative to this file.
+dataset = "../../data/inputs/corpus/dataset.parquet"
+dataset_manifest = "../../data/inputs/corpus/manifest.json"
+embeddings = "../../data/inputs/embeddings"
+dataset_manifest_sha256 = "ca40ddfabf23fcd20d698ddfe8f26b1de60bff3a7fe22740a85c4414793992f5"
+embedding_manifest_sha256 = "d98dfb0decec90106be63b82bda072a13920b1b98b6450ca430d42ff8090b7f6"

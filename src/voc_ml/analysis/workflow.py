@@ -28,6 +28,11 @@ def pin(run_id):
             profile=request["profile"],
             source=request["source"],
             selection=config.selection,
+            **(
+                {"local_inputs": request["local_inputs"]}
+                if request.get("local_inputs")
+                else {}
+            ),
         )
         config.validate_row_count(len(inputs.reviews))
         reference = artifacts.write_input(inputs, run_directory(run_id) / "input")
@@ -35,11 +40,23 @@ def pin(run_id):
     else:
         from voc import collector
 
-        snapshot = collector.get_dataset(
-            stage="prepared",
-            source=request["source"],
-            version=request["dataset_version"],
-        )
+        if request["source"] == "local":
+            from voc.analysis.local_inputs import read_local_inputs
+
+            snapshot, _ = read_local_inputs(
+                request["local_inputs"], profile=request["profile"]
+            )
+            if request["dataset_version"] not in (
+                "latest",
+                snapshot.info["release_id"],
+            ):
+                raise ValueError("Local dataset differs from requested release")
+        else:
+            snapshot = collector.get_dataset(
+                stage="prepared",
+                source=request["source"],
+                version=request["dataset_version"],
+            )
         dataset = DatasetIdentity(
             **{k: snapshot.info[k] for k in DatasetIdentity.__dataclass_fields__}
         )

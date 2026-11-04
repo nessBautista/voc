@@ -39,11 +39,45 @@ def sentiment():
     """Prepare cached review sentiment independently of topics or embeddings."""
 
 
+@analysis.command("preflight-local")
+@click.option(
+    "--local-inputs", required=True, type=click.Path(exists=True, dir_okay=False)
+)
+def preflight_local(local_inputs):
+    """Verify complete local inputs without fitting models or creating a run."""
+    from voc.analysis.local_inputs import load_local_config, read_local_inputs
+
+    try:
+        snapshot, bundle = read_local_inputs(load_local_config(local_inputs))
+    except (ValueError, TypeError, KeyError, OSError) as error:
+        raise click.ClickException(str(error)) from error
+    click.echo(
+        json.dumps(
+            {
+                "state": "inputs_verified",
+                "transport": "local",
+                "dataset_release_id": snapshot.info["release_id"],
+                "embedding_release_id": bundle.info["embedding_release_id"],
+                "rows": len(snapshot.data),
+                "shape": list(bundle.vectors.shape),
+                "fits": 0,
+                "run_created": False,
+            },
+            indent=2,
+        )
+    )
+
+
 def common_options(function):
     for decorator in reversed(
         [
             click.option("--dataset-version", default="latest", show_default=True),
-            click.option("--source", type=click.Choice(["s3"]), default="s3"),
+            click.option("--source", type=click.Choice(["s3", "local"]), default="s3"),
+            click.option(
+                "--local-inputs",
+                type=click.Path(exists=True, dir_okay=False),
+                help="Pinned local corpus/embedding configuration; requires --source local.",
+            ),
             click.option(
                 "--limit",
                 type=click.IntRange(min=1),

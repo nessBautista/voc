@@ -376,11 +376,27 @@ def pin_inputs(
     source="s3",
     selection=None,
     allow_subset=False,
+    local_inputs=None,
 ):
     """Resolve moving releases once. No encoding, inference or publication occurs."""
     selection = SelectionConfig() if selection is None else selection
-    if not isinstance(selection, SelectionConfig) or source != "s3":
-        raise ValueError("Use a SelectionConfig and source=s3")
+    if not isinstance(selection, SelectionConfig) or source not in ("s3", "local"):
+        raise ValueError("Use a SelectionConfig and source=s3 or local")
+    if source == "local":
+        from voc.analysis.local_inputs import read_local_inputs
+
+        if local_inputs is None:
+            raise ValueError("Local source requires a pinned local input configuration")
+        snapshot, bundle = read_local_inputs(local_inputs, profile=profile)
+        for requested, actual in (
+            (dataset_version, snapshot.info["release_id"]),
+            (embedding_version, bundle.info["embedding_release_id"]),
+        ):
+            if requested != "latest" and requested != actual:
+                raise ValueError("Local release differs from requested version")
+        return select_inputs(snapshot, bundle, selection=selection)
+    if local_inputs is not None:
+        raise ValueError("Local inputs cannot be combined with source=s3")
     from voc import collector
     from voc.embeddings import get_embeddings
 

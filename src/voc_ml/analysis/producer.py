@@ -73,9 +73,19 @@ def create_run(
     config=None,
     sentiment_config=None,
     local_files_only=True,
+    local_inputs=None,
 ):
-    if kind not in ("analysis", "sentiment") or source != "s3":
-        raise ValueError("Use an analysis or sentiment workflow with source=s3")
+    if kind not in ("analysis", "sentiment") or source not in ("s3", "local"):
+        raise ValueError(
+            "Use an analysis or sentiment workflow with source=s3 or local"
+        )
+    if (source == "local") != (local_inputs is not None):
+        raise ValueError("source=local requires --local-inputs; source=s3 forbids it")
+    pinned_local = None
+    if local_inputs is not None:
+        from voc.analysis.local_inputs import load_local_config
+
+        pinned_local = load_local_config(local_inputs)
     for value in (dataset_version, embedding_version):
         if value != "latest":
             require_uuid(value, "release version")
@@ -114,6 +124,7 @@ def create_run(
             "source": source,
             "limit": limit,
             "local_files_only": local_files_only,
+            "local_inputs": pinned_local,
         },
         "configuration": {
             "analysis": config.as_dict(),
