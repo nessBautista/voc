@@ -1,0 +1,158 @@
+{
+  "schema_version": "voc-diffusion-human-review-v1",
+  "date": "2026-11-04",
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "source": "journal/linear/WOR-228-producto-difusion/context/buffer.md",
+  "source_sha256": "496a6eabaa490633e45eb7ae3267d0423c3b737c2ba7c032a4a98dab1553f3c4",
+  "reviewer": "user; no personal identity recorded",
+  "authorship": "human decisions after assisted inspection; not blind independent annotation",
+  "scope": "all 13 excluded records, not retained records",
+  "rows": [
+    {
+      "record_id": "x:2081120493025788406",
+      "platform": "x",
+      "human_label": "relevant",
+      "model_keep": false,
+      "model_text_sha256": "cbd55b61ccdc2e319b5400617d7e979446c2c4689e870c0fb04b26deb40c9e3c",
+      "decision_agrees": false
+    },
+    {
+      "record_id": "x:2089042705733034080",
+      "platform": "x",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "4b4ba530f0b3e485b916ce41791b9afb3a85b6f0559170e5d9ed9ebbefee9d70",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgwAtme4E0RfWGHsfKR4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "226658c9654471c56152948801e397d1f7b6e51497f3eaaa184e5bafcb5d8bcd",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgwDg5VRdDTS-o1iyEd4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "88efb03b7ef94723fa19c00f59dcc442fc8f26a662e1423ce2fd94ed35c9c7f7",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgxYG8tABED-v4SkGC14AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "a04c2691e6aee8a98f80c2d8af609d3180f6fff5936087ef021ebd5ad8f20088",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgyG4ynvY5oTDZZ4Sj94AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "fa3fa328afd9db16af2717de0fb037300b429aab122364803cd53543190e11ae",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgydifHTT3edi4Lvvy94AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "b79a501607a31e4aefa5cb555918c7cd9888043d481950dfaec753d141eac935",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgyekmT_EYBdBzcg4BV4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "ae101d75a39f68539284b5d0b62e2b9ba4e89cf994c7d2a1b7e17516bc08de8c",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgygzHzdimxwtndEhEt4AaABAg",
+      "platform": "youtube",
+      "human_label": "relevant",
+      "model_keep": false,
+      "model_text_sha256": "f86faf85752eeaf07fcb7fcac5cdedf9fbf4c6e0311bf3488de9f0e45bd90723",
+      "decision_agrees": false
+    },
+    {
+      "record_id": "youtube:-:Ugz7WZjFKhmZ4DNPAnd4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "1f6a707cbf4a014de160322ea91aacde685685689b7b07918fd79865bceef5a0",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:UgzKXYFlIc0bBikF2V54AaABAg",
+      "platform": "youtube",
+      "human_label": "relevant",
+      "model_keep": false,
+      "model_text_sha256": "c52062780b2953f8c82d30d71254aa90be3c60d619c5ad676de6091cae091a09",
+      "decision_agrees": false
+    },
+    {
+      "record_id": "youtube:-:UgzTdO4qHPxcx4APEpt4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "a10f4cb8931dadef7b36df47c276663766397aa0efa3ff0315668eac4c34b846",
+      "decision_agrees": true
+    },
+    {
+      "record_id": "youtube:-:Ugzf8-naSD6p_rDI9eJ4AaABAg",
+      "platform": "youtube",
+      "human_label": "irrelevant",
+      "model_keep": false,
+      "model_text_sha256": "5d7b174ba2b13899cb4b8fde308699cea30dfe44153a93df6fd7f6424b09748b",
+      "decision_agrees": true
+    }
+  ],
+  "counts": {
+    "reviewed": 13,
+    "irrelevant": 10,
+    "relevant": 3,
+    "uncertain": 0
+  },
+  "by_platform": {
+    "x": {
+      "reviewed": 2,
+      "irrelevant": 1,
+      "relevant": 1
+    },
+    "youtube": {
+      "reviewed": 11,
+      "irrelevant": 9,
+      "relevant": 2
+    }
+  },
+  "topic_observation": {
+    "author": "user",
+    "summary": "In the displayed alternative examples, app-related content appeared more evident than in the base examples.",
+    "example_record_id": "play:com.citibanamex.banamexmobile:a4843162-7c2c-449a-95a3-29f1f261d3ff",
+    "verified_membership": {
+      "base": 0,
+      "alternative": 0
+    },
+    "saved_representative_evidence": {
+      "base": false,
+      "alternative": true
+    },
+    "limitation": "Same record exists in both systems; qualitative observation on displayed examples, not overall topic quality evaluation."
+  },
+  "sentiment_observation": {
+    "author": "user",
+    "summary": "Change appears promising but claims should remain cautious.",
+    "individual_labels_validated": false
+  },
+  "limitations": [
+    "All rejected records reviewed; retained records not adjudicated, so filter recall and overall accuracy cannot be calculated.",
+    "Human review saw model decisions and prior assisted observations.",
+    "Operational artifacts and model remain unchanged; this review is not used for retraining."
+  ]
+}
