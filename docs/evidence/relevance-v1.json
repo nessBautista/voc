@@ -1,0 +1,130 @@
+{
+  "human_review": {
+    "schema_version": "voc-relevance-human-review-v1",
+    "recorded_at": "2026-11-04T21:20:18.886242+00:00",
+    "source_proposals_sha256": "ecfe8cf8c9ca0cb28449c1bec227bb3f3ea601ea3a910f631f0c4936dd871f36",
+    "reviewed_csv_sha256": "e0d98d3255c1b0129794d7474f796aa5060eb30ec7831d519d290717c9243d02",
+    "confirmation": "un humano ha revisado las etiquetas, y esta de acuerdo con la clasificación realizada, puedes considerar esto revisado por humano y continuar",
+    "scope": "all 105 YouTube proposals",
+    "proposal_author": "Codex assistant",
+    "human_review": "confirmed by user; individual reviewer identity not supplied",
+    "labels_changed": 0,
+    "independent_blind_annotation": false
+  },
+  "training": {
+    "schema_version": "voc-relevance-training-v1",
+    "annotation_sha256": "793fad21615037059f12fcd19c3661643a5df2695448bb9ff305dee81e7459ea",
+    "dataset_release_id": "b7a61a8b-27d8-46a7-b2ce-67d97268b741",
+    "embedding_release_id": "23243c6e-7787-463c-ac3b-bfe950060d6e",
+    "rows_annotated": 205,
+    "uncertain_excluded": 45,
+    "duplicates_removed": 0,
+    "rows_trained": 160,
+    "validation": "five-fold-platform-class-stratified-seed42-oof-v1",
+    "estimator": {
+      "scaler": "StandardScaler",
+      "classifier": "LinearSVC",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "random_state": 42,
+      "max_iter": 10000,
+      "threshold": 0.0
+    },
+    "duplicate_policy": "exact-model-text-v1",
+    "computation_dtype": "float64",
+    "near_duplicate_screening": false,
+    "accuracy": 0.9125,
+    "balanced_accuracy": 0.9088541666666667,
+    "precision_relevant": 0.9270833333333334,
+    "recall_relevant": 0.9270833333333334,
+    "f1_relevant": 0.9270833333333334,
+    "confusion_matrix": [
+      [
+        57,
+        7
+      ],
+      [
+        7,
+        89
+      ]
+    ],
+    "software": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.3",
+      "pandas": "2.3.3"
+    },
+    "historical_result_reproduction": false,
+    "per_platform": {
+      "x": {
+        "rows": 97,
+        "confusion_matrix": [
+          [
+            0,
+            6
+          ],
+          [
+            6,
+            85
+          ]
+        ],
+        "balanced_accuracy": 0.46703296703296704
+      },
+      "youtube": {
+        "rows": 63,
+        "confusion_matrix": [
+          [
+            57,
+            1
+          ],
+          [
+            1,
+            4
+          ]
+        ],
+        "balanced_accuracy": 0.8913793103448275
+      }
+    },
+    "platform_majority_control": {
+      "policy": "majority-per-platform-learned-inside-each-fold",
+      "accuracy": 0.93125,
+      "balanced_accuracy": 0.9270833333333333,
+      "confusion_matrix": [
+        [
+          58,
+          6
+        ],
+        [
+          5,
+          91
+        ]
+      ]
+    },
+    "model_sha256": "f8e24c1403a1103d4384863687d33308a343eef6064279a5bf5f612842b203d8",
+    "portable_roundtrip_verified": true
+  },
+  "application": {
+    "schema_version": "voc-relevance-decisions-v1",
+    "model_sha256": "f8e24c1403a1103d4384863687d33308a343eef6064279a5bf5f612842b203d8",
+    "dataset_release_id": "b7a61a8b-27d8-46a7-b2ce-67d97268b741",
+    "embedding_release_id": "23243c6e-7787-463c-ac3b-bfe950060d6e",
+    "decisions_sha256": "75381eb6ae0cf6fa7482557176cf61e52aa7673491692e99750ccd0e915881c0",
+    "rows": 80079,
+    "kept": 78476,
+    "excluded": 1603,
+    "training_rows_in_input": 160,
+    "is_quality_evaluation": false
+  },
+  "decision": "experimental candidate; no demonstrated improvement over platform-only control",
+  "checks": {
+    "oof_counts_recomputed": true,
+    "unique_validation_ids_and_texts": true,
+    "all_four_strata_in_five_folds": true,
+    "model_checksum_verified": true
+  },
+  "paths": {
+    "model": "data/relevance/model-v1/model.json",
+    "reviewed_annotations": "data/relevance/reconstruction/annotations-reviewed.csv",
+    "validation": "data/relevance/model-v1/validation.csv",
+    "decisions": "data/relevance/decisions-v1/decisions.csv"
+  }
+}

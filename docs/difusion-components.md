@@ -56,3 +56,20 @@ bash scripts/difusion.sh voc-ml relevance apply --local-inputs config/analysis/d
 ```
 
 El resultado conserva cada ID, decisión, motivo y margen. Las tiendas pasan intactas. Aplicar sobre el corpus no es evaluar calidad y no elimina los datos originales. La conexión de estas decisiones con las configuraciones base/alternativa se completará al tener el filtro real y fijar la muestra experimental; todavía no se declara completada la comparación integrada.
+
+### Primera reconstrucción ejecutada — 4 de noviembre de 2026
+
+El usuario confirmó que una persona revisó y aceptó las 105 propuestas de YouTube sin cambios. Se conservan las propuestas originales; `youtube-reviewed.csv` registra las decisiones y `human-review.json` la confirmación. No se atribuye una anotación ciega independiente ni una identidad individual que no fue proporcionada.
+
+La importación y el entrenamiento por CLI finalizaron: 205 anotaciones, 45 inciertas excluidas y 160 textos distintos (96 relevantes y 64 irrelevantes). Recarga y predicciones portables verificadas. Modelo `data/relevance/model-v1/model.json`, SHA-256 `f8e24c1403a1103d4384863687d33308a343eef6064279a5bf5f612842b203d8`.
+
+| Medida OOF | SVM reconstruido | Control por plataforma |
+|---|---:|---:|
+| Accuracy | 0,9125 | 0,93125 |
+| Balanced accuracy | 0,90885 | 0,92708 |
+
+F1 relevante del SVM: 0,92708. Matriz global `[[57, 7], [7, 89]]`, orden irrelevante/relevante. En X la matriz es `[[0, 6], [6, 85]]`; en YouTube `[[57, 1], [1, 4]]`. Hay solo seis negativos de X y cinco positivos de YouTube. El buen agregado **no demuestra ventaja sobre el control**; el modelo permanece como candidato experimental. No se cambió la configuración después de observar estos resultados.
+
+La aplicación operativa a 80.079 registros conserva 78.476 y marca 1.603 para exclusión: 420 de X y 1.183 de YouTube. Todas las 72.198 reseñas de tiendas pasan intactas. Son decisiones del clasificador, no irrelevancias confirmadas; esta aplicación incluye entrenamiento y no constituye evaluación independiente. No se borró el corpus ni se ejecutó todavía la comparación BERTopic/sentimiento.
+
+La evidencia agregada, hashes y comprobaciones quedan versionados en [relevance-v1.json](evidence/relevance-v1.json). Los textos, decisiones individuales y coeficientes permanecen en `data/` persistente, fuera de Git. La siguiente comparación debe fijar su muestra inicial y registrar exclusiones sin ocultar esta limitación.
