@@ -1,0 +1,7 @@
+# Local experiment workspace. Selected by scripts/difusion.sh.
+artifact_destination = "local"
+dataset_source = "personal"
+member_id = "difusion"
+shared_prefix = "voc/datasets"
+members_prefix = "members"
+embeddings_prefix = "voc/embeddings"
