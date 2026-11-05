@@ -1,0 +1,7 @@
+model,platform,irrelevant_support,relevant_support,irrelevant_passed,relevant_lost
+SVM,x,6,91,6,6
+SVM,youtube,58,5,1,1
+Logística,x,6,91,6,4
+Logística,youtube,58,5,2,0
+Control plataforma,x,6,91,6,0
+Control plataforma,youtube,58,5,0,5

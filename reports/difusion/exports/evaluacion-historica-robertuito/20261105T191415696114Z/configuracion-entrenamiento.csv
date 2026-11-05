@@ -1,0 +1,2 @@
+training_mode,encoder_blocks_trained,total_parameters,trainable_parameters,trainable_percent,epochs,batch_size,learning_rate,max_length,best_epoch
+last_n,1,108791043,7680771,7.060113395548566,3,8,2e-05,128,3

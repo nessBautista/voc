@@ -1,0 +1,72 @@
+{
+  "created_at": "20261105T191417975479Z",
+  "notebook": "comparacion-base-alternativa.ipynb",
+  "cell_sources_sha256": "f9e6d1e46d5ef4978515f2e5b637a82b3898d8214d5fe8b76d37428b18af61ac",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Descriptive integrated comparison; lexical diagnostics; human topic review only when completed; no model reruns",
+  "sources": {
+    "protocol": {
+      "path": "data/experiments/julaug-2026/protocol.json",
+      "sha256": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091"
+    },
+    "base_run": {
+      "path": "data/experiments/julaug-2026/base-run.json",
+      "sha256": "555e5fbbd37e0075006c3980ee6a2884272b90499262ca352f29ef29a7f689de"
+    },
+    "alternative_run": {
+      "path": "data/experiments/julaug-2026/alternative-run.json",
+      "sha256": "0f77fee9ebf95fa0161e2652bca0cc80aab911c9db58bb996a08b5fb76ff509d"
+    },
+    "relevance_decisions": {
+      "path": "data/experiments/julaug-2026/relevance.csv",
+      "sha256": "85c4f0ee628fa9929fe0b07f483eaf6d9074f24d7a66572f9a13ccd4422c06e3"
+    },
+    "human_exclusions": {
+      "path": "data/experiments/julaug-2026/human-review-v1/review.json",
+      "sha256": "6ad04672d35ca03e928fae61892b3cace21c75d9ff820e0a64f3b65c53dead3b"
+    },
+    "topic_review": {
+      "path": "reports/difusion/revision-manual/topicos.csv",
+      "sha256": "bd126fcf247a6802c25ae0c339d91ed0e7a7fe33f5f608d80d6b4666890bc87e"
+    },
+    "base_analysis": {
+      "path": "data/analyses/85e5ea66-a176-44e3-9d67-dba87090f98f/manifest.json",
+      "sha256": "4315d2b34056f102f43bd9891dd1bfb583eed8692d20eedfb7e73c75bb2b6e1f"
+    },
+    "alternative_analysis": {
+      "path": "data/analyses/716b3ec4-6b65-42e7-8bea-06fde8e0f488/manifest.json",
+      "sha256": "16586216f0526f8791355ad48b17f3cda8c1d2553b80b42a9163f91392f5c28f"
+    }
+  },
+  "files": {
+    "topicos-estructura.pdf": "4249609519d63a16cc65d4a42a486aa0d5b4484997f0b313d8a90544f252fe82",
+    "sentimiento-conteos-comunes.csv": "d3f0a97e42ded4662307d53b4d9e5697b600475caad2a78c9f284f1af49679b4",
+    "topicos-alternativa.csv": "afd5eaec187748ae4969a3c33096076cee63bbc426e2a8e941be493a0b93d36e",
+    "alcance.json": "ad6722caadf4d0f107cf41d40f46c608bc22130f41e0692125b3b9a649ee75f6",
+    "sentimiento-transiciones.csv": "f6d70c4c976f54599a489b284b573d65f0b247dcfb16505bf2a77f0506de18fb",
+    "topicos-estructura.png": "8aaec53c155ed63423d91772daca16e6a9db5ae46f49ac862ebf657feabb97a6",
+    "lexico-resumen.csv": "a1453d43a52b1e62e02563f12e3a4436ffe0485efb2e2c62e0ea745b0619bc75",
+    "retencion.csv": "dbc4a2d0b36b58d38c16addc1d6f3f351e375d65d1a3a5c64d9a304e7ab1d024",
+    "exclusiones-revisadas.csv": "3f5a1aa0751946f6d76a67f768539e6992059e25ae3596a8870822e3866c4873",
+    "revision-topicos.csv": "3135166fd53f91d3e2e0fd2b7e45bea686a3a3ac070bf2290696395988612adf",
+    "topicos-base.csv": "f34cab877e13ded2b37390e070595af82a19292790f764c7d360c9b4a546f6a7",
+    "ejemplos-sentimiento.json": "9aae23e17261363b098bf838c5296287f3e4115dfd6e1b8c4cff5ed398c0dd34",
+    "casos-topicos.json": "027e305ac0676efd7fbc2427a2ded03ab407f9a16ce203f8285576efa6ea9e13",
+    "topicos-resumen.csv": "62eea1296772dd3f057fc935b6d9da4a1e7d99456a4c20fb912ee3ed5efa713c",
+    "presencia-terminos.csv": "b4109e2ac9b421945739497000d3659f94b96c6fe3ae1382638675331747dfeb",
+    "comparacion-integrada.pdf": "435bac3155e12f5df558f63e24e683b8cde0dc4cfa30d8286f72e594d179d286",
+    "sentimiento-transiciones.png": "b1e38252672943ce74f089ddb7e77c17a45a056ac7a52d7dede515e628f8da44",
+    "sentimiento-transiciones.pdf": "2b96b2ac11daf21615a7796255cecd33dc68ada9ee3a5857649346da78a63a9c",
+    "comparacion-integrada.png": "bbf3c53408ccfdb5f75795f7ff86ebc891680321b69792b6ecfecfc4d06d1fc9",
+    "topicos-lexico.csv": "affcb694f3bbf6b898c299680d972d9b0e007801e3276ac8c69655d347feef52",
+    "revision-progreso.csv": "780744cce476f09df3517d032e05b0e47148a47f412a64749e231a84618ac5e7"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

@@ -1,0 +1,9 @@
+{
+  "model": "Banamex-voc-sentiment/voc-robertuito-sentiment-stores-es",
+  "revision": "ff48c25f016499fc40d910f2a2a50072c706cdee",
+  "file": "robertuito-tiendas-v3-evaluation.json",
+  "sha256": "f4d53c2e5552903f5e0315f2efb12756328995ab150e284e8da0c4fc65bab3be",
+  "url": "https://huggingface.co/Banamex-voc-sentiment/voc-robertuito-sentiment-stores-es/blob/ff48c25f016499fc40d910f2a2a50072c706cdee/evaluation.json",
+  "kind": "Historical aggregate evaluation, copied byte-for-byte from cached checkpoint; no training reproduced",
+  "reference": "Store ratings: 1–2 negative, 3 neutral, 4–5 positive; individual test IDs unavailable"
+}

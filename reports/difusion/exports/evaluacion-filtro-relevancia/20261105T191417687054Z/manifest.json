@@ -1,0 +1,43 @@
+{
+  "created_at": "20261105T191417687054Z",
+  "notebook": "evaluacion-filtro-relevancia.ipynb",
+  "cell_sources_sha256": "ed11f2f95021767a1e268273ae5f050d0cbcb0cc527fc34ab7f7c678f4a5fe3b",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Reconstructed relevance OOF evaluation and separate human review of integrated exclusions; no training",
+  "sources": {
+    "comparison_receipt": {
+      "path": "docs/evidence/relevance-comparison-v1.json",
+      "sha256": "84afad108885057ecddac306f3361ce0780279df768f569c14ae8affaeaa82b1"
+    },
+    "svm_oof": {
+      "path": "data/relevance/model-v1/validation.csv",
+      "sha256": "caa7e88ae5c2a2075e80b60914a53a5b1b71f2ca1dea85c797e726660de3c52a"
+    },
+    "logistic_oof": {
+      "path": "data/relevance/model-logreg-v1/validation.csv",
+      "sha256": "06de4773289ec7d3faf78d75b7f9ccdc248b2444d1590af151bf2e746492e57a"
+    },
+    "human_exclusions": {
+      "path": "data/experiments/julaug-2026/human-review-v1/review.json",
+      "sha256": "6ad04672d35ca03e928fae61892b3cace21c75d9ff820e0a64f3b65c53dead3b"
+    }
+  },
+  "files": {
+    "relevancia-oof.png": "9486618e9de8c0c21c74385e0eea8b8957e1c6eb214fddd5c377ec699212b4da",
+    "alcance.json": "ac46d31102221381a83ac7cb16975e401abc14f46ee662226d10ad9757237f28",
+    "relevancia-oof.pdf": "1802f1c72d168f3f0440bd31cc3d4caa593dac873d79637802a50acadbb462e3",
+    "revision-exclusiones.csv": "3f5a1aa0751946f6d76a67f768539e6992059e25ae3596a8870822e3866c4873",
+    "relevancia-exclusiones-humanas.pdf": "b0702cfad7400a8039ce894d89ed56faef0792928e54bffb8bd206822fb2757b",
+    "relevancia-exclusiones-humanas.png": "59596131a04c8840c6273c15b01f6e5b4313a6d74fb325346589e1d8a12b94a4",
+    "metricas-oof.csv": "765a152021e2cb4634f77b4e2226bc5a0b9e84c02de164ae2807a1e1c929ba53",
+    "errores-por-plataforma.csv": "b603482ed4325630d4c8377a47b29fa2011810387087246a5ed6910956f72bd6"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

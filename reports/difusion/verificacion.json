@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-05",
+  "notebooks": [
+    {
+      "notebook": "evaluacion-filtro-relevancia.ipynb",
+      "notebook_sha256": "865c20e43ee699b7ee7899d79a7acbedc47762cd21c7a563b69ae80d88f8147b",
+      "export": "exports/evaluacion-filtro-relevancia/20261105T191417687054Z",
+      "manifest_sha256": "650e866d27c4ed0b0cccee1a9b6ae4823668894a5db5567ccde5fb474e419df9",
+      "outputs_verified": 8
+    },
+    {
+      "notebook": "comparacion-base-alternativa.ipynb",
+      "notebook_sha256": "9e6ebd52f9d1e83db2b2a68c1780cef52796173da6049ab43ca19be663d4cac7",
+      "export": "exports/comparacion-base-alternativa/20261105T191417975479Z",
+      "manifest_sha256": "4639edacc5839af99fe7121921f29e9183b320e0b5354f5090570248f3f788d1",
+      "outputs_verified": 21
+    },
+    {
+      "notebook": "evaluacion-historica-robertuito.ipynb",
+      "notebook_sha256": "314d4cace03713bab037aec0a1be93614a494bcdd38a9ecbb24ce18e10aedec7",
+      "export": "exports/evaluacion-historica-robertuito/20261105T191415696114Z",
+      "manifest_sha256": "30615f09a5d231445e261bcc68d46a23e4f7b0c9220ad1e1870e289da443321a",
+      "outputs_verified": 12
+    }
+  ],
+  "tests_passed": 4,
+  "manual_review_section_preserved": true,
+  "pending_topic_reviews": 12,
+  "model_fits": 0,
+  "llm_requests": 0,
+  "report_pdf_modified_by_this_work": false,
+  "checks": [
+    "Notebook schemas and all execution outputs",
+    "Export/source/helper hashes",
+    "Stored OOF metrics reconciled",
+    "Historical v3 confusion matrix reconciled",
+    "Integrated IDs, texts, assignments and 314 sentiment changes verified",
+    "PNG charts visually inspected",
+    "Review preservation and deterministic sampling tested"
+  ],
+  "limitations": [
+    "Lexical NPMI has partial unequal pair coverage; not a ranking",
+    "Topic human review pending",
+    "No new independent sentiment reference",
+    "Relevance OOF selection not independently tested"
+  ]
+}

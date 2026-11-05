@@ -1,0 +1,35 @@
+{
+  "created_at": "20261105T191415696114Z",
+  "notebook": "evaluacion-historica-robertuito.ipynb",
+  "cell_sources_sha256": "828812a76c242945b604c13a641682b3b1e942bf73b07e8feb7787471790905e",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Historical stores-v3 evaluation; rating-based labels; aggregate reproduction only, not retraining or independent testing",
+  "sources": {
+    "evaluation": {
+      "path": "reports/difusion/sources/robertuito-tiendas-v3-evaluation.json",
+      "sha256": "f4d53c2e5552903f5e0315f2efb12756328995ab150e284e8da0c4fc65bab3be"
+    }
+  },
+  "files": {
+    "robertuito-entrenamiento-historico.png": "91f9ae95b34bdd0ad4fba0724b6bce5af86a4344f01bd1213aad5dbaff47e204",
+    "robertuito-entrenamiento-historico.pdf": "99ae48cc0b4c99abeb7a51b391347e364e14eaa4ff83b8313b6b4f7fb43e8c6b",
+    "robertuito-confusion-v3.png": "3223589f6a4e12716d68d5059e684ecdd192738cd0cb09bdd834009efb8e800f",
+    "robertuito-confusion-v3.pdf": "cfc8b881d6821237ce5be1509d56fc8832d37a6c43619bc86bdf894df352c64b",
+    "matriz-confusion-v3.csv": "5cb8c0fe3c01bb7b8f4b7f8e331da39813854c32c653b73a862d431fe9ec5b88",
+    "configuracion-entrenamiento.csv": "2a3687c77d156c9724fc56d321970d54ca5f292926ee117a9e6e94bda23743ae",
+    "metricas-agregadas.csv": "4d0cbbbe2abd3029155158a755828872ab647ae13be7d2f3923f97dd097cc963",
+    "robertuito-metricas.png": "703c58cbd65cf37cf888bb5acc2431147b4f2e5dd47ec3e3eab8b463443e7d49",
+    "robertuito-metricas.pdf": "0d444b2a7c5ea6f632acfc8fb16a83a529b647fcc0db328b21d2f6590f3e05b6",
+    "metricas-por-clase.csv": "6124c469e8274d942553d6742bae21f5d30aaa5f82bee0639f7e6bb33af3d0e6",
+    "historial-entrenamiento.csv": "fbfe65d1574aef19c723f498686eb1b6f47f12caa1220685c46a7ce517804b6a",
+    "procedencia.json": "b3bc639576d9dfde0eb7f8aae0356474211c40f3959b43cc9243cf0c5a55d9ba"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

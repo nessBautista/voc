@@ -1,0 +1,9 @@
+{
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "initial_rows": 1000,
+  "common_rows": 987,
+  "changed_sentiment_labels": 314,
+  "human_topic_cases_completed": 0,
+  "independent_sentiment_test": false,
+  "npmi_policy": "document-presence-common-initial-sample-v1"
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:547febab-ffd7-483b-856a-c7c63a7d4f55",
+    "platform": "google_play",
+    "model_label_base": "negative",
+    "model_label_alternative": "neutral",
+    "model_text": "Se demora mucho al entrar ala plicacion"
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:3a6f5635-fc91-4824-ae81-937436b3aa38",
+    "platform": "google_play",
+    "model_label_base": "negative",
+    "model_label_alternative": "neutral",
+    "model_text": "Es muy fácil de usar, muy intuitiva, pero en ocasiones no funciona, no puedo hacer transferencias cuando es realmente necesario, ojalá funcionara siempre bien. Desafortunadamente es muy seguido que hay problema, no debería fallar, es una aplicación bancaria que se usa en cualquier momento."
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+    "platform": "google_play",
+    "model_label_base": "negative",
+    "model_label_alternative": "positive",
+    "model_text": "Hasta ahora no he tenido problemas con la app. Me parece de las mejores en cuanto a interfaz ya que es más rápido encontrar lo que buscas a diferencia de las de otros bancos. Solo tendría queja de la publicidad para préstamos o tarjetas de crédito. Si no me interesa me cansa que este allí el aviso todo el tiempo. Cuando yo quiera algo de eso o voy directo a sucursal o busco la opción. No me llenen la pantalla de avisos que no quiero."
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:b24f5b18-38c3-4f5b-b830-043309702513",
+    "platform": "google_play",
+    "model_label_base": "negative",
+    "model_label_alternative": "positive",
+    "model_text": "nunca he tenido problemas como usuaria de banamex"
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+    "platform": "google_play",
+    "model_label_base": "neutral",
+    "model_label_alternative": "negative",
+    "model_text": "Cuando pregunten porque prefieres BBVA en lugar de Banamex está es la respuesta. Son más amables y su aplicación más fácil de usar. Cambie de teléfono y para agregar mi tarjeta se tiene que ingresar el número de tarjeta, número que no viene impreso en la tarjeta, hay que escanearlo y al escanear dice que no se pudo escanear. Voy al banco y me dicen que necesitan el número de mi tarjeta...."
+  },
+  {
+    "record_id": "appbot:498483038:3738390463",
+    "platform": "app_store",
+    "model_label_base": "neutral",
+    "model_label_alternative": "negative",
+    "model_text": "Nada que ver con otros bancos"
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:0d2a5160-3553-4814-bd4d-41ef5f686a9b",
+    "platform": "google_play",
+    "model_label_base": "neutral",
+    "model_label_alternative": "positive",
+    "model_text": "buena pero se traba"
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:08657362-a012-4b39-9efd-f8b405f38e19",
+    "platform": "google_play",
+    "model_label_base": "neutral",
+    "model_label_alternative": "positive",
+    "model_text": "poco fiable, aún falta mejorar en el orden de su aplicación, que sea más fácil poder hacer transferencias, pagos y recargas de celular de modo más sencillo...ya que algunas de esas opciones están escondidas y no se ven... saludos!"
+  }
+]
