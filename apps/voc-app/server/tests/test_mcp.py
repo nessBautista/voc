@@ -322,7 +322,7 @@ def test_legacy_handshake_allowed_origin_and_body_limit(mcp_app):
 
 @pytest.mark.parametrize(
     "token",
-    ["", "short", "op://VAULT/ITEM/FIELD", "a" * 32 + "\n", "é" * 32],
+    ["", "short", "op://test/item/credential", "a" * 32 + "\n", "é" * 32],
 )
 def test_enabled_mcp_requires_resolved_private_token(settings, token):
     with pytest.raises(ValueError, match="token"):

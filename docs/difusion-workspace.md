@@ -39,10 +39,10 @@ Comprobar acceso a ambas versiones privadas, sin descargar pesos:
 bash scripts/difusion.sh env HF_HUB_OFFLINE=0 python scripts/check_hf_access.py --remote
 ```
 
-La fuente de la credencial es `op://VAULT/ITEM/FIELD`. La copia local no se actualiza automáticamente si se rota o revoca el token en 1Password. Para renovarla, desde el Mac, sustituir `ARGO_CONTAINER_ID` por el ID actual mostrado por `docker ps` y ejecutar:
+La referencia privada de 1Password se configura en la variable `HF_TOKEN_REFERENCE` de la sesión del Mac, fuera del repositorio (formato: `op://VAULT/ITEM/FIELD`). No escribir aquí los nombres reales de la bóveda, elemento o campo. La copia local no se actualiza automáticamente si se rota o revoca el token. Para renovarla, definir esa variable, sustituir `ARGO_CONTAINER_ID` por el ID actual mostrado por `docker ps` y ejecutar:
 
 ```bash
-op read 'op://VAULT/ITEM/FIELD' | docker exec -i ARGO_CONTAINER_ID sh -c 'umask 077; mkdir -p /home/node/.cache/voc-difusion; tmp=$(mktemp /home/node/.cache/voc-difusion/hf-token.XXXXXX); cat > "$tmp"; if test -s "$tmp"; then chmod 600 "$tmp"; mv "$tmp" /home/node/.cache/voc-difusion/hf-token; else rm -f "$tmp"; exit 1; fi'
+op read "${HF_TOKEN_REFERENCE:?Define la referencia privada fuera del repositorio}" | docker exec -i ARGO_CONTAINER_ID sh -c 'umask 077; mkdir -p /home/node/.cache/voc-difusion; tmp=$(mktemp /home/node/.cache/voc-difusion/hf-token.XXXXXX); cat > "$tmp"; if test -s "$tmp"; then chmod 600 "$tmp"; mv "$tmp" /home/node/.cache/voc-difusion/hf-token; else rm -f "$tmp"; exit 1; fi'
 ```
 
 Esta transferencia no muestra el valor ni lo escribe en el historial de comandos. Conservar el volumen de caché: borrarlo elimina esta copia de la credencial. En ese caso se repite la transferencia desde 1Password.
@@ -131,3 +131,7 @@ contenido: contar grupos no demuestra que sean funcionalidades de la aplicación
 ## Demostración con los análisis nuevos
 
 La [guía de demostración](difusion-demo.md) documenta la publicación local, selección base/alternativa, arranque y parada de la interfaz existente y su comprobación de extremo a extremo. No requiere ejecutar modelos.
+
+## Referencias privadas del lanzador de escritorio
+
+El lanzador opcional `apps/voc-desktop/scripts/start-mcp-http.sh` acepta el token ya resuelto en `VOC_DESKTOP_MCP_TOKEN` o su referencia privada en `VOC_DESKTOP_MCP_TOKEN_REF`. Configurar uno de ellos en la sesión o configuración privada; no hay una bóveda o elemento predeterminado en el código. La demostración de difusión por navegador no utiliza ese lanzador.
