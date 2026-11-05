@@ -115,3 +115,7 @@ determinista y preservación de anotaciones:
 ```bash
 bash scripts/difusion.sh pytest -q reports/difusion/test_apoyo_validacion.py
 ```
+
+## Cobertura mensual del corpus
+
+`cobertura-del-corpus.ipynb` lee los 80.079 registros preparados, verifica su hash contra el manifiesto y exporta barras apiladas por mes y plataforma. La fecha es la del comentario, no la de descarga. Requiere la copia local `data/inputs/corpus/`; no descarga datos ni ejecuta modelos. Los resultados ejecutados pueden consultarse directamente. Las exportaciones fechadas incluyen CSV, PNG, PDF y procedencia en `exports/cobertura-del-corpus/`; `latest.json` identifica la última ejecución. Septiembre de 2026 se marca como parcial.
