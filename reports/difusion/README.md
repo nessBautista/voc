@@ -119,3 +119,11 @@ bash scripts/difusion.sh pytest -q reports/difusion/test_apoyo_validacion.py
 ## Cobertura mensual del corpus
 
 `cobertura-del-corpus.ipynb` lee los 80.079 registros preparados, verifica su hash contra el manifiesto y exporta barras apiladas por mes y plataforma. La fecha es la del comentario, no la de descarga. Requiere la copia local `data/inputs/corpus/`; no descarga datos ni ejecuta modelos. Los resultados ejecutados pueden consultarse directamente. Las exportaciones fechadas incluyen CSV, PNG, PDF y procedencia en `exports/cobertura-del-corpus/`; `latest.json` identifica la última ejecución. Septiembre de 2026 se marca como parcial.
+
+## Apoyo para c-TF-IDF (sección 3.6)
+
+[ejemplo-ctfidf.ipynb](ejemplo-ctfidf.ipynb) está ejecutada. Reconstruye conteos y pesos c-TF-IDF sobre las asignaciones guardadas del modelo base; incluye dos grupos, un cálculo paso a paso y una comprobación contra `ClassTfidfTransformer`. No vuelve a ejecutar embeddings, agrupamiento, sentimiento ni LLM. No confundir estos pesos con los pesos finales de KeyBERTInspired/MMR. Las exportaciones deterministas con hashes y parámetros están en `exports/ejemplo-ctfidf/`.
+
+```bash
+bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/ejemplo-ctfidf.ipynb
+```

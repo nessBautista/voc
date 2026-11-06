@@ -1,0 +1,113 @@
+{
+  "schema_version": "voc-report-ctfidf-example-v1",
+  "analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+  "manifest_sha256": "4315d2b34056f102f43bd9891dd1bfb583eed8692d20eedfb7e73c75bb2b6e1f",
+  "database_sha256": "fc32c6c96fe32ad96102a930cab6a94a0584e152600a1c2cef2036b02f78dab4",
+  "rows": 1000,
+  "grouped_documents": 19,
+  "includes_unassigned": true,
+  "vocabulary_size": 8901,
+  "total_counts": 18457,
+  "A": 971,
+  "groups": {
+    "0": {
+      "reviews": 529,
+      "N": 14947
+    },
+    "5": {
+      "reviews": 30,
+      "N": 253
+    }
+  },
+  "lexical_policy": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 1,
+    "stop_words": [
+      "a",
+      "al",
+      "con",
+      "de",
+      "del",
+      "el",
+      "ella",
+      "en",
+      "es",
+      "esta",
+      "este",
+      "ha",
+      "la",
+      "las",
+      "lo",
+      "los",
+      "me",
+      "mi",
+      "mis",
+      "para",
+      "por",
+      "que",
+      "se",
+      "su",
+      "sus",
+      "un",
+      "una",
+      "unas",
+      "unos",
+      "y",
+      "yo"
+    ],
+    "reduce_frequent_words": true
+  },
+  "software": {
+    "bertopic": "0.17.4",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "pandas": "2.3.3"
+  },
+  "selection": "Grupos 0 y 5 elegidos para ilustrar contraste; no evaluación de calidad.",
+  "scope": "Reconstrucción c-TF-IDF, no pesos finales KeyBERTInspired/MMR.",
+  "counts": [
+    {
+      "termino": "aplicación",
+      "grupo_0": 158,
+      "grupo_5": 2,
+      "corpus_f": 216,
+      "peso_grupo_0": 0.17518509584323042,
+      "peso_grupo_5": 0.15149572091898642
+    },
+    {
+      "termino": "fácil",
+      "grupo_0": 10,
+      "grupo_5": 22,
+      "corpus_f": 47,
+      "peso_grupo_0": 0.07954837528325452,
+      "peso_grupo_5": 0.906900019035422
+    },
+    {
+      "termino": "usar",
+      "grupo_0": 21,
+      "grupo_5": 15,
+      "corpus_f": 47,
+      "peso_grupo_0": 0.11527654757769054,
+      "peso_grupo_5": 0.7488480446628046
+    },
+    {
+      "termino": "fácil usar",
+      "grupo_0": 3,
+      "grupo_5": 10,
+      "corpus_f": 19,
+      "peso_grupo_0": 0.05600665606766848,
+      "peso_grupo_5": 0.785951546390485
+    },
+    {
+      "termino": "no abre",
+      "grupo_0": 53,
+      "grupo_5": 0,
+      "corpus_f": 53,
+      "peso_grupo_0": 0.17632979766758644,
+      "peso_grupo_5": 0.0
+    }
+  ]
+}
