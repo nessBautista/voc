@@ -1,0 +1,35 @@
+{
+  "created_at": "20261106T231318700664Z",
+  "notebook": "revision-topicos.ipynb",
+  "cell_sources_sha256": "cc670a33ece45e8886db2525b5b68ff5539b29493ffeb692c7ff0b122d5ce08f",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Frozen twelve-topic review; human judgments preserved, never imputed",
+  "sources": {
+    "frozen_cases": {
+      "path": "reports/difusion/exports/comparacion-base-alternativa/20261105T191417975479Z/casos-topicos.json",
+      "sha256": "027e305ac0676efd7fbc2427a2ded03ab407f9a16ce203f8285576efa6ea9e13"
+    },
+    "review": {
+      "path": "reports/difusion/revision-manual/topicos.csv",
+      "sha256": "bd126fcf247a6802c25ae0c339d91ed0e7a7fe33f5f608d80d6b4666890bc87e"
+    },
+    "review_helper": {
+      "path": "reports/difusion/apoyo_revision.py",
+      "sha256": "bba6627a87de3e3e941a9d3a240cfc0ff655c82804da168c1b2f2ce6104e42ef"
+    }
+  },
+  "files": {
+    "revision-topicos.csv": "3135166fd53f91d3e2e0fd2b7e45bea686a3a3ac070bf2290696395988612adf",
+    "casos-topicos.json": "027e305ac0676efd7fbc2427a2ded03ab407f9a16ce203f8285576efa6ea9e13",
+    "estado.json": "7c2d0c85a5c307405f261ea88e6e5afb28ec8725227eba3b32cd486519fe3f2d",
+    "revision-progreso.csv": "9dc959cea4474b8ac3158813eb75d2924e45edf8369ce70eec900186c8a7c241"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

@@ -1,0 +1,8 @@
+{
+  "selected": 60,
+  "reviewed": 0,
+  "uncertain": 0,
+  "state": "pending_human_review",
+  "independent_test": false,
+  "training_overlap": "unknown: individual historical training/test IDs unavailable"
+}

@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-06",
+  "notebooks": [
+    {
+      "notebook": "revision-topicos.ipynb",
+      "notebook_sha256": "6ce4bebfa4828a992930c40433a5fcbf4e24882455cb3239948d76686e1dd11d",
+      "export": "exports/revision-topicos/20261106T231318700664Z",
+      "manifest_sha256": "bd0b933c78a2de0ede909e5ce005c027451968085bea4893ebea00aa4959712b",
+      "outputs_verified": 4
+    },
+    {
+      "notebook": "validacion-sentimiento-muestra.ipynb",
+      "notebook_sha256": "1a5a75e4ea6828e42bc088655f3b2495510b2ec399deae2a0589c64e5752d718",
+      "export": "exports/validacion-sentimiento-muestra/20261106T231319955802Z",
+      "manifest_sha256": "a1d3d391ec5cff59f612aeed25d67555712418d06488873b597d730594c2ac6f",
+      "outputs_verified": 4
+    },
+    {
+      "notebook": "revision-interpretacion-llm.ipynb",
+      "notebook_sha256": "5a509fc9c978ea887ade87ba6657318565d6c381b055a4e4428f3987c05ea068",
+      "export": "exports/revision-interpretacion-llm/20261106T231320329481Z",
+      "manifest_sha256": "359f1eee52146dedba4df9e084444680e9e7e33beb426c91985b7f8ae5576d9d",
+      "outputs_verified": 6
+    }
+  ],
+  "tests_passed": 10,
+  "model_fits": 0,
+  "llm_requests": 0,
+  "topic_reviews_completed": 0,
+  "sentiment_reviews_completed": 0,
+  "llm_example_origin": "historical demo, assistant review, no human validation",
+  "original_topic_sheet_unchanged": true
+}

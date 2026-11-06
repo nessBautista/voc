@@ -1,0 +1,33 @@
+{
+  "created_at": "20261106T231320329481Z",
+  "notebook": "revision-interpretacion-llm.ipynb",
+  "cell_sources_sha256": "68e5c41258dac33942ef577ddff5a98b2660b61c520a7c5cbb2ce00014ea3b93",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Historical saved LLM input/output; traceable example with assistant review, no new inference",
+  "sources": {
+    "snapshot": {
+      "path": "reports/difusion/sources/interpretacion-demo-topic0.json",
+      "sha256": "10ec9bd44bf1449dcbe7e9055612ae7062fb17cb54a3863b61306726d60232f1"
+    },
+    "review_helper": {
+      "path": "reports/difusion/apoyo_revision.py",
+      "sha256": "bba6627a87de3e3e941a9d3a240cfc0ff655c82804da168c1b2f2ce6104e42ef"
+    }
+  },
+  "files": {
+    "expediente.json": "10ec9bd44bf1449dcbe7e9055612ae7062fb17cb54a3863b61306726d60232f1",
+    "cotejo-asistido.csv": "5596c4d913809789c475ff350c95420d544991c03a056cd4424113bff07a33d6",
+    "ejemplo-interpretacion.pdf": "3e12dcd714f5b91ff497467c0bd56af26175cc8a5a90e86e767ed1b62d2eaa22",
+    "ejemplo-interpretacion.png": "79db6904a2e1fd28d446ae1301e601d0307467f3f0d2e7b7ffab834c4b290549",
+    "verificacion.json": "a9b82e3cc30b2a9cc75f0d8d5cef6fe2f34ac80476b6ad6d5bded5b1d83e31a9",
+    "ejemplo-interpretacion.csv": "9aaa16c98543869eeae74410e4f39ed88b0e4927a6756c0bf31c160e2c8a04f3"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

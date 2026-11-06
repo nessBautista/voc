@@ -1,0 +1,43 @@
+{
+  "created_at": "20261106T231319955802Z",
+  "notebook": "validacion-sentimiento-muestra.ipynb",
+  "cell_sources_sha256": "5f9e8dfb9a70c0b97dc7b02e7f253dbd573b7bc5992879c07d8cbd81f6d9d5bf",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Human sentiment reference on a fixed 60-record sample; pending labels are not model quality results",
+  "sources": {
+    "review": {
+      "path": "reports/difusion/revision-manual/sentimiento.csv",
+      "sha256": "71388efbbbe7ee8ac43637a59c8afe314cd49d9780358b5513d871897466acfa"
+    },
+    "review_helper": {
+      "path": "reports/difusion/apoyo_revision.py",
+      "sha256": "bba6627a87de3e3e941a9d3a240cfc0ff655c82804da168c1b2f2ce6104e42ef"
+    },
+    "protocol": {
+      "path": "data/experiments/julaug-2026/protocol.json",
+      "sha256": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091"
+    },
+    "base": {
+      "path": "data/analyses/85e5ea66-a176-44e3-9d67-dba87090f98f/manifest.json",
+      "sha256": "4315d2b34056f102f43bd9891dd1bfb583eed8692d20eedfb7e73c75bb2b6e1f"
+    },
+    "alternative": {
+      "path": "data/analyses/716b3ec4-6b65-42e7-8bea-06fde8e0f488/manifest.json",
+      "sha256": "16586216f0526f8791355ad48b17f3cda8c1d2553b80b42a9163f91392f5c28f"
+    }
+  },
+  "files": {
+    "referencia-humana.csv": "b38aaede3713b8c17d8ce8b80d0f21f948cea6aa791978571d07251b9788bfa4",
+    "estado.json": "74c2701e2bee4f62ee15bc761cca9b85741513ac294bb5441070ebc05beec030",
+    "seleccion-cobertura.csv": "db12122b51faf7a137f9539be417f393f68129c6c3bd275af90fb93095bed6ac",
+    "seleccion.json": "7d2fee69b06ffe65f36ee48439f0eecc15ca33c4c5f6551d73a86b2309c938af"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}

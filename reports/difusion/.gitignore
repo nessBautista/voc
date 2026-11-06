@@ -2,3 +2,4 @@
 # the repository-wide CSV exclusion. Runtime data/model files remain ignored.
 !exports/**/*.csv
 !revision-manual/topicos.csv
+!revision-manual/sentimiento.csv

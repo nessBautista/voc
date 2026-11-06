@@ -1,0 +1,12 @@
+{
+  "provided": 6,
+  "cited": 6,
+  "unknown_citations": [],
+  "references_exist": true,
+  "semantic_validation": "not established by reference existence",
+  "review_origin": "assistant",
+  "reviewer": "Codex",
+  "human_validated": false,
+  "integrated_sample": false,
+  "scope": "historical illustrative example only"
+}

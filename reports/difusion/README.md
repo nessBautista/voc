@@ -127,3 +127,51 @@ bash scripts/difusion.sh pytest -q reports/difusion/test_apoyo_validacion.py
 ```bash
 bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/ejemplo-ctfidf.ipynb
 ```
+
+## Completar los marcadores de evidencia de la sección 4
+
+Las siguientes libretas están ejecutadas y guardadas. No requieren volver a
+correr el pipeline ni pagar solicitudes. Su preparación no sustituye las
+anotaciones humanas pendientes.
+
+| Libreta | Componente disponible | Trabajo que falta |
+| --- | --- | --- |
+| [revision-topicos.ipynb](revision-topicos.ipynb) | Doce tarjetas, rúbrica y tabla de progreso; conserva los casos originales | Completar [topicos.csv](revision-manual/topicos.csv). La tabla de calidad se genera cuando estén revisados los doce grupos. |
+| [validacion-sentimiento-muestra.ipynb](validacion-sentimiento-muestra.ipynb) | Selección fija de 60 textos comunes, ficha sin predicciones y cálculo de métricas/matrices preparado | Anotar [sentimiento.csv](revision-manual/sentimiento.csv) usando [las fichas](revision-manual/sentimiento-fichas.html). No hay métricas humanas nuevas todavía. |
+| [revision-interpretacion-llm.ipynb](revision-interpretacion-llm.ipynb) | Entrada/respuesta histórica trazable, cotejo asistido, tabla y figura PNG/PDF | Revisar su utilidad editorial. Es una ilustración del demo, no un resultado de la comparación integrada ni una validación humana. |
+
+### Revisión de sentimiento
+
+Las 60 reseñas se distribuyen proporcionalmente entre App Store (3), Google
+Play (53) y X (4), mediante restos mayores y orden SHA-256 por ID con semilla 42.
+No se seleccionan por predicción ni por estrellas. Los pocos casos sociales no
+permiten validar por separado el desempeño en redes. Se mantiene la unidad
+registro: textos repetidos con IDs distintos pueden aparecer.
+
+1. Abre `revision-manual/sentimiento-fichas.html` sin consultar predicciones.
+2. En `sentimiento.csv`, completa `sentimiento_humano`, `justificacion`, `revisor`
+   y `fecha`. Usa `negative`, `neutral`, `positive` o `uncertain` según la rúbrica.
+3. Conserva las columnas de identidad y el texto. Declara en la justificación
+   cualquier exposición previa a las predicciones.
+4. Ejecuta la libreta nuevamente. Preserva las anotaciones; se detiene ante una
+   selección alterada. Solo calcula métricas cuando todos los casos tengan revisión.
+
+Los inciertos se contabilizan y excluyen de las métricas de ambos modelos sobre
+los mismos textos. Se exportan accuracy, macro-F1 con tres clases fijas,
+precisión/recall/F1/soporte por clase y matrices de confusión. No se presentan como
+prueba independiente: faltan los IDs de entrenamiento para descartar solapamiento.
+Una referencia de un revisor tampoco mide acuerdo entre anotadores.
+
+```bash
+bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/revision-topicos.ipynb
+bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/validacion-sentimiento-muestra.ipynb
+bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/revision-interpretacion-llm.ipynb
+bash scripts/difusion.sh pytest -q reports/difusion/test_apoyo_revision.py reports/difusion/test_apoyo_validacion.py
+```
+
+Cada libreta exporta en `exports/<nombre>/` con `latest.json` y hashes. La de
+interpretación puede ejecutarse con la instantánea versionada en `sources/`;
+la de tópicos reutiliza la exportación congelada de la comparación. La de
+sentimiento requiere los análisis locales para recalcular la selección.
+`verificacion-revisiones.json` registra esta preparación. Los CSV editables no
+se sobrescriben; las exportaciones son copias fechadas, no archivos para anotar.

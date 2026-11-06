@@ -1,0 +1,126 @@
+{
+  "source": {
+    "path": "data/prototypeV0/embeddings/labels.json",
+    "sha256": "62446cbcb3c2871f816f0d6ad2624714a82743042940e763f7d089ee2ebbe614"
+  },
+  "selection_rule": "smallest topic_id among completed cached attempts; no quality-based selection",
+  "cache_counts": {
+    "attempts": 37,
+    "failures": 0
+  },
+  "attempt": {
+    "created_at": "2026-10-02T20:50:03+00:00",
+    "prompt_version": "app-feature-v1",
+    "requested_model": "google/gemini-2.5-flash",
+    "returned_model": "google/gemini-2.5-flash",
+    "request": {
+      "topic_run_id": "prototypeV0-workflow01",
+      "topic_id": 0,
+      "dataset_release_id": "b7a61a8b-27d8-46a7-b2ce-67d97268b741",
+      "keywords": [
+        "app falla",
+        "problemas app",
+        "entrar app",
+        "app",
+        "apps",
+        "app no",
+        "abrir aplicación",
+        "aplicación no",
+        "problemas abrir",
+        "reiniciar"
+      ],
+      "evidence": [
+        {
+          "id": "e1",
+          "text": "Ciertamente, el desempeño de su app es horrendo. Siempre saltan errores, como que “se pierde el contacto con el servidor” y no te deja abrir tu tarjeta digital de débito, inicios de sesión no exitosos, lags y un sin fin de  osas que no deberían suceder. En este sentido, las apps de SOFIPOS como Nu y Klar los patean pero con muchos moretones. Además, son errores comunes, porque suceden desde hace años y persisten a la fecha.",
+          "truncated": false
+        },
+        {
+          "id": "e2",
+          "text": "muy mala aplicación últimamente no me deja acceder desde ase como 20 días a estado fallando mucho pues entro ala aplicación y solo se pone obscura la pantalla antes era muy buena solucionen ese problema pues para poder entrar tengo que estar reiniciando el teléfono acá rato y si bien logro acceder ala aplicación si no seguir intentando una y otra ves y es muy molesto",
+          "truncated": false
+        },
+        {
+          "id": "e3",
+          "text": "Una completa basura, media hora para abrir una cuenta de debito por que el sistema no quería aceptar bien mis datos y media sacaba a cada rato, ya que por fin la cree se traba y tarda en abrir, ni siquiera me carga la opción para enviar la tarjeta a mi domicilio tengo que ir por ella a sucursal, para que le ponen entrega a domicilio entonces?, la app es confusa y nada intuitiva, pésima aplicación pésimo servicio , parece que te hacen un favor al abrir tu cuenta, ni siquiera tiene un chat de atención al cliente y el numero de teléfono nunca contestan, la única ves que contestaron me pidieron ir a sucursal solo para enviarme mi tarjeta!! \nEste banco es ideal si te gusta ir a perder tu tiempo dando vueltas diario a sucursales.",
+          "truncated": false
+        },
+        {
+          "id": "e4",
+          "text": "Solo me pase con ustedes por el token físico pero en verdad que horrible está su aplicación, no puede ser que no tengan dinero para pagarle a buenos desarrolladores y hagan bien sus cosas, que nefasta aplicación, no abre, se traba, es lenta, tiene un horrible diseño, mal manejo de colores, en verdad no les da vergüenza?",
+          "truncated": false
+        },
+        {
+          "id": "e5",
+          "text": "No está funcionando esta aplicación. Es un desastre",
+          "truncated": false
+        },
+        {
+          "id": "e6",
+          "text": "Hoy sábado tiene horas que no funciona y después de solo aparecer un mensaje de estamos trabajando me pide actualizar lego\nMe envió a App Store y ahí solo aparece la opción de abrir. No hay actualizaciones por instalar",
+          "truncated": false
+        }
+      ]
+    },
+    "response": {
+      "proposed_feature": "Mejorar la estabilidad y el rendimiento de la aplicación",
+      "topic_description": "Los usuarios reportan problemas recurrentes con la aplicación, incluyendo errores de conexión al servidor, fallos al iniciar sesión, lentitud, bloqueos y la imposibilidad de abrir la aplicación, lo que afecta la experiencia general del usuario y el acceso a funcionalidades esenciales.",
+      "supporting_review_ids": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "e5",
+        "e6"
+      ],
+      "assessment": "single_feature"
+    },
+    "generation_parameters": {
+      "temperature": 0,
+      "max_tokens": 800
+    },
+    "status": "completed",
+    "evidence_sha256": "5fe7479fde5015620ab668f9ae493d7a54a27741922c6dd55c81a86e5c6f56e7",
+    "evidence_record_ids": {
+      "e1": "appbot:498483038:3623301855",
+      "e2": "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "e3": "appbot:498483038:3628980431",
+      "e4": "play:com.citibanamex.banamexmobile:85203f82-0abb-4536-8b50-d2411f5a4704",
+      "e5": "appbot:498483038:3729352291",
+      "e6": "appbot:498483038:3709625634"
+    },
+    "supporting_record_ids": [
+      "appbot:498483038:3623301855",
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "appbot:498483038:3628980431",
+      "play:com.citibanamex.banamexmobile:85203f82-0abb-4536-8b50-d2411f5a4704",
+      "appbot:498483038:3729352291",
+      "appbot:498483038:3709625634"
+    ],
+    "usage": {
+      "completion_tokens": 143,
+      "prompt_tokens": 842,
+      "total_tokens": 985,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": null,
+        "image_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cache_write_tokens": 0,
+        "cached_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost": 0.0006101,
+      "is_byok": false,
+      "cost_details": {
+        "upstream_inference_cost": 0.0006101,
+        "upstream_inference_prompt_cost": 0.0002526,
+        "upstream_inference_completions_cost": 0.0003575
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+protocol_id,case_id,system,topic_id,band,size,coherencia,palabras_clave,tipo_asunto,justificacion,revisor,fecha,completa
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:13,base,13,pequeno,17,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:16,base,16,pequeno,13,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:7,base,7,mediano,28,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:9,base,9,mediano,23,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:1,base,1,grande,56,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,base:2,base,2,grande,38,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:26,alternative,26,pequeno,11,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:19,alternative,19,pequeno,18,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:13,alternative,13,mediano,24,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:16,alternative,16,mediano,21,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:2,alternative,2,grande,66,,,,,,,False
+9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53,alternative:8,alternative,8,grande,32,,,,,,,False
