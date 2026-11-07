@@ -1,0 +1,8 @@
+{
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "model_fits": 0,
+  "llm_requests": 0,
+  "example_rule": "three largest topics per system, ties by topic_id; up to three distinct hash-selected texts; seed42",
+  "sentiment_unit": "whole review, not individual aspect",
+  "human_topic_quality_validation": false
+}

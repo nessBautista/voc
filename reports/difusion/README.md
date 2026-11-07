@@ -175,3 +175,28 @@ la de tópicos reutiliza la exportación congelada de la comparación. La de
 sentimiento requiere los análisis locales para recalcular la selección.
 `verificacion-revisiones.json` registra esta preparación. Los CSV editables no
 se sobrescriben; las exportaciones son copias fechadas, no archivos para anotar.
+
+## Figuras de la sección 4 del reporte
+
+[resultados-seccion-4.ipynb](resultados-seccion-4.ipynb) reúne cuatro figuras
+con datos verificados: métricas y errores del filtro; evaluación histórica de
+Robertuito original y con transfer learning; tamaños y cobertura del agrupamiento;
+y seis ejemplos que combinan palabras clave, sentimiento predicho y reseñas.
+
+Para los ejemplos selecciona los tres grupos mayores de cada sistema (desempate
+por ID), cuenta el sentimiento de todos sus miembros y escoge hasta tres textos
+distintos por orden SHA-256 con semilla 42. La figura muestra un texto por grupo,
+recortado a 190 caracteres cuando es necesario y marcado como fragmento. Los
+textos completos, IDs y etiquetas están en la libreta y `ejemplos-con-evidencia.json`.
+Los grupos de la misma fila no son necesariamente temas equivalentes.
+
+```bash
+bash scripts/difusion.sh jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=180 reports/difusion/resultados-seccion-4.ipynb
+```
+
+Las figuras se exportan en PNG y PDF, con tablas CSV y manifiesto, a
+`exports/resultados-seccion-4/`; `latest.json` señala la versión vigente. La
+libreta no ejecuta modelos ni requiere una credencial LLM. Incluye solo un plan
+sin ejecución para los 18 tópicos base y 28 alternativos; el equipo aplazó ese
+último resultado el 7 de noviembre. No se reportan categorías LLM como cero ni
+se sustituyen con respuestas del demo histórico.

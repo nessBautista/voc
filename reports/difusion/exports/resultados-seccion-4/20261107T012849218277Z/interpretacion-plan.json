@@ -1,0 +1,346 @@
+{
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "batches": [
+    {
+      "system": "base",
+      "parent_analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+      "topics": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "maximum_requests": 18,
+      "reusable_topics": 0,
+      "prompt_version": "voc-topic-es-v3",
+      "configuration": {
+        "model": "google/gemini-2.5-flash",
+        "max_topics": 20,
+        "max_reviews": 6,
+        "max_chars": 900,
+        "max_tokens": 800,
+        "temperature": 0.0
+      },
+      "requests": [
+        {
+          "topic_id": 0,
+          "request_fingerprint": "93e37b063ae97d46c16491ac1be41de5a285379a1007d9851e131ed030dc9e88",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 1,
+          "request_fingerprint": "0869e662f2d579e47ab4cdf7fdd96e2a767fa1103c00a48b82fcf493b3d7ae46",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 2,
+          "request_fingerprint": "0e3a8034ff04bf623a7045f7e8414712414da5be8e3475eac84bbae31f015bdb",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 3,
+          "request_fingerprint": "e42a7e9e5f78f4d87856ccba17e1cdff89d35719f27c346d8e9e5be7a51bcb72",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 4,
+          "request_fingerprint": "16652830a76295d46d7784584d8684bdd83c2cade91f3e7af5335ab233794a02",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 5,
+          "request_fingerprint": "12be92160fa3ad20f3eb6fd59b8b4e51e6fa8923375429c1864b799a0213f3db",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 6,
+          "request_fingerprint": "2f3b39cda47d0dfeb742f67bf23fb86b6a3f4ab20df610b0a088c3d249c5a66b",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 7,
+          "request_fingerprint": "4ce4d9e20d2c21ea7cdf8f28eda36e12b8977a35d3f48d589b89c6d6ee29db78",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 8,
+          "request_fingerprint": "dba2d347156fa22c7b1d5b7cb0bc3cda69f89b7f02ef58834e2ed401ba235430",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 9,
+          "request_fingerprint": "4d00e894efb14c6ee6fae63d1c5bb807fb6f01cea9dbf836188c72cae3e5e71a",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 10,
+          "request_fingerprint": "1740d268da92e388d309c17be5df8f67cd815600438781d45c3da090098820b5",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 11,
+          "request_fingerprint": "f1ca28a2d89d1a56fe7d4a260ab509d8fa0bcd5e0813cce60f3d317cfd02acd4",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 12,
+          "request_fingerprint": "740a1612bea8c14ce2e80cd6c68be589764f7f74e193a1659a979d7e6764328a",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 13,
+          "request_fingerprint": "f4995ab7157572ced3c8963f537929fca08267d9d3b85c8b9dfaf51e695fed96",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 14,
+          "request_fingerprint": "81cc74e0857b1a79f9990a88398abc6aadb949c10531cc91ec78ed1f7d830df5",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 15,
+          "request_fingerprint": "d4bffdaa8a585aa6a7a5f31f29fdeae5fab62f9067f46a707e19d85b706959af",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 16,
+          "request_fingerprint": "44d4ee131f9e0742858e5878ee276c3ee2c64c497f96cc6139c0105f62883953",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 17,
+          "request_fingerprint": "ee01168e98f8cb1ed20e681c717d2699deb3a8b8923bf2912f40fddc8ee21c7a",
+          "evidence_count": 6
+        }
+      ]
+    },
+    {
+      "system": "alternative",
+      "parent_analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+      "topics": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "maximum_requests": 20,
+      "reusable_topics": 0,
+      "prompt_version": "voc-topic-es-v3",
+      "configuration": {
+        "model": "google/gemini-2.5-flash",
+        "max_topics": 20,
+        "max_reviews": 6,
+        "max_chars": 900,
+        "max_tokens": 800,
+        "temperature": 0.0
+      },
+      "requests": [
+        {
+          "topic_id": 0,
+          "request_fingerprint": "4c17630fa6064249049e347359222058928b684caacd354a0b987a5fc1d8e539",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 1,
+          "request_fingerprint": "94521901f60ce1e95c349a8ed6d59e713b0f481b311eeed50604d1abbbac843e",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 2,
+          "request_fingerprint": "46fb49b5208a7061dbf826ca58b552e6526ea3b9a74a49ff2e2f05eb4e92e122",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 3,
+          "request_fingerprint": "39324a462c8448abf35ec7c3c59fee518e96ebc3999ea8285c05b14ef13e8748",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 4,
+          "request_fingerprint": "7fde08c4f127895969dc73f7f36c9c349958cd9cb7b66e3ddc3ec921f318cbc4",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 5,
+          "request_fingerprint": "e3f953c0813fb08531c7cc51703c8b09ffa0ea6d7d357dc59bc9624417232e39",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 6,
+          "request_fingerprint": "ad8dee8fa8ee390a2a8b2a564abe2465b55fd556ccb5b49eb60af8cf171d4072",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 7,
+          "request_fingerprint": "ff9b9301bf7c6d376af214696faa5e15ecbd61ab97e26df72e1e4c3906664c6f",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 8,
+          "request_fingerprint": "0fb3df9f43f8cbf06be1e9f10ad97c9c59d5694b10b9c137e4d5dd26eb1a13d0",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 9,
+          "request_fingerprint": "3b2d4b3dee52733731379ef8ac35a8f3927ad69213ebfeb6a04133b55a468e1d",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 10,
+          "request_fingerprint": "eadc8cb1473cde882d843cfecf68f77a53e22e8fe760e0163bba5bedcc7966e1",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 11,
+          "request_fingerprint": "acd2fe3e11f548d082a0b1992ed62bdb3ef02656a2e52b4b048fb971543bd599",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 12,
+          "request_fingerprint": "1a02304cac9f5100f51ed15ac6a6d6d06fcbf992b7a7837661e2400b9e7a115f",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 13,
+          "request_fingerprint": "852ba17712faafb9f0b7e56cc650251b20e01fd170022364a6861d4ff348f36b",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 14,
+          "request_fingerprint": "b55b640ad6563aa888b4e62672a3e1d47613c7dbb028623a2cfccb4f7f5b37d0",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 15,
+          "request_fingerprint": "485e5d7a8f1b35f037af6e30aa5bdfe2584df80125db35b23c15c1e33514a8ef",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 16,
+          "request_fingerprint": "c20890b4d83e7dd3e172bab24e7c708179eed61d686fc8483335178a93fd5f43",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 17,
+          "request_fingerprint": "47ba5997682e59f457dd10577c3a9fa666699ffc72308e6f2f4a8668f20f8604",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 18,
+          "request_fingerprint": "022586f1ca528d6d6a78daa6f1a29ec120adecf5ea21806e91d8a47e9c634a6d",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 19,
+          "request_fingerprint": "a70f2614f5216e58b66d91bb1769f209719bd3c0072a7fc056e5aee3b089013c",
+          "evidence_count": 6
+        }
+      ]
+    },
+    {
+      "system": "alternative",
+      "parent_analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+      "topics": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "maximum_requests": 8,
+      "reusable_topics": 0,
+      "prompt_version": "voc-topic-es-v3",
+      "configuration": {
+        "model": "google/gemini-2.5-flash",
+        "max_topics": 20,
+        "max_reviews": 6,
+        "max_chars": 900,
+        "max_tokens": 800,
+        "temperature": 0.0
+      },
+      "requests": [
+        {
+          "topic_id": 20,
+          "request_fingerprint": "85c13e1825e91207583664a3fc5c1d17bbaec18ab0774918cac165f581c7daaf",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 21,
+          "request_fingerprint": "297e31b4b66cbbc1bd9bebcce23aad75459654dfcd463d4bb503c8f0f49d4894",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 22,
+          "request_fingerprint": "c5db76e1040f69c4dc7580359162cfc8a25af5f98f844f7ead3bf88f805f1a04",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 23,
+          "request_fingerprint": "abe6acef1f73e32b47e6353abb95da097842b53ecc832748b5b2a7ef96115a2d",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 24,
+          "request_fingerprint": "babc674c0ef4d61686f7b8352144ef1499a422ed55561047e241366d8f7bd851",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 25,
+          "request_fingerprint": "9213c3076fa70da38c1b0629d9076edaab460e3f0d6743eeec5cb1ad5feccf60",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 26,
+          "request_fingerprint": "caca3c83b93618960b4f4cb87fb1fe5d14fecf45412c36297ce47a66701a8bc5",
+          "evidence_count": 6
+        },
+        {
+          "topic_id": 27,
+          "request_fingerprint": "c78a48d677f98f47fbae01276210c429f08e559eeba6f1c99a4199677b05d486",
+          "evidence_count": 6
+        }
+      ]
+    }
+  ],
+  "status": {
+    "state": "deferred_by_user",
+    "topics_base": 18,
+    "topics_alternative": 28,
+    "planned_requests": 46,
+    "new_requests_this_notebook": 0,
+    "note": "User deferred the LLM figure on 2026-11-07; no provider calls authorized by notebook execution. No category counts until real responses exist."
+  }
+}

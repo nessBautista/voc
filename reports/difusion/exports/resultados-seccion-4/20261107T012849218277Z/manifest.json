@@ -1,0 +1,67 @@
+{
+  "created_at": "20261107T012849218277Z",
+  "notebook": "resultados-seccion-4.ipynb",
+  "cell_sources_sha256": "5b24fa51dd90edec87b19e53ec30af63a228c63966d9b8cbb8c865696306e139",
+  "helper_sha256": "2a34a9fe094fd7b2ba2bd11e889bc93b5caf8e1023f3095da76d17bb9bee62ae",
+  "scope": "Section 4 verified metrics and topic/sentiment examples; interpretation plan only, no provider calls",
+  "sources": {
+    "relevancia": {
+      "path": "reports/difusion/exports/evaluacion-filtro-relevancia/20261105T191417687054Z/manifest.json",
+      "sha256": "650e866d27c4ed0b0cccee1a9b6ae4823668894a5db5567ccde5fb474e419df9"
+    },
+    "historico": {
+      "path": "reports/difusion/exports/evaluacion-historica-robertuito/20261105T191415696114Z/manifest.json",
+      "sha256": "30615f09a5d231445e261bcc68d46a23e4f7b0c9220ad1e1870e289da443321a"
+    },
+    "integrada": {
+      "path": "reports/difusion/exports/comparacion-base-alternativa/20261105T191417975479Z/manifest.json",
+      "sha256": "4639edacc5839af99fe7121921f29e9183b320e0b5354f5090570248f3f788d1"
+    },
+    "base_analysis": {
+      "path": "data/analyses/85e5ea66-a176-44e3-9d67-dba87090f98f/manifest.json",
+      "sha256": "4315d2b34056f102f43bd9891dd1bfb583eed8692d20eedfb7e73c75bb2b6e1f"
+    },
+    "alternative_analysis": {
+      "path": "data/analyses/716b3ec4-6b65-42e7-8bea-06fde8e0f488/manifest.json",
+      "sha256": "16586216f0526f8791355ad48b17f3cda8c1d2553b80b42a9163f91392f5c28f"
+    },
+    "interpretation_config": {
+      "path": "config/analysis/interpretation.toml",
+      "sha256": "6f80cee8d201f7788b6eafe0525d2509bc390cec1b2384d0ad64844492ff48eb"
+    },
+    "interpretation_code": {
+      "path": "src/voc_ml/llm/topic_interpretation.py",
+      "sha256": "eb7e08976ba6761a530251b18af36dbcc67152a5ecc4398af7d50fbd03cacd2e"
+    },
+    "review_helper": {
+      "path": "reports/difusion/apoyo_revision.py",
+      "sha256": "bba6627a87de3e3e941a9d3a240cfc0ff655c82804da168c1b2f2ce6104e42ef"
+    }
+  },
+  "files": {
+    "relevancia-comparada.png": "f5b205dbc2ccbece47d1787024e905d2d50f6df2d5aaefdad009a9938b85e47d",
+    "alcance.json": "8ff10aeea3d32f94ca568602f0a2f123c409b4f245ff0fa1dc2e58fcb831e791",
+    "relevancia-comparada.pdf": "e8294f3af7feef5a67485ad97ff238cacd89a4461ad6eab7d75086c5e2ecf8b2",
+    "interpretacion-plan.json": "3161ae24709381d4a2a548bffaccffd0f838156ba22df7f307d99a118ba51c12",
+    "agrupamiento-resumen.csv": "ca8af0b62c0053c535e06aef02524e904ff41b3dd4a14a56f8b4d0ccdddd759d",
+    "ejemplos-con-evidencia.json": "4d2e2fdbb9593d296e84129b065f716d293db3083f535ae471f23a9150f2d93c",
+    "relevancia-metricas.csv": "720e550dd7a46991794cbd8ee738b4abc9efef2b13c30aa87c93948d7dae6f49",
+    "sentimiento-historico-clases.csv": "fcb5a286fbac70594ef142230a03c474c025d654ac0120cb161ddc24505a2b80",
+    "agrupamiento-comparado.pdf": "ee698341bbc627f650504c98b97569eb7cfaca9621884159248f67dbccd89bd6",
+    "ejemplos-sentimiento-conteos.csv": "cd22b2e4474090a62ead94ec7fbe2fc92b52700b32a41f41a8451e1c5b22be10",
+    "agrupamiento-comparado.png": "6b4596be67164c10caed801edc71b618c5fdbc9d396eb48a6e50d7fe8b996ca2",
+    "ejemplos-topicos-sentimiento.png": "25b8d925290f8340495f9eba63898249db421b6fcedb3224e069bbad207ab001",
+    "ejemplos-topicos-sentimiento.pdf": "e7a270556ad70f5cc953290f2df117b3baf7100178ecf16107fbde520f529227",
+    "sentimiento-historico.pdf": "57664fc7f251abada37998faa97625dd67334921a1dbe75baf0a8dc734fa05cc",
+    "sentimiento-historico.png": "bfa76836f7eeb6764fec07aa53885cc3c7aea8940aa4f41b5ddace99216b01a7",
+    "sentimiento-historico-agregado.csv": "4d0cbbbe2abd3029155158a755828872ab647ae13be7d2f3923f97dd097cc963"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "scikit-learn": "1.9.1"
+  },
+  "model_fits": 0,
+  "llm_requests": 0
+}
