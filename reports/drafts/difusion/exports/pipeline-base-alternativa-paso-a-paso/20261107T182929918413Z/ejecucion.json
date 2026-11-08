@@ -1,0 +1,32 @@
+{
+  "schema_version": "voc-stepwise-comparison-v1",
+  "original_protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "replication_protocol_id": "c4252fc789238f4ea767aa66f542b8a52e176ca517fa9bbce26de6308a66bda2",
+  "new_pipelines_this_execution": [],
+  "saved_pipelines": [
+    {
+      "system": "base",
+      "run_id": "9b85b8fc-f9db-402f-b2b3-652a7cf12c85",
+      "analysis_id": "2de23686-5b30-41d9-949f-7c3e81681313",
+      "zenml_run_id": "c9792f3c-eedd-481d-b166-c7ec7c89513e"
+    },
+    {
+      "system": "alternative",
+      "run_id": "86f4797e-1235-4f06-9ed0-329b6d4411c9",
+      "analysis_id": "2b8c0d50-c74a-4559-809f-6ec90550c5c8",
+      "zenml_run_id": "f081f40f-25bd-4271-8614-49d17f395fe1"
+    }
+  ],
+  "topic_fits_this_execution": 0,
+  "sentiment_inference_rows_this_execution": 0,
+  "embedding_vectors_reused": true,
+  "umap_cache_hits": {
+    "base": true,
+    "alternative": true
+  },
+  "provider_requests_this_execution": 16,
+  "provider_requests_saved_run": 16,
+  "reused_llm_topics": 30,
+  "human_review_source": "existing review, not new annotations",
+  "protected_original_protocol_sha256": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091"
+}

@@ -26,7 +26,7 @@ This is the app's actual `build_graph`, with Daily and Research routes in one gr
 In another Mac terminal, copy the generated input:
 
 ```sh
-cd /Users/ness/workspace/voc
+cd "$HOME/workspace/voc"
 cat data/lang-studio/input-daily.json | pbcopy
 ```
 

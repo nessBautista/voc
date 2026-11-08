@@ -1,0 +1,47 @@
+system,topic_id,name,size,negative,neutral,positive
+alternative,0,Problemas de acceso y navegación en la aplicación,105,81,14,10
+alternative,1,Problemas de acceso y visualización de movimientos,73,55,9,9
+alternative,2,Problemas de rendimiento y acceso a la aplicación,66,55,4,7
+alternative,3,Problemas de acceso y registro en la aplicación móvil de Banamex,61,49,1,11
+alternative,4,Reseñas de satisfacción general,54,0,0,54
+alternative,5,Mejora en la rapidez y eficiencia de la aplicación,35,1,0,34
+alternative,6,Servicio y atención al cliente,34,0,0,34
+alternative,7,Funcionamiento general de la aplicación,32,1,0,31
+alternative,8,Mejoras en la velocidad y funcionalidad de la aplicación,32,3,0,29
+alternative,9,Calidad general de la aplicación,29,0,0,29
+alternative,10,Facilidad de uso de la aplicación,28,0,0,28
+alternative,11,Problemas al abrir la aplicación y acceder a estados de cuenta,25,17,3,5
+alternative,12,Funcionalidad y utilidad general de la aplicación,24,0,0,24
+alternative,13,Fallas generales de la aplicación,24,18,3,3
+alternative,14,Problemas de seguridad y cobros no reconocidos,22,18,1,3
+alternative,15,Evaluación de la claridad y utilidad de la aplicación,22,6,0,16
+alternative,16,Atención al cliente eficiente y amable,21,0,0,21
+alternative,17,Evaluación general positiva de la aplicación,21,0,0,21
+alternative,18,Problemas de congelación y rendimiento de la aplicación,18,13,2,3
+alternative,19,Evaluación general positiva de la aplicación,18,0,0,18
+alternative,20,Problemas con la tarjeta digital y opciones de gestión de tarjetas,17,6,1,10
+alternative,21,Seguridad y fiabilidad de la aplicación,15,0,0,15
+alternative,22,Calidad general de la aplicación,14,0,0,14
+alternative,23,Lentitud y problemas de apertura de la aplicación,12,7,5,0
+alternative,24,Facilidad para gestionar dinero y realizar operaciones bancarias,12,0,0,12
+alternative,25,Facilidad de uso de la aplicación,11,0,0,11
+alternative,26,Satisfacción general con la aplicación y servicios de Banamex,11,1,0,10
+alternative,27,Seguridad y facilidad de acceso en la aplicación,10,0,0,10
+base,0,Problemas de acceso y visualización de movimientos en la aplicación móvil,529,459,65,5
+base,1,Calidad general de la aplicación,56,0,55,1
+base,2,Seguridad y facilidad de uso de la aplicación,38,0,8,30
+base,3,Funcionamiento general de la aplicación,34,0,6,28
+base,4,Calidad del servicio y atención al cliente,30,0,1,29
+base,5,Facilidad de uso de la aplicación,30,0,13,17
+base,6,Mejoras en la velocidad de apertura y rendimiento general de la aplicación,30,3,7,20
+base,7,Calidad general de la aplicación,28,0,2,26
+base,8,Valoración positiva general de la aplicación,25,0,3,22
+base,9,Evaluación de la experiencia del usuario con la aplicación,23,5,8,10
+base,10,Atención al cliente eficiente y amable,22,0,1,21
+base,11,Evaluación general positiva de la aplicación,22,0,20,2
+base,12,Valoración general positiva de la aplicación,17,0,16,1
+base,13,Rapidez y eficiencia en las operaciones de la aplicación,17,0,8,9
+base,14,Facilidad de uso y navegación intuitiva de la aplicación,15,0,0,15
+base,15,Satisfacción general con la aplicación,13,0,4,9
+base,16,Valoración general de la aplicación: utilidad y practicidad,13,1,5,7
+base,17,Satisfacción general con Banamex y su aplicación,11,2,0,9

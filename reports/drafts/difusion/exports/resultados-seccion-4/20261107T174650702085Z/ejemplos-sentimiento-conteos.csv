@@ -1,0 +1,7 @@
+system,topic_id,rank,size,negative,neutral,positive
+base,0,1,529,459,65,5
+base,1,2,56,0,55,1
+base,2,3,38,0,8,30
+alternative,0,1,105,81,14,10
+alternative,1,2,73,55,9,9
+alternative,2,3,66,55,4,7

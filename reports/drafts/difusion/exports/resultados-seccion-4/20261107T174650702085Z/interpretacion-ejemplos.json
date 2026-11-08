@@ -1,0 +1,416 @@
+[
+  {
+    "system": "base",
+    "topic_id": 5,
+    "size": 30,
+    "assessment": "single_feature",
+    "result": {
+      "assessment": "single_feature",
+      "name": "Facilidad de uso de la aplicación",
+      "proposed_feature": "Facilidad de uso general de la aplicación",
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:5ed82a7c-e8c7-445d-9ab8-f89a1c448ae3",
+        "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+        "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+        "appbot:498483038:3739238677",
+        "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+        "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da"
+      ],
+      "topic_description": "Los usuarios valoran la aplicación por ser fácil de usar y por permitirles encontrar la información que necesitan de manera sencilla. Destacan que es útil, rápida y simple para consultar y acceder a sus funciones."
+    },
+    "sentiment": {
+      "negative": 0,
+      "neutral": 13,
+      "positive": 17
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:5ed82a7c-e8c7-445d-9ab8-f89a1c448ae3",
+        "text": "es una aplicación muy fácil de usar fácil de encontrar la información que uno necesita",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E2",
+        "record_id": "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+        "text": "Muy útil y fácil de usar hasta ahora y sigo en la misma opinión, excelente y rápido",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+        "text": "en muy buena y simple de usar, aunque en ocasiones se trabaja al intentar buscar movimientos recientes o pasar de una cuenta a la otra",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E4",
+        "record_id": "appbot:498483038:3739238677",
+        "text": "Me parece muy sencillo de consultar y entrar a la aplicación muchas gracias",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+        "text": "es muy bueno y fácil",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E6",
+        "record_id": "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da",
+        "text": "muy completa y fácil de usar",
+        "truncated": false,
+        "cited": true
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  },
+  {
+    "system": "base",
+    "topic_id": 0,
+    "size": 529,
+    "assessment": "mixed",
+    "result": {
+      "assessment": "mixed",
+      "name": "Problemas de acceso y visualización de movimientos en la aplicación móvil",
+      "proposed_feature": null,
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+        "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+        "appbot:498483038:3738324714"
+      ],
+      "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, experimentando pantallas oscuras o la necesidad de reiniciar el teléfono repetidamente para lograr entrar. Además, una vez dentro, la aplicación no muestra los movimientos bancarios de manera oportuna, lo que la hace inútil para algunos usuarios."
+    },
+    "sentiment": {
+      "negative": 459,
+      "neutral": 65,
+      "positive": 5
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+        "text": "muy mala aplicación últimamente no me deja acceder desde ase como 20 días a estado fallando mucho pues entro ala aplicación y solo se pone obscura la pantalla antes era muy buena solucionen ese problema pues para poder entrar tengo que estar reiniciando el teléfono acá rato y si bien logro acceder ala aplicación si no seguir intentando una y otra ves y es muy molesto",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E2",
+        "record_id": "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+        "text": "pésima experiencia con Banamex no solo su app, el cajero más cercano a mi casa nunca tiene dinero, o tiene errores, la app igual abre cuando quiere, no muestran los movimientos que uno hace sino hasta varios días después, lo único bueno son sus tarjetas de crédito muchas promociones en todos lados, pero está atrasados como banco, recién implementaron lo de retiro sin tarjeta y lo de poder cargar tiempo aire cuando otros bancos ya tenían esos servicios mucho antes",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "youtube:-:UgyekmT_EYBdBzcg4BV4AaABAg",
+        "text": "Es cierto lo que comentas al final. En mi experiencia me ha pasado esto:\n\nA mi me invitann, me mandan mails, me llaman por teléfono, y nunca me han aprobado ninguna. \n\nTengo bancarias y otras departametales, algunas que de verdad no le dan a cualquier persona.  Y en las 4 que más uso, mi peor línea de crédito es de 75k y ni siquiera la Joy con 2 mil de crédito me han autorizado 😂😂😂😂\n\nEn verdad no la necesito, pero es curioso y me causa gracia su pesimo sistema de selección y de atención a clientes, porque otra cosa curiosa es que si los conozco, hace algunos años tenía mi nómina en Banamex y su aplicación era pésima. Y aún con mi nómina ahí, no me la dieron. \n\nY por el contrario, muchos, que conozco que usan Banamex, no pagan, están atrasados, o pagan muchos intereses. Es gente que no sabe usar una tarjeta. \n\nYo creo que por eso no me la dan. Han de pensar este si paga, mejor no se la de",
+        "truncated": true,
+        "cited": false
+      },
+      {
+        "label": "E4",
+        "record_id": "appbot:498483038:3738324714",
+        "text": "No sirve, no se pueden ver tus movimientos, es totalmente inútil.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "appbot:498483038:3738360561",
+        "text": "Muy lenta la aplicación y del banco ni se diga cobros y fraudes en su tarjeta digital soporte nunca resuelve nada",
+        "truncated": false,
+        "cited": false
+      },
+      {
+        "label": "E6",
+        "record_id": "appbot:498483038:3738390463",
+        "text": "Nada que ver con otros bancos",
+        "truncated": false,
+        "cited": false
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  },
+  {
+    "system": "base",
+    "topic_id": 1,
+    "size": 56,
+    "assessment": "unclear",
+    "result": {
+      "assessment": "unclear",
+      "name": "Calidad general de la aplicación",
+      "proposed_feature": null,
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+        "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+        "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+        "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+        "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198",
+        "play:com.citibanamex.banamexmobile:16356c36-0125-4764-bdc9-289c77652d60"
+      ],
+      "topic_description": "Las reseñas expresan una satisfacción general con la aplicación, utilizando términos como \"excelente\" para describir su experiencia. No se mencionan características específicas, lo que sugiere que la satisfacción se relaciona con la funcionalidad global o la experiencia de usuario en general."
+    },
+    "sentiment": {
+      "negative": 0,
+      "neutral": 55,
+      "positive": 1
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E2",
+        "record_id": "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+        "text": "5 seria perfecto y no existe tal perfeccion",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E4",
+        "record_id": "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E6",
+        "record_id": "play:com.citibanamex.banamexmobile:16356c36-0125-4764-bdc9-289c77652d60",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  },
+  {
+    "system": "alternative",
+    "topic_id": 0,
+    "size": 105,
+    "assessment": "single_feature",
+    "result": {
+      "assessment": "single_feature",
+      "name": "Problemas de acceso y navegación en la aplicación",
+      "proposed_feature": "Mejorar la estabilidad y navegación de la aplicación",
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+        "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+        "appbot:498483038:3742631173",
+        "appbot:498483038:3750400731"
+      ],
+      "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, mencionando que la pantalla se queda oscura o en color azul sin avanzar. Algunos usuarios han intentado reiniciar el teléfono, desinstalar y reinstalar la aplicación, o borrar la caché sin éxito. Además, se describe un problema recurrente donde, al ver los movimientos, no es posible regresar a la pantalla de inicio, obligando a cerrar la aplicación."
+    },
+    "sentiment": {
+      "negative": 81,
+      "neutral": 14,
+      "positive": 10
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:a4843162-7c2c-449a-95a3-29f1f261d3ff",
+        "text": "todo absolutamente todo esta mal. quienes diseñaron todo desde la app , el centro de ayuda y todo , deberían ser despedidos , como que necesitas un código para tener ayuda por telefono ? y luego su intento de ia ni te intenta ayudar , y se equivoca! , los operadores ni te pueden ayudar con la app. La app no funciona de plano , se buguea demasiado , no valen el 1 de cashback si la aplicación es asi de mala , voy a cancelar la cuenta de una vez, ni una semana me duró el gusto.",
+        "truncated": false,
+        "cited": false
+      },
+      {
+        "label": "E2",
+        "record_id": "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+        "text": "muy mala aplicación últimamente no me deja acceder desde ase como 20 días a estado fallando mucho pues entro ala aplicación y solo se pone obscura la pantalla antes era muy buena solucionen ese problema pues para poder entrar tengo que estar reiniciando el teléfono acá rato y si bien logro acceder ala aplicación si no seguir intentando una y otra ves y es muy molesto",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+        "text": "Mi opinión coincide con muchas otras que han expresado diversos usuarios. Desde hace más de dos meses me resulta muy difícil abrir la aplicación. Al pretender hacerlo me aparece una ventana en color azul pero ahí se queda sin avanzar. La he desinstalado e instalado de nuevo. Eventualmente esto funcionó, pero después aún borrando el caché prevaleció el problema. Acudí a una sucursal de Banamex y me dijeron que utilizara Bancanet pero no siempre tengo una PC a mi disposición. Ya no sé que hacer.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E4",
+        "record_id": "appbot:498483038:3742631173",
+        "text": "Regreso 1 año después y sigue: \n\nTienen años que cuando uno entra a ver sus movimientos desde iPhone no se puede regresar a la pantalla de inicio. Es lamentable. Algo tan sencillo y obvio no lo pueden arreglar.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "appbot:498483038:3750400731",
+        "text": "Cuando abres los movimientos ya no hay manera de regresar a ningún menú, hay que cerrar la aplicación y nunca lo han corregido. Es bastante molesto.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E6",
+        "record_id": "appbot:498483038:3750955635",
+        "text": "App confusa",
+        "truncated": false,
+        "cited": false
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  },
+  {
+    "system": "alternative",
+    "topic_id": 1,
+    "size": 73,
+    "assessment": "mixed",
+    "result": {
+      "assessment": "mixed",
+      "name": "Problemas de acceso y visualización de movimientos",
+      "proposed_feature": null,
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+        "appbot:498483038:3747942371",
+        "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+        "appbot:498483038:3738324714",
+        "appbot:498483038:3745937943"
+      ],
+      "topic_description": "Los usuarios experimentan dificultades para iniciar sesión en la aplicación, lo que les impide acceder a sus cuentas. Además, se reportan problemas al intentar visualizar los movimientos de sus cuentas, con la aplicación congelándose o no mostrando la información detallada de los depósitos. También se menciona una limitación para transferir dinero de apartados después de ciertas horas."
+    },
+    "sentiment": {
+      "negative": 55,
+      "neutral": 9,
+      "positive": 9
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+        "text": "Desde Julio cuesta trabajo iniciar sesión, normalmente no abre ni para poner la huella y me falla 9 de cada 10 veces que la abro... Había estado todo bien pero ahora con eso es pésimo",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E2",
+        "record_id": "appbot:498483038:3747942371",
+        "text": "Puedes ver lo básico, no da opción de aumentar el texto sobre todo para una discapacidad visual y lo\nPeor es que al ver tus movimientos no tienes cómo regresar al menú principal se pasma en ese sector, solo para consultas  bien para lo demás fatal, llevan años con el mismo problema y no lo atienden!!!",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+        "text": "Es frustrante que ni tu propio dinero puedas sacar de tus apartados después de las 6 de la tarde, una emergencia y te dice que en proceso y hasta después de media noche se pasa el dinero, ojalá pudieran cambiar eso para que en cualquier hora pueda pasarlo.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E4",
+        "record_id": "appbot:498483038:3738324714",
+        "text": "No sirve, no se pueden ver tus movimientos, es totalmente inútil.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "appbot:498483038:3745937943",
+        "text": "No me da detalle de los depósitos como cuando lo veo en la computadora.",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E6",
+        "record_id": "appbot:498483038:3746324999",
+        "text": "No se reciben al corte mensual es un problema",
+        "truncated": false,
+        "cited": false
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  },
+  {
+    "system": "alternative",
+    "topic_id": 4,
+    "size": 54,
+    "assessment": "unclear",
+    "result": {
+      "assessment": "unclear",
+      "name": "Calidad de la aplicación",
+      "proposed_feature": null,
+      "supporting_review_ids": [
+        "play:com.citibanamex.banamexmobile:1ceabf96-cd71-4ae4-a143-9cfb1797c101",
+        "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+        "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+        "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+        "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+        "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198"
+      ],
+      "topic_description": "Las reseñas indican una percepción general muy positiva de la aplicación, con múltiples usuarios describiéndola como \"excelente\". Un usuario menciona que \"5 sería perfecto y no existe tal perfección\", lo que sugiere que, aunque la aplicación es muy buena, siempre hay margen de mejora."
+    },
+    "sentiment": {
+      "negative": 0,
+      "neutral": 0,
+      "positive": 54
+    },
+    "reviews_sent": [
+      {
+        "label": "E1",
+        "record_id": "play:com.citibanamex.banamexmobile:1ceabf96-cd71-4ae4-a143-9cfb1797c101",
+        "text": "Excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E2",
+        "record_id": "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E3",
+        "record_id": "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+        "text": "5 seria perfecto y no existe tal perfeccion",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E4",
+        "record_id": "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E5",
+        "record_id": "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      },
+      {
+        "label": "E6",
+        "record_id": "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198",
+        "text": "excelente",
+        "truncated": false,
+        "cited": true
+      }
+    ],
+    "selection_rule": "largest topic within system and LLM category; ties by topic_id"
+  }
+]

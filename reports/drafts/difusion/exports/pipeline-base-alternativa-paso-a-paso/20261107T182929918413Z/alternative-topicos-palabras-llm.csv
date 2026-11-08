@@ -1,0 +1,30 @@
+topic_id,size,keywords,assessment,name
+-1,141,"entrar aplicación, netkey no, netkey, pagar, key, servidor",,
+0,105,"app queda, abrir app, app, abre, pantalla, pantalla azul",single_feature,Problemas de acceso y navegación en la aplicación
+1,73,"tarda mucho, no deja, tener esperar, abre tarda, 15 días, cualquier hora",mixed,Problemas de acceso y visualización de movimientos
+2,66,"app banco, app tarda, aplicación banco, banca móvil, bancaria, banca",mixed,Problemas de rendimiento y acceso a la aplicación
+3,61,"móvil banamex, banamex app, app banamex, aplicación banamex, banamex no, app no",single_feature,Problemas de acceso y registro en la aplicación móvil de Banamex
+4,54,"excelentes excelente, perfeccion excelente, excelente siempre, siempre excelentes, tal perfeccion, perfecto",unclear,Reseñas de satisfacción general
+5,35,"muy eficiente, muy eficas, mejoraron rapidez, eficiente buena, rápida muy, eficiente",single_feature,Mejora en la rapidez y eficiencia de la aplicación
+6,34,"servicio buen, buen servicio, excelente servicio, servicio excelente, servicio muy, muy recomendable",mixed,Servicio y atención al cliente
+7,32,"todo bien, bien funciona, excelente bien, funciona muy, gracias mejorarla, mejorado todo",mixed,Funcionamiento general de la aplicación
+8,32,"mejoró app, app buena, buena app, app excelente, mejoraron aplicación, mejoró",single_feature,Mejoras en la velocidad y funcionalidad de la aplicación
+9,29,"muy buena, muy bueno, buena muy, buena buena, buena excelente, buena apiclascion",mixed,Calidad general de la aplicación
+10,28,"fácil usar, usar fácil, útil fácil, sencilla usar, muy fácil, fácil rápida",single_feature,Facilidad de uso de la aplicación
+11,25,"abrir aplicacion, abre app, abrir aplicación, abre aplicación, aplicación no, porque aplicación",single_feature,Problemas al abrir la aplicación y acceder a estados de cuenta
+12,24,"excelente aplicación, excelente aplicacion, aplicación buena, buena aplicación, aplicación excelente, maravillosa aplicación",single_feature,Funcionalidad y utilidad general de la aplicación
+13,24,"muchas fallas, tiene fallas, fallas demás, hay fallas, fallas capacidad, fallas siempre",mixed,Fallas generales de la aplicación
+14,22,"nada amigable, ninguna seguridad, mucho no, hay ninguna, mala seguridad, no intuitiva",single_feature,Problemas de seguridad y cobros no reconocidos
+15,22,"exelente exelente, didáctica exelente, mala execelente, confusos grandioso, satisfecho magnigico, pesima versatil",mixed,Evaluación de la claridad y utilidad de la aplicación
+16,21,"excelente atención, eficiente gracias, contenta atención, genial gracias, exelente gracias, gracias exelente",single_feature,Atención al cliente eficiente y amable
+17,21,"bien cumple, bien bien, muy bien, segura bien, propósito bien, bien bueno",unclear,Evaluación general positiva de la aplicación
+18,18,"falla mucho, bastante traba, traba poco, mucho falla, traba simplemente, traba tratar",single_feature,Problemas de congelación y rendimiento de la aplicación
+19,18,"buena, buena cool, buena buena, buena ap, ap buena, excelente opción",unclear,Evaluación general positiva de la aplicación
+20,17,"tarjeta digital, tarjeta, no tarjeta, tarjeta no, apps, bloquear",single_feature,Problemas con la tarjeta digital y opciones de gestión de tarjetas
+21,15,"buena aplicación, excelente aplicación, segura eficiente, segura excelente, excelente seguridad, fiable rspida",single_feature,Seguridad y fiabilidad de la aplicación
+22,14,"excelente super, excelentes, cool excelentes, excelente excelente, muy bien, excelente muchas",unclear,Calidad general de la aplicación
+23,12,"lenta abrir, muy lento, muy lenta, lenta abre, lenta interfaz, lenta urgencia",single_feature,Lentitud y problemas de apertura de la aplicación
+24,12,"magnífica aplicación, pagos excelente, facilita operaciones, eficiente magnífica, facilita realizar, eficaz eficiente",single_feature,Facilidad para gestionar dinero y realizar operaciones bancarias
+25,11,"gusta app, usar apps, fácil usar, funcionalidad aplicación, facil consultar, fácil confiable",single_feature,Facilidad de uso de la aplicación
+26,11,"felicidades banamex, banamex excelente, excelente desde, mejor excelente, limpieza todos, mejor publicidad",mixed,Satisfacción general con la aplicación y servicios de Banamex
+27,10,"segura facil, accesible rapida, rapida segura, seguridad fácil, rápido uso, fácil acceso",single_feature,Seguridad y facilidad de acceso en la aplicación

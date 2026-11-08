@@ -1,0 +1,38 @@
+[
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:2fcac818-4822-43f6-8c87-c8114715b1b1",
+    "text": "Tarda mucho en abrir ahora... Y me estresa porque tengo prisa y aveces necesito cosas de la app... Modifiquen eso la verdad",
+    "base_topic": 0,
+    "alternative_topic": 0
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:d29803eb-32ba-4a93-b50b-041eecb05243",
+    "text": "falla mucho la app",
+    "base_topic": 0,
+    "alternative_topic": 0
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:7781f17f-f1af-421c-82ef-960e1bd39f4c",
+    "text": "Al principio no tenía tema con la aplicación funcional, sencilla de manejar, etc. Pero de un mes a la fecha es tardado ingresar a la aplicación tengo que intentarlo muchas veces pensé que era algo ocasional pero ha Sido constante.",
+    "base_topic": 0,
+    "alternative_topic": -1
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:8344a250-8ad5-457c-aa87-5c224a72ee9a",
+    "text": "Es una excelente app, pero no me agrada mucho tener que pagar por el Net key para poder instalar la APP si cambio mi dispositivo",
+    "base_topic": 0,
+    "alternative_topic": -1
+  },
+  {
+    "record_id": "appbot:498483038:3745937943",
+    "text": "No me da detalle de los depósitos como cuando lo veo en la computadora.",
+    "base_topic": 0,
+    "alternative_topic": 1
+  },
+  {
+    "record_id": "play:com.citibanamex.banamexmobile:55fd461b-5f6a-4e04-acff-784d048c29c5",
+    "text": "no abre, se queda solo cargando",
+    "base_topic": 0,
+    "alternative_topic": 1
+  }
+]

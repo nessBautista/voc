@@ -1,0 +1,9 @@
+{
+  "common_rows": 987,
+  "became_unassigned": 113,
+  "became_assigned": 19,
+  "assigned_both_rows": 827,
+  "ari_including_minus1_as_group": 0.19311205665709474,
+  "ari_assigned_intersection": 0.25497366466910715,
+  "note": "ARI describes agreement, not thematic quality; assigned intersection is a different subset."
+}

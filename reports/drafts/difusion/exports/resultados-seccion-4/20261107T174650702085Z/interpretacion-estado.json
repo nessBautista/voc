@@ -1,0 +1,12 @@
+{
+  "state": "completed",
+  "topics_base": 18,
+  "topics_alternative": 28,
+  "provider_attempts": 46,
+  "successful_topics": 46,
+  "failed_topics": 0,
+  "provider_cost_usd": "0.02877344",
+  "new_requests_this_notebook": 0,
+  "human_topic_quality_validation": false,
+  "note": "Categorías del LLM sobre evidencia limitada, no calidad validada de los tópicos."
+}

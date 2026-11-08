@@ -1,0 +1,90 @@
+[
+  {
+    "label": "fig:corpus-mensual",
+    "number": "1",
+    "caption": "Registros por mes y fuente. El volumen describe el corpus recolectado, no el número de usuarios ni la frecuencia real de problemas.",
+    "image": "figuras/corpus-mensual.png",
+    "original": "figuras/corpus-mensual.png",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:propuesta-dos-modelos",
+    "number": "2",
+    "caption": "Modelo base y alternativo. Las etapas compartidas conservan su configuración; cada sistema ajusta sus grupos sobre las reseñas que recibe. Ilustración elaborada con asistencia de IA.",
+    "image": "figuras/propuesta-dos-modelos.png",
+    "original": "figuras/propuesta-dos-modelos.png",
+    "kind": "documental"
+  },
+  {
+    "label": "fig:umap-vecindades",
+    "number": "3",
+    "caption": "Esquema conceptual de UMAP: se conservan las filas y se calculan cinco coordenadas por reseña a partir de las vecindades. Las celdas y conexiones son ilustrativas.",
+    "image": "figuras/umap-vecindades.png",
+    "original": "figuras/umap-vecindades.pdf",
+    "kind": "documental"
+  },
+  {
+    "label": "fig:hdbscan-base-alternativa",
+    "number": "4",
+    "caption": "Proyección común de los embeddings. Se distinguen los seis tópicos mayores de cada sistema; gris: otros tópicos; cruces: sin asignación. Los colores no emparejan temas. Los ejes UMAP no tienen unidades físicas y no son el espacio de agrupamiento.",
+    "image": "figuras/hdbscan-base-alternativa.png",
+    "original": "figuras/hdbscan-base-alternativa.pdf",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:resultados-relevancia-comparada",
+    "number": "5",
+    "caption": "Comparación sobre cinco particiones de los mismos 160 textos. La selección utiliza esta validación; no constituye una prueba independiente posterior.",
+    "image": "figuras/resultados-relevancia-comparada.png",
+    "original": "figuras/resultados-relevancia-comparada.png",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:resultados-sentimiento-historico",
+    "number": "6",
+    "caption": "Prueba histórica con etiquetas derivadas de estrellas. La mejora agregada convive con un F1 neutral bajo; estas métricas no corresponden a la muestra integrada.",
+    "image": "figuras/resultados-sentimiento-historico.png",
+    "original": "figuras/resultados-sentimiento-historico.png",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:resultados-distribucion-combinada",
+    "number": "7",
+    "caption": "Distribución por tamaño con la misma escala vertical. Izquierda: modelo base (azul). Derecha: alternativa (naranja). Las posiciones no emparejan temas. Se excluyen las reseñas sin tópico.",
+    "image": "figuras/resultados-distribucion-combinada.png",
+    "original": "figuras/resultados-distribucion-combinada.pdf",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:arquitectura-operacion-propuesta",
+    "number": "8",
+    "caption": "Arquitectura del prototipo. El operador publica resultados; voc CLI y la aplicación reutilizan la biblioteca de consulta en entornos distintos. Los clientes acceden a los servicios de la aplicación.",
+    "image": "figuras/arquitectura-operacion-propuesta.png",
+    "original": "figuras/arquitectura-operacion-propuesta.pdf",
+    "kind": "documental"
+  },
+  {
+    "label": "fig:ciclo-react-consulta",
+    "number": "9",
+    "caption": "Ciclo conceptual de consulta basado en ReAct. El agente evalúa la evidencia y continúa dentro de límites o responde con referencias; no sustituye la interpretación del analista.",
+    "image": "figuras/ciclo-react-consulta.png",
+    "original": "figuras/ciclo-react-consulta.pdf",
+    "kind": "documental"
+  },
+  {
+    "label": "fig:anexo-topicos-sentimiento",
+    "number": "A.1",
+    "caption": "Catálogo completo de tópicos. Izquierda: modelo base. Derecha: modelo alternativo. Longitud de las barras: número de reseñas. Colores: sentimiento por reseña. Las filas no emparejan temas y los nombres del LLM no son etiquetas humanas validadas.",
+    "image": "figuras/figura8-combinada-horizontal.png",
+    "original": "figuras/figura8-combinada-horizontal.pdf",
+    "kind": "calculada"
+  },
+  {
+    "label": "fig:anexo-dashboard",
+    "number": "B.1",
+    "caption": "Dashboard del prototipo para explorar temas, sentimiento y reseñas mediante filtros. La captura ilustra la interfaz con una publicación de 80.079 reseñas y 110 temas, distinta de la muestra de 1.000 reseñas utilizada en la comparación de este artículo.",
+    "image": "figuras/dashboard-demo.png",
+    "original": "figuras/dashboard-demo.png",
+    "kind": "documental"
+  }
+]

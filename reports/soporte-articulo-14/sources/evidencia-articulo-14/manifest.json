@@ -1,0 +1,270 @@
+{
+  "schema": "voc-evidencia-articulo14-v1",
+  "files": {
+    "catalogo-publicado.csv": "5106e4232585f3b55bdcb9a5ce04fbeaade9d0d0b79fff6634dd1921b03d9cec",
+    "resumen-agrupamiento.csv": "b049eec9b405f40f5ce6276afdc5508dee596ed523aa97f5c4392b03c5f0749d",
+    "trece-comentarios-retirados.csv": "b4e9cd2fe18d2b18c2950bdcc98db8e35e7fc3201fa4b522de897c0834255813",
+    "costos-openrouter.csv": "af441dce5a7792cae48413f1cbbb1bef3030d8833976920ef2cc358450c062a0",
+    "robertuito-provenance.json": "9c88936205f1a1365d7d67bb943e7c7d903e9e5867be6feedff7e7353f5688a9",
+    "base-topicos-palabras-llm.csv": "2d7b5fdc3a7f131f2d3da26957f59392a46006d4bee34bd43ad17dd6cc235ebd",
+    "relevancia-recibo.json": "84afad108885057ecddac306f3361ce0780279df768f569c14ae8affaeaa82b1",
+    "alternative-asignaciones.csv": "e4eaf6c9dbffac98ba393215461e30455bd4e53487402239692753aefbb9d6d3",
+    "base-asignaciones.csv": "8cb20de91e38e0adef31b3039a19d688beac7d2b636541c82902e7033454eea6",
+    "proyeccion-comun.csv": "110a7872b400d8c34b2871dc37f523031df16085d328c10f67063c4684fb6381",
+    "corpus-procedencia.json": "882abc110cac0afa15e0ad65a67122ef8bfe490eca55bf9f5b1b25622751fc32",
+    "fuentes-publicas.json": "4bfb08d6d7e1f30b5891e8193217b5d7b6613b8e41359764761764a64b358664",
+    "relevancia-svm.csv": "91b4fe10938efa3968f5f7c6007701d70d032a05cc4e781d04afa95987f1a86b",
+    "corpus-fechas.csv.gz": "95bec25a9d1ac806d970730e5b5f17370eb3a91da4edacfbcc9028a3de0b4305",
+    "protocolo-extracto.json": "a488e4a22a8a898f5519b682f35e4583fadafb313360eb766538251f5cd3becb",
+    "alternative-topicos-palabras-llm.csv": "f136bfec911e67e84379e5348e9f914b0a893edf549e1ad75e4e337ab630b3c1",
+    "relevancia-logreg.csv": "19022ba5e80a7ec358d4c6d9dbe489a8edfae2488e84dd7c5e08cdd7e112773a",
+    "ejemplo-llm.json": "7d5f1466852f7a1f674972f5d5e8daa32ef0dde7219b8687b6990a219494e45c",
+    "corpus-registros-por-mes-y-fuente.csv": "1729feff3b04be2da68fb26548f5ce57a6b92d11585f548e34da281ee3d22ba4",
+    "robertuito-tiendas-v3-evaluation.json": "f4d53c2e5552903f5e0315f2efb12756328995ab150e284e8da0c4fc65bab3be",
+    "interpretaciones.csv": "0f406d2baa4081c16c74dadc7ba224a661c12e09bfe0d7d7e58a7cd421d1c753",
+    "verificacion-reproduccion.csv": "c5283c18079b04e513dd38ea3ae869b93cebce39fbd8f9bbde0076e83feb9338",
+    "destino-grupo-mayor.csv": "6f49360d9e7694bd4a884ca74d298cae81ece0dced6871859a57938d5d4e4e60",
+    "proyeccion-recibo.json": "0b242dc717eb4a0bd0f6d8ad5f2f147752881683c36d91579ed32a237bc72ec0",
+    "asignaciones-comunes.csv": "f91653834db4d96314afce51ec820e268cecddb2bf71e2975a81209ba563362f",
+    "indice-figuras.json": "1eb425c6f928b3d20b469b4c1de68b3736f7d6319af662f152a66d74a6fad4b4",
+    "tablas-articulo.json": "e4b1cb743d1c84bbae62ea0138e781ebe7df5c10b523a35e1fbe4cd63558ea5e",
+    "muestra-plataforma-mes.csv": "414ebe160130da235053880dd41d877d0c985635398ff05a15516793aa216586",
+    "figuras/propuesta-dos-modelos.png": "7ec7fa9e8bf4d26509422321698e0b0cae822be354165fe7b8a9240718a40f6a",
+    "figuras/resultados-relevancia-comparada.png": "f5b205dbc2ccbece47d1787024e905d2d50f6df2d5aaefdad009a9938b85e47d",
+    "figuras/umap-vecindades.png": "d3cf58f5461a5ff60648c6493f560444152d7a11076f39053d89e2fd52dcab4f",
+    "figuras/umap-vecindades.pdf": "202011515c487a78fca1bb946eb50914fd974769d83ba82032b2a920027ca758",
+    "figuras/resultados-sentimiento-historico.png": "bfa76836f7eeb6764fec07aa53885cc3c7aea8940aa4f41b5ddace99216b01a7",
+    "figuras/ciclo-react-consulta.png": "e2477aaa114c213192a6b4334365df9592c56b2513cedb2d73a556700a836ac4",
+    "figuras/hdbscan-base-alternativa.pdf": "94324e2ae512940282f0ef8aabfd7d74794a31ccecae728b1e9f98936ac61593",
+    "figuras/figura8-combinada-horizontal.png": "ddd2e2ccc26cfaf15eebf823974997d0c79607cd17420aae093bfd4b423ce40d",
+    "figuras/hdbscan-base-alternativa.png": "4980a7a8e8fd109dd6388fc080c85cde424a569a8b81df1f3385c1c2d27fb1ac",
+    "figuras/figura8-combinada-horizontal.pdf": "01fa3fe18a0e63924e86eaff38b0d389c59384e5dfa93ea176032d5badae747c",
+    "figuras/ciclo-react-consulta.pdf": "37ede2f5f47bd3a7aaa4dcd6704714638577526c6e60943cf5cfca90202c6149",
+    "figuras/arquitectura-operacion-propuesta.pdf": "0d2adfa0ac6e65e86c817812ed8b4607b94f9caf500046ba34b07bbc7f55f539",
+    "figuras/resultados-distribucion-combinada.png": "58a837dbbd18c9909e468b9568911307b3ea2ab4120e5275965c6675b9ad8a71",
+    "figuras/dashboard-demo.png": "15c7a6f137aa395bc5eda531981305aa9d7adfd4ac35fbc765e9dc6bf064796f",
+    "figuras/arquitectura-operacion-propuesta.png": "829af7181f88281bd4aed8cf02d5ba4c1913086bc4d4adfebb2de1bac9e44dc4",
+    "figuras/resultados-distribucion-combinada.pdf": "a172db890d819d197cc21ff4615956cad86e31b87f84a3146f01a62116219330",
+    "figuras/corpus-mensual.png": "c79252f4503ed427611fd686edddb23882f8c82f3928d4399ad3ec8e753d1220",
+    "criterios-entrega-anterior.json": "58e9f492e9dc6cabaac2d4c417992b53a740c3a9e86b90a6588208f74b7f59d3"
+  },
+  "provenance": {
+    "corpus-fechas.csv.gz": {
+      "origin": "data/inputs/corpus/dataset.parquet",
+      "source_sha256": "a8db7989ea44de41f1f37d1cda8a228dbcc698a505c5abbf3136a3a253448924",
+      "kind": "extracto derivado",
+      "transformation": "Solo identificador, plataforma y fecha. Sin textos ni metadatos de entorno."
+    },
+    "corpus-registros-por-mes-y-fuente.csv": {
+      "origin": "reports/difusion/exports/cobertura-del-corpus/20261105T211948445522Z/registros-por-mes-y-fuente.csv",
+      "source_sha256": "1729feff3b04be2da68fb26548f5ce57a6b92d11585f548e34da281ee3d22ba4",
+      "kind": "resultado guardado"
+    },
+    "corpus-procedencia.json": {
+      "origin": "reports/difusion/exports/cobertura-del-corpus/20261105T211948445522Z/procedencia.json",
+      "source_sha256": "882abc110cac0afa15e0ad65a67122ef8bfe490eca55bf9f5b1b25622751fc32",
+      "kind": "resultado guardado"
+    },
+    "relevancia-recibo.json": {
+      "origin": "docs/evidence/relevance-comparison-v1.json",
+      "source_sha256": "84afad108885057ecddac306f3361ce0780279df768f569c14ae8affaeaa82b1",
+      "kind": "resultado guardado"
+    },
+    "relevancia-svm.csv": {
+      "origin": "data/relevance/model-v1/validation.csv",
+      "source_sha256": "caa7e88ae5c2a2075e80b60914a53a5b1b71f2ca1dea85c797e726660de3c52a",
+      "kind": "extracto derivado",
+      "transformation": "Solo IDs, particiones, referencia y predicciones OOF. No se copian anotadores ni metadatos del entorno."
+    },
+    "relevancia-logreg.csv": {
+      "origin": "data/relevance/model-logreg-v1/validation.csv",
+      "source_sha256": "06de4773289ec7d3faf78d75b7f9ccdc248b2444d1590af151bf2e746492e57a",
+      "kind": "extracto derivado",
+      "transformation": "Solo IDs, particiones, referencia y predicciones OOF. No se copian anotadores ni metadatos del entorno."
+    },
+    "robertuito-tiendas-v3-evaluation.json": {
+      "origin": "reports/difusion/sources/robertuito-tiendas-v3-evaluation.json",
+      "source_sha256": "f4d53c2e5552903f5e0315f2efb12756328995ab150e284e8da0c4fc65bab3be",
+      "kind": "evaluación histórica, no nuevo entrenamiento"
+    },
+    "robertuito-provenance.json": {
+      "origin": "reports/difusion/sources/provenance.json",
+      "source_sha256": "9c88936205f1a1365d7d67bb943e7c7d903e9e5867be6feedff7e7353f5688a9",
+      "kind": "evaluación histórica, no nuevo entrenamiento"
+    },
+    "base-asignaciones.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/base-asignaciones.csv",
+      "source_sha256": "8cb20de91e38e0adef31b3039a19d688beac7d2b636541c82902e7033454eea6",
+      "kind": "resultado guardado"
+    },
+    "alternative-asignaciones.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/alternative-asignaciones.csv",
+      "source_sha256": "e4eaf6c9dbffac98ba393215461e30455bd4e53487402239692753aefbb9d6d3",
+      "kind": "resultado guardado"
+    },
+    "base-topicos-palabras-llm.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/base-topicos-palabras-llm.csv",
+      "source_sha256": "2d7b5fdc3a7f131f2d3da26957f59392a46006d4bee34bd43ad17dd6cc235ebd",
+      "kind": "resultado guardado"
+    },
+    "alternative-topicos-palabras-llm.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/alternative-topicos-palabras-llm.csv",
+      "source_sha256": "f136bfec911e67e84379e5348e9f914b0a893edf549e1ad75e4e337ab630b3c1",
+      "kind": "resultado guardado"
+    },
+    "interpretaciones.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/interpretaciones.csv",
+      "source_sha256": "0f406d2baa4081c16c74dadc7ba224a661c12e09bfe0d7d7e58a7cd421d1c753",
+      "kind": "resultado guardado"
+    },
+    "trece-comentarios-retirados.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/trece-comentarios-retirados.csv",
+      "source_sha256": "b4e9cd2fe18d2b18c2950bdcc98db8e35e7fc3201fa4b522de897c0834255813",
+      "kind": "resultado guardado"
+    },
+    "muestra-plataforma-mes.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/muestra-plataforma-mes.csv",
+      "source_sha256": "414ebe160130da235053880dd41d877d0c985635398ff05a15516793aa216586",
+      "kind": "resultado guardado"
+    },
+    "resumen-agrupamiento.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/resumen-agrupamiento.csv",
+      "source_sha256": "b049eec9b405f40f5ce6276afdc5508dee596ed523aa97f5c4392b03c5f0749d",
+      "kind": "resultado guardado"
+    },
+    "destino-grupo-mayor.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/destino-grupo-mayor.csv",
+      "source_sha256": "6f49360d9e7694bd4a884ca74d298cae81ece0dced6871859a57938d5d4e4e60",
+      "kind": "resultado guardado"
+    },
+    "verificacion-reproduccion.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/verificacion-reproduccion.csv",
+      "source_sha256": "c5283c18079b04e513dd38ea3ae869b93cebce39fbd8f9bbde0076e83feb9338",
+      "kind": "resultado guardado"
+    },
+    "asignaciones-comunes.csv": {
+      "origin": "reports/difusion/exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z/asignaciones-comunes.csv",
+      "source_sha256": "f91653834db4d96314afce51ec820e268cecddb2bf71e2975a81209ba563362f",
+      "kind": "resultado guardado"
+    },
+    "catalogo-publicado.csv": {
+      "origin": "reports/difusion/exports/topicos-y-sentimiento-seccion-4/20261108T184953408091Z/topicos-llm-sentimiento-completo.csv",
+      "source_sha256": "5106e4232585f3b55bdcb9a5ce04fbeaade9d0d0b79fff6634dd1921b03d9cec",
+      "kind": "resultado guardado"
+    },
+    "proyeccion-comun.csv": {
+      "origin": "reports/difusion/sources/agrupamiento-proyeccion-comun/6a914ee32ce9721cc90dbf8d0d24e67967c56c949297d922d55397c873245b2d/coordinates.csv",
+      "source_sha256": "110a7872b400d8c34b2871dc37f523031df16085d328c10f67063c4684fb6381",
+      "kind": "resultado guardado"
+    },
+    "proyeccion-recibo.json": {
+      "origin": "reports/difusion/sources/agrupamiento-proyeccion-comun/6a914ee32ce9721cc90dbf8d0d24e67967c56c949297d922d55397c873245b2d/manifest.json",
+      "source_sha256": "0b242dc717eb4a0bd0f6d8ad5f2f147752881683c36d91579ed32a237bc72ec0",
+      "kind": "resultado guardado"
+    },
+    "protocolo-extracto.json": {
+      "origin": "data/experiments/julaug-2026/protocol.json",
+      "source_sha256": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091",
+      "kind": "extracto sin rutas absolutas del entorno"
+    },
+    "ejemplo-llm.json": {
+      "origin": "Ejemplo estructurado usado en sección 3.6",
+      "source_sha256": "d854dd41ddc15871df6c33130661660099096a34700cc4ed9a026ad85ac14f7a",
+      "kind": "respuesta histórica, ejemplo de formato"
+    },
+    "costos-openrouter.csv": {
+      "origin": "openrouter_activity_2026-11-07.csv",
+      "source_sha256": "a458c1a8b7717f3ae6428424b4302c10861c9594142d0c7401ff487cc4ef0f85",
+      "kind": "extracto derivado",
+      "transformation": "Solo modelo y costo por llamada. Se excluyen usuarios, nombres de claves, IDs y otros metadatos del proveedor."
+    },
+    "figuras/corpus-mensual.png": {
+      "origin": "corpus-mensual.png",
+      "source_sha256": "c79252f4503ed427611fd686edddb23882f8c82f3928d4399ad3ec8e753d1220",
+      "kind": "figura publicada"
+    },
+    "figuras/propuesta-dos-modelos.png": {
+      "origin": "propuesta-dos-modelos.png",
+      "source_sha256": "7ec7fa9e8bf4d26509422321698e0b0cae822be354165fe7b8a9240718a40f6a",
+      "kind": "recurso documental, no resultado experimental"
+    },
+    "figuras/umap-vecindades.png": {
+      "origin": "umap-vecindades.png",
+      "source_sha256": "d3cf58f5461a5ff60648c6493f560444152d7a11076f39053d89e2fd52dcab4f",
+      "kind": "recurso documental, no resultado experimental"
+    },
+    "figuras/umap-vecindades.pdf": {
+      "origin": "umap-vecindades.pdf",
+      "source_sha256": "202011515c487a78fca1bb946eb50914fd974769d83ba82032b2a920027ca758",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/hdbscan-base-alternativa.png": {
+      "origin": "hdbscan-base-alternativa.png",
+      "source_sha256": "4980a7a8e8fd109dd6388fc080c85cde424a569a8b81df1f3385c1c2d27fb1ac",
+      "kind": "figura publicada"
+    },
+    "figuras/hdbscan-base-alternativa.pdf": {
+      "origin": "hdbscan-base-alternativa.pdf",
+      "source_sha256": "94324e2ae512940282f0ef8aabfd7d74794a31ccecae728b1e9f98936ac61593",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/resultados-relevancia-comparada.png": {
+      "origin": "resultados-relevancia-comparada.png",
+      "source_sha256": "f5b205dbc2ccbece47d1787024e905d2d50f6df2d5aaefdad009a9938b85e47d",
+      "kind": "figura publicada"
+    },
+    "figuras/resultados-sentimiento-historico.png": {
+      "origin": "resultados-sentimiento-historico.png",
+      "source_sha256": "bfa76836f7eeb6764fec07aa53885cc3c7aea8940aa4f41b5ddace99216b01a7",
+      "kind": "figura publicada"
+    },
+    "figuras/resultados-distribucion-combinada.png": {
+      "origin": "resultados-distribucion-combinada.png",
+      "source_sha256": "58a837dbbd18c9909e468b9568911307b3ea2ab4120e5275965c6675b9ad8a71",
+      "kind": "figura publicada"
+    },
+    "figuras/resultados-distribucion-combinada.pdf": {
+      "origin": "resultados-distribucion-combinada.pdf",
+      "source_sha256": "a172db890d819d197cc21ff4615956cad86e31b87f84a3146f01a62116219330",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/arquitectura-operacion-propuesta.png": {
+      "origin": "arquitectura-operacion-propuesta.png",
+      "source_sha256": "829af7181f88281bd4aed8cf02d5ba4c1913086bc4d4adfebb2de1bac9e44dc4",
+      "kind": "recurso documental, no resultado experimental"
+    },
+    "figuras/arquitectura-operacion-propuesta.pdf": {
+      "origin": "arquitectura-operacion-propuesta.pdf",
+      "source_sha256": "0d2adfa0ac6e65e86c817812ed8b4607b94f9caf500046ba34b07bbc7f55f539",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/ciclo-react-consulta.png": {
+      "origin": "ciclo-react-consulta.png",
+      "source_sha256": "e2477aaa114c213192a6b4334365df9592c56b2513cedb2d73a556700a836ac4",
+      "kind": "recurso documental, no resultado experimental"
+    },
+    "figuras/ciclo-react-consulta.pdf": {
+      "origin": "ciclo-react-consulta.pdf",
+      "source_sha256": "37ede2f5f47bd3a7aaa4dcd6704714638577526c6e60943cf5cfca90202c6149",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/figura8-combinada-horizontal.png": {
+      "origin": "figura8-combinada-horizontal.png",
+      "source_sha256": "ddd2e2ccc26cfaf15eebf823974997d0c79607cd17420aae093bfd4b423ce40d",
+      "kind": "figura publicada"
+    },
+    "figuras/figura8-combinada-horizontal.pdf": {
+      "origin": "figura8-combinada-horizontal.pdf",
+      "source_sha256": "01fa3fe18a0e63924e86eaff38b0d389c59384e5dfa93ea176032d5badae747c",
+      "kind": "recurso vectorial publicado"
+    },
+    "figuras/dashboard-demo.png": {
+      "origin": "dashboard-demo.png",
+      "source_sha256": "15c7a6f137aa395bc5eda531981305aa9d7adfd4ac35fbc765e9dc6bf064796f",
+      "kind": "recurso documental, no resultado experimental"
+    }
+  },
+  "models_executed": 0,
+  "provider_calls": 0,
+  "scope": "Reproduce análisis sobre salidas guardadas. No reproduce entrenamiento histórico ni valida semánticamente los tópicos."
+}

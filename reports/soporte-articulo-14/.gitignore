@@ -1,0 +1,3 @@
+# Selected, sanitized evidence used by the article notebook.
+!sources/evidencia-articulo-14/**/*.csv
+!exports/evidencia-articulo-14/**/*.csv

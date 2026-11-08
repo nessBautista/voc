@@ -1,0 +1,47 @@
+topic_id,size,keywords,assessment,name,negative,neutral,positive,system
+0,529,"app, aplicación, no abre, tarjeta, banamex, abrir",mixed,Problemas de acceso y visualización de movimientos en la aplicación móvil,459,65,5,base
+1,56,"excelentes excelente, perfeccion excelente, excelente siempre, siempre excelentes, tal perfeccion, perfeccion",unclear,Calidad general de la aplicación,0,55,1,base
+2,38,"excelente aplicación, buena aplicación, aplicación muy, accesible, operatividad app, seguridad excelente",mixed,Seguridad y facilidad de uso de la aplicación,0,8,30,base
+3,34,"todo bien, excelente bien, bien funciona, gracias mejorarla, mejorado todo, funciona muy",unclear,Funcionamiento general de la aplicación,0,6,28,base
+4,30,"excelente servicio, servicio excelente, servicio buen, buen servicio, servicio muy, muy buenos",mixed,Calidad del servicio y atención al cliente,0,1,29,base
+5,30,"fácil usar, usar fácil, útil sencilla, muy fácil, fácil rápida, fácil muy",single_feature,Facilidad de uso de la aplicación,0,13,17,base
+6,30,"app buena, buena app, app excelente, excelente app, encanta app, ya mejoró",single_feature,Mejoras en la velocidad de apertura y rendimiento general de la aplicación,3,7,20,base
+7,28,"muy buena, muy bueno, buena muy, buena buena, buena excelente, buena gusta",unclear,Calidad general de la aplicación,0,2,26,base
+8,25,"excelente aplicación, excelente aplicacion, aplicación buena, buena aplicación, aplicación excelente, maravillosa aplicación",unclear,Valoración positiva general de la aplicación,0,3,22,base
+9,23,"exelente exelenete, exelente exelente, mala execelente, versatil didáctica, satisfecho magnigico, pesima versatil",mixed,Evaluación de la experiencia del usuario con la aplicación,5,8,10,base
+10,22,"eficiente gracias, gracias fabulosa, gracias exelente, exelente gracias, muchas gracias, gracias muy",single_feature,Atención al cliente eficiente y amable,0,1,21,base
+11,22,"bien muy, bien bien, bien cumple, mu bien, propósito bien, bien bueno",unclear,Evaluación general positiva de la aplicación,0,20,2,base
+12,17,"buena, buena buena, buena ap, ap buena, excelente, buena cool",unclear,Valoración general positiva de la aplicación,0,16,1,base
+13,17,"rápida efectiva, rápida eficaz, muy eficiente, rápida axesible, mejoraron rapidez, práctica rápida",single_feature,Rapidez y eficiencia en las operaciones de la aplicación,0,8,9,base
+14,15,"buena app, gusta app, recomiendo aplicación, fácil usar, funcionalidad aplicación, facil consultar",single_feature,Facilidad de uso y navegación intuitiva de la aplicación,0,0,15,base
+15,13,"excelente super, genial excelente, cool excelentes, excelente excelente, muy bien, excelente muchas",unclear,Satisfacción general con la aplicación,0,4,9,base
+16,13,"útil buena, muy práctica, eficas buena, confiable clara, práctica confiable, cómoda práctica",single_feature,Valoración general de la aplicación: utilidad y practicidad,1,5,7,base
+17,11,"felicidades banamex, banamex excelente, excelente desde, mejor excelente, limpieza todos, mejor publicidad",mixed,Satisfacción general con Banamex y su aplicación,2,0,9,base
+0,105,"app queda, abrir app, app, abre, pantalla, pantalla azul",single_feature,Problemas de acceso y navegación en la aplicación,81,14,10,alternative
+1,73,"tarda mucho, no deja, tener esperar, abre tarda, 15 días, cualquier hora",mixed,Problemas de acceso y visualización de movimientos,55,9,9,alternative
+2,66,"app banco, app tarda, aplicación banco, banca móvil, bancaria, banca",mixed,Problemas de rendimiento y acceso a la aplicación,55,4,7,alternative
+3,61,"móvil banamex, banamex app, app banamex, aplicación banamex, banamex no, app no",single_feature,Problemas de acceso y registro en la aplicación móvil de Banamex,49,1,11,alternative
+4,54,"excelentes excelente, perfeccion excelente, excelente siempre, siempre excelentes, tal perfeccion, perfecto",unclear,Reseñas de satisfacción general,0,0,54,alternative
+5,35,"muy eficiente, muy eficas, mejoraron rapidez, eficiente buena, rápida muy, eficiente",single_feature,Mejora en la rapidez y eficiencia de la aplicación,1,0,34,alternative
+6,34,"servicio buen, buen servicio, excelente servicio, servicio excelente, servicio muy, muy recomendable",mixed,Servicio y atención al cliente,0,0,34,alternative
+7,32,"todo bien, bien funciona, excelente bien, funciona muy, gracias mejorarla, mejorado todo",mixed,Funcionamiento general de la aplicación,1,0,31,alternative
+8,32,"mejoró app, app buena, buena app, app excelente, mejoraron aplicación, mejoró",single_feature,Mejoras en la velocidad y funcionalidad de la aplicación,3,0,29,alternative
+9,29,"muy buena, muy bueno, buena muy, buena buena, buena excelente, buena apiclascion",mixed,Calidad general de la aplicación,0,0,29,alternative
+10,28,"fácil usar, usar fácil, útil fácil, sencilla usar, muy fácil, fácil rápida",single_feature,Facilidad de uso de la aplicación,0,0,28,alternative
+11,25,"abrir aplicacion, abre app, abrir aplicación, abre aplicación, aplicación no, porque aplicación",single_feature,Problemas al abrir la aplicación y acceder a estados de cuenta,17,3,5,alternative
+12,24,"excelente aplicación, excelente aplicacion, aplicación buena, buena aplicación, aplicación excelente, maravillosa aplicación",single_feature,Funcionalidad y utilidad general de la aplicación,0,0,24,alternative
+13,24,"muchas fallas, tiene fallas, fallas demás, hay fallas, fallas capacidad, fallas siempre",mixed,Fallas generales de la aplicación,18,3,3,alternative
+14,22,"nada amigable, ninguna seguridad, mucho no, hay ninguna, mala seguridad, no intuitiva",single_feature,Problemas de seguridad y cobros no reconocidos,18,1,3,alternative
+15,22,"exelente exelente, didáctica exelente, mala execelente, confusos grandioso, satisfecho magnigico, pesima versatil",mixed,Evaluación de la claridad y utilidad de la aplicación,6,0,16,alternative
+16,21,"excelente atención, eficiente gracias, contenta atención, genial gracias, exelente gracias, gracias exelente",single_feature,Atención al cliente eficiente y amable,0,0,21,alternative
+17,21,"bien cumple, bien bien, muy bien, segura bien, propósito bien, bien bueno",unclear,Evaluación general positiva de la aplicación,0,0,21,alternative
+18,18,"falla mucho, bastante traba, traba poco, mucho falla, traba simplemente, traba tratar",single_feature,Problemas de congelación y rendimiento de la aplicación,13,2,3,alternative
+19,18,"buena, buena cool, buena buena, buena ap, ap buena, excelente opción",unclear,Evaluación general positiva de la aplicación,0,0,18,alternative
+20,17,"tarjeta digital, tarjeta, no tarjeta, tarjeta no, apps, bloquear",single_feature,Problemas con la tarjeta digital y opciones de gestión de tarjetas,6,1,10,alternative
+21,15,"buena aplicación, excelente aplicación, segura eficiente, segura excelente, excelente seguridad, fiable rspida",single_feature,Seguridad y fiabilidad de la aplicación,0,0,15,alternative
+22,14,"excelente super, excelentes, cool excelentes, excelente excelente, muy bien, excelente muchas",unclear,Calidad general de la aplicación,0,0,14,alternative
+23,12,"lenta abrir, muy lento, muy lenta, lenta abre, lenta interfaz, lenta urgencia",single_feature,Lentitud y problemas de apertura de la aplicación,7,5,0,alternative
+24,12,"magnífica aplicación, pagos excelente, facilita operaciones, eficiente magnífica, facilita realizar, eficaz eficiente",single_feature,Facilidad para gestionar dinero y realizar operaciones bancarias,0,0,12,alternative
+25,11,"gusta app, usar apps, fácil usar, funcionalidad aplicación, facil consultar, fácil confiable",single_feature,Facilidad de uso de la aplicación,0,0,11,alternative
+26,11,"felicidades banamex, banamex excelente, excelente desde, mejor excelente, limpieza todos, mejor publicidad",mixed,Satisfacción general con la aplicación y servicios de Banamex,1,0,10,alternative
+27,10,"segura facil, accesible rapida, rapida segura, seguridad fácil, rápido uso, fácil acceso",single_feature,Seguridad y facilidad de acceso en la aplicación,0,0,10,alternative

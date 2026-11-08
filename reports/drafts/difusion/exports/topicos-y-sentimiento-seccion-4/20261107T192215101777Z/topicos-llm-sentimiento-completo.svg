@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1152pt" height="1332pt" viewBox="0 0 1152 1332" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-07T19:22:15.106345</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 1332 
+L 1152 1332 
+L 1152 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 40.32 1212.12 
+L 555.977143 1212.12 
+L 555.977143 159.84 
+L 40.32 159.84 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m17a0968a23" d="M 0 0 
+L 0 3.5 
+" style="stroke: #50616b; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m17a0968a23" x="40.32" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="40.32" y="1226.717656" transform="rotate(-0 40.32 1226.717656)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m17a0968a23" x="132.401633" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="132.401633" y="1226.717656" transform="rotate(-0 132.401633 1226.717656)">100</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m17a0968a23" x="224.483265" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="224.483265" y="1226.717656" transform="rotate(-0 224.483265 1226.717656)">200</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m17a0968a23" x="316.564898" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="316.564898" y="1226.717656" transform="rotate(-0 316.564898 1226.717656)">300</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m17a0968a23" x="408.646531" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="408.646531" y="1226.717656" transform="rotate(-0 408.646531 1226.717656)">400</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m17a0968a23" x="500.728163" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="500.728163" y="1226.717656" transform="rotate(-0 500.728163 1226.717656)">500</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="298.148571" y="1247.118438" transform="rotate(-0 298.148571 1247.118438)">Número de reseñas · misma escala en ambos paneles</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="patch_3">
+    <path d="M 40.32 1212.12 
+L 555.977143 1212.12 
+" style="fill: none; stroke: #a8afb8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(40.32 170.648214)">T0 · Problemas de acceso y visualización de movimientos en la</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(40.32 181.648214)">aplicación móvil</text>
+   </g>
+   <g id="patch_4">
+    <path d="M 40.32 185.324906 
+L 462.974694 185.324906 
+L 462.974694 192.13654 
+L 40.32 192.13654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 462.974694 185.324906 
+L 522.827755 185.324906 
+L 522.827755 192.13654 
+L 462.974694 192.13654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 522.827755 185.324906 
+L 527.431837 185.324906 
+L 527.431837 192.13654 
+L 522.827755 192.13654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="532.035918" y="191.198497" transform="rotate(-0 532.035918 191.198497)">529</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="208.229643" transform="rotate(-0 40.32 208.229643)">T1 · Calidad general de la aplicación</text>
+   </g>
+   <g id="patch_7">
+    <path d="M 40.32 222.906335 
+L 40.32 222.906335 
+L 40.32 229.717969 
+L 40.32 229.717969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 40.32 222.906335 
+L 90.964898 222.906335 
+L 90.964898 229.717969 
+L 40.32 229.717969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 90.964898 222.906335 
+L 91.885714 222.906335 
+L 91.885714 229.717969 
+L 90.964898 229.717969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="96.489796" y="228.779925" transform="rotate(-0 96.489796 228.779925)">56</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="245.811071" transform="rotate(-0 40.32 245.811071)">T2 · Seguridad y facilidad de uso de la aplicación</text>
+   </g>
+   <g id="patch_10">
+    <path d="M 40.32 260.487763 
+L 40.32 260.487763 
+L 40.32 267.299397 
+L 40.32 267.299397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 40.32 260.487763 
+L 47.686531 260.487763 
+L 47.686531 267.299397 
+L 40.32 267.299397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 47.686531 260.487763 
+L 75.31102 260.487763 
+L 75.31102 267.299397 
+L 47.686531 267.299397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="79.915102" y="266.361354" transform="rotate(-0 79.915102 266.361354)">38</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="283.3925" transform="rotate(-0 40.32 283.3925)">T3 · Funcionamiento general de la aplicación</text>
+   </g>
+   <g id="patch_13">
+    <path d="M 40.32 298.069192 
+L 40.32 298.069192 
+L 40.32 304.880826 
+L 40.32 304.880826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 40.32 298.069192 
+L 45.844898 298.069192 
+L 45.844898 304.880826 
+L 40.32 304.880826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 45.844898 298.069192 
+L 71.627755 298.069192 
+L 71.627755 304.880826 
+L 45.844898 304.880826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="76.231837" y="303.942782" transform="rotate(-0 76.231837 303.942782)">34</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="320.973929" transform="rotate(-0 40.32 320.973929)">T4 · Calidad del servicio y atención al cliente</text>
+   </g>
+   <g id="patch_16">
+    <path d="M 40.32 335.650621 
+L 40.32 335.650621 
+L 40.32 342.462254 
+L 40.32 342.462254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 40.32 335.650621 
+L 41.240816 335.650621 
+L 41.240816 342.462254 
+L 40.32 342.462254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 41.240816 335.650621 
+L 67.94449 335.650621 
+L 67.94449 342.462254 
+L 41.240816 342.462254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="72.548571" y="341.524211" transform="rotate(-0 72.548571 341.524211)">30</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="358.555357" transform="rotate(-0 40.32 358.555357)">T5 · Facilidad de uso de la aplicación</text>
+   </g>
+   <g id="patch_19">
+    <path d="M 40.32 373.232049 
+L 40.32 373.232049 
+L 40.32 380.043683 
+L 40.32 380.043683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 40.32 373.232049 
+L 52.290612 373.232049 
+L 52.290612 380.043683 
+L 40.32 380.043683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 52.290612 373.232049 
+L 67.94449 373.232049 
+L 67.94449 380.043683 
+L 52.290612 380.043683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="72.548571" y="379.10564" transform="rotate(-0 72.548571 379.10564)">30</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(40.32 395.936786)">T6 · Mejoras en la velocidad de apertura y rendimiento general de</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(40.32 407.136786)">la aplicación</text>
+   </g>
+   <g id="patch_22">
+    <path d="M 40.32 410.813478 
+L 43.082449 410.813478 
+L 43.082449 417.625112 
+L 40.32 417.625112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 43.082449 410.813478 
+L 49.528163 410.813478 
+L 49.528163 417.625112 
+L 43.082449 417.625112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 49.528163 410.813478 
+L 67.94449 410.813478 
+L 67.94449 417.625112 
+L 49.528163 417.625112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="72.548571" y="416.687068" transform="rotate(-0 72.548571 416.687068)">30</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="433.718214" transform="rotate(-0 40.32 433.718214)">T7 · Calidad general de la aplicación</text>
+   </g>
+   <g id="patch_25">
+    <path d="M 40.32 448.394906 
+L 40.32 448.394906 
+L 40.32 455.20654 
+L 40.32 455.20654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 40.32 448.394906 
+L 42.161633 448.394906 
+L 42.161633 455.20654 
+L 40.32 455.20654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 42.161633 448.394906 
+L 66.102857 448.394906 
+L 66.102857 455.20654 
+L 42.161633 455.20654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="70.706939" y="454.268497" transform="rotate(-0 70.706939 454.268497)">28</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="471.299643" transform="rotate(-0 40.32 471.299643)">T8 · Valoración positiva general de la aplicación</text>
+   </g>
+   <g id="patch_28">
+    <path d="M 40.32 485.976335 
+L 40.32 485.976335 
+L 40.32 492.787969 
+L 40.32 492.787969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 40.32 485.976335 
+L 43.082449 485.976335 
+L 43.082449 492.787969 
+L 40.32 492.787969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 43.082449 485.976335 
+L 63.340408 485.976335 
+L 63.340408 492.787969 
+L 43.082449 492.787969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="67.94449" y="491.849925" transform="rotate(-0 67.94449 491.849925)">25</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="508.881071" transform="rotate(-0 40.32 508.881071)">T9 · Evaluación de la experiencia del usuario con la aplicación</text>
+   </g>
+   <g id="patch_31">
+    <path d="M 40.32 523.557763 
+L 44.924082 523.557763 
+L 44.924082 530.369397 
+L 40.32 530.369397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_32">
+    <path d="M 44.924082 523.557763 
+L 52.290612 523.557763 
+L 52.290612 530.369397 
+L 44.924082 530.369397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_33">
+    <path d="M 52.290612 523.557763 
+L 61.498776 523.557763 
+L 61.498776 530.369397 
+L 52.290612 530.369397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="66.102857" y="529.431354" transform="rotate(-0 66.102857 529.431354)">23</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="546.4625" transform="rotate(-0 40.32 546.4625)">T10 · Atención al cliente eficiente y amable</text>
+   </g>
+   <g id="patch_34">
+    <path d="M 40.32 561.139192 
+L 40.32 561.139192 
+L 40.32 567.950826 
+L 40.32 567.950826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_35">
+    <path d="M 40.32 561.139192 
+L 41.240816 561.139192 
+L 41.240816 567.950826 
+L 40.32 567.950826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_36">
+    <path d="M 41.240816 561.139192 
+L 60.577959 561.139192 
+L 60.577959 567.950826 
+L 41.240816 567.950826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="65.182041" y="567.012782" transform="rotate(-0 65.182041 567.012782)">22</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="584.043929" transform="rotate(-0 40.32 584.043929)">T11 · Evaluación general positiva de la aplicación</text>
+   </g>
+   <g id="patch_37">
+    <path d="M 40.32 598.720621 
+L 40.32 598.720621 
+L 40.32 605.532254 
+L 40.32 605.532254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_38">
+    <path d="M 40.32 598.720621 
+L 58.736327 598.720621 
+L 58.736327 605.532254 
+L 40.32 605.532254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_39">
+    <path d="M 58.736327 598.720621 
+L 60.577959 598.720621 
+L 60.577959 605.532254 
+L 58.736327 605.532254 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="65.182041" y="604.594211" transform="rotate(-0 65.182041 604.594211)">22</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="621.625357" transform="rotate(-0 40.32 621.625357)">T12 · Valoración general positiva de la aplicación</text>
+   </g>
+   <g id="patch_40">
+    <path d="M 40.32 636.302049 
+L 40.32 636.302049 
+L 40.32 643.113683 
+L 40.32 643.113683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_41">
+    <path d="M 40.32 636.302049 
+L 55.053061 636.302049 
+L 55.053061 643.113683 
+L 40.32 643.113683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_42">
+    <path d="M 55.053061 636.302049 
+L 55.973878 636.302049 
+L 55.973878 643.113683 
+L 55.053061 643.113683 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="60.577959" y="642.17564" transform="rotate(-0 60.577959 642.17564)">17</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="659.206786" transform="rotate(-0 40.32 659.206786)">T13 · Rapidez y eficiencia en las operaciones de la aplicación</text>
+   </g>
+   <g id="patch_43">
+    <path d="M 40.32 673.883478 
+L 40.32 673.883478 
+L 40.32 680.695112 
+L 40.32 680.695112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_44">
+    <path d="M 40.32 673.883478 
+L 47.686531 673.883478 
+L 47.686531 680.695112 
+L 40.32 680.695112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_45">
+    <path d="M 47.686531 673.883478 
+L 55.973878 673.883478 
+L 55.973878 680.695112 
+L 47.686531 680.695112 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="60.577959" y="679.757068" transform="rotate(-0 60.577959 679.757068)">17</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="696.788214" transform="rotate(-0 40.32 696.788214)">T14 · Facilidad de uso y navegación intuitiva de la aplicación</text>
+   </g>
+   <g id="patch_46">
+    <path d="M 40.32 711.464906 
+L 40.32 711.464906 
+L 40.32 718.27654 
+L 40.32 718.27654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_47">
+    <path d="M 40.32 711.464906 
+L 40.32 711.464906 
+L 40.32 718.27654 
+L 40.32 718.27654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_48">
+    <path d="M 40.32 711.464906 
+L 54.132245 711.464906 
+L 54.132245 718.27654 
+L 40.32 718.27654 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="58.736327" y="717.338497" transform="rotate(-0 58.736327 717.338497)">15</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="734.369643" transform="rotate(-0 40.32 734.369643)">T15 · Satisfacción general con la aplicación</text>
+   </g>
+   <g id="patch_49">
+    <path d="M 40.32 749.046335 
+L 40.32 749.046335 
+L 40.32 755.857969 
+L 40.32 755.857969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_50">
+    <path d="M 40.32 749.046335 
+L 44.003265 749.046335 
+L 44.003265 755.857969 
+L 40.32 755.857969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_51">
+    <path d="M 44.003265 749.046335 
+L 52.290612 749.046335 
+L 52.290612 755.857969 
+L 44.003265 755.857969 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="56.894694" y="754.919925" transform="rotate(-0 56.894694 754.919925)">13</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="771.951071" transform="rotate(-0 40.32 771.951071)">T16 · Valoración general de la aplicación: utilidad y practicidad</text>
+   </g>
+   <g id="patch_52">
+    <path d="M 40.32 786.627763 
+L 41.240816 786.627763 
+L 41.240816 793.439397 
+L 40.32 793.439397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_53">
+    <path d="M 41.240816 786.627763 
+L 45.844898 786.627763 
+L 45.844898 793.439397 
+L 41.240816 793.439397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_54">
+    <path d="M 45.844898 786.627763 
+L 52.290612 786.627763 
+L 52.290612 793.439397 
+L 45.844898 793.439397 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="56.894694" y="792.501354" transform="rotate(-0 56.894694 792.501354)">13</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="40.32" y="809.5325" transform="rotate(-0 40.32 809.5325)">T17 · Satisfacción general con Banamex y su aplicación</text>
+   </g>
+   <g id="patch_55">
+    <path d="M 40.32 824.209192 
+L 42.161633 824.209192 
+L 42.161633 831.020826 
+L 40.32 831.020826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_56">
+    <path d="M 42.161633 824.209192 
+L 42.161633 824.209192 
+L 42.161633 831.020826 
+L 42.161633 831.020826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_57">
+    <path d="M 42.161633 824.209192 
+L 50.44898 824.209192 
+L 50.44898 831.020826 
+L 42.161633 831.020826 
+z
+" clip-path="url(#p3eb9f9805f)" style="fill: #468c73"/>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="55.053061" y="830.082782" transform="rotate(-0 55.053061 830.082782)">11</text>
+   </g>
+   <g id="text_44">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; fill: #193c50" transform="translate(40.32 121.716445)">Modelo base · 18 tópicos</text>
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; fill: #193c50" transform="translate(40.32 137.84)">953 de 1000 reseñas (95,30 %) · sin tópico: 47</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_58">
+    <path d="M 607.542857 1212.12 
+L 1123.2 1212.12 
+L 1123.2 159.84 
+L 607.542857 159.84 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m17a0968a23" x="607.542857" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_45">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="607.542857" y="1226.717656" transform="rotate(-0 607.542857 1226.717656)">0</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m17a0968a23" x="699.62449" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_46">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="699.62449" y="1226.717656" transform="rotate(-0 699.62449 1226.717656)">100</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m17a0968a23" x="791.706122" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_47">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="791.706122" y="1226.717656" transform="rotate(-0 791.706122 1226.717656)">200</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m17a0968a23" x="883.787755" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_48">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="883.787755" y="1226.717656" transform="rotate(-0 883.787755 1226.717656)">300</text>
+     </g>
+    </g>
+    <g id="xtick_11">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#m17a0968a23" x="975.869388" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_49">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="975.869388" y="1226.717656" transform="rotate(-0 975.869388 1226.717656)">400</text>
+     </g>
+    </g>
+    <g id="xtick_12">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m17a0968a23" x="1067.95102" y="1212.12" style="fill: #50616b; stroke: #50616b; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_50">
+      <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #50616b" x="1067.95102" y="1226.717656" transform="rotate(-0 1067.95102 1226.717656)">500</text>
+     </g>
+    </g>
+    <g id="text_51">
+     <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle" x="865.371429" y="1247.118438" transform="rotate(-0 865.371429 1247.118438)">Número de reseñas · misma escala en ambos paneles</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4"/>
+   <g id="patch_59">
+    <path d="M 607.542857 1212.12 
+L 1123.2 1212.12 
+" style="fill: none; stroke: #a8afb8; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="170.648214" transform="rotate(-0 607.542857 170.648214)">T0 · Problemas de acceso y navegación en la aplicación</text>
+   </g>
+   <g id="patch_60">
+    <path d="M 607.542857 185.324906 
+L 682.12898 185.324906 
+L 682.12898 192.13654 
+L 607.542857 192.13654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_61">
+    <path d="M 682.12898 185.324906 
+L 695.020408 185.324906 
+L 695.020408 192.13654 
+L 682.12898 192.13654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_62">
+    <path d="M 695.020408 185.324906 
+L 704.228571 185.324906 
+L 704.228571 192.13654 
+L 695.020408 192.13654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="708.832653" y="191.198497" transform="rotate(-0 708.832653 191.198497)">105</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="208.229643" transform="rotate(-0 607.542857 208.229643)">T1 · Problemas de acceso y visualización de movimientos</text>
+   </g>
+   <g id="patch_63">
+    <path d="M 607.542857 222.906335 
+L 658.187755 222.906335 
+L 658.187755 229.717969 
+L 607.542857 229.717969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_64">
+    <path d="M 658.187755 222.906335 
+L 666.475102 222.906335 
+L 666.475102 229.717969 
+L 658.187755 229.717969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_65">
+    <path d="M 666.475102 222.906335 
+L 674.762449 222.906335 
+L 674.762449 229.717969 
+L 666.475102 229.717969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="679.366531" y="228.779925" transform="rotate(-0 679.366531 228.779925)">73</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="245.811071" transform="rotate(-0 607.542857 245.811071)">T2 · Problemas de rendimiento y acceso a la aplicación</text>
+   </g>
+   <g id="patch_66">
+    <path d="M 607.542857 260.487763 
+L 658.187755 260.487763 
+L 658.187755 267.299397 
+L 607.542857 267.299397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_67">
+    <path d="M 658.187755 260.487763 
+L 661.87102 260.487763 
+L 661.87102 267.299397 
+L 658.187755 267.299397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_68">
+    <path d="M 661.87102 260.487763 
+L 668.316735 260.487763 
+L 668.316735 267.299397 
+L 661.87102 267.299397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="672.920816" y="266.361354" transform="rotate(-0 672.920816 266.361354)">66</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 283.3925)">T3 · Problemas de acceso y registro en la aplicación móvil de</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 295.007344)">Banamex</text>
+   </g>
+   <g id="patch_69">
+    <path d="M 607.542857 298.069192 
+L 652.662857 298.069192 
+L 652.662857 304.880826 
+L 607.542857 304.880826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_70">
+    <path d="M 652.662857 298.069192 
+L 653.583673 298.069192 
+L 653.583673 304.880826 
+L 652.662857 304.880826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_71">
+    <path d="M 653.583673 298.069192 
+L 663.712653 298.069192 
+L 663.712653 304.880826 
+L 653.583673 304.880826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="668.316735" y="303.942782" transform="rotate(-0 668.316735 303.942782)">61</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="320.973929" transform="rotate(-0 607.542857 320.973929)">T4 · Reseñas de satisfacción general</text>
+   </g>
+   <g id="patch_72">
+    <path d="M 607.542857 335.650621 
+L 607.542857 335.650621 
+L 607.542857 342.462254 
+L 607.542857 342.462254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_73">
+    <path d="M 607.542857 335.650621 
+L 607.542857 335.650621 
+L 607.542857 342.462254 
+L 607.542857 342.462254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_74">
+    <path d="M 607.542857 335.650621 
+L 657.266939 335.650621 
+L 657.266939 342.462254 
+L 607.542857 342.462254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="661.87102" y="341.524211" transform="rotate(-0 661.87102 341.524211)">54</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="358.555357" transform="rotate(-0 607.542857 358.555357)">T5 · Mejora en la rapidez y eficiencia de la aplicación</text>
+   </g>
+   <g id="patch_75">
+    <path d="M 607.542857 373.232049 
+L 608.463673 373.232049 
+L 608.463673 380.043683 
+L 607.542857 380.043683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_76">
+    <path d="M 608.463673 373.232049 
+L 608.463673 373.232049 
+L 608.463673 380.043683 
+L 608.463673 380.043683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_77">
+    <path d="M 608.463673 373.232049 
+L 639.771429 373.232049 
+L 639.771429 380.043683 
+L 608.463673 380.043683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="644.37551" y="379.10564" transform="rotate(-0 644.37551 379.10564)">35</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="396.136786" transform="rotate(-0 607.542857 396.136786)">T6 · Servicio y atención al cliente</text>
+   </g>
+   <g id="patch_78">
+    <path d="M 607.542857 410.813478 
+L 607.542857 410.813478 
+L 607.542857 417.625112 
+L 607.542857 417.625112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_79">
+    <path d="M 607.542857 410.813478 
+L 607.542857 410.813478 
+L 607.542857 417.625112 
+L 607.542857 417.625112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_80">
+    <path d="M 607.542857 410.813478 
+L 638.850612 410.813478 
+L 638.850612 417.625112 
+L 607.542857 417.625112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_65">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="643.454694" y="416.687068" transform="rotate(-0 643.454694 416.687068)">34</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="433.718214" transform="rotate(-0 607.542857 433.718214)">T7 · Funcionamiento general de la aplicación</text>
+   </g>
+   <g id="patch_81">
+    <path d="M 607.542857 448.394906 
+L 608.463673 448.394906 
+L 608.463673 455.20654 
+L 607.542857 455.20654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_82">
+    <path d="M 608.463673 448.394906 
+L 608.463673 448.394906 
+L 608.463673 455.20654 
+L 608.463673 455.20654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_83">
+    <path d="M 608.463673 448.394906 
+L 637.00898 448.394906 
+L 637.00898 455.20654 
+L 608.463673 455.20654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_67">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="641.613061" y="454.268497" transform="rotate(-0 641.613061 454.268497)">32</text>
+   </g>
+   <g id="text_68">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="471.299643" transform="rotate(-0 607.542857 471.299643)">T8 · Mejoras en la velocidad y funcionalidad de la aplicación</text>
+   </g>
+   <g id="patch_84">
+    <path d="M 607.542857 485.976335 
+L 610.305306 485.976335 
+L 610.305306 492.787969 
+L 607.542857 492.787969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_85">
+    <path d="M 610.305306 485.976335 
+L 610.305306 485.976335 
+L 610.305306 492.787969 
+L 610.305306 492.787969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_86">
+    <path d="M 610.305306 485.976335 
+L 637.00898 485.976335 
+L 637.00898 492.787969 
+L 610.305306 492.787969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_69">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="641.613061" y="491.849925" transform="rotate(-0 641.613061 491.849925)">32</text>
+   </g>
+   <g id="text_70">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="508.881071" transform="rotate(-0 607.542857 508.881071)">T9 · Calidad general de la aplicación</text>
+   </g>
+   <g id="patch_87">
+    <path d="M 607.542857 523.557763 
+L 607.542857 523.557763 
+L 607.542857 530.369397 
+L 607.542857 530.369397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_88">
+    <path d="M 607.542857 523.557763 
+L 607.542857 523.557763 
+L 607.542857 530.369397 
+L 607.542857 530.369397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_89">
+    <path d="M 607.542857 523.557763 
+L 634.246531 523.557763 
+L 634.246531 530.369397 
+L 607.542857 530.369397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_71">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="638.850612" y="529.431354" transform="rotate(-0 638.850612 529.431354)">29</text>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="546.4625" transform="rotate(-0 607.542857 546.4625)">T10 · Facilidad de uso de la aplicación</text>
+   </g>
+   <g id="patch_90">
+    <path d="M 607.542857 561.139192 
+L 607.542857 561.139192 
+L 607.542857 567.950826 
+L 607.542857 567.950826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_91">
+    <path d="M 607.542857 561.139192 
+L 607.542857 561.139192 
+L 607.542857 567.950826 
+L 607.542857 567.950826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_92">
+    <path d="M 607.542857 561.139192 
+L 633.325714 561.139192 
+L 633.325714 567.950826 
+L 607.542857 567.950826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_73">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="637.929796" y="567.012782" transform="rotate(-0 637.929796 567.012782)">28</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 584.043929)">T11 · Problemas al abrir la aplicación y acceder a estados de</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 595.524397)">cuenta</text>
+   </g>
+   <g id="patch_93">
+    <path d="M 607.542857 598.720621 
+L 623.196735 598.720621 
+L 623.196735 605.532254 
+L 607.542857 605.532254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_94">
+    <path d="M 623.196735 598.720621 
+L 625.959184 598.720621 
+L 625.959184 605.532254 
+L 623.196735 605.532254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_95">
+    <path d="M 625.959184 598.720621 
+L 630.563265 598.720621 
+L 630.563265 605.532254 
+L 625.959184 605.532254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_75">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="635.167347" y="604.594211" transform="rotate(-0 635.167347 604.594211)">25</text>
+   </g>
+   <g id="text_76">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="621.625357" transform="rotate(-0 607.542857 621.625357)">T12 · Funcionalidad y utilidad general de la aplicación</text>
+   </g>
+   <g id="patch_96">
+    <path d="M 607.542857 636.302049 
+L 607.542857 636.302049 
+L 607.542857 643.113683 
+L 607.542857 643.113683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_97">
+    <path d="M 607.542857 636.302049 
+L 607.542857 636.302049 
+L 607.542857 643.113683 
+L 607.542857 643.113683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_98">
+    <path d="M 607.542857 636.302049 
+L 629.642449 636.302049 
+L 629.642449 643.113683 
+L 607.542857 643.113683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_77">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="634.246531" y="642.17564" transform="rotate(-0 634.246531 642.17564)">24</text>
+   </g>
+   <g id="text_78">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="659.206786" transform="rotate(-0 607.542857 659.206786)">T13 · Fallas generales de la aplicación</text>
+   </g>
+   <g id="patch_99">
+    <path d="M 607.542857 673.883478 
+L 624.117551 673.883478 
+L 624.117551 680.695112 
+L 607.542857 680.695112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_100">
+    <path d="M 624.117551 673.883478 
+L 626.88 673.883478 
+L 626.88 680.695112 
+L 624.117551 680.695112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_101">
+    <path d="M 626.88 673.883478 
+L 629.642449 673.883478 
+L 629.642449 680.695112 
+L 626.88 680.695112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_79">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="634.246531" y="679.757068" transform="rotate(-0 634.246531 679.757068)">24</text>
+   </g>
+   <g id="text_80">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="696.588214" transform="rotate(-0 607.542857 696.588214)">T14 · Problemas de seguridad y cobros no reconocidos</text>
+   </g>
+   <g id="patch_102">
+    <path d="M 607.542857 711.464906 
+L 624.117551 711.464906 
+L 624.117551 718.27654 
+L 607.542857 718.27654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_103">
+    <path d="M 624.117551 711.464906 
+L 625.038367 711.464906 
+L 625.038367 718.27654 
+L 624.117551 718.27654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_104">
+    <path d="M 625.038367 711.464906 
+L 627.800816 711.464906 
+L 627.800816 718.27654 
+L 625.038367 718.27654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_81">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="632.404898" y="717.338497" transform="rotate(-0 632.404898 717.338497)">22</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="734.369643" transform="rotate(-0 607.542857 734.369643)">T15 · Evaluación de la claridad y utilidad de la aplicación</text>
+   </g>
+   <g id="patch_105">
+    <path d="M 607.542857 749.046335 
+L 613.067755 749.046335 
+L 613.067755 755.857969 
+L 607.542857 755.857969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_106">
+    <path d="M 613.067755 749.046335 
+L 613.067755 749.046335 
+L 613.067755 755.857969 
+L 613.067755 755.857969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_107">
+    <path d="M 613.067755 749.046335 
+L 627.800816 749.046335 
+L 627.800816 755.857969 
+L 613.067755 755.857969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_83">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="632.404898" y="754.919925" transform="rotate(-0 632.404898 754.919925)">22</text>
+   </g>
+   <g id="text_84">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="771.951071" transform="rotate(-0 607.542857 771.951071)">T16 · Atención al cliente eficiente y amable</text>
+   </g>
+   <g id="patch_108">
+    <path d="M 607.542857 786.627763 
+L 607.542857 786.627763 
+L 607.542857 793.439397 
+L 607.542857 793.439397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_109">
+    <path d="M 607.542857 786.627763 
+L 607.542857 786.627763 
+L 607.542857 793.439397 
+L 607.542857 793.439397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_110">
+    <path d="M 607.542857 786.627763 
+L 626.88 786.627763 
+L 626.88 793.439397 
+L 607.542857 793.439397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_85">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="631.484082" y="792.501354" transform="rotate(-0 631.484082 792.501354)">21</text>
+   </g>
+   <g id="text_86">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="809.5325" transform="rotate(-0 607.542857 809.5325)">T17 · Evaluación general positiva de la aplicación</text>
+   </g>
+   <g id="patch_111">
+    <path d="M 607.542857 824.209192 
+L 607.542857 824.209192 
+L 607.542857 831.020826 
+L 607.542857 831.020826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_112">
+    <path d="M 607.542857 824.209192 
+L 607.542857 824.209192 
+L 607.542857 831.020826 
+L 607.542857 831.020826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_113">
+    <path d="M 607.542857 824.209192 
+L 626.88 824.209192 
+L 626.88 831.020826 
+L 607.542857 831.020826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_87">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="631.484082" y="830.082782" transform="rotate(-0 631.484082 830.082782)">21</text>
+   </g>
+   <g id="text_88">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="847.113929" transform="rotate(-0 607.542857 847.113929)">T18 · Problemas de congelación y rendimiento de la aplicación</text>
+   </g>
+   <g id="patch_114">
+    <path d="M 607.542857 861.790621 
+L 619.513469 861.790621 
+L 619.513469 868.602254 
+L 607.542857 868.602254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_115">
+    <path d="M 619.513469 861.790621 
+L 621.355102 861.790621 
+L 621.355102 868.602254 
+L 619.513469 868.602254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_116">
+    <path d="M 621.355102 861.790621 
+L 624.117551 861.790621 
+L 624.117551 868.602254 
+L 621.355102 868.602254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_89">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="628.721633" y="867.664211" transform="rotate(-0 628.721633 867.664211)">18</text>
+   </g>
+   <g id="text_90">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="884.695357" transform="rotate(-0 607.542857 884.695357)">T19 · Evaluación general positiva de la aplicación</text>
+   </g>
+   <g id="patch_117">
+    <path d="M 607.542857 899.372049 
+L 607.542857 899.372049 
+L 607.542857 906.183683 
+L 607.542857 906.183683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_118">
+    <path d="M 607.542857 899.372049 
+L 607.542857 899.372049 
+L 607.542857 906.183683 
+L 607.542857 906.183683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_119">
+    <path d="M 607.542857 899.372049 
+L 624.117551 899.372049 
+L 624.117551 906.183683 
+L 607.542857 906.183683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_91">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="628.721633" y="905.24564" transform="rotate(-0 628.721633 905.24564)">18</text>
+   </g>
+   <g id="text_92">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 922.276786)">T20 · Problemas con la tarjeta digital y opciones de gestión de</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 933.076786)">tarjetas</text>
+   </g>
+   <g id="patch_120">
+    <path d="M 607.542857 936.953478 
+L 613.067755 936.953478 
+L 613.067755 943.765112 
+L 607.542857 943.765112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_121">
+    <path d="M 613.067755 936.953478 
+L 613.988571 936.953478 
+L 613.988571 943.765112 
+L 613.067755 943.765112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_122">
+    <path d="M 613.988571 936.953478 
+L 623.196735 936.953478 
+L 623.196735 943.765112 
+L 613.988571 943.765112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_93">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="627.800816" y="942.827068" transform="rotate(-0 627.800816 942.827068)">17</text>
+   </g>
+   <g id="text_94">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="959.858214" transform="rotate(-0 607.542857 959.858214)">T21 · Seguridad y fiabilidad de la aplicación</text>
+   </g>
+   <g id="patch_123">
+    <path d="M 607.542857 974.534906 
+L 607.542857 974.534906 
+L 607.542857 981.34654 
+L 607.542857 981.34654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_124">
+    <path d="M 607.542857 974.534906 
+L 607.542857 974.534906 
+L 607.542857 981.34654 
+L 607.542857 981.34654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_125">
+    <path d="M 607.542857 974.534906 
+L 621.355102 974.534906 
+L 621.355102 981.34654 
+L 607.542857 981.34654 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_95">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="625.959184" y="980.408497" transform="rotate(-0 625.959184 980.408497)">15</text>
+   </g>
+   <g id="text_96">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="997.439643" transform="rotate(-0 607.542857 997.439643)">T22 · Calidad general de la aplicación</text>
+   </g>
+   <g id="patch_126">
+    <path d="M 607.542857 1012.116335 
+L 607.542857 1012.116335 
+L 607.542857 1018.927969 
+L 607.542857 1018.927969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_127">
+    <path d="M 607.542857 1012.116335 
+L 607.542857 1012.116335 
+L 607.542857 1018.927969 
+L 607.542857 1018.927969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_128">
+    <path d="M 607.542857 1012.116335 
+L 620.434286 1012.116335 
+L 620.434286 1018.927969 
+L 607.542857 1018.927969 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_97">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="625.038367" y="1017.989925" transform="rotate(-0 625.038367 1017.989925)">14</text>
+   </g>
+   <g id="text_98">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="1035.021071" transform="rotate(-0 607.542857 1035.021071)">T23 · Lentitud y problemas de apertura de la aplicación</text>
+   </g>
+   <g id="patch_129">
+    <path d="M 607.542857 1049.697763 
+L 613.988571 1049.697763 
+L 613.988571 1056.509397 
+L 607.542857 1056.509397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_130">
+    <path d="M 613.988571 1049.697763 
+L 618.592653 1049.697763 
+L 618.592653 1056.509397 
+L 613.988571 1056.509397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_131">
+    <path d="M 618.592653 1049.697763 
+L 618.592653 1049.697763 
+L 618.592653 1056.509397 
+L 618.592653 1056.509397 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_99">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="623.196735" y="1055.571354" transform="rotate(-0 623.196735 1055.571354)">12</text>
+   </g>
+   <g id="text_100">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 1072.4025)">T24 · Facilidad para gestionar dinero y realizar operaciones</text>
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; fill: #203c4a" transform="translate(607.542857 1084.37125)">bancarias</text>
+   </g>
+   <g id="patch_132">
+    <path d="M 607.542857 1087.279192 
+L 607.542857 1087.279192 
+L 607.542857 1094.090826 
+L 607.542857 1094.090826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_133">
+    <path d="M 607.542857 1087.279192 
+L 607.542857 1087.279192 
+L 607.542857 1094.090826 
+L 607.542857 1094.090826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_134">
+    <path d="M 607.542857 1087.279192 
+L 618.592653 1087.279192 
+L 618.592653 1094.090826 
+L 607.542857 1094.090826 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_101">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="623.196735" y="1093.152782" transform="rotate(-0 623.196735 1093.152782)">12</text>
+   </g>
+   <g id="text_102">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="1110.183929" transform="rotate(-0 607.542857 1110.183929)">T25 · Facilidad de uso de la aplicación</text>
+   </g>
+   <g id="patch_135">
+    <path d="M 607.542857 1124.860621 
+L 607.542857 1124.860621 
+L 607.542857 1131.672254 
+L 607.542857 1131.672254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_136">
+    <path d="M 607.542857 1124.860621 
+L 607.542857 1124.860621 
+L 607.542857 1131.672254 
+L 607.542857 1131.672254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_137">
+    <path d="M 607.542857 1124.860621 
+L 617.671837 1124.860621 
+L 617.671837 1131.672254 
+L 607.542857 1131.672254 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_103">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="622.275918" y="1130.734211" transform="rotate(-0 622.275918 1130.734211)">11</text>
+   </g>
+   <g id="text_104">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="1147.765357" transform="rotate(-0 607.542857 1147.765357)">T26 · Satisfacción general con la aplicación y servicios de Banamex</text>
+   </g>
+   <g id="patch_138">
+    <path d="M 607.542857 1162.442049 
+L 608.463673 1162.442049 
+L 608.463673 1169.253683 
+L 607.542857 1169.253683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_139">
+    <path d="M 608.463673 1162.442049 
+L 608.463673 1162.442049 
+L 608.463673 1169.253683 
+L 608.463673 1169.253683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_140">
+    <path d="M 608.463673 1162.442049 
+L 617.671837 1162.442049 
+L 617.671837 1169.253683 
+L 608.463673 1169.253683 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_105">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="622.275918" y="1168.31564" transform="rotate(-0 622.275918 1168.31564)">11</text>
+   </g>
+   <g id="text_106">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="607.542857" y="1185.346786" transform="rotate(-0 607.542857 1185.346786)">T27 · Seguridad y facilidad de acceso en la aplicación</text>
+   </g>
+   <g id="patch_141">
+    <path d="M 607.542857 1200.023478 
+L 607.542857 1200.023478 
+L 607.542857 1206.835112 
+L 607.542857 1206.835112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #bc5051"/>
+   </g>
+   <g id="patch_142">
+    <path d="M 607.542857 1200.023478 
+L 607.542857 1200.023478 
+L 607.542857 1206.835112 
+L 607.542857 1206.835112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #a8afb8"/>
+   </g>
+   <g id="patch_143">
+    <path d="M 607.542857 1200.023478 
+L 616.75102 1200.023478 
+L 616.75102 1206.835112 
+L 607.542857 1206.835112 
+z
+" clip-path="url(#p5b550efd12)" style="fill: #468c73"/>
+   </g>
+   <g id="text_107">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #203c4a" x="621.355102" y="1205.897068" transform="rotate(-0 621.355102 1205.897068)">10</text>
+   </g>
+   <g id="text_108">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; fill: #193c50" transform="translate(607.542857 121.716445)">Modelo alternativo · 28 tópicos</text>
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; fill: #193c50" transform="translate(607.542857 137.84)">846 de 987 reseñas (85,71 %) · sin tópico: 141</text>
+   </g>
+  </g>
+  <g id="text_109">
+   <text style="font-weight: 700; font-size: 20px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #193c50" x="40.32" y="35.976875" transform="rotate(-0 40.32 35.976875)">Tópicos identificados y sentimiento de sus reseñas</text>
+  </g>
+  <g id="text_110">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #43545d" x="40.32" y="51.948" transform="rotate(-0 40.32 51.948)">Nombre completo del LLM · longitud = número de reseñas · color = sentimiento predicho</text>
+  </g>
+  <g id="text_111">
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; fill: #43545d" transform="translate(40.32 1282.2)">Orden por tamaño dentro de cada sistema: las filas no emparejan temas. −1 queda fuera de las barras.</text>
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; fill: #43545d" transform="translate(40.32 1298.7)">Base: Robertuito original. Alternativa: Robertuito con transfer learning. Sentimiento por reseña, no por aspecto.</text>
+  </g>
+  <g id="legend_1">
+   <g id="patch_144">
+    <path d="M 45.36 90.514125 
+L 69.36 90.514125 
+L 69.36 82.114125 
+L 45.36 82.114125 
+z
+" style="fill: #bc5051"/>
+   </g>
+   <g id="text_112">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start" x="78.96" y="90.514125" transform="rotate(-0 78.96 90.514125)">Negativo</text>
+   </g>
+   <g id="patch_145">
+    <path d="M 156.77625 90.514125 
+L 180.77625 90.514125 
+L 180.77625 82.114125 
+L 156.77625 82.114125 
+z
+" style="fill: #a8afb8"/>
+   </g>
+   <g id="text_113">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start" x="190.37625" y="90.514125" transform="rotate(-0 190.37625 90.514125)">Neutral</text>
+   </g>
+   <g id="patch_146">
+    <path d="M 258.6675 90.514125 
+L 282.6675 90.514125 
+L 282.6675 82.114125 
+L 258.6675 82.114125 
+z
+" style="fill: #468c73"/>
+   </g>
+   <g id="text_114">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start" x="292.2675" y="90.514125" transform="rotate(-0 292.2675 90.514125)">Positivo</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p3eb9f9805f">
+   <rect x="40.32" y="159.84" width="515.657143" height="1052.28"/>
+  </clipPath>
+  <clipPath id="p5b550efd12">
+   <rect x="607.542857" y="159.84" width="515.657143" height="1052.28"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,0 +1,30 @@
+{
+  "source_directory": "exports/pipeline-base-alternativa-paso-a-paso/20261107T183230432171Z",
+  "source_manifest_sha256": "d5d91f8b7bdea890ae24a06147b3f21ca82d59f41a28b0dd1319c35eacbe8168",
+  "input_hashes": {
+    "base-topicos-palabras-llm.csv": "2d7b5fdc3a7f131f2d3da26957f59392a46006d4bee34bd43ad17dd6cc235ebd",
+    "base-asignaciones.csv": "8cb20de91e38e0adef31b3039a19d688beac7d2b636541c82902e7033454eea6",
+    "alternative-topicos-palabras-llm.csv": "f136bfec911e67e84379e5348e9f914b0a893edf549e1ad75e4e337ab630b3c1",
+    "alternative-asignaciones.csv": "e4eaf6c9dbffac98ba393215461e30455bd4e53487402239692753aefbb9d6d3"
+  },
+  "new_model_fits": 0,
+  "new_provider_requests": 0,
+  "notebook": "topicos-y-sentimiento-seccion-4.ipynb",
+  "cell_sources_sha256": "12fc9432701b412ff7422aec9fb10402b4f8280e48f9ab3ba2fcd67604b8694b",
+  "software": {
+    "pandas": "2.3.3",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3"
+  },
+  "files": {
+    "topicos-llm-sentimiento-completo.csv": "5106e4232585f3b55bdcb9a5ce04fbeaade9d0d0b79fff6634dd1921b03d9cec",
+    "distribucion-tamanos-combinada.svg": "ac71d2b1b9a1982708ebabf8c87f7e4d60772ad1ba8f7b5c8703a13cbb9aae0b",
+    "distribucion-tamanos-combinada.png": "2a5e76a12a2e8141f32e7b99f8162f0acb4d94833a5d9a57c02bb597b8195da0",
+    "distribucion-tamanos-combinada.pdf": "6658323957faf9249ec0507f9e1b2c77a924a6bfab94287e60b5303deb93c282",
+    "topicos-llm-sentimiento-completo.svg": "fc59c619e954ec4b4659653a6a99fb1e5921da00f9a3a72f3f10630ee284c547",
+    "distribucion-tamanos-combinada.csv": "6f195b79bbf387f2e27126a5325dbeb74fd3039f4bf34570b60d4b3ddd32b09d",
+    "cobertura.csv": "55505ee2cb95dc62ab329b699959fdf34702d49cfc4bde80796903eb97435036",
+    "topicos-llm-sentimiento-completo.pdf": "3b1aeff4116e4820451675bc18d0cdfb48e9e4bf8df7aa1236a9cdccea1c8b1f",
+    "topicos-llm-sentimiento-completo.png": "f6ae3fe129a8a29328796a97417e26ccd328245e02a3efe9583e45a5401666ef"
+  }
+}

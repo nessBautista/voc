@@ -60,7 +60,7 @@ La preparación del 4 de noviembre de 2026 pudo realizarse con `--offline`, usan
 La copia selectiva ya fue realizada. Para reconstruirla con el demo disponible en su ruta actual:
 
 ```bash
-bash scripts/difusion.sh python scripts/prepare_difusion_data.py --source /Users/ness/workspace/voc
+bash scripts/difusion.sh python scripts/prepare_difusion_data.py --source "$HOME/workspace/voc"
 bash scripts/difusion.sh voc-ml setup
 bash scripts/difusion.sh python scripts/check_difusion_workspace.py --load-models
 ```
@@ -135,3 +135,45 @@ La [guía de demostración](difusion-demo.md) documenta la publicación local, s
 ## Referencias privadas del lanzador de escritorio
 
 El lanzador opcional `apps/voc-desktop/scripts/start-mcp-http.sh` acepta el token ya resuelto en `VOC_DESKTOP_MCP_TOKEN` o su referencia privada en `VOC_DESKTOP_MCP_TOKEN_REF`. Configurar uno de ellos en la sesión o configuración privada; no hay una bóveda o elemento predeterminado en el código. La demostración de difusión por navegador no utiliza ese lanzador.
+
+## Editores de libretas de difusión · Argo
+
+Desde `voc-difusion` o desde la raíz del vault Sonar:
+
+```bash
+just difusion-marimo
+```
+
+O, en otra sesión después de detener el primero:
+
+```bash
+just difusion-jupyter
+```
+
+Ambas acciones sirven el directorio **`voc-difusion/reports`** con el entorno
+`.venv` y las rutas de almacenamiento de `scripts/difusion.sh`. En marimo,
+selecciona `drafts/difusion/` y después una libreta `.py`; por ejemplo
+`explorar-ctfidf.py`. JupyterLab abre directamente `reports/difusion` y permite
+navegar por el resto de `reports`.
+
+Abre en el navegador el enlace con token que imprime el servidor, usando
+`localhost:2718` desde el Mac. Mantén la terminal abierta. Para detenerlo usa
+**Ctrl+C**; si Jupyter pide confirmación, acepta el cierre (o pulsa Ctrl+C otra
+vez). No se desactiva la autenticación ni se almacena el token en el repositorio.
+
+Las dos acciones comparten **2718**, publicado por Argo únicamente en el loopback
+del host. Por ahora se usan **una a la vez**. Si el puerto está ocupado, el
+lanzador falla con una explicación y no mata el proceso existente ni busca un
+puerto alternativo. No hace falta reiniciar Argo ni levantar el Docker de VOC.
+
+En una terminal del Mac, cuando este checkout vive dentro de la instalación de
+Argo, el lanzador usa `docker compose exec` sobre el servicio `workspace` ya
+encendido. Dentro de Argo ejecuta directamente el Python de difusión. Si Argo
+está apagado, primero usa `just up` desde la raíz de Argo. Las acciones
+`difusion-*` están definidas en los Justfiles de **Sonar y voc-difusion**, no en
+el Justfile global de Argo.
+
+Se verificó el arranque real de ambos servidores en el contenedor, la navegación
+hasta las libretas, la autenticación y el rechazo de un puerto ocupado. La ruta
+host → Docker se comprobó con un ejecutable simulado; no se ejecutó Docker desde
+este contenedor.

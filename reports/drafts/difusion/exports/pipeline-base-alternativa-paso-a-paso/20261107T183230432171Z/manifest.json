@@ -1,0 +1,107 @@
+{
+  "notebook": "pipeline-base-alternativa-paso-a-paso.ipynb",
+  "created_at": "20261107T183230432171Z",
+  "cell_sources_sha256": "a7a738e89cc903a004b53a7e01508d684a3327407097d3cc4d6a4520606c3632",
+  "sources": {
+    "original_protocol": {
+      "path": "data/experiments/julaug-2026/protocol.json",
+      "sha256": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091"
+    },
+    "replication_protocol": {
+      "path": "data/experiments/julaug-2026-paso-a-paso/protocol.json",
+      "sha256": "ee22b9e0bff3b0e51e92c5071ba35b31e9bff099be03ba8dcc9cbed3bdac2a20"
+    },
+    "relevance_decisions": {
+      "path": "data/experiments/julaug-2026-paso-a-paso/relevance.csv",
+      "sha256": "85c4f0ee628fa9929fe0b07f483eaf6d9074f24d7a66572f9a13ccd4422c06e3"
+    },
+    "human_review": {
+      "path": "data/experiments/julaug-2026/human-review-v1/review.json",
+      "sha256": "6ad04672d35ca03e928fae61892b3cace21c75d9ff820e0a64f3b65c53dead3b"
+    },
+    "base_reduction": {
+      "path": "data/cache/topics/reduction/cfc3b3339af218a07bd054e7bbfa32cedca5290e6119c791fec62db045feb986/manifest.json",
+      "sha256": "24e9d4d355135198bc1674f28d2086bd6d1191547ac5d029a2712dc6a1d51424"
+    },
+    "alternative_reduction": {
+      "path": "data/cache/topics/reduction/3aca91963d5ade44ca5a76de84ba918032a946d1e042c47c14ab3c171ceddb70/manifest.json",
+      "sha256": "5e4c3556cb2f99563837f992d9f79a10e4654aee389703deef7013c23e38293a"
+    },
+    "base_run": {
+      "path": "data/experiments/julaug-2026-paso-a-paso/base-run.json",
+      "sha256": "c7ce1801a7c839e312f2c74f1dff056d1f5d313d32bcfde284ab51809ac58026"
+    },
+    "base_analysis": {
+      "path": "data/analyses/2de23686-5b30-41d9-949f-7c3e81681313/manifest.json",
+      "sha256": "d6ba5c02f92ed6da089965edb90575fdcfe505ad9d0d10442dd7104626299ca5"
+    },
+    "alternative_run": {
+      "path": "data/experiments/julaug-2026-paso-a-paso/alternative-run.json",
+      "sha256": "e7749b152326516078fde6c4caf742f5f9f4b3bf79685ed60962bbd2bc2f62ff"
+    },
+    "alternative_analysis": {
+      "path": "data/analyses/2b8c0d50-c74a-4559-809f-6ec90550c5c8/manifest.json",
+      "sha256": "63bbe57d644f98a5b93431c4d89e2c87bccec7ec8ae1a8761c182a786b5922a4"
+    },
+    "interpretation_run": {
+      "path": "data/experiments/julaug-2026-paso-a-paso/interpretation-run.json",
+      "sha256": "79630036a69472598fc0af21df92304c48af1e2a4a6ca3cc2ef431620733c0e5"
+    },
+    "base_interpreted_analysis": {
+      "path": "data/analyses/a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52/manifest.json",
+      "sha256": "eb18c2ab92e923e7a46b0f955bf166190ed4eb0f4728909bb53c569c2ad80f53"
+    },
+    "alternative_interpreted_analysis": {
+      "path": "data/analyses/8170593a-f915-4b9e-aec6-9e09cd17744d/manifest.json",
+      "sha256": "31f7703b658d44d8e264ed8664b80bc1029dbed1782d27d11f7ec6f4a36f923b"
+    },
+    "original_llm_snapshot": {
+      "path": "reports/difusion/sources/interpretacion-seccion-4/20261107T174441Z/evidencia.json",
+      "sha256": "d854dd41ddc15871df6c33130661660099096a34700cc4ed9a026ad85ac14f7a"
+    }
+  },
+  "files": {
+    "cobertura-dos-columnas.png": "8ca1c64e763ce7526e188591a4039fc206d5d919c0a27e72481959c0b0d7a98e",
+    "resumen-agrupamiento.csv": "b049eec9b405f40f5ce6276afdc5508dee596ed523aa97f5c4392b03c5f0749d",
+    "trece-comentarios-retirados.csv": "b4e9cd2fe18d2b18c2950bdcc98db8e35e7fc3201fa4b522de897c0834255813",
+    "base-topicos-palabras-llm.csv": "2d7b5fdc3a7f131f2d3da26957f59392a46006d4bee34bd43ad17dd6cc235ebd",
+    "ejecucion.json": "5dd4fdc3670fe6abca99402334e864c32c62e4c646661dc9a80cbfdeef746950",
+    "cobertura-dos-columnas.pdf": "81482382dea55201cc76e105f9874ab25a0e74986c070dd04fce217121e5dbf2",
+    "alternative-asignaciones.csv": "e4eaf6c9dbffac98ba393215461e30455bd4e53487402239692753aefbb9d6d3",
+    "cruce-todos-los-grupos.png": "6bcb90994ca972c4088e0a5cbe325b30df047a4d5618be54f7098d1c33c173ce",
+    "destino-del-grupo-mayor.pdf": "478ef8713447e53928164bdddc9a903b095f94be93a9eadbaf77a13e4d0fd2c8",
+    "destino-del-grupo-mayor.png": "8e9ca8bf1d279f598b0f05af811dcc4f1e1c78badbeee39e4cbe6ea6c16bc1b4",
+    "ejemplos-transiciones.json": "c12d663a409a59d8b825b0a38778ee6c82f98e22dfbeb2a1cceaa6bec0b8f6a7",
+    "cruce-todos-los-grupos.pdf": "015f92ceeaef51a7d76779d90602d58c271912ad6940907997edc2a445c66138",
+    "transiciones-cobertura.csv": "61e50fb2b13fdb3f76875bc8a1db7069511f33c5ca01f9b761569984a5ecf944",
+    "base-asignaciones.csv": "8cb20de91e38e0adef31b3039a19d688beac7d2b636541c82902e7033454eea6",
+    "comparacion-llm-con-reporte.csv": "17b74c85262677cf8a7d18c5632c23d9b24eeadaaef102ed5a4d65e388674d9d",
+    "control-sin-reajuste.csv": "551599be8d698c254946711cbd749924d24537a48d3f7dc2b1749fea7a31d4d5",
+    "alternative-topicos-palabras-llm.csv": "f136bfec911e67e84379e5348e9f914b0a893edf549e1ad75e4e337ab630b3c1",
+    "retencion-por-fuente.csv": "5bfa789198cbb554c905f52e750a8e584ce280685daaecc0293a7f3e38a662d1",
+    "sentimiento-dos-columnas.pdf": "31a047c0c0e333f26eca275a9329ab02073d0506099fdbf48ce490ac81e1e831",
+    "sentimiento-dos-columnas.png": "5b80ef62afec6934b4b8975541bf716d174383d4ff8c7d7446e2baac2427bd31",
+    "retirados-grupo-base.csv": "f5e9d860c86a16e9d78cd2e0470a79e52e0a81639436114740cb752a93212a9f",
+    "transiciones.json": "22c561e45002d8718696b5298e9dd6e2556a886a5a79ab800fe89b0761b449b4",
+    "interpretaciones.csv": "0f406d2baa4081c16c74dadc7ba224a661c12e09bfe0d7d7e58a7cd421d1c753",
+    "verificacion-reproduccion.csv": "c5283c18079b04e513dd38ea3ae869b93cebce39fbd8f9bbde0076e83feb9338",
+    "destino-grupo-mayor.csv": "6f49360d9e7694bd4a884ca74d298cae81ece0dced6871859a57938d5d4e4e60",
+    "asignaciones-comunes.csv": "f91653834db4d96314afce51ec820e268cecddb2bf71e2975a81209ba563362f",
+    "tamano-topicos-dos-columnas.pdf": "ffdbeac9fa3e2c3c169fc3abccb2d85e8056ec7cf26cf011e51ee649de9aa428",
+    "tamano-topicos-dos-columnas.png": "c3bc5ecf6858756fd9249aaeb633888c37205a2378dc961dee18e45a44c2795b",
+    "cruce-todos-los-grupos.csv": "8699f5ffa1036e1bb3e35daad7a33d1699285edc0d2eebf9fb0efe83b55462d8",
+    "muestra-plataforma-mes.csv": "414ebe160130da235053880dd41d877d0c985635398ff05a15516793aa216586"
+  },
+  "software": {
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "umap-learn": "0.5.12",
+    "hdbscan": "0.8.44",
+    "bertopic": "0.17.4",
+    "torch": "2.14.1+cpu"
+  },
+  "model_fits_this_execution": 0,
+  "provider_requests": 0,
+  "original_evidence_overwritten": false
+}

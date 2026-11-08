@@ -1,0 +1,251 @@
+[
+  {
+    "label": "tab:muestra",
+    "headers": [
+      "Plataforma",
+      "Julio",
+      "Agosto",
+      "Inicial",
+      "Retenidos"
+    ],
+    "rows": [
+      [
+        "App Store",
+        "25",
+        "24",
+        "49",
+        "49"
+      ],
+      [
+        "Google Play",
+        "393",
+        "483",
+        "876",
+        "876"
+      ],
+      [
+        "X",
+        "32",
+        "32",
+        "64",
+        "62"
+      ],
+      [
+        "YouTube",
+        "5",
+        "6",
+        "11",
+        "0"
+      ],
+      [
+        "Total",
+        "455",
+        "545",
+        "1.000",
+        "987"
+      ]
+    ],
+    "caption": "Muestra común y registros retenidos por el filtro de la alternativa. Las exclusiones son predicciones, no decisiones humanas."
+  },
+  {
+    "label": "tab:configuracion",
+    "headers": [
+      "Etapa",
+      "Parámetros fijados",
+      "Papel"
+    ],
+    "rows": [
+      [
+        "UMAP",
+        "`n_components=5`; `n_neighbors=15`; `metric=cosine`; `min_dist=0.0`; semilla 42",
+        "Define la representación y sus vecindades."
+      ],
+      [
+        "HDBSCAN",
+        "`min_cluster_size=10`; `min_samples=3`; `metric=euclidean`; selección `eom`",
+        "Estima densidad y selecciona grupos de la jerarquía."
+      ]
+    ],
+    "caption": "Configuración temática común a los dos sistemas. La proyección visual de dos dimensiones se calcula por separado."
+  },
+  {
+    "label": "tab:ejemplo-raiz-ctfidf",
+    "headers": [
+      "Término",
+      "Frecuencia normalizada",
+      "Con raíz"
+    ],
+    "rows": [
+      [
+        "aplicación",
+        "25/100 = 0,25",
+        "0,50"
+      ],
+      [
+        "transferencia",
+        "4/100 = 0,04",
+        "0,20"
+      ]
+    ],
+    "caption": "Ejemplo ilustrativo del efecto de la raíz cuadrada sobre TF."
+  },
+  {
+    "label": "tab:ejemplo-interpretacion-llm",
+    "headers": [
+      "Campo de la respuesta",
+      "Valor recibido"
+    ],
+    "rows": [
+      [
+        "`name`",
+        "Problemas de congelación y rendimiento de la aplicación"
+      ],
+      [
+        "`topic_description`",
+        "Los usuarios reportan que la aplicación se congela o se traba con frecuencia, lo que impide su uso normal. Algunos mencionan que esto ocurre al intentar ingresar a la aplicación, mientras que otros simplemente indican que sucede \"a cada rato\" o \"demasiado\"."
+      ],
+      [
+        "`proposed_feature`",
+        "Mejorar la estabilidad de la aplicación para evitar congelamientos"
+      ],
+      [
+        "`assessment`",
+        "`single_feature`"
+      ],
+      [
+        "`supporting_evidence`",
+        "[\"E1\", \"E2\", \"E3\", \"E4\", \"E5\", \"E6\"]"
+      ]
+    ],
+    "caption": "Ejemplo de salida estructurada del LLM, presentado en tabla. Respuesta registrada para el tópico 18 del modelo alternativo [@recorridodifusion2026]."
+  },
+  {
+    "label": "tab:exclusiones",
+    "headers": [
+      "Origen",
+      "Comentario retirado",
+      "Revisión humana"
+    ],
+    "rows": [
+      [
+        "X",
+        "Si intentaste entrar a tu aplicación de Banamex o BBVA y tuviste problemas al momento de ingresar, realizar un pago o completar transferencia no eres el único: […]",
+        "Relevante"
+      ],
+      [
+        "X",
+        "Se acuerdan cuando era sencillo comprar un pinche boleto de cine? […] abrir la pinche app d @banamex para un puto cvv dinámico […]",
+        "Irrelevante"
+      ],
+      [
+        "YouTube",
+        "muchas gracias, muy util la informacion",
+        "Irrelevante"
+      ],
+      [
+        "YouTube",
+        "Llamé y fui a sucursal y me confirmaron que es un error de sistema, me comentaron que tecnologías está trabajando para solucionarlo para colocarlo manual.",
+        "Irrelevante"
+      ],
+      [
+        "YouTube",
+        "Sigue sin funcionar",
+        "Irrelevante"
+      ]
+    ],
+    "caption": "Ejemplos excluidos y revisión humana registrada. […] indica un recorte editorial; se conserva la redacción original."
+  },
+  {
+    "label": "tab:operacion",
+    "headers": [
+      "Requisito",
+      "Responsable propuesto",
+      "Qué supervisar o comprobar"
+    ],
+    "rows": [
+      [
+        "Actualizar y publicar",
+        "Operador de datos",
+        "Antigüedad por fuente, fallos de pipeline e integridad de la publicación."
+      ],
+      [
+        "Revisar resultados",
+        "Analista y responsable de modelos",
+        "Exclusiones relevantes, errores de sentimiento y respaldo de interpretaciones."
+      ],
+      [
+        "Mantener el servicio",
+        "Responsable de plataforma",
+        "Disponibilidad, permisos, concurrencia y restauración de respaldos."
+      ],
+      [
+        "Controlar uso externo",
+        "Responsable de operación",
+        "Consumo, fallos y límites de llamadas; autorización de datos enviados al proveedor."
+      ]
+    ],
+    "caption": "Requisitos y roles propuestos. Antes de ampliar acceso deben validarse concurrencia, respaldo y restauración."
+  },
+  {
+    "label": "tab:costos",
+    "headers": [
+      "Componente",
+      "Ejecución",
+      "Cargo por API del modelo"
+    ],
+    "rows": [
+      [
+        "MiniLM, filtro y agrupamiento BERTopic",
+        "Local",
+        "Sin cargo por API."
+      ],
+      [
+        "Robertuito",
+        "Local",
+        "Sin cargo por API."
+      ],
+      [
+        "Interpretación BERTopic · Gemini 2.5 Flash",
+        "Externa, durante el análisis",
+        "USD 0,000704 por llamada, en promedio."
+      ],
+      [
+        "Dashboard",
+        "Consulta datos calculados",
+        "Sin invocar un LLM."
+      ],
+      [
+        "Agentes · Claude Sonnet 5.5",
+        "Externa, durante el chat",
+        "USD 0,006373 por llamada, en promedio."
+      ]
+    ],
+    "caption": "Consumo observado durante el desarrollo. No incluye AWS ni recursos locales; sin cargo por API no significa costo total nulo."
+  },
+  {
+    "label": "tab:escenarios",
+    "headers": [
+      "Llamadas por pregunta",
+      "Llamadas para 1.000 preguntas",
+      "Costo estimado (USD)"
+    ],
+    "rows": [
+      [
+        "2",
+        "2.000",
+        "12,75"
+      ],
+      [
+        "4",
+        "4.000",
+        "25,49"
+      ],
+      [
+        "6",
+        "6.000",
+        "38,24"
+      ]
+    ],
+    "caption": "Escenarios con consumo medio constante. No son costos medidos por pregunta ni límites máximos."
+  }
+]

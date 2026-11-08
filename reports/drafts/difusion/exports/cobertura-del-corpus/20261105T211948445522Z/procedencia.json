@@ -1,0 +1,24 @@
+{
+  "source": "data/inputs/corpus/dataset.parquet",
+  "source_sha256": "a8db7989ea44de41f1f37d1cda8a228dbcc698a505c5abbf3136a3a253448924",
+  "manifest_sha256": "ca40ddfabf23fcd20d698ddfe8f26b1de60bff3a7fe22740a85c4414793992f5",
+  "rows": 80079,
+  "distinct_texts": 56765,
+  "date_min": "2025-09-01T00:00:00+00:00",
+  "date_max": "2026-09-26T21:45:54+00:00",
+  "date_column": "record_date",
+  "missing_dates": 0,
+  "partial_month": "2026-09",
+  "selected_window_rows": 15626,
+  "snapshot_created_at": "2026-09-27T21:52:07.074824+00:00",
+  "source_date_precision": {
+    "second": 74928,
+    "day": 5151
+  },
+  "models_executed": 0,
+  "limitations": [
+    "Counts are records, not people; duplicate texts retained.",
+    "Per-source coverage ends on different dates.",
+    "Capture volume is not prevalence of app problems."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "state": "passed",
+  "checks": [
+    "Duplicar A duplica sus conteos y conserva TF con unigramas",
+    "Añadir transferencia a B aumenta f(t) y modifica la representación de A",
+    "Raíz cuadrada reactiva coincide con BERTopic",
+    "Bigramas y cambios de lista de exclusión recalculan matriz, fórmula y gráficos",
+    "Entrada vacía muestra aviso sin dividir entre cero",
+    "Controles restaurados; 11 celdas sin errores; gráfica con salida visible"
+  ],
+  "versions": {
+    "bertopic": "0.17.4",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "pandas": "2.3.3",
+    "marimo": "0.25.0"
+  },
+  "scope": "Ejemplo sintético; comprobación contra ClassTfidfTransformer de ambas fórmulas"
+}

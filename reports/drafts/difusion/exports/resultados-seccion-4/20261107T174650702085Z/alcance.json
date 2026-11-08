@@ -1,0 +1,10 @@
+{
+  "protocol_id": "9c226c3c1b26b1382c5859024b85b3c5b0692319dcc9bf2f9b6a9c79d8672a53",
+  "model_fits": 0,
+  "llm_requests": 0,
+  "saved_interpretation_requests": 46,
+  "llm_source": "reports/difusion/sources/interpretacion-seccion-4/20261107T174441Z/evidencia.json",
+  "example_rule": "three largest topics per system for sentiment; largest topic within each LLM category and system, ties by topic_id",
+  "sentiment_unit": "whole review, not individual aspect",
+  "human_topic_quality_validation": false
+}

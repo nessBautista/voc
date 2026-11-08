@@ -1,0 +1,23 @@
+{
+  "source": "Respuesta registrada de la interpretación del tópico 18 alternativo",
+  "source_sha256": "d854dd41ddc15871df6c33130661660099096a34700cc4ed9a026ad85ac14f7a",
+  "system": "alternative",
+  "analysis_id": "ed9e19e2-544e-4d56-ac9b-0c2cd904030a",
+  "topic_id": 18,
+  "response_sha256": "86fba55b502576186a7b54a441ee653bdee111be622f26b75ad97e4f5a5c2aa0",
+  "response_fields_verbatim": {
+    "name": "Problemas de congelación y rendimiento de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación se congela o se traba con frecuencia, lo que impide su uso normal. Algunos mencionan que esto ocurre al intentar ingresar a la aplicación, mientras que otros simplemente indican que sucede \"a cada rato\" o \"demasiado\".",
+    "proposed_feature": "Mejorar la estabilidad de la aplicación para evitar congelamientos",
+    "assessment": "single_feature",
+    "supporting_evidence": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6"
+    ]
+  },
+  "purpose": "Ilustrar la estructura de salida, no evaluar la calidad del tópico. No se realizó otra solicitud al proveedor."
+}

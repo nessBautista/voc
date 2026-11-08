@@ -1,0 +1,8 @@
+# Only editorial exports and the explicitly selected human-review sheet override
+# the repository-wide CSV exclusion. Runtime data/model files remain ignored.
+!exports/**/*.csv
+!revision-manual/topicos.csv
+!revision-manual/sentimiento.csv
+
+# Shared projection exported for the archived notebook (public review identifiers).
+!sources/agrupamiento-proyeccion-comun/**/coordinates.csv

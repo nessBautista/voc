@@ -1,0 +1,11 @@
+{
+  "state": "passed",
+  "checks_passed": 234,
+  "isolated_package": true,
+  "credentials_removed_from_kernel_environment": true,
+  "application_imports": false,
+  "notebook_sha256": "14c4e705193d75a9b3ef46022b9de851cc2be3461a4b5d55be5803d736e79121",
+  "source_manifest_sha256": "a4d18d096093f62cea172a5c3dc8055093785bf2af098cb7950399e6caa17062",
+  "model_fits": 0,
+  "llm_requests": 0
+}

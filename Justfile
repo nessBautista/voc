@@ -75,3 +75,11 @@ app-logs:
 # Exercise the built app with isolated synthetic publications; run on the Mac.
 app-cycle action:
     python3 tests/acceptance/data_state_cycle/cycle.py {{quote(action)}}
+
+# Argo: editor marimo sobre reports/, con el entorno aislado de difusión.
+difusion-marimo:
+    @bash scripts/difusion-notebooks.sh marimo
+
+# Argo: JupyterLab sobre reports/, abierto en difusion/.
+difusion-jupyter:
+    @bash scripts/difusion-notebooks.sh jupyter

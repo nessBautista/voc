@@ -1,0 +1,266 @@
+[
+  {
+    "system": "base",
+    "analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+    "topic_id": 0,
+    "rank": 1,
+    "size": 529,
+    "keywords": [
+      "app",
+      "aplicación",
+      "no abre",
+      "tarjeta",
+      "banamex",
+      "abrir",
+      "no puedo",
+      "abre",
+      "no deja",
+      "puedo"
+    ],
+    "sentiment": {
+      "negative": 459,
+      "neutral": 65,
+      "positive": 5
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+        "platform": "google_play",
+        "model_text": "Muy lenta la app , a veces no se abre la aplicación y el manejo de a la pp es pésima",
+        "model_label": "negative"
+      },
+      {
+        "record_id": "x:2077552524870000992",
+        "platform": "x",
+        "model_text": "@banamex No me sale la opción de descargarlo. Tu app no tiene los datos necesarios. Solo me sale el movimiento, pero no la clave de rastreo.",
+        "model_label": "negative"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:f30c609c-c707-4b10-b39f-9dca70550e75",
+        "platform": "google_play",
+        "model_text": "no puedo ingresar..",
+        "model_label": "negative"
+      }
+    ]
+  },
+  {
+    "system": "base",
+    "analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+    "topic_id": 1,
+    "rank": 2,
+    "size": 56,
+    "keywords": [
+      "excelentes excelente",
+      "perfeccion excelente",
+      "excelente siempre",
+      "siempre excelentes",
+      "tal perfeccion",
+      "perfeccion",
+      "seria perfecto",
+      "perfecto no",
+      "existe tal",
+      "no existe"
+    ],
+    "sentiment": {
+      "negative": 0,
+      "neutral": 55,
+      "positive": 1
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:ab3ac7df-bd9d-453d-ac83-e47e3e19788d",
+        "platform": "google_play",
+        "model_text": "siempre excelentes",
+        "model_label": "neutral"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+        "platform": "google_play",
+        "model_text": "5 seria perfecto y no existe tal perfeccion",
+        "model_label": "neutral"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+        "platform": "google_play",
+        "model_text": "excelente",
+        "model_label": "neutral"
+      }
+    ]
+  },
+  {
+    "system": "base",
+    "analysis_id": "85e5ea66-a176-44e3-9d67-dba87090f98f",
+    "topic_id": 2,
+    "rank": 3,
+    "size": 38,
+    "keywords": [
+      "excelente aplicación",
+      "buena aplicación",
+      "aplicación muy",
+      "accesible",
+      "operatividad app",
+      "seguridad excelente",
+      "muy segura",
+      "recomendada",
+      "mucha seguridad",
+      "muy buena"
+    ],
+    "sentiment": {
+      "negative": 0,
+      "neutral": 8,
+      "positive": 30
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:8ad4605d-70f8-4e40-8abe-cc533663bc73",
+        "platform": "google_play",
+        "model_text": "app muy segura y amigable",
+        "model_label": "positive"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:d3575c70-f439-4d28-80e4-85cdfd653501",
+        "platform": "google_play",
+        "model_text": "útil para conocer el estado de cuenta 👇",
+        "model_label": "neutral"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:1a825da3-525b-4dfc-b5c7-b443ba09fa60",
+        "platform": "google_play",
+        "model_text": "segura de utilizar",
+        "model_label": "neutral"
+      }
+    ]
+  },
+  {
+    "system": "alternative",
+    "analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+    "topic_id": 0,
+    "rank": 1,
+    "size": 105,
+    "keywords": [
+      "app queda",
+      "abrir app",
+      "app",
+      "abre",
+      "pantalla",
+      "pantalla azul",
+      "actualización",
+      "congelada",
+      "azul",
+      "2026"
+    ],
+    "sentiment": {
+      "negative": 81,
+      "neutral": 14,
+      "positive": 10
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:4c6e8977-649f-4326-872f-482ea48079c9",
+        "platform": "google_play",
+        "model_text": "Este año he tenido muchas dificultades con la app",
+        "model_label": "positive"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:c5ecaa32-641a-4981-8e0b-b4a5d374b857",
+        "platform": "google_play",
+        "model_text": "Últimamente he batallado mucho para accesar ya que no inicia la app",
+        "model_label": "neutral"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:6e47ccfb-e90b-4b67-94d6-5e054f5de1d6",
+        "platform": "google_play",
+        "model_text": "pecima app, siempre esta en mantenimiento y se pasma",
+        "model_label": "negative"
+      }
+    ]
+  },
+  {
+    "system": "alternative",
+    "analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+    "topic_id": 1,
+    "rank": 2,
+    "size": 73,
+    "keywords": [
+      "tarda mucho",
+      "no deja",
+      "tener esperar",
+      "abre tarda",
+      "15 días",
+      "cualquier hora",
+      "mucho abrir",
+      "nunca abre",
+      "algunas veces",
+      "movimientos no"
+    ],
+    "sentiment": {
+      "negative": 55,
+      "neutral": 9,
+      "positive": 9
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:2634f3db-4f03-4af8-9b58-2a068baebb45",
+        "platform": "google_play",
+        "model_text": "Fallas al abrirla desde hace 3 semanas 👎",
+        "model_label": "negative"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:dd8082cb-bfe7-4d9a-a5ac-526daf5678cc",
+        "platform": "google_play",
+        "model_text": "tener que esperar tiempo para registrar a quien le voy a transferir",
+        "model_label": "negative"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:e933472e-d8b9-4080-9389-94611e8a311a",
+        "platform": "google_play",
+        "model_text": "nunca abre.",
+        "model_label": "negative"
+      }
+    ]
+  },
+  {
+    "system": "alternative",
+    "analysis_id": "716b3ec4-6b65-42e7-8bea-06fde8e0f488",
+    "topic_id": 2,
+    "rank": 3,
+    "size": 66,
+    "keywords": [
+      "app banco",
+      "app tarda",
+      "aplicación banco",
+      "banca móvil",
+      "bancaria",
+      "banca",
+      "otros bancos",
+      "entrar banca",
+      "acceso",
+      "hacer transferencias"
+    ],
+    "sentiment": {
+      "negative": 55,
+      "neutral": 4,
+      "positive": 7
+    },
+    "reviews": [
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:eebf6987-c73d-410b-86fc-34399f201795",
+        "platform": "google_play",
+        "model_text": "Excelente servicio solo que se corta la llamada y no contestan los teléfonos 😐 dice que es 24/7 muy tedioso buscar ayuda con un asesor. Lo pude hacer por el número que viene en mi tarjeta en opción 1 perdón no me quedo otra salida después de varios intentos por más de 5 días. La persona que me atendió fué muy amable",
+        "model_label": "positive"
+      },
+      {
+        "record_id": "play:com.citibanamex.banamexmobile:7d68a60b-451b-4e2c-ab13-338ac09f1770",
+        "platform": "google_play",
+        "model_text": "Es buena aplicación para hacer transferencias y pagos aunque últimamente está fallando mucho ni quiere abrir la app tarda mucho deberían de mejorarla y aserlaejor ke las demás y que no tenga que ir uno al banco para activar el netkey",
+        "model_label": "positive"
+      },
+      {
+        "record_id": "x:2089474981243629794",
+        "platform": "x",
+        "model_text": "@TheManHimzelf @CRTGobMX No. Los +52 de PrivacyNumber reciben OTP en muchas apps de consumo, pero bancos mexicanos (BBVA, Banamex, Nu, etc.) exigen KYC completo con CURP e INE. Ningún virtual bypasea esas verificaciones de identidad. Sirven para SMS temporales o servicios no financieros; no alcanzan para",
+        "model_label": "negative"
+      }
+    ]
+  }
+]
