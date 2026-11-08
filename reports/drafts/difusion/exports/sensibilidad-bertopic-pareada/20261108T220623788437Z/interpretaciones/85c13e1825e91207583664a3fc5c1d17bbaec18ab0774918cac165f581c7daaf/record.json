@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas con la tarjeta digital y opciones de gestión de tarjetas",
+    "topic_description": "Los usuarios experimentan dificultades al intentar acceder a la información de su tarjeta digital, como la generación de claves dinámicas no solicitadas o errores al mostrar los detalles de la tarjeta. También se menciona la imposibilidad de ver el detalle de compras de la tarjeta digital y la falta de opciones para descargar estados de cuenta de tarjetas de débito. Además, se solicita la integración de funcionalidades como el bloqueo de tarjetas de débito y el seguimiento de tarjetas vencidas o por vencer.",
+    "proposed_feature": "Gestión de tarjetas de débito y digitales",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+      "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+      "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+      "appbot:498483038:3751862337",
+      "appbot:498483038:3753020260",
+      "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+    "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+    "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+    "appbot:498483038:3751862337",
+    "appbot:498483038:3753020260",
+    "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "85c13e1825e91207583664a3fc5c1d17bbaec18ab0774918cac165f581c7daaf",
+    "response.json": "97a23b3afab065c6a5732fa3ba57b6f01ff5638eb42191c880dd82936e9a8a90"
+  }
+}

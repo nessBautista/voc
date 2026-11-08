@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de funcionamiento general de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación presenta fallas de manera frecuente, lo que impide realizar operaciones importantes como transferencias. Se menciona que estas fallas son constantes y afectan la capacidad de uso de la herramienta.",
+    "proposed_feature": "Estabilidad y fiabilidad de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6368687c-bb61-4bdb-a590-d3de8c3096e3",
+      "play:com.citibanamex.banamexmobile:65eb96b8-29db-42d2-b47b-235cdf496d04",
+      "appbot:498483038:3760879978",
+      "play:com.citibanamex.banamexmobile:0cf083cf-aed3-471a-8b3f-eefb916a05e6",
+      "play:com.citibanamex.banamexmobile:11a5b3e1-cd03-4f04-8d31-4c049329fac8"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6368687c-bb61-4bdb-a590-d3de8c3096e3",
+    "play:com.citibanamex.banamexmobile:01f501da-5818-4bfb-8156-6099d681ac21",
+    "play:com.citibanamex.banamexmobile:65eb96b8-29db-42d2-b47b-235cdf496d04",
+    "appbot:498483038:3760879978",
+    "play:com.citibanamex.banamexmobile:0cf083cf-aed3-471a-8b3f-eefb916a05e6",
+    "play:com.citibanamex.banamexmobile:11a5b3e1-cd03-4f04-8d31-4c049329fac8"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005824,
+  "charged_or_reserved_usd": 0.0005824,
+  "usage": {
+    "completion_tokens": 97,
+    "prompt_tokens": 1133,
+    "total_tokens": 1230,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005824,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005824,
+      "upstream_inference_prompt_cost": 0.0003399,
+      "upstream_inference_completions_cost": 0.0002425
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175489-HWZW85N94RDcKh9sUB1w",
+  "files": {
+    "request.json": "8f3486cbd0c21b4d4269468dd02f1acd321e4e2ed491a26ceec44558fded7813",
+    "response.json": "05471a5e3fddbb65a7f654889748afbffa050dc93a5d24f2fbcacfe6065dc93d",
+    "reservation.json": "2cbfeb5cce59354d51a1fa9b79b9bcef11dbe2f4720958bf92465e7175d1aa76"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de rendimiento y estabilidad de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación tarda mucho en abrir, se congela o se cierra inesperadamente. Algunos mencionan que deben cerrarla y volver a abrirla para que funcione correctamente, o para que se actualice la información en pantalla, como el historial de pagos. Estos problemas de rendimiento se han observado desde hace tiempo y persisten incluso después de actualizaciones.",
+    "proposed_feature": "Mejorar la estabilidad y el tiempo de carga de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6f7974f0-8ae4-4cae-8853-3b365ffe54c9",
+      "appbot:498483038:3762293703",
+      "play:com.citibanamex.banamexmobile:bf2551b6-602b-427a-93bf-65e2d21aed6c",
+      "appbot:498483038:3758817842",
+      "play:com.citibanamex.banamexmobile:21f7741f-1bee-4f8a-a6fd-2abce83e52ad"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6f7974f0-8ae4-4cae-8853-3b365ffe54c9",
+    "appbot:498483038:3762293703",
+    "play:com.citibanamex.banamexmobile:bf2551b6-602b-427a-93bf-65e2d21aed6c",
+    "appbot:498483038:3750955635",
+    "appbot:498483038:3758817842",
+    "play:com.citibanamex.banamexmobile:21f7741f-1bee-4f8a-a6fd-2abce83e52ad"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006774,
+  "charged_or_reserved_usd": 0.0006774,
+  "usage": {
+    "completion_tokens": 135,
+    "prompt_tokens": 1133,
+    "total_tokens": 1268,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006774,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006774,
+      "upstream_inference_prompt_cost": 0.0003399,
+      "upstream_inference_completions_cost": 0.0003375
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175576-6YGMgEDchYidHcBKHGVQ",
+  "files": {
+    "request.json": "0ebceabf34799750ab3d2e6e5b154f237d2411acaa12ecfb195d47da725aeee2",
+    "response.json": "b3358c06d627d3bf021f6a2821df1b79061db8bb2243491056f197c815645291",
+    "reservation.json": "a72dd2e6e2a618387e1ced8108e7c62666f8c44730fba18d8a3d8a0dcbbde86c"
+  }
+}

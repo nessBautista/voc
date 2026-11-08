@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Funcionamiento general de la aplicación",
+    "topic_description": "Las reseñas indican que la aplicación funciona correctamente en general, con comentarios positivos sobre su operación y avisos. Algunos usuarios expresan satisfacción con el rendimiento actual, aunque uno menciona que la aplicación \"funciona cuando quiere\", lo que sugiere una inconsistencia en su fiabilidad.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9d102a12-9e5f-454b-b386-faf1b8ad6359",
+      "play:com.citibanamex.banamexmobile:d98e6d80-5986-4b86-8802-2d3b1b8626e3",
+      "play:com.citibanamex.banamexmobile:ea99bbc2-4fc5-4b57-9552-ff52afcf4eaa",
+      "play:com.citibanamex.banamexmobile:01454584-9e17-4b77-b894-e7233dbc688b",
+      "play:com.citibanamex.banamexmobile:05405cbf-0d61-48bf-a7a2-5dfa0e439b01",
+      "play:com.citibanamex.banamexmobile:0c6f8349-58bb-48d7-b920-ec9a1f87316e"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9d102a12-9e5f-454b-b386-faf1b8ad6359",
+    "play:com.citibanamex.banamexmobile:d98e6d80-5986-4b86-8802-2d3b1b8626e3",
+    "play:com.citibanamex.banamexmobile:ea99bbc2-4fc5-4b57-9552-ff52afcf4eaa",
+    "play:com.citibanamex.banamexmobile:01454584-9e17-4b77-b894-e7233dbc688b",
+    "play:com.citibanamex.banamexmobile:05405cbf-0d61-48bf-a7a2-5dfa0e439b01",
+    "play:com.citibanamex.banamexmobile:0c6f8349-58bb-48d7-b920-ec9a1f87316e"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "286671e38eb6a1f026ede13bd761d7d25ccc729cebef7cf1228d25ee0c09e399",
+    "response.json": "5a5554e14080ca424ce9894b614768305e26048fc15a709f65e51292674529bb"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Lentitud y problemas de apertura de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación es muy lenta en su funcionamiento general. Además, experimentan dificultades para abrir la aplicación, lo que impide su uso en momentos de urgencia o para realizar operaciones como compras en línea. Algunos usuarios también mencionan que la aplicación entra en mantenimiento frecuentemente, lo que contribuye a la imposibilidad de usarla.",
+    "proposed_feature": "Mejorar la velocidad de carga y la estabilidad de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+      "play:com.citibanamex.banamexmobile:4fbd7cf5-def3-4dc4-a14c-97ae8f81a74b",
+      "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+      "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da",
+      "play:com.citibanamex.banamexmobile:81360978-e256-44d7-bed3-7a17b801322d",
+      "play:com.citibanamex.banamexmobile:8661c3ae-0e44-4f1e-94dd-535b0e8a41f1"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+    "play:com.citibanamex.banamexmobile:4fbd7cf5-def3-4dc4-a14c-97ae8f81a74b",
+    "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+    "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da",
+    "play:com.citibanamex.banamexmobile:81360978-e256-44d7-bed3-7a17b801322d",
+    "play:com.citibanamex.banamexmobile:8661c3ae-0e44-4f1e-94dd-535b0e8a41f1"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00048974,
+  "charged_or_reserved_usd": 0.00048974,
+  "usage": {
+    "completion_tokens": 137,
+    "prompt_tokens": 1182,
+    "total_tokens": 1319,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 768,
+      "video_tokens": 0
+    },
+    "cost": 0.00048974,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00048974,
+      "upstream_inference_prompt_cost": 0.00014724,
+      "upstream_inference_completions_cost": 0.0003425
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175567-ikgrh8NSeMGKu5acIb5Q",
+  "files": {
+    "request.json": "58e644e61b31244c2f52a893ed2bd15d1353e30b1d59e1056e524eb9916bd15d",
+    "response.json": "382449329b907a67ddb6987d5b7ee365c2203c72d4d5c3ceb073ccacf56aea96",
+    "reservation.json": "5b791dd6dd5711445692178a292c785fec9866d5b95fba92ce82dbf474005a75"
+  }
+}

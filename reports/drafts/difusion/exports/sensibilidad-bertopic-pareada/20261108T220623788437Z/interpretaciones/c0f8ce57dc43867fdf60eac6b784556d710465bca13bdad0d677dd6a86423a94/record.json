@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad en la aplicación móvil",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, incluyendo problemas para iniciar sesión debido a contraseñas no reconocidas, cierres inesperados de la aplicación con mensajes de error, y la imposibilidad de abrir la app. Además, un usuario menciona la falta de una opción para descargar información de movimientos y la ausencia de la clave de rastreo en la aplicación.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "x:2077552524870000992",
+      "x:2086520204079792304",
+      "x:2072374032779944379",
+      "x:2078548079003746402",
+      "x:2085464907915345953"
+    ]
+  },
+  "evidence_ids": [
+    "x:2077552524870000992",
+    "x:2093059510571008024",
+    "x:2086520204079792304",
+    "x:2072374032779944379",
+    "x:2078548079003746402",
+    "x:2085464907915345953"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006369,
+  "charged_or_reserved_usd": 0.0006369,
+  "usage": {
+    "completion_tokens": 123,
+    "prompt_tokens": 1098,
+    "total_tokens": 1221,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006369,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006369,
+      "upstream_inference_prompt_cost": 0.0003294,
+      "upstream_inference_completions_cost": 0.0003075
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175580-wx5W1sh2XIvNB6i7wVap",
+  "files": {
+    "request.json": "e72070dcb0c4ef33d9601afa71d49eb7a461f83efe1eba9dd066e206b2d39d43",
+    "response.json": "a1abe41c241b9a439f217010b76528c9b45dd36e9cc393a0012b19b6f4d43934",
+    "reservation.json": "a1e87f2511456ebcf47d82016ebcf23bf46cc97a1ea87ebb71dc1693397a07c6"
+  }
+}

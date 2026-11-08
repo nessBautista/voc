@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de acceso y visualización de movimientos en la aplicación móvil",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, experimentando pantallas oscuras o la necesidad de reiniciar el teléfono repetidamente para lograr entrar. Además, una vez dentro, la aplicación no muestra los movimientos bancarios de manera oportuna, lo que la hace inútil para algunos usuarios.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3738324714"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "youtube:-:UgyekmT_EYBdBzcg4BV4AaABAg",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "93e37b063ae97d46c16491ac1be41de5a285379a1007d9851e131ed030dc9e88",
+    "response.json": "5d41f7bae9711420d3dc5d6f92939a5a17ef81a4dd2661611009b03c56889b94"
+  }
+}

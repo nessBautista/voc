@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Satisfacción general con la aplicación y servicios de Banamex",
+    "topic_description": "Los usuarios expresan una satisfacción general con la aplicación móvil y los servicios ofrecidos por Banamex. Se mencionan mejoras en la aplicación y la calidad del servicio al cliente en sucursales. Algunos comentarios también hacen referencia a la publicidad de la marca.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+      "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+      "appbot:498483038:3760879979",
+      "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+      "play:com.citibanamex.banamexmobile:78567595-9d17-47b8-a9a1-8f9e043e0aca"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+    "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+    "x:2075801022052614312",
+    "appbot:498483038:3760879979",
+    "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+    "play:com.citibanamex.banamexmobile:78567595-9d17-47b8-a9a1-8f9e043e0aca"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006286,
+  "charged_or_reserved_usd": 0.0006286,
+  "usage": {
+    "completion_tokens": 103,
+    "prompt_tokens": 1237,
+    "total_tokens": 1340,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006286,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006286,
+      "upstream_inference_prompt_cost": 0.0003711,
+      "upstream_inference_completions_cost": 0.0002575
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175473-aoK8rHZZCIKJ4irYuY3H",
+  "files": {
+    "request.json": "606d5ee5eb8f76d1c2117bfbb63308de8b660c1f91b2f5d151d5aa16a5f7e8ab",
+    "response.json": "d1d688b4143818a7769dffa3115b5b87973f6ae3e4cc4df490734f10d8cb64b7",
+    "reservation.json": "dd6589ffe55ac13c20db29dc7105a06211266e4b7c53eb62095d36b5791ec8f0"
+  }
+}

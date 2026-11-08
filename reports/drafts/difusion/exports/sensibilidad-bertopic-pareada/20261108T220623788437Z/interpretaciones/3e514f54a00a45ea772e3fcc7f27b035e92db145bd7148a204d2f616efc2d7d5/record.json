@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y fallos en la aplicación bancaria",
+    "topic_description": "Los usuarios experimentan dificultades para acceder a la aplicación, con fallos que impiden el inicio de sesión o que la aplicación se congele. También se reportan problemas con las transferencias, donde el dinero no se refleja inmediatamente o las transacciones se rechazan inicialmente para luego aparecer como enviadas. Además, se menciona la deshabilitación de contraseñas sin explicación y la falta de resolución de problemas a través del servicio de atención al cliente o la propia aplicación.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "x:2074695426448478516",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3757219327",
+      "play:com.citibanamex.banamexmobile:01af58aa-cf9d-4d25-b388-0d9dd31ce7a7",
+      "play:com.citibanamex.banamexmobile:18a231af-b930-462c-b6e4-04e03403543d"
+    ]
+  },
+  "evidence_ids": [
+    "x:2074695426448478516",
+    "x:2089474981243629794",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "appbot:498483038:3757219327",
+    "play:com.citibanamex.banamexmobile:01af58aa-cf9d-4d25-b388-0d9dd31ce7a7",
+    "play:com.citibanamex.banamexmobile:18a231af-b930-462c-b6e4-04e03403543d"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00077,
+  "charged_or_reserved_usd": 0.00077,
+  "usage": {
+    "completion_tokens": 146,
+    "prompt_tokens": 1350,
+    "total_tokens": 1496,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.00077,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00077,
+      "upstream_inference_prompt_cost": 0.000405,
+      "upstream_inference_completions_cost": 0.000365
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175491-NJbDIQDhHioGJqC7Avws",
+  "files": {
+    "request.json": "c708bd2fe131b16bd2c90bca62199b3494209c96ff1074f1eefdf60a9e2b936e",
+    "response.json": "c5b9aaf2800199622171c022ee829d1fb98d899a97eb4de65e181e63069b10bb",
+    "reservation.json": "5894de4fb8b82730f02227c661fc7eb8354c030c80eabf9d0f9b92ca1b892dd9"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175486-ROsVFSIJ2RV26UotY7S5",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas con la captura automática de códigos de activación en la aplicación móvil\",\"topic_description\":\"Los usuarios reportan que la aplicación móvil no captura automáticamente los códigos de activación de NetKey que llegan por SMS, ni permite ingresarlos manualmente. Este problema se ha observado en dispositivos Android, como Samsung S25 Ultra y Motorola g04, y ha impedido a los usuarios realizar operaciones bancarias. Algunos usuarios mencionan que la aplicación muestra un mensaje indicando que copió datos del portapapeles, pero el campo de código no se llena.\",\"proposed_feature\":\"Permitir el ingreso manual de códigos de activación de NetKey\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175486,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 155,
+    "prompt_tokens": 1422,
+    "total_tokens": 1577,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0008141,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0008141,
+      "upstream_inference_prompt_cost": 0.0004266,
+      "upstream_inference_completions_cost": 0.0003875
+    }
+  },
+  "provider": "Google AI Studio"
+}

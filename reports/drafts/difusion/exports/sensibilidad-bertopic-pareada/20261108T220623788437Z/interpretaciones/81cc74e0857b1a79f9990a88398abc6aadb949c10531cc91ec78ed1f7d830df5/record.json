@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Facilidad de uso y navegación intuitiva de la aplicación",
+    "topic_description": "Los usuarios valoran positivamente la aplicación por ser fácil de usar, intuitiva y amigable. Destacan que la interfaz es clara y cómoda para realizar movimientos y consultas, lo que contribuye a una experiencia satisfactoria.",
+    "proposed_feature": "Facilidad de uso y navegación intuitiva",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:eb24ca6c-e7f3-4db8-aa0f-089609b05a86",
+      "play:com.citibanamex.banamexmobile:a612caf7-53d4-4c3d-80b8-81d4bf7b004e",
+      "play:com.citibanamex.banamexmobile:df68bfde-c049-4319-9526-faca32ddd86e",
+      "appbot:498483038:3747573974",
+      "play:com.citibanamex.banamexmobile:02bab93f-dd2f-4f90-aa93-ff94f5e6c27a"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:eb24ca6c-e7f3-4db8-aa0f-089609b05a86",
+    "play:com.citibanamex.banamexmobile:a612caf7-53d4-4c3d-80b8-81d4bf7b004e",
+    "play:com.citibanamex.banamexmobile:df68bfde-c049-4319-9526-faca32ddd86e",
+    "appbot:498483038:3747573974",
+    "play:com.citibanamex.banamexmobile:02bab93f-dd2f-4f90-aa93-ff94f5e6c27a",
+    "play:com.citibanamex.banamexmobile:11f41416-5bba-4488-923b-757d68078fb7"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "81cc74e0857b1a79f9990a88398abc6aadb949c10531cc91ec78ed1f7d830df5",
+    "response.json": "04b2a6bdaaa29cf9b68559ea8665ef338e1e4956fc09727043bcb017ac9f7b06"
+  }
+}

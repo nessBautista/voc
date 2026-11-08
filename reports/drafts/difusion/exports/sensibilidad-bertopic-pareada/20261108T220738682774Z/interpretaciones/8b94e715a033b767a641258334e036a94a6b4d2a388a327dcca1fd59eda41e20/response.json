@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175470-doHyBK5PQhASXllwzYmn",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Control de gastos y reembolsos\",\"topic_description\":\"La aplicación permite a los usuarios controlar sus gastos, liquidar saldos y obtener reembolsos por sus compras. También facilita operaciones bancarias como transferencias interbancarias y la descarga de estados de cuenta, lo que la convierte en una herramienta útil para la gestión financiera personal.\",\"proposed_feature\":\"Control de gastos y reembolsos por compras\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175470,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 103,
+    "prompt_tokens": 1201,
+    "total_tokens": 1304,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006178,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006178,
+      "upstream_inference_prompt_cost": 0.0003603,
+      "upstream_inference_completions_cost": 0.0002575
+    }
+  },
+  "provider": "Google AI Studio"
+}

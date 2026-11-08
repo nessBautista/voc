@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175570-NCizHuG9Mfv97cFF9unk",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de estabilidad y navegación en la aplicación\",\"topic_description\":\"Los usuarios reportan que la aplicación se cierra automáticamente al intentar abrirla o durante su uso, lo que impide el acceso o la realización de operaciones. También mencionan que la aplicación tarda mucho en iniciar y en cargar el contenido, y que en ocasiones se bloquea o se cierra por inactividad. Además, hay dificultades para navegar, ya que no se puede regresar a menús anteriores después de revisar el historial de movimientos, obligando a cerrar y reabrir la aplicación.\",\"proposed_feature\":null,\"assessment\":\"mixed\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175570,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 147,
+    "prompt_tokens": 1279,
+    "total_tokens": 1426,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007512,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007512,
+      "upstream_inference_prompt_cost": 0.0003837,
+      "upstream_inference_completions_cost": 0.0003675
+    }
+  },
+  "provider": "Google AI Studio"
+}

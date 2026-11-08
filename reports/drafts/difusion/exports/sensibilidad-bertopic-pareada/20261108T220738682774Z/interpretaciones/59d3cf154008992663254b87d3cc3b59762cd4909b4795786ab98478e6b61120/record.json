@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidad de retiros sin tarjeta",
+    "topic_description": "Los usuarios mencionan que la aplicación permite realizar retiros de dinero sin necesidad de usar una tarjeta física, lo cual es una característica valorada. Sin embargo, algunos usuarios sugieren que esta funcionalidad podría mejorarse o que debería implementarse, indicando que no siempre está disponible o que otras aplicaciones bancarias ofrecen una experiencia superior en este aspecto.",
+    "proposed_feature": "Retiros sin tarjeta",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:3cb2a2b6-2eaa-48e6-8349-73c5c68281c2",
+      "play:com.citibanamex.banamexmobile:67e963af-5341-427f-a5dc-4f697dbda097"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:3cb2a2b6-2eaa-48e6-8349-73c5c68281c2",
+    "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+    "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+    "play:com.citibanamex.banamexmobile:08657362-a012-4b39-9efd-f8b405f38e19",
+    "play:com.citibanamex.banamexmobile:3a6f5635-fc91-4824-ae81-937436b3aa38",
+    "play:com.citibanamex.banamexmobile:67e963af-5341-427f-a5dc-4f697dbda097"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007017,
+  "charged_or_reserved_usd": 0.0007017,
+  "usage": {
+    "completion_tokens": 111,
+    "prompt_tokens": 1414,
+    "total_tokens": 1525,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007017,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007017,
+      "upstream_inference_prompt_cost": 0.0004242,
+      "upstream_inference_completions_cost": 0.0002775
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175470-rJtpF3xMPXzi0zXpNeiu",
+  "files": {
+    "request.json": "202db057cb6e5f249bae90cb371e0de504f17098e1a2a3c96d236905f70c62ca",
+    "response.json": "2fe887716e7e60d148c0feef0402396e9d2e3270da8f52c692c84b0afb9d7dc4",
+    "reservation.json": "1886d559351471a5770411c44c3d75f0523c69308ef881578f6161d52d3990dd"
+  }
+}

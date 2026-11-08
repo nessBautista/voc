@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Calidad del servicio y atención al cliente",
+    "topic_description": "Los usuarios expresan satisfacción con la calidad del servicio y la atención recibida, destacando la amabilidad, eficiencia y profesionalismo del personal. Algunos mencionan que la atención fue clara y que recibieron asesoría paso a paso. También se valora la comodidad de no tener que hacer filas para realizar cobros o pagos, lo que sugiere que la aplicación facilita estas operaciones.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+      "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+      "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+      "appbot:498483038:3745979774",
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+    "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+    "appbot:498483038:3745979774",
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006491,
+  "charged_or_reserved_usd": 0.0006491,
+  "usage": {
+    "completion_tokens": 125,
+    "prompt_tokens": 1122,
+    "total_tokens": 1247,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006491,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006491,
+      "upstream_inference_prompt_cost": 0.0003366,
+      "upstream_inference_completions_cost": 0.0003125
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175480-ixF02G7fuJeQKKQyQBl2",
+  "files": {
+    "request.json": "865e4a6eefa1613ac8c452028674fcec18dcf4291785d94a2e143f6a92c9a428",
+    "response.json": "17146bb2293b7213fd344672155aac805fcb4174d01beb2c7e8ac78b37c7bbc0",
+    "reservation.json": "417049b6094ff6b2ce416d51e24ba0a770c1baceba2e4fb4739787698006c052"
+  }
+}

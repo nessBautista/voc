@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Atención al cliente eficiente y amable",
+    "topic_description": "Los usuarios expresan satisfacción con la atención recibida, destacando la claridad, eficiencia, rapidez y amabilidad del personal. Se menciona que el personal asesora paso a paso y está atento a las necesidades de los usuarios.",
+    "proposed_feature": "Atención al cliente eficiente y amable",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133"
+    ]
+  },
+  "evidence_ids": [
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005801,
+  "charged_or_reserved_usd": 0.0005801,
+  "usage": {
+    "completion_tokens": 95,
+    "prompt_tokens": 1142,
+    "total_tokens": 1237,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005801,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005801,
+      "upstream_inference_prompt_cost": 0.0003426,
+      "upstream_inference_completions_cost": 0.0002375
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175519-6tb5NI0rGy9PLh0kR9jF",
+  "files": {
+    "request.json": "d5e68c3a5f26af1711b55fa8e121f9a00d66d28f14f7f5880e49c3e0d7334937",
+    "response.json": "eedc286bf7906dc3732dc4b3d2b32f2987882d9c18dbd192a74665ca16d3cd6b",
+    "reservation.json": "969e517c61d09baac1d8ca26ba9d2c35dd7d7ee61ff11150c4bab82c51217c18"
+  }
+}

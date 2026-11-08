@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Atención rápida en la aplicación",
+    "topic_description": "La aplicación móvil permite a los usuarios ser atendidos rápidamente, lo que contribuye a una experiencia positiva.",
+    "proposed_feature": "Atención rápida al usuario",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:e0ea4645-0c20-4cb3-abcf-84e60d92a8cd"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:e0ea4645-0c20-4cb3-abcf-84e60d92a8cd",
+    "appbot:498483038:3756424122",
+    "play:com.citibanamex.banamexmobile:92822238-0377-4699-9a7b-35050eb10724",
+    "play:com.citibanamex.banamexmobile:1868ec35-6586-423b-b21c-054f8b78fd29",
+    "play:com.citibanamex.banamexmobile:22a14975-c436-4485-9f58-74443a8c53b0",
+    "play:com.citibanamex.banamexmobile:2e80dc49-e4a1-4291-a253-7f17b74f9355"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0004749,
+  "charged_or_reserved_usd": 0.0004749,
+  "usage": {
+    "completion_tokens": 60,
+    "prompt_tokens": 1083,
+    "total_tokens": 1143,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0004749,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0004749,
+      "upstream_inference_prompt_cost": 0.0003249,
+      "upstream_inference_completions_cost": 0.00015
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175475-ZZWpoeed0e2oTdYv5CXx",
+  "files": {
+    "request.json": "1af51bfba9676f8de5136c4e13a11ab7bad331e543e2773e561424ca0ed61b81",
+    "response.json": "bafd4caebc9e315f5c3a282047c4d4c52950f7debf4e75d0da3cf6113111a596",
+    "reservation.json": "2ccc37c27d715c180815b8090a5530f222408d790f1fcf0d352b88cea9a2a870"
+  }
+}

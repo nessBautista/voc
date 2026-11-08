@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175538-j3G44dg0fkHGPUEiVm4V",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas con la tarjeta digital y clave dinámica\",\"topic_description\":\"Los usuarios experimentan dificultades al intentar acceder a la información de su tarjeta virtual, ya que la aplicación indica que está generando una clave dinámica sin que se haya solicitado, lo que impide visualizar los datos de la tarjeta y genera errores. Además, se reporta que no se muestra el detalle de compras de la tarjeta digital y que no se pueden realizar pagos con la tarjeta en algunas ocasiones.\",\"proposed_feature\":\"Acceso y gestión de la tarjeta digital\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E4\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175538,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 129,
+    "prompt_tokens": 1399,
+    "total_tokens": 1528,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007422,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007422,
+      "upstream_inference_prompt_cost": 0.0004197,
+      "upstream_inference_completions_cost": 0.0003225
+    }
+  },
+  "provider": "Google AI Studio"
+}

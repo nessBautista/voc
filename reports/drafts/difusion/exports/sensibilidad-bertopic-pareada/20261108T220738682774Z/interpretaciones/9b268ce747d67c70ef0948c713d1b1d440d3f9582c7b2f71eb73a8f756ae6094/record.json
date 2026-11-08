@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas con la tarjeta digital y clave dinámica",
+    "topic_description": "Los usuarios experimentan dificultades al intentar acceder a la información de su tarjeta virtual, ya que la aplicación indica que está generando una clave dinámica sin que se haya solicitado, lo que impide visualizar los datos de la tarjeta y genera errores. Además, se reporta que no se muestra el detalle de compras de la tarjeta digital y que no se pueden realizar pagos con la tarjeta en algunas ocasiones.",
+    "proposed_feature": "Acceso y gestión de la tarjeta digital",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+      "appbot:498483038:3751862337",
+      "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+    "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+    "play:com.citibanamex.banamexmobile:f4789bed-27fe-4f35-9fa1-eb6bf5f300a0",
+    "appbot:498483038:3751862337",
+    "appbot:498483038:3753020260",
+    "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007422,
+  "charged_or_reserved_usd": 0.0007422,
+  "usage": {
+    "completion_tokens": 129,
+    "prompt_tokens": 1399,
+    "total_tokens": 1528,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007422,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007422,
+      "upstream_inference_prompt_cost": 0.0004197,
+      "upstream_inference_completions_cost": 0.0003225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175538-j3G44dg0fkHGPUEiVm4V",
+  "files": {
+    "request.json": "e9425aa6a817953d386fe483470fde65b460e148ce5ddac9bf3ac9ee940d68e6",
+    "response.json": "64acf19bc6e5fc4d40938914a7a05f1aff6b5448d827ec631a24992845b02034",
+    "reservation.json": "eafbbbe505b16bd3d81571b43d8b9c15678593b57ab1c7578a1735186784a23d"
+  }
+}

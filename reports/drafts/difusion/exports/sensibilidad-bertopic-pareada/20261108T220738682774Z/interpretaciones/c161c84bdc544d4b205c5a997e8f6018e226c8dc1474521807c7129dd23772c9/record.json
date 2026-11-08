@@ -1,0 +1,49 @@
+{
+  "status": "failed",
+  "origin": "provider",
+  "result": null,
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:12d30e07-97ae-4e8e-aa9e-dcad328e1220",
+    "play:com.citibanamex.banamexmobile:68c1a4e9-d7fb-4bb8-8874-ca6f7daf5802",
+    "play:com.citibanamex.banamexmobile:a36b8538-5c7b-4655-843c-45f227704c55",
+    "play:com.citibanamex.banamexmobile:01a803fc-256e-473f-9062-545f74e59fa0",
+    "play:com.citibanamex.banamexmobile:0c11b3d8-3083-4221-a8f2-066a5233174c",
+    "play:com.citibanamex.banamexmobile:234f2242-8d5f-4eca-b5c1-8866541b7bb8"
+  ],
+  "error": "invalid_response",
+  "provider_attempt": true,
+  "cost_usd": 0.0007085,
+  "charged_or_reserved_usd": 0.0007085,
+  "usage": {
+    "completion_tokens": 137,
+    "prompt_tokens": 1220,
+    "total_tokens": 1357,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007085,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007085,
+      "upstream_inference_prompt_cost": 0.000366,
+      "upstream_inference_completions_cost": 0.0003425
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175560-i0UXUSREJc5YAyJLxiH8",
+  "files": {
+    "request.json": "6c4cbb5e1bab346916fbeb6a6cec852fe9f226da54b2aafc9b14a73dd23cad6c",
+    "response.json": "8348aba2dec229fa73ab651b08dec1d740e2b63f136412633a14e0c8dcf39b5d",
+    "reservation.json": "9b382d1912b341448bb726461e9d225bec6de6e6764557b320dbe1b28da57028"
+  }
+}

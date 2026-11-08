@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Atención al cliente eficiente y amable",
+    "topic_description": "Los usuarios expresan satisfacción con la atención recibida, destacando que fue clara, eficiente y que el personal de ventanilla brindó asesoría paso a paso. También mencionan que la atención al cliente es rápida y amable, y que siempre están atentos a sus necesidades.",
+    "proposed_feature": "Atención al cliente clara y eficiente",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+      "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133"
+    ]
+  },
+  "evidence_ids": [
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00040183,
+  "charged_or_reserved_usd": 0.00040183,
+  "usage": {
+    "completion_tokens": 106,
+    "prompt_tokens": 1141,
+    "total_tokens": 1247,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 761,
+      "video_tokens": 0
+    },
+    "cost": 0.00040183,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00040183,
+      "upstream_inference_prompt_cost": 0.00013683,
+      "upstream_inference_completions_cost": 0.000265
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175540-tz59Mvj4B74b1vZBFRHF",
+  "files": {
+    "request.json": "4b77a5cf07a2c5855068d081736a6ee18efdcc80242bf095dc51dcbe474a1c4c",
+    "response.json": "e1b0a01a463d8a9faaf0abf858edca12c012dfcb88c42fcec9b49b36e686eff4",
+    "reservation.json": "322e73e5a3457a4afb4e49ed183ed9addbeac6c46f0240e8982a34d9396b779d"
+  }
+}

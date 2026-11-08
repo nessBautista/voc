@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de seguridad y cobros no reconocidos",
+    "topic_description": "Los usuarios reportan una falta de seguridad en la aplicación, lo que ha resultado en cobros no reconocidos y la desaparición de dinero de sus cuentas. Algunos usuarios mencionan haber sido víctimas de robos de grandes sumas de dinero, sugiriendo que la seguridad del banco o de la aplicación es deficiente y que no se hacen responsables por estas pérdidas.",
+    "proposed_feature": "Mejorar la seguridad de la cuenta para prevenir cobros no reconocidos y robos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+      "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+      "appbot:498483038:3745361719"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+    "play:com.citibanamex.banamexmobile:bbb57008-4abe-4dc7-a995-50d293275f72",
+    "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+    "appbot:498483038:3745361719",
+    "play:com.citibanamex.banamexmobile:0e71800b-322e-4a4e-9fcc-98e17184322a",
+    "play:com.citibanamex.banamexmobile:10ad064f-018b-44d6-8f5d-5d9268d56c8e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00048567,
+  "charged_or_reserved_usd": 0.00048567,
+  "usage": {
+    "completion_tokens": 135,
+    "prompt_tokens": 1186,
+    "total_tokens": 1321,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 769,
+      "video_tokens": 0
+    },
+    "cost": 0.00048567,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00048567,
+      "upstream_inference_prompt_cost": 0.00014817,
+      "upstream_inference_completions_cost": 0.0003375
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175574-ZgufhGTAkvpw5frijhOb",
+  "files": {
+    "request.json": "4aea29200a74b7042f49bba55aa07456018d49190da6ee69a3f5b89bb63a7239",
+    "response.json": "0780cca37a070c06df8538fbc717a5dd14319774725d0fb9d8883d353d0a236a",
+    "reservation.json": "1fba299e66257886ca89191ebbf37ab19a8b70bd5730b18c9c13d70d2a0e4854"
+  }
+}

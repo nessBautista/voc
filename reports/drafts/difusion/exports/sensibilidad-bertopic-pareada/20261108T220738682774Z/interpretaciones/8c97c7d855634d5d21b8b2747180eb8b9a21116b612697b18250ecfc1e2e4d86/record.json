@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Calidad del servicio y atención al cliente",
+    "topic_description": "Los usuarios valoran positivamente la calidad del servicio y la atención recibida, destacando aspectos como la rapidez, eficiencia y seguridad en las operaciones. También se menciona la amabilidad y profesionalidad del personal, tanto en la atención telefónica como en el banco, lo que contribuye a una experiencia cómoda y satisfactoria, especialmente para personas mayores que evitan filas.",
+    "proposed_feature": "Servicio y atención al cliente de alta calidad",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9f219423-f482-4e8f-a1b0-8290f835e044",
+      "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+      "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+      "appbot:498483038:3745979774",
+      "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+      "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9f219423-f482-4e8f-a1b0-8290f835e044",
+    "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+    "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+    "appbot:498483038:3745979774",
+    "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+    "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006728,
+  "charged_or_reserved_usd": 0.0006728,
+  "usage": {
+    "completion_tokens": 134,
+    "prompt_tokens": 1126,
+    "total_tokens": 1260,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006728,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006728,
+      "upstream_inference_prompt_cost": 0.0003378,
+      "upstream_inference_completions_cost": 0.000335
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175477-BwUQxdPbErSFREBPiC0x",
+  "files": {
+    "request.json": "0188c32c45d0f9995709e993b87cb1028fedbfaa824811298e88ea99eb501461",
+    "response.json": "e2c1709f0c612d124b91fa1fb08735ea6e2ac58f4bc890f1debf0860e5794962",
+    "reservation.json": "a6a48d6d565c89c3e6efd85d65923c7a95aa08cd745f7f5a70232ad6ab3df7b9"
+  }
+}

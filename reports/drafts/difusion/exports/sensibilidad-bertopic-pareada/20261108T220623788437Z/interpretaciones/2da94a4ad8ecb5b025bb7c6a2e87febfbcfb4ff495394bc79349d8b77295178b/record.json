@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Reseñas de satisfacción general",
+    "topic_description": "Las reseñas proporcionadas expresan una satisfacción general con la aplicación, utilizando términos como \"Excelente\" y \"excelente\". Una de las reseñas menciona que \"5 sería perfecto y no existe tal perfección\", lo que sugiere que, aunque la aplicación es muy buena, siempre hay un margen para la mejora, aunque no se especifica en qué áreas. No se identifican características específicas de la aplicación que generen esta satisfacción.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:1ceabf96-cd71-4ae4-a143-9cfb1797c101",
+      "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+      "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+      "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+      "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+      "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:1ceabf96-cd71-4ae4-a143-9cfb1797c101",
+    "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+    "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+    "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+    "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+    "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "2da94a4ad8ecb5b025bb7c6a2e87febfbcfb4ff495394bc79349d8b77295178b",
+    "response.json": "ac2d4ed08e8676d63ae08f681892adc899b39cda1639177482fa42b974a761ce"
+  }
+}

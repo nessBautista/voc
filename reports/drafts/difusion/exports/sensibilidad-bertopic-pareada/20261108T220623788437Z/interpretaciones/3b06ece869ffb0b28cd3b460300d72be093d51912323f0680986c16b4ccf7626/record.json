@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionamiento general de la aplicación",
+    "topic_description": "Las reseñas indican que la aplicación funciona bien en general, con comentarios positivos sobre su operación y utilidad. Algunos usuarios expresan satisfacción con el rendimiento actual, aunque uno menciona que la aplicación \"funciona cuando quiere\", lo que sugiere una inconsistencia en su fiabilidad.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9d102a12-9e5f-454b-b386-faf1b8ad6359",
+      "play:com.citibanamex.banamexmobile:d98e6d80-5986-4b86-8802-2d3b1b8626e3",
+      "play:com.citibanamex.banamexmobile:ea99bbc2-4fc5-4b57-9552-ff52afcf4eaa",
+      "play:com.citibanamex.banamexmobile:01454584-9e17-4b77-b894-e7233dbc688b",
+      "play:com.citibanamex.banamexmobile:05405cbf-0d61-48bf-a7a2-5dfa0e439b01",
+      "play:com.citibanamex.banamexmobile:0c6f8349-58bb-48d7-b920-ec9a1f87316e"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9d102a12-9e5f-454b-b386-faf1b8ad6359",
+    "play:com.citibanamex.banamexmobile:d98e6d80-5986-4b86-8802-2d3b1b8626e3",
+    "play:com.citibanamex.banamexmobile:ea99bbc2-4fc5-4b57-9552-ff52afcf4eaa",
+    "play:com.citibanamex.banamexmobile:01454584-9e17-4b77-b894-e7233dbc688b",
+    "play:com.citibanamex.banamexmobile:05405cbf-0d61-48bf-a7a2-5dfa0e439b01",
+    "play:com.citibanamex.banamexmobile:0c6f8349-58bb-48d7-b920-ec9a1f87316e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005891,
+  "charged_or_reserved_usd": 0.0005891,
+  "usage": {
+    "completion_tokens": 101,
+    "prompt_tokens": 1122,
+    "total_tokens": 1223,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005891,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005891,
+      "upstream_inference_prompt_cost": 0.0003366,
+      "upstream_inference_completions_cost": 0.0002525
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175511-Wt5uJ1klsqOFECbou0Ky",
+  "files": {
+    "request.json": "8f0d0cdd34f1451a2fb2ec8c4b96a5b7e1546724f8dc80c30557a29d30563264",
+    "response.json": "55898056cb915912c31c6e1f278b2dc7c072b0dc33a1adcfac9ea8a35c11a1bd",
+    "reservation.json": "7fc372e04f5886a01b0d5495b726945b2ed9da59fd0b9c17d26993b3b9a12f8b"
+  }
+}

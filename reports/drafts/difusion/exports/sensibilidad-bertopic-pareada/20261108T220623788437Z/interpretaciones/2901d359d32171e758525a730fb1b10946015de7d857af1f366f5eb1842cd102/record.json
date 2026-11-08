@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas con la captura automática de códigos de activación en la aplicación móvil",
+    "topic_description": "Los usuarios reportan que la aplicación móvil no captura automáticamente los códigos de activación de NetKey que llegan por SMS, ni permite ingresarlos manualmente. Este problema se ha observado en dispositivos Android, como Samsung S25 Ultra y Motorola g04, y ha impedido a los usuarios realizar operaciones bancarias. Algunos usuarios mencionan que la aplicación muestra un mensaje indicando que copió datos del portapapeles, pero el campo de código no se llena.",
+    "proposed_feature": "Permitir el ingreso manual de códigos de activación de NetKey",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "x:2076879636324085826",
+      "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+      "play:com.citibanamex.banamexmobile:3ba9825c-5c03-4a3e-be3c-8da95ba70868"
+    ]
+  },
+  "evidence_ids": [
+    "x:2076879636324085826",
+    "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+    "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+    "play:com.citibanamex.banamexmobile:3ba9825c-5c03-4a3e-be3c-8da95ba70868",
+    "play:com.citibanamex.banamexmobile:3cb1999d-a089-4dab-8ad8-4e54720cbdcf",
+    "play:com.citibanamex.banamexmobile:4ac2c36e-9a00-4db9-b634-0b58b54b6731"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0008141,
+  "charged_or_reserved_usd": 0.0008141,
+  "usage": {
+    "completion_tokens": 155,
+    "prompt_tokens": 1422,
+    "total_tokens": 1577,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0008141,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0008141,
+      "upstream_inference_prompt_cost": 0.0004266,
+      "upstream_inference_completions_cost": 0.0003875
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175486-ROsVFSIJ2RV26UotY7S5",
+  "files": {
+    "request.json": "9daadaab76432b886473ea7947c95420ffde721e59ecd033955e56639cd07256",
+    "response.json": "244f83509f96955e0f84d39e958644c70ec2cca234ad8071512a2dfdc11e5256",
+    "reservation.json": "abd1a64c948d4cac128a57229ab7d20cb699a81d26c8dc8ecbefe04e787949a7"
+  }
+}

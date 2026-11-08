@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de acceso y navegación en la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, mencionando que la pantalla se queda oscura o en color azul sin avanzar. Algunos usuarios han intentado reiniciar el teléfono, desinstalar y reinstalar la aplicación, o borrar la caché sin éxito. Además, se describe un problema recurrente donde, al ver los movimientos, no es posible regresar a la pantalla de inicio, obligando a cerrar la aplicación.",
+    "proposed_feature": "Mejorar la estabilidad y navegación de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+      "appbot:498483038:3742631173",
+      "appbot:498483038:3750400731"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:a4843162-7c2c-449a-95a3-29f1f261d3ff",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+    "appbot:498483038:3742631173",
+    "appbot:498483038:3750400731",
+    "appbot:498483038:3750955635"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "4c17630fa6064249049e347359222058928b684caacd354a0b987a5fc1d8e539",
+    "response.json": "f1aa3335bf7427ec48b034aafdeb4c597b934418b1fea0b9794b6b6b92cad2fe"
+  }
+}

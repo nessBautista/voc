@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Lentitud y problemas de acceso a la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación es lenta y presenta dificultades para acceder. Mencionan que en ocasiones no abre, se queda en pantallas en blanco o azul, y que el acceso es batalloso. Algunos usuarios notan que la lentitud se agudizó con una nueva versión y que la aplicación tarda en actualizar información como días de pago o corte.",
+    "proposed_feature": "Mejorar la velocidad de carga y el acceso a la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+      "appbot:498483038:3746324998",
+      "play:com.citibanamex.banamexmobile:6d326f3e-cf7e-49de-b916-84042ff50f0b",
+      "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+      "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+    "appbot:498483038:3746324998",
+    "play:com.citibanamex.banamexmobile:6d326f3e-cf7e-49de-b916-84042ff50f0b",
+    "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+    "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da",
+    "play:com.citibanamex.banamexmobile:4fbd7cf5-def3-4dc4-a14c-97ae8f81a74b"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006981,
+  "charged_or_reserved_usd": 0.0006981,
+  "usage": {
+    "completion_tokens": 135,
+    "prompt_tokens": 1202,
+    "total_tokens": 1337,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006981,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006981,
+      "upstream_inference_prompt_cost": 0.0003606,
+      "upstream_inference_completions_cost": 0.0003375
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175469-LjVOvnCz5GipolSlIXgS",
+  "files": {
+    "request.json": "dc8e4bce14cc71e19513dae6e501affd8016cb600ce1719a06d05fa483046674",
+    "response.json": "031552e48f242f9fbfac847f400837b861355637e23552a36c5df2be9eacec5c",
+    "reservation.json": "d8f58036647f1adab948eed47cdc5936358be499481f4b1f6999e1b3d20616ce"
+  }
+}

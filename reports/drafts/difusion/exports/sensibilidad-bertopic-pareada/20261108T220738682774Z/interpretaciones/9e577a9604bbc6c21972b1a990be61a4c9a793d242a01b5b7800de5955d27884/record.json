@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidad de retiros sin tarjeta y seguridad de datos",
+    "topic_description": "Los usuarios valoran la aplicación por su capacidad para realizar retiros sin tarjeta, lo que les resulta muy útil. Además, destacan la seguridad que ofrece la aplicación para proteger sus datos, lo que les genera confianza al usarla para diversas operaciones bancarias y como medio de pago.",
+    "proposed_feature": "Retiros sin tarjeta y seguridad de datos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+    "play:com.citibanamex.banamexmobile:17c58069-5eed-4a3d-b1a6-8ebef757e74f",
+    "play:com.citibanamex.banamexmobile:24ff9865-a8bf-45ec-a81d-6df18e4d8e3a"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006274,
+  "charged_or_reserved_usd": 0.0006274,
+  "usage": {
+    "completion_tokens": 106,
+    "prompt_tokens": 1208,
+    "total_tokens": 1314,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006274,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006274,
+      "upstream_inference_prompt_cost": 0.0003624,
+      "upstream_inference_completions_cost": 0.000265
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175455-whJoczY5qf57XR5PTeyd",
+  "files": {
+    "request.json": "c3542e106218fcabf4d868b8e97f09c2bc4986227d481573c83468764e649589",
+    "response.json": "0e66cbf91cd15f9d6988b77c5719b1bd380c635c0efe7627455d2ac72b685a76",
+    "reservation.json": "9f5601d5eabd93703977cd12fe12232c84011f0bdd1c2d3a1393d6fd53429d17"
+  }
+}

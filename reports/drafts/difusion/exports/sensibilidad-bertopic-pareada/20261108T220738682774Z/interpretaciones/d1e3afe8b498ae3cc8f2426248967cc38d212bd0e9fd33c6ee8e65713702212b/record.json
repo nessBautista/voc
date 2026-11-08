@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Publicidad intrusiva en la aplicación",
+    "topic_description": "Los usuarios expresan su descontento con la presencia constante de publicidad de préstamos y tarjetas de crédito dentro de la aplicación. Consideran que estos avisos son molestos y llenan la pantalla, dificultando la navegación y el acceso directo a las funciones que realmente necesitan. Algunos usuarios mencionan que esta publicidad interrumpe su experiencia y los distrae de sus tareas bancarias principales.",
+    "proposed_feature": "Opción para deshabilitar la publicidad de préstamos y tarjetas de crédito",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+      "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+    "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+    "play:com.citibanamex.banamexmobile:f3cae1b8-a656-4527-8097-6e01408895df",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463",
+    "appbot:498483038:3746324995"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007365,
+  "charged_or_reserved_usd": 0.0007365,
+  "usage": {
+    "completion_tokens": 135,
+    "prompt_tokens": 1330,
+    "total_tokens": 1465,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007365,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007365,
+      "upstream_inference_prompt_cost": 0.000399,
+      "upstream_inference_completions_cost": 0.0003375
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175534-p1EJUaociLrk1w138hsF",
+  "files": {
+    "request.json": "c436c09bb15adacb9f82b49b23f00cfa5e372f4be71a9f4676cee5fb32f8a799",
+    "response.json": "6397563e21385cb982f92fa70ba9700000d62a482d9717449668b554713bfb31",
+    "reservation.json": "4031dba049081449d0be08be0440a5283002495355a6e410fd896bb00cc8bd3c"
+  }
+}

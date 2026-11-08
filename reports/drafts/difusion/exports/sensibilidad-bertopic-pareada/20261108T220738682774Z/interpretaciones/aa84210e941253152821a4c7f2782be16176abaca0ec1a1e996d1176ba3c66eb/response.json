@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175561-t5yd8Kh3gsT6LGlPwwwq",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Evaluación de la aplicación: comentarios generales\",\"topic_description\":\"Las reseñas proporcionadas son muy breves y expresan opiniones generales sobre la aplicación. Algunas reseñas utilizan términos como \\\"EXELENTE\\\" y \\\"exelente\\\" para indicar una experiencia positiva, mientras que otras usan \\\"Rateros\\\" para expresar una opinión negativa. También hay un comentario que describe la aplicación como \\\"Versatil didáctica\\\" y otro que menciona \\\"Datos confusos\\\". Debido a la brevedad y la naturaleza general de estos comentarios, no es posible identificar una característica específica de la aplicación que esté siendo evaluada.\",\"proposed_feature\":null,\"assessment\":\"unclear\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175561,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 158,
+    "prompt_tokens": 1040,
+    "total_tokens": 1198,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000707,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000707,
+      "upstream_inference_prompt_cost": 0.000312,
+      "upstream_inference_completions_cost": 0.000395
+    }
+  },
+  "provider": "Google AI Studio"
+}

@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Satisfacción general con Banamex y su aplicación",
+    "topic_description": "Los usuarios expresan una satisfacción general con los servicios de Banamex, incluyendo la atención al cliente en sucursales y la aplicación móvil. Se menciona que la aplicación está mejorando y que los servicios en general son de su agrado. Sin embargo, también se observa la presencia de muchos anuncios de productos dentro de la aplicación.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+      "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+      "appbot:498483038:3760879979",
+      "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+      "play:com.citibanamex.banamexmobile:78567595-9d17-47b8-a9a1-8f9e043e0aca"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+    "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+    "x:2075801022052614312",
+    "appbot:498483038:3760879979",
+    "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+    "play:com.citibanamex.banamexmobile:78567595-9d17-47b8-a9a1-8f9e043e0aca"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "ee01168e98f8cb1ed20e681c717d2699deb3a8b8923bf2912f40fddc8ee21c7a",
+    "response.json": "256b3e7f5111ef177f30c02662aacae38b1a9d5acc1830fe8a4b492fb0a98353"
+  }
+}

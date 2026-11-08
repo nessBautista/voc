@@ -1,0 +1,32 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de seguridad y cobros no reconocidos",
+    "topic_description": "Los usuarios reportan una falta de seguridad en la aplicación, lo que ha resultado en cobros no reconocidos y la desaparición de dinero de sus cuentas. Algunos usuarios mencionan que les han robado grandes sumas de dinero y que el banco no se hace responsable.",
+    "proposed_feature": "Mejorar la seguridad de la cuenta para prevenir cobros no reconocidos y robos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+      "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+      "appbot:498483038:3745361719"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+    "play:com.citibanamex.banamexmobile:bbb57008-4abe-4dc7-a995-50d293275f72",
+    "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+    "appbot:498483038:3745361719",
+    "play:com.citibanamex.banamexmobile:0e71800b-322e-4a4e-9fcc-98e17184322a",
+    "play:com.citibanamex.banamexmobile:10ad064f-018b-44d6-8f5d-5d9268d56c8e"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "b55b640ad6563aa888b4e62672a3e1d47613c7dbb028623a2cfccb4f7f5b37d0",
+    "response.json": "3c7b700197d8736f19c415a0bc60986b8e88c292ce4bb1e7c5a5ab8b593099ef"
+  }
+}

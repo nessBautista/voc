@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de apertura y lentitud de la aplicación móvil",
+    "topic_description": "Los usuarios reportan dificultades para abrir la aplicación, experimentando demoras significativas o la imposibilidad de acceder a ella en el primer intento. Algunos usuarios mencionan que la aplicación no abre en absoluto durante días o que tarda horas en cargar, impidiendo la realización de movimientos. También se señala que la aplicación no permite su uso en horarios nocturnos o de madrugada, y que es lenta al procesar transacciones.",
+    "proposed_feature": "Mejorar la velocidad de inicio y la disponibilidad de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:3a46cda4-f68e-4ef8-a3c2-bf44daf9e769",
+      "play:com.citibanamex.banamexmobile:1d5f7aa9-8ec0-4ef6-aac4-a05db1e073e8",
+      "appbot:498483038:3756401053",
+      "play:com.citibanamex.banamexmobile:26713e0d-e34e-431b-87b6-4f65f739600f",
+      "play:com.citibanamex.banamexmobile:28b0f1f2-e02b-4438-a980-c49bb6d337c4"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:3a46cda4-f68e-4ef8-a3c2-bf44daf9e769",
+    "play:com.citibanamex.banamexmobile:1d5f7aa9-8ec0-4ef6-aac4-a05db1e073e8",
+    "play:com.citibanamex.banamexmobile:af3b66ca-fd5c-4a34-9fbf-5f96ee674cba",
+    "appbot:498483038:3756401053",
+    "play:com.citibanamex.banamexmobile:26713e0d-e34e-431b-87b6-4f65f739600f",
+    "play:com.citibanamex.banamexmobile:28b0f1f2-e02b-4438-a980-c49bb6d337c4"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007398,
+  "charged_or_reserved_usd": 0.0007398,
+  "usage": {
+    "completion_tokens": 147,
+    "prompt_tokens": 1241,
+    "total_tokens": 1388,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007398,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007398,
+      "upstream_inference_prompt_cost": 0.0003723,
+      "upstream_inference_completions_cost": 0.0003675
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175564-kPG5FeRUunU8Pw2RDXUH",
+  "files": {
+    "request.json": "f2317379d7188bdce363f6f1c678a1c20992bc13664cf09ae0b79d977e1e7f8b",
+    "response.json": "9415613deba3741f4da2fe92dc6740b355be08a7df1d4679ee120d360e6401b8",
+    "reservation.json": "a6a2c70eaa1dce5833d0f8468571ab1aea4c0e001c472266a4dcd7f8221a9a38"
+  }
+}

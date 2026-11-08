@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Servicio y atención al cliente",
+    "topic_description": "Las reseñas mencionan la calidad del servicio y la atención al cliente, tanto en la aplicación móvil como en las sucursales físicas y por teléfono. Algunos usuarios valoran positivamente la comodidad de la aplicación para evitar filas y realizar pagos, mientras que otros expresan insatisfacción con la atención en sucursales, mencionando demoras y problemas con el personal.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+      "play:com.citibanamex.banamexmobile:af3b66ca-fd5c-4a34-9fbf-5f96ee674cba",
+      "play:com.citibanamex.banamexmobile:d0192fb0-696d-4faf-809a-71ce28dfcbab",
+      "appbot:498483038:3745979774",
+      "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+      "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+    "play:com.citibanamex.banamexmobile:af3b66ca-fd5c-4a34-9fbf-5f96ee674cba",
+    "play:com.citibanamex.banamexmobile:d0192fb0-696d-4faf-809a-71ce28dfcbab",
+    "appbot:498483038:3745979774",
+    "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+    "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "709173022b18712deb62b2e7a5b060b41148eb514c09c11bcb40c8ff79bc0690",
+    "response.json": "0c8dfeb96cdfb328a2b35951a8eab7fb07c115c3a4fe226dd71728d02f2ab511"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Rapidez y eficiencia en las operaciones de la aplicación",
+    "topic_description": "Los usuarios valoran la rapidez y eficiencia de la aplicación, destacando que permite realizar operaciones de manera inmediata y que sus funciones son precisas. Algunos usuarios mencionan mejoras en la velocidad de la aplicación.",
+    "proposed_feature": "Mejora de la velocidad y eficiencia de las operaciones",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:e2a879cc-2740-4169-ad37-9ed8712d36ea",
+      "play:com.citibanamex.banamexmobile:5b08af98-d313-4bdf-a924-96bab107f2ce",
+      "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+      "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+      "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb",
+      "play:com.citibanamex.banamexmobile:2471c035-45d0-46c8-8228-dfaf58acb6d3"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:e2a879cc-2740-4169-ad37-9ed8712d36ea",
+    "play:com.citibanamex.banamexmobile:5b08af98-d313-4bdf-a924-96bab107f2ce",
+    "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+    "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+    "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb",
+    "play:com.citibanamex.banamexmobile:2471c035-45d0-46c8-8228-dfaf58acb6d3"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000596,
+  "charged_or_reserved_usd": 0.000596,
+  "usage": {
+    "completion_tokens": 104,
+    "prompt_tokens": 1120,
+    "total_tokens": 1224,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000596,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000596,
+      "upstream_inference_prompt_cost": 0.000336,
+      "upstream_inference_completions_cost": 0.00026
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175469-znR4H6jPd7vMfpz1cT2Z",
+  "files": {
+    "request.json": "1d58080aed05154e32b1118f6786eee2152b176f88122cbec2ade6abd271cc25",
+    "response.json": "95d515c09065f82f4ca8450bc25611d6f7646c4ffca3796acf2b4b794506106a",
+    "reservation.json": "d5099a3a2805e00fbcb88012e5e87ce01864d0c123430fdf9270a50523c003b7"
+  }
+}

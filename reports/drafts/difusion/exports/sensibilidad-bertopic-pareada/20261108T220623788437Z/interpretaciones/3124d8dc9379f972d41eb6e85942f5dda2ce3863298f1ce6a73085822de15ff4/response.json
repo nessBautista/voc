@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175581-bzSw1aqbetsJFJINVkqq",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Retrasos en transferencias y depósitos\",\"topic_description\":\"Los usuarios experimentan demoras significativas en la aplicación al realizar depósitos y transferencias, con tiempos de espera que pueden extenderse por horas o incluso días. Estas fallas ocurren tanto entre semana como los fines de semana, y también afectan la disponibilidad de fondos en apartados. Además, se reportan periodos de inoperatividad diaria por mantenimiento.\",\"proposed_feature\":\"Reducir el tiempo de procesamiento de transferencias y depósitos\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E3\",\"E4\",\"E5\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175581,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 131,
+    "prompt_tokens": 1236,
+    "total_tokens": 1367,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006983,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006983,
+      "upstream_inference_prompt_cost": 0.0003708,
+      "upstream_inference_completions_cost": 0.0003275
+    }
+  },
+  "provider": "Google AI Studio"
+}

@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Visualización de movimientos de cuenta",
+    "topic_description": "Los usuarios expresan dificultades para visualizar los movimientos de sus cuentas. Algunos desean ver resúmenes de movimientos por periodos específicos (semana, quincena) sin tener que solicitar un estado de cuenta mensual. Otros reportan que los movimientos no se actualizan en tiempo real o que la aplicación muestra mensajes de \"no hay movimientos que mostrar\" cuando debería haberlos. También se menciona que la aplicación no siempre muestra todos los movimientos del mes y que, en ocasiones, se \"pasma\" al intentar verlos, impidiendo regresar al menú principal.",
+    "proposed_feature": "Visualización de movimientos por periodos personalizados",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:a9aafe63-58e4-44c9-828f-5516f2c834fe",
+      "play:com.citibanamex.banamexmobile:085e74b5-44c2-41cd-8577-a516e93ca387",
+      "appbot:498483038:3747942371",
+      "appbot:498483038:3738324714",
+      "play:com.citibanamex.banamexmobile:759e25ce-91da-4b2b-b084-5257d1de8f5d"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:a9aafe63-58e4-44c9-828f-5516f2c834fe",
+    "play:com.citibanamex.banamexmobile:085e74b5-44c2-41cd-8577-a516e93ca387",
+    "appbot:498483038:3747942371",
+    "appbot:498483038:3738324714",
+    "play:com.citibanamex.banamexmobile:27ac6fdb-4d8a-476a-aafb-140d8d014b9a",
+    "play:com.citibanamex.banamexmobile:759e25ce-91da-4b2b-b084-5257d1de8f5d"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005637,
+  "charged_or_reserved_usd": 0.0005637,
+  "usage": {
+    "completion_tokens": 165,
+    "prompt_tokens": 1197,
+    "total_tokens": 1362,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 770,
+      "video_tokens": 0
+    },
+    "cost": 0.0005637,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005637,
+      "upstream_inference_prompt_cost": 0.0001512,
+      "upstream_inference_completions_cost": 0.0004125
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175581-tLA5BSagSBPZP890KO8z",
+  "files": {
+    "request.json": "d55763d40670b78e9efa0a8808abb0f5e616cccd8d714c78e5d7b840413dc150",
+    "response.json": "9669a11f61298819da442fc5dae6dfe2ba157ac2b4481202a0bfa9e0dd4ea72d",
+    "reservation.json": "74b786ba3d20258db79ed81545621e3c8107812df40818fbeb781ccf9339cd4a"
+  }
+}

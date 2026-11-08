@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Atención al cliente eficiente y amable",
+    "topic_description": "Los usuarios expresan satisfacción con la atención recibida, destacando que es clara, eficiente, rápida y amable. Se menciona que el personal de ventanilla brinda asesoría paso a paso y que siempre están atentos a las necesidades de los clientes.",
+    "proposed_feature": "Atención al cliente eficiente y amable",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133"
+    ]
+  },
+  "evidence_ids": [
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "83371bc1bd8aa9b5ddb1736f1a180f39c29fa92e0e677f38b2081bf760eec15a",
+    "response.json": "ceb409c8cf9dadda38bbe5c9fb45321911466f481abc90a2f3eac372d80b151e"
+  }
+}

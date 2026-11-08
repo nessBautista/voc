@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidades de control de gastos y transferencias",
+    "topic_description": "Los usuarios valoran la aplicación por su utilidad en el control de gastos, la realización de transferencias interbancarias y la descarga de estados de cuenta. También mencionan la posibilidad de obtener reembolsos por compras.",
+    "proposed_feature": "Control de gastos, transferencias y reembolsos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+    "appbot:498483038:3758817839",
+    "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+    "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000582,
+  "charged_or_reserved_usd": 0.000582,
+  "usage": {
+    "completion_tokens": 93,
+    "prompt_tokens": 1165,
+    "total_tokens": 1258,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000582,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000582,
+      "upstream_inference_prompt_cost": 0.0003495,
+      "upstream_inference_completions_cost": 0.0002325
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175481-ms2fQpna8CaiLiZljOzL",
+  "files": {
+    "request.json": "c1f4ff0acda7acc4ff7bdb3ea933c9df0ebd15129f1ddfc60f13210c75603e75",
+    "response.json": "36d4f316af84afe36d3f7a6d8cdc59f2920d9e08c2087ba6e11ecbb744a4ace5",
+    "reservation.json": "d83a030506e8ec01617211b2e333b4274c5241ec5ec4c7e0850804d47bdab27c"
+  }
+}

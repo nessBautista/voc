@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de congelación y rendimiento de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación se congela o se traba con frecuencia, lo que impide su uso normal. Algunos mencionan que esto ocurre al intentar ingresar a la aplicación, mientras que otros simplemente indican que la aplicación falla mucho o que es deficiente en su funcionamiento general.",
+    "proposed_feature": "Mejorar la estabilidad de la aplicación para evitar que se congele o se trabe",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:bb9cc4d8-9cb2-4a99-b1c7-ecc0448ee5f2",
+      "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+      "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+      "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+      "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+      "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:bb9cc4d8-9cb2-4a99-b1c7-ecc0448ee5f2",
+    "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+    "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+    "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+    "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+    "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "9b498af36cfe72f56129df91d50fd7ee52634ea5163141678d3e4bbd4732acc3",
+    "response.json": "11790b5e217c20e47d5318ad9c4b36430a069a742a689b163f5a578cc3413daa"
+  }
+}

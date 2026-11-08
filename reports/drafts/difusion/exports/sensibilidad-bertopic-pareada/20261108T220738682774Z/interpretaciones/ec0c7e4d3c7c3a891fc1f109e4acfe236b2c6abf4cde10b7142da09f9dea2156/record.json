@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de rendimiento y usabilidad de la aplicación bancaria",
+    "topic_description": "Los usuarios experimentan dificultades significativas al intentar usar la aplicación, incluyendo la necesidad de reiniciar el teléfono y borrar la caché para que funcione, lo que sugiere problemas de rendimiento y estabilidad. Además, se menciona que la aplicación es lenta y que la interfaz está llena de publicidad no deseada, lo que afecta la experiencia del usuario al dificultar el acceso directo a las funciones bancarias principales.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+      "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+      "appbot:498483038:3738360561"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+    "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+    "play:com.citibanamex.banamexmobile:f3cae1b8-a656-4527-8097-6e01408895df",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463",
+    "appbot:498483038:3746324995"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007012,
+  "charged_or_reserved_usd": 0.0007012,
+  "usage": {
+    "completion_tokens": 121,
+    "prompt_tokens": 1329,
+    "total_tokens": 1450,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007012,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007012,
+      "upstream_inference_prompt_cost": 0.0003987,
+      "upstream_inference_completions_cost": 0.0003025
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175570-CPiAYxMUGj8mgxRct5ay",
+  "files": {
+    "request.json": "88f281cee7b035451d05b4e31a232c93092b51b0f2346d903aa1ac516a2e2ac0",
+    "response.json": "8cd0d5cc92dbabd28f2a0fe79d96d308aa2e0f0ec5e54c5629f95471e0790c78",
+    "reservation.json": "e0417d4f538ce5a8c1f86fbaa3160606fa65b70ad57097e1a28c28f471c5eace"
+  }
+}

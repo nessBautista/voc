@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Facilidad de uso de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por ser fácil de usar y por permitirles encontrar la información que necesitan de manera sencilla. Destacan la simplicidad para consultar y acceder a la aplicación, así como su rapidez en general. Algunos mencionan que es muy completa y útil. Sin embargo, un usuario reporta que en ocasiones se traba al buscar movimientos recientes o al cambiar entre cuentas.",
+    "proposed_feature": "Facilidad de navegación y acceso a la información",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5ed82a7c-e8c7-445d-9ab8-f89a1c448ae3",
+      "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+      "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+      "appbot:498483038:3739238677",
+      "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+      "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5ed82a7c-e8c7-445d-9ab8-f89a1c448ae3",
+    "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+    "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+    "appbot:498483038:3739238677",
+    "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+    "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000475,
+  "charged_or_reserved_usd": 0.000475,
+  "usage": {
+    "completion_tokens": 136,
+    "prompt_tokens": 1134,
+    "total_tokens": 1270,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 760,
+      "video_tokens": 0
+    },
+    "cost": 0.000475,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000475,
+      "upstream_inference_prompt_cost": 0.000135,
+      "upstream_inference_completions_cost": 0.00034
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175518-IKDCdUjHSfTIXERebwG8",
+  "files": {
+    "request.json": "cd93265356ba9e5676318dda4cc8e32371eea227070d80a10820980ba96102ff",
+    "response.json": "7743336261187751b88c2e94f65e99ace428c7a69ed615b937f1d429d01c1986",
+    "reservation.json": "d3b24ed2d4ab79313f0d5c1bec9438735134ca49e1be31dd2cb5c49a0e826ceb"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175489-v8hFzYfDN9gK994gdv2W",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas al abrir la aplicación y acceder a estados de cuenta\",\"topic_description\":\"Los usuarios reportan dificultades para abrir la aplicación, mencionando que a veces no carga o solo lo hace de forma intermitente. Algunos usuarios experimentan este problema específicamente cuando están conectados a una red Wi-Fi, requiriendo cambiar a datos móviles para poder acceder. Además, se menciona que no es posible ver o descargar los estados de cuenta dentro de la aplicación.\",\"proposed_feature\":\"Capacidad para abrir la aplicación y acceder a estados de cuenta sin interrupciones\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175489,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 148,
+    "prompt_tokens": 1217,
+    "total_tokens": 1365,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007351,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007351,
+      "upstream_inference_prompt_cost": 0.0003651,
+      "upstream_inference_completions_cost": 0.00037
+    }
+  },
+  "provider": "Google AI Studio"
+}

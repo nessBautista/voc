@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de estabilidad y navegación en la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación se cierra automáticamente al intentar abrirla o durante su uso, lo que impide el acceso o la realización de operaciones. También mencionan que la aplicación tarda mucho en iniciar y en cargar el contenido, y que en ocasiones se bloquea o se cierra por inactividad. Además, hay dificultades para navegar, ya que no se puede regresar a menús anteriores después de revisar el historial de movimientos, obligando a cerrar y reabrir la aplicación.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:0b99e3ef-36f6-4e55-b235-cd23f22c53e9",
+      "play:com.citibanamex.banamexmobile:5393344d-4e8d-4e02-ad9d-91e190e26a13",
+      "appbot:498483038:3762293703",
+      "appbot:498483038:3750400731",
+      "play:com.citibanamex.banamexmobile:0386bed7-7933-4cb5-af4f-aaa29a74ead7",
+      "play:com.citibanamex.banamexmobile:21f7741f-1bee-4f8a-a6fd-2abce83e52ad"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:0b99e3ef-36f6-4e55-b235-cd23f22c53e9",
+    "play:com.citibanamex.banamexmobile:5393344d-4e8d-4e02-ad9d-91e190e26a13",
+    "appbot:498483038:3762293703",
+    "appbot:498483038:3750400731",
+    "play:com.citibanamex.banamexmobile:0386bed7-7933-4cb5-af4f-aaa29a74ead7",
+    "play:com.citibanamex.banamexmobile:21f7741f-1bee-4f8a-a6fd-2abce83e52ad"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007512,
+  "charged_or_reserved_usd": 0.0007512,
+  "usage": {
+    "completion_tokens": 147,
+    "prompt_tokens": 1279,
+    "total_tokens": 1426,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007512,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007512,
+      "upstream_inference_prompt_cost": 0.0003837,
+      "upstream_inference_completions_cost": 0.0003675
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175570-NCizHuG9Mfv97cFF9unk",
+  "files": {
+    "request.json": "61c5433931682a85734d4b19a5a3c33a2c3b5067ba44347f671aa979a37f1af4",
+    "response.json": "1d5f3d0abdae1432062c61d9af46486e4abfd57a9af6b99081cde0778c531d59",
+    "reservation.json": "2e7eb5aa0b055397280141df007cd7c20ce886093fcbfb4eb13c550e7ddd0d96"
+  }
+}

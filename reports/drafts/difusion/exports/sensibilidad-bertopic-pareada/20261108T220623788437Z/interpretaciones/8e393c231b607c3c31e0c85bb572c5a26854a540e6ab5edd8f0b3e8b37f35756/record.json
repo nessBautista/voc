@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de rendimiento y acceso a la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación falla con frecuencia, especialmente en días específicos como el último o el quince de cada mes, o después de las 10 PM. Experimentan lentitud al abrir la aplicación, dificultad para realizar movimientos o consultas, y en algunos casos, la aplicación no abre en absoluto. También mencionan que la aplicación se actualiza y no es rápida.",
+    "proposed_feature": "Mejorar la estabilidad y el rendimiento de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:bb23cf97-7793-45ef-a6b5-8e19e9881daf",
+      "play:com.citibanamex.banamexmobile:a5310252-76c6-4884-9270-7d738d1dd197",
+      "x:2085107185290219850",
+      "appbot:498483038:3756401053",
+      "play:com.citibanamex.banamexmobile:05dd2a71-d59f-41c8-968f-9f05fd6fc736",
+      "play:com.citibanamex.banamexmobile:26713e0d-e34e-431b-87b6-4f65f739600f"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:bb23cf97-7793-45ef-a6b5-8e19e9881daf",
+    "play:com.citibanamex.banamexmobile:a5310252-76c6-4884-9270-7d738d1dd197",
+    "x:2085107185290219850",
+    "appbot:498483038:3756401053",
+    "play:com.citibanamex.banamexmobile:05dd2a71-d59f-41c8-968f-9f05fd6fc736",
+    "play:com.citibanamex.banamexmobile:26713e0d-e34e-431b-87b6-4f65f739600f"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007033,
+  "charged_or_reserved_usd": 0.0007033,
+  "usage": {
+    "completion_tokens": 139,
+    "prompt_tokens": 1186,
+    "total_tokens": 1325,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007033,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007033,
+      "upstream_inference_prompt_cost": 0.0003558,
+      "upstream_inference_completions_cost": 0.0003475
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175544-bl9im1oHQSUJJ32kJkum",
+  "files": {
+    "request.json": "3d68a5c7936355596490cf5f12e14bade2a5275dac6d93de881c9b978a4925f6",
+    "response.json": "eed9a4be5c27860b8bc5f2eb2aaa5fd0092e5a5c541f5bd0ebd54acc6b39dec2",
+    "reservation.json": "61738aee53fad4b2a7212740801b2cf1fe5714b389625393befe2fe61dc8aa19"
+  }
+}

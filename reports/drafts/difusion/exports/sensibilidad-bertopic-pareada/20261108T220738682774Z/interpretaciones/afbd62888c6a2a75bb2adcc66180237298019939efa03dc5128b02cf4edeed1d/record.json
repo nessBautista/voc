@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Seguridad y fiabilidad de la aplicación",
+    "topic_description": "Los usuarios valoran positivamente la aplicación por su seguridad y fiabilidad. Mencionan que es una aplicación segura para sus datos y transacciones, y que funciona de manera rápida y eficiente. Algunos usuarios también destacan la funcionalidad de retiros sin tarjeta y la posibilidad de usarla como medio de pago.",
+    "proposed_feature": "Seguridad en transacciones y datos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+      "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+      "play:com.citibanamex.banamexmobile:43c8f84b-dc2d-4980-96ef-80538ef25a64"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "play:com.citibanamex.banamexmobile:17c58069-5eed-4a3d-b1a6-8ebef757e74f",
+    "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+    "play:com.citibanamex.banamexmobile:43c8f84b-dc2d-4980-96ef-80538ef25a64"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006397,
+  "charged_or_reserved_usd": 0.0006397,
+  "usage": {
+    "completion_tokens": 115,
+    "prompt_tokens": 1174,
+    "total_tokens": 1289,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006397,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006397,
+      "upstream_inference_prompt_cost": 0.0003522,
+      "upstream_inference_completions_cost": 0.0002875
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175579-vwPlQTtmfwd7txpd7RPW",
+  "files": {
+    "request.json": "db213df240991c55cea0312815fa5d92db651dcec76f333c5ea632f580c55b37",
+    "response.json": "759b156fabda0b5d52e1c02fb5362a69ee0890fbfb2fa2f28e74d811e72fc5b4",
+    "reservation.json": "85da9e34ff93b9587a00267eedbc93b8d2d549ff2552fc53d0bd7a0fa4efcfd6"
+  }
+}

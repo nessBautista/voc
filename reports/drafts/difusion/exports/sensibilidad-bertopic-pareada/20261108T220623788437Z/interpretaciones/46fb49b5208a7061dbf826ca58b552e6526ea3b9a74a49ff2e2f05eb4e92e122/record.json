@@ -1,0 +1,31 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de rendimiento y acceso a la aplicación",
+    "topic_description": "Los usuarios experimentan dificultades significativas al intentar abrir y usar la aplicación, lo que requiere acciones como reiniciar el teléfono o borrar la caché para que funcione. Además, se menciona que la aplicación es lenta en general. Estas fallas impiden el acceso a las funcionalidades bancarias y generan frustración, llevando a algunos usuarios a considerar otras opciones bancarias.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+      "appbot:498483038:3738360561"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+    "play:com.citibanamex.banamexmobile:7ab55268-7d25-4f7d-a6dd-26bebfcc4bcb",
+    "play:com.citibanamex.banamexmobile:f3cae1b8-a656-4527-8097-6e01408895df",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463",
+    "appbot:498483038:3746324995"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "46fb49b5208a7061dbf826ca58b552e6526ea3b9a74a49ff2e2f05eb4e92e122",
+    "response.json": "350b8740cc5f328ad9874e6d739f2f3901614a98fbbeab4b3af4f1fc39d565da"
+  }
+}

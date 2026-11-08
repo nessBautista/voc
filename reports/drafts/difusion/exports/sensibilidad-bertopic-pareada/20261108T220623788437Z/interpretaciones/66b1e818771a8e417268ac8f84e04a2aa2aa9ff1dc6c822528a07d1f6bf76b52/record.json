@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Valoración general de la aplicación",
+    "topic_description": "Las reseñas expresan una valoración general de la aplicación, calificándola como \"excelente\" o \"buena\". Algunos usuarios la consideran una herramienta útil que les permite evitar visitar la sucursal bancaria. Sin embargo, también hay comentarios negativos que la describen como \"pésima\" o que mencionan fallos ocasionales.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:94de5d80-6772-4c9b-9632-02cc25787189",
+      "play:com.citibanamex.banamexmobile:1fce8ff4-b8da-4de3-8533-9ed4ad3230e1",
+      "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0",
+      "play:com.citibanamex.banamexmobile:0bea76ec-5cd5-4388-96a6-0548ba54d3e0",
+      "play:com.citibanamex.banamexmobile:168b7694-c2d5-481e-af43-00e843de78ab",
+      "play:com.citibanamex.banamexmobile:1824f704-f988-4ec7-a696-be24d6c99aa6"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:94de5d80-6772-4c9b-9632-02cc25787189",
+    "play:com.citibanamex.banamexmobile:1fce8ff4-b8da-4de3-8533-9ed4ad3230e1",
+    "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0",
+    "play:com.citibanamex.banamexmobile:0bea76ec-5cd5-4388-96a6-0548ba54d3e0",
+    "play:com.citibanamex.banamexmobile:168b7694-c2d5-481e-af43-00e843de78ab",
+    "play:com.citibanamex.banamexmobile:1824f704-f988-4ec7-a696-be24d6c99aa6"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006282,
+  "charged_or_reserved_usd": 0.0006282,
+  "usage": {
+    "completion_tokens": 117,
+    "prompt_tokens": 1119,
+    "total_tokens": 1236,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006282,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006282,
+      "upstream_inference_prompt_cost": 0.0003357,
+      "upstream_inference_completions_cost": 0.0002925
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175491-1JyrAd24HHEXh4Utfgv6",
+  "files": {
+    "request.json": "a7b80ecc1b5932fbfcd0696129d1e4a551498eece0f35296b2b5b8cdf7dd28f5",
+    "response.json": "d6728e22fd97e0509bc5224b6f903a88440be9b7b2aa8c4342c98d9897d13b0d",
+    "reservation.json": "10e854baffc89ff951f42ee2b04618441315812c4e6c5d83bd73d4d086f348db"
+  }
+}

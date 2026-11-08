@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Facilidad para gestionar dinero y realizar operaciones bancarias",
+    "topic_description": "Los usuarios valoran la aplicación por su facilidad para enviar y recibir dinero, gestionar gastos e inversiones, y realizar operaciones bancarias como transferencias interbancarias y descarga de estados de cuenta. También se menciona que la aplicación ahorra tiempo en trámites y facilita el cumplimiento de compromisos.",
+    "proposed_feature": "Gestión de dinero y operaciones bancarias",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:872cac2d-6623-45c4-8457-bf98394b6437",
+      "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+      "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:872cac2d-6623-45c4-8457-bf98394b6437",
+    "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "appbot:498483038:3759645483",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+    "play:com.citibanamex.banamexmobile:24ff9865-a8bf-45ec-a81d-6df18e4d8e3a"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006441,
+  "charged_or_reserved_usd": 0.0006441,
+  "usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 1197,
+    "total_tokens": 1311,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006441,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006441,
+      "upstream_inference_prompt_cost": 0.0003591,
+      "upstream_inference_completions_cost": 0.000285
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175580-2UtT8OIEPzjJxz9vGpoh",
+  "files": {
+    "request.json": "9d333e5a470d0c87f61306819fd842f9a38285a5d5f12be1aad299d68b617a5f",
+    "response.json": "b5d62e681411278f5924c6f5fede6754e160b4114b7693372d95a10f0ac4fede",
+    "reservation.json": "04edf9c95532e362bac9a01c890c864b628fb104f828e49fd485b3b8290a8701"
+  }
+}

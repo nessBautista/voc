@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Rapidez y eficiencia en operaciones bancarias",
+    "topic_description": "Los usuarios valoran la aplicación por su rapidez y eficiencia al permitirles realizar operaciones de manera inmediata. Destacan que es muy útil y práctica para sus necesidades bancarias.",
+    "proposed_feature": "Realizar operaciones bancarias de forma rápida e inmediata",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f2b45b3b-4fde-4071-827a-39ecccf93d15",
+      "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+      "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+      "play:com.citibanamex.banamexmobile:1056cee0-8079-4806-9bb1-92fd85411320",
+      "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f2b45b3b-4fde-4071-827a-39ecccf93d15",
+    "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+    "play:com.citibanamex.banamexmobile:f88eda7a-77e8-4531-9a3a-103c676c87d7",
+    "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+    "play:com.citibanamex.banamexmobile:1056cee0-8079-4806-9bb1-92fd85411320",
+    "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005638,
+  "charged_or_reserved_usd": 0.0005638,
+  "usage": {
+    "completion_tokens": 91,
+    "prompt_tokens": 1121,
+    "total_tokens": 1212,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005638,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005638,
+      "upstream_inference_prompt_cost": 0.0003363,
+      "upstream_inference_completions_cost": 0.0002275
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175480-6tgTa0KfKg6TTyfaHJwg",
+  "files": {
+    "request.json": "ae7a572ae565e2439f6a492cfddc0df9d3097efc7c563f895e00e40fa9ca06d1",
+    "response.json": "81f435f65fef604727acb04e69261aa516589c14001d2050e27bed7508781d48",
+    "reservation.json": "076b5d4f987a344648ea8d11bc319901303ef7c0fbb3bc79cdd4f013bb8264eb"
+  }
+}

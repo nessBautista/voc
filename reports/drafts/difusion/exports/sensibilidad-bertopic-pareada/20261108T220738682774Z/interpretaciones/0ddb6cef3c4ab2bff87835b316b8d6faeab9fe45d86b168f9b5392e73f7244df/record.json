@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Seguridad en la aplicación",
+    "topic_description": "Los usuarios valoran positivamente la seguridad de la aplicación, mencionando que es fiable y segura de utilizar. Algunos comentarios sugieren mejoras en la seguridad al momento de realizar transferencias y verificar la identidad, proponiendo el uso de huella digital o fotografía para este fin.",
+    "proposed_feature": "Autenticación biométrica (huella o fotografía) para transferencias",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:1a825da3-525b-4dfc-b5c7-b443ba09fa60",
+      "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+      "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+    "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:1a825da3-525b-4dfc-b5c7-b443ba09fa60",
+    "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+    "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006354,
+  "charged_or_reserved_usd": 0.0006354,
+  "usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 1168,
+    "total_tokens": 1282,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006354,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006354,
+      "upstream_inference_prompt_cost": 0.0003504,
+      "upstream_inference_completions_cost": 0.000285
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175467-RoHyeNXfNAHwKqz3T0ta",
+  "files": {
+    "request.json": "1e0a3df71fc4ab606af113995f47ab950835d2b4094f874c3b0e98a51ea09ac7",
+    "response.json": "210b9e2202ad2f6edfb13fe2384f070b4975aa3c3ad6c9bd793e9b31ee89d5a3",
+    "reservation.json": "1d8b22333b133f84c602324e846a8beee396d6638c115e01d7123e1e613c31f6"
+  }
+}

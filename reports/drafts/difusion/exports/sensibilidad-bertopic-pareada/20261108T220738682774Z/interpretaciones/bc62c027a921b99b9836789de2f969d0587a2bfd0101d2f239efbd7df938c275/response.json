@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175560-VNNVX4sJaLp8tjHPRQ6C",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Facilidad de uso de la aplicación\",\"topic_description\":\"Los usuarios valoran la aplicación por ser fácil de usar y navegar, lo que les permite encontrar la información que necesitan de manera sencilla y rápida. Algunos mencionan que es simple de consultar y entrar, y que la consideran muy útil y completa. Sin embargo, un usuario reporta que en ocasiones se traba al buscar movimientos recientes o al cambiar entre cuentas.\",\"proposed_feature\":\"Facilidad para encontrar información y navegar en la aplicación\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175560,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 131,
+    "prompt_tokens": 1138,
+    "total_tokens": 1269,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006689,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006689,
+      "upstream_inference_prompt_cost": 0.0003414,
+      "upstream_inference_completions_cost": 0.0003275
+    }
+  },
+  "provider": "Google AI Studio"
+}

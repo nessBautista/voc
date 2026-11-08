@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175544-bl9im1oHQSUJJ32kJkum",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de rendimiento y acceso a la aplicación\",\"topic_description\":\"Los usuarios reportan que la aplicación falla con frecuencia, especialmente en días específicos como el último o el quince de cada mes, o después de las 10 PM. Experimentan lentitud al abrir la aplicación, dificultad para realizar movimientos o consultas, y en algunos casos, la aplicación no abre en absoluto. También mencionan que la aplicación se actualiza y no es rápida.\",\"proposed_feature\":\"Mejorar la estabilidad y el rendimiento de la aplicación\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175544,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 139,
+    "prompt_tokens": 1186,
+    "total_tokens": 1325,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007033,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007033,
+      "upstream_inference_prompt_cost": 0.0003558,
+      "upstream_inference_completions_cost": 0.0003475
+    }
+  },
+  "provider": "Google AI Studio"
+}

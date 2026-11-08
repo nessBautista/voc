@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Atención al cliente y asesoramiento",
+    "topic_description": "Los usuarios expresan satisfacción con la atención recibida, destacando que el personal está atento a sus necesidades, brinda asesoramiento paso a paso y ofrece una atención clara y eficiente.",
+    "proposed_feature": "Atención al cliente y asesoramiento",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95",
+    "play:com.citibanamex.banamexmobile:4a1b4c85-52dd-457a-85d4-cf114be3102b"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005439,
+  "charged_or_reserved_usd": 0.0005439,
+  "usage": {
+    "completion_tokens": 84,
+    "prompt_tokens": 1113,
+    "total_tokens": 1197,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005439,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005439,
+      "upstream_inference_prompt_cost": 0.0003339,
+      "upstream_inference_completions_cost": 0.00021
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175555-4gjjs4vVZ5dZcxB8ISqT",
+  "files": {
+    "request.json": "672e30640610a462f5513109168edba4966a9124b18138fa6a44700be9c39539",
+    "response.json": "328de7ae514cf0179f6c4b302b16668a6a6894ade3191a5ae309e67c3e1afe55",
+    "reservation.json": "03bb66cf4055459e94c1f4bbec966cddf8615e3d8c75ca67579f315bdb4d3bec"
+  }
+}

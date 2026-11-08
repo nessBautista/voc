@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad de la aplicación bancaria",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación móvil, requiriendo acciones como reiniciar el teléfono o borrar la caché para intentar que funcione. Además, se menciona que la aplicación falla constantemente y no sirve para realizar las operaciones deseadas, lo que lleva a una mala experiencia general con el banco.",
+    "proposed_feature": "Mejorar la estabilidad y el acceso a la aplicación móvil",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+      "appbot:498483038:3756238250"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5860302e-f5c3-4ffc-8cba-002dcb022807",
+    "play:com.citibanamex.banamexmobile:f3cae1b8-a656-4527-8097-6e01408895df",
+    "youtube:-:UgyekmT_EYBdBzcg4BV4AaABAg",
+    "appbot:498483038:3746324995",
+    "appbot:498483038:3753439190",
+    "appbot:498483038:3756238250"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007411,
+  "charged_or_reserved_usd": 0.0007411,
+  "usage": {
+    "completion_tokens": 115,
+    "prompt_tokens": 1512,
+    "total_tokens": 1627,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007411,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007411,
+      "upstream_inference_prompt_cost": 0.0004536,
+      "upstream_inference_completions_cost": 0.0002875
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175558-O6VV3fYi85eJPXVRdS6u",
+  "files": {
+    "request.json": "d830202a88bfd351babd41495b7b9419dc42b22893ed0a11beab9f64b375ce24",
+    "response.json": "bcedfef4cc0b3cc6a7a24cccb10a2c6a8fcaed21e6777e1fd3373603d05e5acb",
+    "reservation.json": "6bd67a09b6c7b0a57b2aba7c1d9b9ab26c42c6f029246319d89ce0e5700defe1"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175545-b9QwGvo0yM55JV0uQ2Yo",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas con la actualización y el ingreso del código NetKey\",\"topic_description\":\"Los usuarios reportan problemas con la funcionalidad de NetKey, específicamente después de una actualización. La aplicación no logra leer o autocompletar el código de verificación que se envía, y tampoco permite la entrada manual de dicho código. Esto impide que los usuarios accedan a la aplicación y realicen transacciones, generando frustración y la necesidad de visitar sucursales o esperar una solución por parte del soporte técnico.\",\"proposed_feature\":\"Permitir el ingreso manual del código de verificación de NetKey\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175545,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 148,
+    "prompt_tokens": 1426,
+    "total_tokens": 1574,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007978,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007978,
+      "upstream_inference_prompt_cost": 0.0004278,
+      "upstream_inference_completions_cost": 0.00037
+    }
+  },
+  "provider": "Google AI Studio"
+}

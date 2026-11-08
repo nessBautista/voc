@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y visualización de movimientos en la aplicación móvil",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, experimentando pantallas oscuras o la necesidad de reiniciar el teléfono repetidamente para poder entrar. Además, una vez dentro, la aplicación no muestra los movimientos bancarios de manera inmediata, sino con varios días de retraso, o directamente no los muestra, lo que la hace inútil para algunos usuarios.",
+    "proposed_feature": "Visualización de movimientos bancarios en tiempo real",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3738324714"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "youtube:-:UgyekmT_EYBdBzcg4BV4AaABAg",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000745,
+  "charged_or_reserved_usd": 0.000745,
+  "usage": {
+    "completion_tokens": 127,
+    "prompt_tokens": 1425,
+    "total_tokens": 1552,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000745,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000745,
+      "upstream_inference_prompt_cost": 0.0004275,
+      "upstream_inference_completions_cost": 0.0003175
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175545-lzX9sCkujttDDAeDVWre",
+  "files": {
+    "request.json": "d862f2d8473d2992544cdb5ec1fd62dc7e2c5fd1a712199c8e39aaaf5f3fe854",
+    "response.json": "f57fee82509e024a8c21e973d997da592ae651e3b2e674c25a11623f09f859e4",
+    "reservation.json": "5c05641b42d754d370946862935e358e2afb520d84b1c8f41d44eafef79c3a15"
+  }
+}

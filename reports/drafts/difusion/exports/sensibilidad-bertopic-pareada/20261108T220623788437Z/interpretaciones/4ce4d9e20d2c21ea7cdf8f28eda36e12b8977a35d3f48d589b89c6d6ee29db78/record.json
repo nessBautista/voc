@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Calidad general de la aplicación",
+    "topic_description": "Las reseñas expresan una opinión positiva general sobre la aplicación, calificándola como \"muy buena\" o \"buena\". Un usuario destaca que la aplicación es \"Rápida\" y \"segura\", lo que contribuye a su satisfacción general.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:0573589f-3aa4-4d9e-9af5-679ff41f2884",
+      "play:com.citibanamex.banamexmobile:90b545e3-e7b8-4e8d-a2dc-be46c53b7d67",
+      "play:com.citibanamex.banamexmobile:483eedc6-7fdd-4ec0-bab9-783b2b4d0323",
+      "play:com.citibanamex.banamexmobile:0dbf63ab-a682-42ca-8fe7-66421b5fe889",
+      "play:com.citibanamex.banamexmobile:15f897a1-4b2e-4222-b150-8b296a03a5ed",
+      "play:com.citibanamex.banamexmobile:16a0cf7a-e742-4a7f-9952-a427b2c1109b"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:0573589f-3aa4-4d9e-9af5-679ff41f2884",
+    "play:com.citibanamex.banamexmobile:90b545e3-e7b8-4e8d-a2dc-be46c53b7d67",
+    "play:com.citibanamex.banamexmobile:483eedc6-7fdd-4ec0-bab9-783b2b4d0323",
+    "play:com.citibanamex.banamexmobile:0dbf63ab-a682-42ca-8fe7-66421b5fe889",
+    "play:com.citibanamex.banamexmobile:15f897a1-4b2e-4222-b150-8b296a03a5ed",
+    "play:com.citibanamex.banamexmobile:16a0cf7a-e742-4a7f-9952-a427b2c1109b"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "4ce4d9e20d2c21ea7cdf8f28eda36e12b8977a35d3f48d589b89c6d6ee29db78",
+    "response.json": "0c6df335a2af2541ceb8aae141a2e8fd0d1e6e7582d81b9140c396c6910b0c36"
+  }
+}

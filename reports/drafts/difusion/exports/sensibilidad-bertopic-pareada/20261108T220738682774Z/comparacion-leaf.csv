@@ -1,0 +1,6 @@
+left,right,common_rows,ari_including_unassigned,assigned_intersection,ari_assigned_intersection
+B0/base,B0/alternative,987,0.19311205665709474,827,0.25497366466910715
+H-leaf/base,H-leaf/alternative,987,0.49747604141342067,651,0.9059921272087501
+B0/base,H-leaf/base,987,0.2131328103174856,730,0.2279440898644535
+B0/alternative,H-leaf/alternative,987,0.6005458402618309,735,0.9181807363250265
+H-leaf/base,B0/alternative,987,0.41695956934929573,696,0.8437662169665532

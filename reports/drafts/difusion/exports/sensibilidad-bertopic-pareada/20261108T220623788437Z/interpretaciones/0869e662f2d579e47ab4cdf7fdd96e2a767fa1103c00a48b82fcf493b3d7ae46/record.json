@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Calidad general de la aplicación",
+    "topic_description": "Las reseñas expresan una satisfacción general con la aplicación, utilizando términos como \"excelente\" para describir su experiencia. No se mencionan características específicas, lo que sugiere que la satisfacción se relaciona con la funcionalidad global o la experiencia de usuario en general.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+      "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+      "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+      "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+      "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198",
+      "play:com.citibanamex.banamexmobile:16356c36-0125-4764-bdc9-289c77652d60"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:06061496-f1f7-4e46-b144-bd4f5e3eb2be",
+    "play:com.citibanamex.banamexmobile:616e73f6-891a-479f-a976-19eb65170e34",
+    "play:com.citibanamex.banamexmobile:08b95805-6445-4afc-a4ca-6d6bbff27e32",
+    "play:com.citibanamex.banamexmobile:10ca82d1-811b-4620-ab50-54fc256ece4e",
+    "play:com.citibanamex.banamexmobile:1634bbf9-e4ef-424c-a880-c4c69b710198",
+    "play:com.citibanamex.banamexmobile:16356c36-0125-4764-bdc9-289c77652d60"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "0869e662f2d579e47ab4cdf7fdd96e2a767fa1103c00a48b82fcf493b3d7ae46",
+    "response.json": "d3bd6c464da204bcf8f63755bd7c426f6bca49fda7859226881c3aeb7c7634c3"
+  }
+}

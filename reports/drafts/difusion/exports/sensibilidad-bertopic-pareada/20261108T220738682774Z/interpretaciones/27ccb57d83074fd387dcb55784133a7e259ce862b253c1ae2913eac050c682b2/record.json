@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Facilidad de uso y consulta de movimientos",
+    "topic_description": "Los usuarios valoran la aplicación por su facilidad de uso y la claridad en la consulta de movimientos. Destacan que es eficiente, amigable y cómoda para revisar las transacciones desde el celular.",
+    "proposed_feature": "Facilidad para consultar movimientos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:a612caf7-53d4-4c3d-80b8-81d4bf7b004e",
+      "play:com.citibanamex.banamexmobile:df68bfde-c049-4319-9526-faca32ddd86e",
+      "appbot:498483038:3747573974",
+      "play:com.citibanamex.banamexmobile:02bab93f-dd2f-4f90-aa93-ff94f5e6c27a"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:487866a4-f680-43e5-9ce7-23b253764fce",
+    "play:com.citibanamex.banamexmobile:a612caf7-53d4-4c3d-80b8-81d4bf7b004e",
+    "play:com.citibanamex.banamexmobile:df68bfde-c049-4319-9526-faca32ddd86e",
+    "appbot:498483038:3747573974",
+    "play:com.citibanamex.banamexmobile:02bab93f-dd2f-4f90-aa93-ff94f5e6c27a",
+    "play:com.citibanamex.banamexmobile:11f41416-5bba-4488-923b-757d68078fb7"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005626,
+  "charged_or_reserved_usd": 0.0005626,
+  "usage": {
+    "completion_tokens": 88,
+    "prompt_tokens": 1142,
+    "total_tokens": 1230,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005626,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005626,
+      "upstream_inference_prompt_cost": 0.0003426,
+      "upstream_inference_completions_cost": 0.00022
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175532-rSZWR5gNgy5477M1KML7",
+  "files": {
+    "request.json": "073f5d2647d88e408ea04d509500806a7fe424f4357e02427c8dfa3fdadf5bf6",
+    "response.json": "68a8d36b130fb43167661666065edf66c664490f61d4ee7e5c01f848b931c46e",
+    "reservation.json": "42c76da6ea973e4c128ca4cbf616562eb532b89a7a68b7255169570d6512e830"
+  }
+}

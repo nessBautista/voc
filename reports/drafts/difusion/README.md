@@ -275,3 +275,12 @@ uno con Ctrl+C antes de iniciar el otro. Detalles en
 ## Evidencia consolidada del artículo 14
 
 El punto de entrada para el reporte es [evidencia-articulo-14.ipynb](../../difusion/evidencia-articulo-14.ipynb), con [lectura HTML](../../soporte-articulo-14/evidencia-articulo-14.html) y [guía de ejecución y alcance](../../soporte-articulo-14/evidencia-articulo-14.md). Se ejecutó con 234 comprobaciones y se verificó en un directorio aislado sin credenciales ni `data/`. Reproduce resultados guardados y conserva los recursos documentales. No ejecuta modelos ni realiza llamadas externas.
+
+
+## Exploración nueva: sensibilidad de BERTopic
+
+[Sensibilidad de BERTopic](sensibilidad-bertopic.ipynb) estudia diez configuraciones sobre las mismas 1.000 reseñas del modelo base. Conserva c-TF-IDF, KeyBERTInspired y MMR y cambia un parámetro de UMAP o HDBSCAN por corrida. Incluye comparación con la partición histórica, tamaños, cobertura, ARI, palabras clave, ejemplos y una plantilla de revisión humana pendiente.
+
+Puede consultarse también en [HTML con salidas](sensibilidad-bertopic.html). Para ejecutar, abrirla desde `just difusion-jupyter`. Requiere las entradas locales del experimento `julaug-2026` y MiniLM descargado. `EJECUTAR_AJUSTES=False` reutiliza resultados guardados. Para ajustar configuraciones nuevas, cambiarlo a `True` o iniciar el entorno con `DIFUSION_RUN_SENSITIVITY=1`. La caché queda en `data/experiments/bertopic-sensibilidad/` y los resultados exportados en `exports/sensibilidad-bertopic/`.
+
+La libreta ahora incluye una segunda fase pareada: diez configuraciones con y sin filtro (20 condiciones), sentimiento guardado de Robertuito original/adaptado e interpretaciones del LLM. En la consulta normal reutiliza las cachés sin llamadas nuevas. La revisión humana y las repeticiones con otras semillas siguen pendientes. Este experimento no cambia la libreta de referencia ni el artículo y no declara una configuración óptima. Véase la [guía de lectura y ejecución](sensibilidad-bertopic.md).

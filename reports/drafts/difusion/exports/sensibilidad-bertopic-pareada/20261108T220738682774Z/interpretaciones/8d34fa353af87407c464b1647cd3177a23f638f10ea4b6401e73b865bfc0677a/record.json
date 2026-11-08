@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Valoración general positiva de la aplicación",
+    "topic_description": "Las reseñas expresan una satisfacción general con la aplicación, destacando su utilidad y practicidad para las actividades cotidianas. Los usuarios la describen como \"buena\", \"excelente\" y \"completa\", lo que sugiere que cumple con sus expectativas y les resulta beneficiosa.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+      "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+      "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+      "appbot:498483038:3758817839",
+      "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+      "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+    "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+    "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+    "appbot:498483038:3758817839",
+    "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+    "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006022,
+  "charged_or_reserved_usd": 0.0006022,
+  "usage": {
+    "completion_tokens": 106,
+    "prompt_tokens": 1124,
+    "total_tokens": 1230,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006022,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006022,
+      "upstream_inference_prompt_cost": 0.0003372,
+      "upstream_inference_completions_cost": 0.000265
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175531-EbXwZ2LVZfJ5nCRUhYNC",
+  "files": {
+    "request.json": "2a14b2b9160d348fb920946c9098a364f55ad1b308c0dd69e0a55999422c1636",
+    "response.json": "2f8de0a5620349e0bc3cf39c1255c93a3412f43ae56dc7276f40640ac9e99a5b",
+    "reservation.json": "e4f02cf399d7a6589d496a5347834fae2c1969a34834c3855fa1556edae6e05c"
+  }
+}

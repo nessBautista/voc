@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación no abre o se queda en la pantalla de inicio, impidiendo el acceso a sus funciones. Algunos mencionan que la aplicación solo abre la primera vez después de la instalación o que la pantalla se pone oscura. Para intentar acceder, algunos usuarios reinician sus teléfonos repetidamente. Además, se señala que la aplicación es lenta y no muestra los movimientos bancarios de manera oportuna.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:22ea3e5a-a5ec-4f3e-9cfc-8fd9f2ad3ec8",
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3738324714",
+      "appbot:498483038:3738360561"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:22ea3e5a-a5ec-4f3e-9cfc-8fd9f2ad3ec8",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007117,
+  "charged_or_reserved_usd": 0.0007117,
+  "usage": {
+    "completion_tokens": 130,
+    "prompt_tokens": 1289,
+    "total_tokens": 1419,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007117,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007117,
+      "upstream_inference_prompt_cost": 0.0003867,
+      "upstream_inference_completions_cost": 0.000325
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175527-IuXqLgJU5bQL7dhb4hCd",
+  "files": {
+    "request.json": "7df52846eae2507e41898f92e12f7b7dd6b5076e460ca09d1e43a59a39abcace",
+    "response.json": "fc644a1c60b5c7531dbdac5031680e329e577be95124047500a04f105b22fe08",
+    "reservation.json": "3e24dd41e9e9891c2aa5e043f9ce5adbfd9a54330e40b4105d41327f5570afcb"
+  }
+}

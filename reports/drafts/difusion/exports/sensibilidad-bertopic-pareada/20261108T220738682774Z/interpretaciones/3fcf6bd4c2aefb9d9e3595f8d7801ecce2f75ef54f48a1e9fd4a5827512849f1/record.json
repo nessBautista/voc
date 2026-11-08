@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de navegación y visualización en la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para navegar dentro de la aplicación, específicamente para regresar a la pantalla de inicio o a pantallas anteriores después de ver los movimientos de su cuenta. Algunos mencionan que la aplicación se congela o que las flechas de retorno no son visibles, lo que impide la navegación. También se reportan problemas de acceso a la aplicación, donde la pantalla se queda oscura o la aplicación no abre después de la primera instalación.",
+    "proposed_feature": "Funcionalidad para regresar a la pantalla anterior o de inicio",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "appbot:498483038:3756586486",
+      "appbot:498483038:3742631173",
+      "appbot:498483038:3752254896",
+      "appbot:498483038:3755936230"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:22ea3e5a-a5ec-4f3e-9cfc-8fd9f2ad3ec8",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "appbot:498483038:3756586486",
+    "appbot:498483038:3742631173",
+    "appbot:498483038:3752254896",
+    "appbot:498483038:3755936230"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007585,
+  "charged_or_reserved_usd": 0.0007585,
+  "usage": {
+    "completion_tokens": 145,
+    "prompt_tokens": 1320,
+    "total_tokens": 1465,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007585,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007585,
+      "upstream_inference_prompt_cost": 0.000396,
+      "upstream_inference_completions_cost": 0.0003625
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175565-YYk66n0VSaO9zRpFf0Hn",
+  "files": {
+    "request.json": "995117ff0bba32344df582d42c6ecac6eb1bb7ab8063d06906a585f841a2527e",
+    "response.json": "3a3c73c4831d5998377a214392266b7d03f4d45b4c24e8f94dc2c5d404cee02b",
+    "reservation.json": "9cee2dc1af2ac0ad02bd78c0d7b7118b15d194c5717c163f985be482b610c62e"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de visualización de movimientos y estados de cuenta",
+    "topic_description": "Los usuarios reportan dificultades para visualizar sus movimientos y estados de cuenta dentro de la aplicación. Algunos mencionan que los pagos realizados no se reconocen y siguen apareciendo como pendientes, o que los movimientos no se muestran hasta varios días después. También se indica que no es posible ver los estados de cuenta ni los datos de la tarjeta física sin la NetKey.",
+    "proposed_feature": "Visualización de movimientos y estados de cuenta",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f4789bed-27fe-4f35-9fa1-eb6bf5f300a0",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3738324714"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f4789bed-27fe-4f35-9fa1-eb6bf5f300a0",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007346,
+  "charged_or_reserved_usd": 0.0007346,
+  "usage": {
+    "completion_tokens": 134,
+    "prompt_tokens": 1332,
+    "total_tokens": 1466,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007346,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007346,
+      "upstream_inference_prompt_cost": 0.0003996,
+      "upstream_inference_completions_cost": 0.000335
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175551-GMgZI9jl45YMHcXZYN1h",
+  "files": {
+    "request.json": "25a618f0912dd690f309f923f764099e63436976c853343593b6e2a3fda497d1",
+    "response.json": "f08dbc16de95d68a26fe15f28003edd0b21f76b032dfc238d083621b541334aa",
+    "reservation.json": "cbab5e4583d3befbdb22428c4a652a9ded1d3c5048be0f60b79c78eb99b7b42a"
+  }
+}

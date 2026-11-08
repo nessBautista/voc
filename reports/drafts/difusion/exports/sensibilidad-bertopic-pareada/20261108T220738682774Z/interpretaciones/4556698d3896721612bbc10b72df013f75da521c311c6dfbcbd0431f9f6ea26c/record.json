@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "La aplicación como herramienta para evitar visitas a sucursales bancarias",
+    "topic_description": "Los usuarios valoran la aplicación como una herramienta útil que les permite realizar operaciones bancarias sin necesidad de acudir físicamente a una sucursal. Algunos usuarios mencionan que la aplicación es buena en general, aunque ocasionalmente puede ser lenta. Otros destacan que la aplicación está en constante mejora para ofrecer mayor calidad y rapidez.",
+    "proposed_feature": "Realizar operaciones bancarias sin ir a la sucursal",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0",
+      "play:com.citibanamex.banamexmobile:0cd8fd51-7629-40b0-aab3-7a234c2c89e2",
+      "play:com.citibanamex.banamexmobile:239a8107-3508-4d19-a426-a952831cac3c"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0",
+    "play:com.citibanamex.banamexmobile:0cd8fd51-7629-40b0-aab3-7a234c2c89e2",
+    "play:com.citibanamex.banamexmobile:239a8107-3508-4d19-a426-a952831cac3c",
+    "play:com.citibanamex.banamexmobile:0bea76ec-5cd5-4388-96a6-0548ba54d3e0",
+    "play:com.citibanamex.banamexmobile:1824f704-f988-4ec7-a696-be24d6c99aa6",
+    "play:com.citibanamex.banamexmobile:1d012545-556a-4fcc-8aaf-a63e92766a99"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006571,
+  "charged_or_reserved_usd": 0.0006571,
+  "usage": {
+    "completion_tokens": 124,
+    "prompt_tokens": 1157,
+    "total_tokens": 1281,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006571,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006571,
+      "upstream_inference_prompt_cost": 0.0003471,
+      "upstream_inference_completions_cost": 0.00031
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175548-cOGoCNwMCdGwl5d0a7ue",
+  "files": {
+    "request.json": "031cfba832d1688c0436ddc113be4d0bb77ced46bd2afdc5e50588ae4b059496",
+    "response.json": "489f1e8d785c190950ec239c0abd22bf94bfef5c45b80ab8d50654dddc913ec4",
+    "reservation.json": "9a04a1608ca7f620f38c76af9cc8b17e10072009d32706c1766840bc72c9dc4f"
+  }
+}

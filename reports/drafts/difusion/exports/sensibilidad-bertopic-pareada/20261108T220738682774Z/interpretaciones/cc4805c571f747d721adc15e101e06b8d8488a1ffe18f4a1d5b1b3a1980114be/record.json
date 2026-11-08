@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Facilidad de uso y consulta de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por su facilidad de manejo y consulta, considerándola práctica y útil. Destacan que es sencilla de usar y que permite acceder a la información sin complicaciones.",
+    "proposed_feature": "Facilidad de uso y consulta",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4c163123-1765-4668-8ae5-9bf23e33e536",
+      "appbot:498483038:3739238677",
+      "appbot:498483038:3747573974"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4c163123-1765-4668-8ae5-9bf23e33e536",
+    "play:com.citibanamex.banamexmobile:bb93ea37-b5d8-41ac-aa2e-42183fdba4f2",
+    "play:com.citibanamex.banamexmobile:d0192fb0-696d-4faf-809a-71ce28dfcbab",
+    "appbot:498483038:3739238677",
+    "appbot:498483038:3745979774",
+    "appbot:498483038:3747573974"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000589,
+  "charged_or_reserved_usd": 0.000589,
+  "usage": {
+    "completion_tokens": 85,
+    "prompt_tokens": 1255,
+    "total_tokens": 1340,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000589,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000589,
+      "upstream_inference_prompt_cost": 0.0003765,
+      "upstream_inference_completions_cost": 0.0002125
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175527-YSKwm1Pj1DAnz0pDpw9f",
+  "files": {
+    "request.json": "7943ccc78c55b81ddc8f3ed3e3c8e984ce3f73f33577fae60ad840ffad9b7608",
+    "response.json": "5c42cb2f6a324c1ab7843b5523136d0567cffe2db0ad30473c4d3d3ee95a9556",
+    "reservation.json": "450079adbcf66ddbd4175b1936c5f9e9f875ec643a6519b84709b704bed16df0"
+  }
+}

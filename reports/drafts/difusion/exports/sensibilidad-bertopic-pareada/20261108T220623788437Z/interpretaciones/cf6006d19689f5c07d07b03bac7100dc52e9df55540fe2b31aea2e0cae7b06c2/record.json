@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Uso de la aplicación en el extranjero",
+    "topic_description": "Los usuarios valoran la capacidad de la aplicación para ser utilizada y funcionar correctamente incluso cuando se encuentran en el extranjero, lo que les permite realizar sus operaciones bancarias sin inconvenientes desde fuera de su país de origen.",
+    "proposed_feature": "Funcionalidad de la aplicación en el extranjero",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:d53ae25d-0c0f-4751-9e7a-a99cd9119c06",
+      "appbot:498483038:3759645483"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:d53ae25d-0c0f-4751-9e7a-a99cd9119c06",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+    "appbot:498483038:3758817839",
+    "appbot:498483038:3759645483",
+    "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000567,
+  "charged_or_reserved_usd": 0.000567,
+  "usage": {
+    "completion_tokens": 90,
+    "prompt_tokens": 1140,
+    "total_tokens": 1230,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000567,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000567,
+      "upstream_inference_prompt_cost": 0.000342,
+      "upstream_inference_completions_cost": 0.000225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175521-EUL8gWSem5Hmky0uCsb4",
+  "files": {
+    "request.json": "9c157c272c75f545efd6a7511144b13f6395370ea8cb8df587c33776015d4cbf",
+    "response.json": "b3e5820592053210753691282e2003a6c7bd0d96bf67ed4aa8c27a0bda2d2248",
+    "reservation.json": "a5b9f29592526d09f88c8789983bbdf9c00a688d3b04be4d8f8e00baeab57c75"
+  }
+}

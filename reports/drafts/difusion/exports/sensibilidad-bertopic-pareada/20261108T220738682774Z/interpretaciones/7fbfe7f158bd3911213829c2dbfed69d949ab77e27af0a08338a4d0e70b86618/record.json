@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Fallas generales de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación presenta fallas de manera recurrente, lo que afecta su funcionamiento. Algunos mencionan que estas fallas ocurren con frecuencia, incluso diariamente o al final del día, y en ocasiones se asocian con períodos de mantenimiento. También se hace referencia a problemas de accesibilidad y capacidad.",
+    "proposed_feature": "Estabilidad y funcionamiento sin fallas",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4f56b859-8104-42c6-82ff-4ada19d237c4",
+      "play:com.citibanamex.banamexmobile:01f501da-5818-4bfb-8156-6099d681ac21",
+      "play:com.citibanamex.banamexmobile:65eb96b8-29db-42d2-b47b-235cdf496d04",
+      "appbot:498483038:3760879978",
+      "play:com.citibanamex.banamexmobile:0cf083cf-aed3-471a-8b3f-eefb916a05e6",
+      "play:com.citibanamex.banamexmobile:11a5b3e1-cd03-4f04-8d31-4c049329fac8"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4f56b859-8104-42c6-82ff-4ada19d237c4",
+    "play:com.citibanamex.banamexmobile:01f501da-5818-4bfb-8156-6099d681ac21",
+    "play:com.citibanamex.banamexmobile:65eb96b8-29db-42d2-b47b-235cdf496d04",
+    "appbot:498483038:3760879978",
+    "play:com.citibanamex.banamexmobile:0cf083cf-aed3-471a-8b3f-eefb916a05e6",
+    "play:com.citibanamex.banamexmobile:11a5b3e1-cd03-4f04-8d31-4c049329fac8"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006365,
+  "charged_or_reserved_usd": 0.0006365,
+  "usage": {
+    "completion_tokens": 119,
+    "prompt_tokens": 1130,
+    "total_tokens": 1249,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006365,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006365,
+      "upstream_inference_prompt_cost": 0.000339,
+      "upstream_inference_completions_cost": 0.0002975
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175561-5YbHP3ULL3XUuj8L036r",
+  "files": {
+    "request.json": "50994f561cb9b3317e56cc1a8671f10f8df903ff98e64c433210fdf499112909",
+    "response.json": "fcca13dd46bb3f6fae8c4963f000873b2a97705ab79530f192ab0c6cd0a27ffe",
+    "reservation.json": "bb489dda8f034905229d5fe3b5551e45b42d63e72bbd72ce97eb0794294b09f3"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Lentitud y problemas de apertura de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación es muy lenta en su funcionamiento general. Además, mencionan que en ocasiones no se abre o no permite el acceso, lo que impide su uso, especialmente en situaciones de urgencia. Algunos usuarios también experimentan que la aplicación está frecuentemente en mantenimiento, lo que contribuye a la imposibilidad de utilizarla.",
+    "proposed_feature": "Mejorar la velocidad de carga y el acceso a la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+      "play:com.citibanamex.banamexmobile:4fbd7cf5-def3-4dc4-a14c-97ae8f81a74b",
+      "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+      "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da",
+      "play:com.citibanamex.banamexmobile:81360978-e256-44d7-bed3-7a17b801322d",
+      "play:com.citibanamex.banamexmobile:8661c3ae-0e44-4f1e-94dd-535b0e8a41f1"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:010ce549-aa21-45d5-b436-0e27f883589b",
+    "play:com.citibanamex.banamexmobile:4fbd7cf5-def3-4dc4-a14c-97ae8f81a74b",
+    "play:com.citibanamex.banamexmobile:423b5dd6-e3eb-4534-80cc-c2c747085439",
+    "play:com.citibanamex.banamexmobile:356e1b97-0c5b-4b7d-9ff9-581ab23342da",
+    "play:com.citibanamex.banamexmobile:81360978-e256-44d7-bed3-7a17b801322d",
+    "play:com.citibanamex.banamexmobile:8661c3ae-0e44-4f1e-94dd-535b0e8a41f1"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "abe6acef1f73e32b47e6353abb95da097842b53ecc832748b5b2a7ef96115a2d",
+    "response.json": "7d356fc2f7bad8f69188e01e042c47ad43606b04aed8725d0fad403112786cd0"
+  }
+}

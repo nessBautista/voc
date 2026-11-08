@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175489-0kIlmQrpcSFeUe6R9ktx",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de seguridad y cobros no reconocidos\",\"topic_description\":\"Los usuarios reportan una falta de seguridad en la aplicación, lo que ha resultado en cobros no reconocidos y la desaparición de dinero de sus cuentas. Algunos usuarios mencionan haber sido víctimas de robos de grandes sumas de dinero, sugiriendo que la seguridad del banco es deficiente y que no se hacen responsables por estas pérdidas.\",\"proposed_feature\":\"Mejorar la seguridad de la cuenta para prevenir cobros no reconocidos y robos\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E3\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175489,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 133,
+    "prompt_tokens": 1164,
+    "total_tokens": 1297,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006817,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006817,
+      "upstream_inference_prompt_cost": 0.0003492,
+      "upstream_inference_completions_cost": 0.0003325
+    }
+  },
+  "provider": "Google AI Studio"
+}

@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de acceso y visualización de movimientos",
+    "topic_description": "Los usuarios experimentan dificultades para iniciar sesión en la aplicación, lo que les impide acceder a sus cuentas. Además, se reportan problemas al intentar visualizar los movimientos de sus cuentas, con la aplicación congelándose o no mostrando la información detallada de los depósitos. También se menciona una limitación para transferir dinero de apartados después de ciertas horas.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+      "appbot:498483038:3747942371",
+      "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+      "appbot:498483038:3738324714",
+      "appbot:498483038:3745937943"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+    "appbot:498483038:3747942371",
+    "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3745937943",
+    "appbot:498483038:3746324999"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "94521901f60ce1e95c349a8ed6d59e713b0f481b311eeed50604d1abbbac843e",
+    "response.json": "d6ab93c6bc62ce8ff8ff8cff1c8dcbf364a832de947656977782d20f918b7fdd"
+  }
+}

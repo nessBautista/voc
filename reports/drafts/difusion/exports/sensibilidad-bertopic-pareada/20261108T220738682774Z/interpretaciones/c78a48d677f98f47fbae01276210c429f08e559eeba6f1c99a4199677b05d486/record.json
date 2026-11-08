@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Seguridad y facilidad de acceso en la aplicación",
+    "topic_description": "Los usuarios valoran positivamente la seguridad de la aplicación, mencionando que es un trámite rápido y seguro, y que ofrece mucha seguridad para evitar robos por duplicado de cuenta. También se destaca la facilidad de uso y acceso. Sin embargo, un usuario sugiere mejorar la seguridad al momento de transferir y probar la identidad, proponiendo el uso de huella o fotografía.",
+    "proposed_feature": "Mejorar la seguridad en transferencias y verificación de identidad con biometría",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:902c7822-ca55-4738-bea0-03f01e7242b4",
+      "play:com.citibanamex.banamexmobile:86f0b381-1e88-4fb1-b034-e70b2480b6b0",
+      "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+      "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+      "play:com.citibanamex.banamexmobile:69e9a7e3-c552-4a27-8418-07dc92b14f8e",
+      "play:com.citibanamex.banamexmobile:9b553790-79fb-4a13-af4a-d2074f4c0de6"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:902c7822-ca55-4738-bea0-03f01e7242b4",
+    "play:com.citibanamex.banamexmobile:86f0b381-1e88-4fb1-b034-e70b2480b6b0",
+    "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+    "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+    "play:com.citibanamex.banamexmobile:69e9a7e3-c552-4a27-8418-07dc92b14f8e",
+    "play:com.citibanamex.banamexmobile:9b553790-79fb-4a13-af4a-d2074f4c0de6"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "c78a48d677f98f47fbae01276210c429f08e559eeba6f1c99a4199677b05d486",
+    "response.json": "d5251cab2dcad862ccb0a8cf9383ef58812d4f46b1ecce46868e4c838498238d"
+  }
+}

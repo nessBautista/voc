@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Facilidad de uso de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por ser fácil de usar, lo que contribuye a una experiencia cómoda y eficiente. Las reseñas destacan que la aplicación es intuitiva y sencilla de manejar, lo que facilita la interacción con sus funcionalidades.",
+    "proposed_feature": "Facilidad de uso",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:423a3007-8d31-4253-8157-7973f1390b66",
+      "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+      "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+      "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da",
+      "play:com.citibanamex.banamexmobile:1bfa3bd3-ad51-4b99-8c38-e6f4e1d07d04"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:bb979a95-e956-44bf-a282-15037f0198b5",
+    "play:com.citibanamex.banamexmobile:423a3007-8d31-4253-8157-7973f1390b66",
+    "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+    "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+    "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da",
+    "play:com.citibanamex.banamexmobile:1bfa3bd3-ad51-4b99-8c38-e6f4e1d07d04"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.000579,
+  "charged_or_reserved_usd": 0.000579,
+  "usage": {
+    "completion_tokens": 96,
+    "prompt_tokens": 1130,
+    "total_tokens": 1226,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.000579,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.000579,
+      "upstream_inference_prompt_cost": 0.000339,
+      "upstream_inference_completions_cost": 0.00024
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175466-DFwUVzZATwIs7ZZ7vuTJ",
+  "files": {
+    "request.json": "8f23f86e10b487fd026d75ba808c7780ae0399530a1646359d4666a54cced811",
+    "response.json": "8cfd62fafc6cbb862111fda49a512eb3bd0ca6f46a59966e24ef5aa677fc1726",
+    "reservation.json": "88507c6fd12b7be1b1acd335218eb1114338884b7968356e8e4eb016984dec09"
+  }
+}

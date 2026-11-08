@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Gestión de tarjetas: Bloqueo, estados de cuenta y seguimiento",
+    "topic_description": "Los usuarios solicitan la capacidad de bloquear tarjetas de débito, descargar estados de cuenta de tarjetas de débito y dar seguimiento a tarjetas vencidas o por vencer. También se mencionan problemas al acceder a la tarjeta virtual y al visualizar el detalle de compras de la tarjeta digital, así como dificultades para realizar pagos con la tarjeta.",
+    "proposed_feature": "Bloquear tarjeta de débito",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+      "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+      "appbot:498483038:3753020260",
+      "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e",
+      "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+      "appbot:498483038:3751862337"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+    "play:com.citibanamex.banamexmobile:ac161a3a-af0e-445b-84ba-62f1811a5e3e",
+    "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+    "appbot:498483038:3751862337",
+    "appbot:498483038:3753020260",
+    "play:com.citibanamex.banamexmobile:01190142-822d-4ce4-99f3-be3bab210b7e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007281,
+  "charged_or_reserved_usd": 0.0007281,
+  "usage": {
+    "completion_tokens": 129,
+    "prompt_tokens": 1352,
+    "total_tokens": 1481,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007281,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007281,
+      "upstream_inference_prompt_cost": 0.0004056,
+      "upstream_inference_completions_cost": 0.0003225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175489-8e9W0NKx9JNg2emWciRm",
+  "files": {
+    "request.json": "c2409a165ff804dc478853d247c5fb7d62dff9afa673977e7807787c529b12c9",
+    "response.json": "04a76e7d0c1b4b08152f0fffa375f9f8e28aa331a53559be34f30f5b511e85af",
+    "reservation.json": "e693b1e504e3222e14d31de85416491f5f8feb9c68b38375ac0813a055ba556f"
+  }
+}

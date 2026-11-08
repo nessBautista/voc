@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Seguridad y facilidad de uso de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por su seguridad, mencionando que protege sus datos y es segura de utilizar. También destacan su utilidad para realizar diversas operaciones y trámites, como retiros sin tarjeta, transferencias interbancarias y descarga de estados de cuenta, lo que les ahorra tiempo y facilita sus compromisos.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+      "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+      "play:com.citibanamex.banamexmobile:1a825da3-525b-4dfc-b5c7-b443ba09fa60"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "appbot:498483038:3759645483",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+    "play:com.citibanamex.banamexmobile:1a825da3-525b-4dfc-b5c7-b443ba09fa60"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "0e3a8034ff04bf623a7045f7e8414712414da5be8e3475eac84bbae31f015bdb",
+    "response.json": "b4599e125570c8d36425a8d92cd0bd7d73cac513ba6afceabae5f49d482a9d93"
+  }
+}

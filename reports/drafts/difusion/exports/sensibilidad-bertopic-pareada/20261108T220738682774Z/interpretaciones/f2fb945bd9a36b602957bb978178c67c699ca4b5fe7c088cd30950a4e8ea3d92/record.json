@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de seguridad y cobros no reconocidos",
+    "topic_description": "Los usuarios reportan una falta de seguridad en la aplicación, lo que ha resultado en cobros no reconocidos y la desaparición de dinero de sus cuentas. Algunos usuarios mencionan que les han robado grandes sumas de dinero y que el banco no se hace responsable.",
+    "proposed_feature": "Mejorar la seguridad de la cuenta para prevenir cobros no reconocidos y robos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+      "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+      "appbot:498483038:3745361719"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7229d90d-26a3-4f26-a9a5-2c13f9ea4fc2",
+    "play:com.citibanamex.banamexmobile:bbb57008-4abe-4dc7-a995-50d293275f72",
+    "play:com.citibanamex.banamexmobile:622270af-5906-4ebb-a8e1-79a997fbbe70",
+    "appbot:498483038:3745361719",
+    "play:com.citibanamex.banamexmobile:0e71800b-322e-4a4e-9fcc-98e17184322a",
+    "play:com.citibanamex.banamexmobile:10ad064f-018b-44d6-8f5d-5d9268d56c8e"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006461,
+  "charged_or_reserved_usd": 0.0006461,
+  "usage": {
+    "completion_tokens": 116,
+    "prompt_tokens": 1187,
+    "total_tokens": 1303,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006461,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006461,
+      "upstream_inference_prompt_cost": 0.0003561,
+      "upstream_inference_completions_cost": 0.00029
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175538-cFtsgZCu1x7SDS8AoDWT",
+  "files": {
+    "request.json": "bee08b7be6521b830179671f74d401d148ccd25499a7620a2dd83bf278615d52",
+    "response.json": "23183bcd77d64334b78bf17b2accb93fd76e71a0c5c783f1b5af53621ea46d57",
+    "reservation.json": "9f379ddd34e07ffcc573802560f26ca82881ab8dcbb04b4e29416c9ad02ff39a"
+  }
+}

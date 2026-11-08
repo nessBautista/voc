@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad en la aplicación móvil de Banamex",
+    "topic_description": "Los usuarios reportan dificultades para iniciar sesión en la aplicación móvil de Banamex, incluyendo problemas para entrar con número de tarjeta o teléfono, y la necesidad de acudir a una sucursal. Algunos usuarios experimentan que la aplicación los saca inesperadamente o no responde. También se menciona un problema específico con la captura del SMS de activación de NetKey en dispositivos Android, y la imposibilidad de escanear el número de tarjeta para agregarla.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "x:2078352589356191842",
+      "x:2076879636324085826",
+      "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+      "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328",
+      "play:com.citibanamex.banamexmobile:9d4ad448-c036-428f-b867-8037834f4899",
+      "play:com.citibanamex.banamexmobile:b1ccce64-88bd-4016-88a1-f2ff6e69b9c3"
+    ]
+  },
+  "evidence_ids": [
+    "x:2078352589356191842",
+    "x:2076879636324085826",
+    "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+    "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328",
+    "play:com.citibanamex.banamexmobile:9d4ad448-c036-428f-b867-8037834f4899",
+    "play:com.citibanamex.banamexmobile:b1ccce64-88bd-4016-88a1-f2ff6e69b9c3"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007667,
+  "charged_or_reserved_usd": 0.0007667,
+  "usage": {
+    "completion_tokens": 146,
+    "prompt_tokens": 1339,
+    "total_tokens": 1485,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007667,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007667,
+      "upstream_inference_prompt_cost": 0.0004017,
+      "upstream_inference_completions_cost": 0.000365
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175535-KI6vvMJQtEXoolGtJJaH",
+  "files": {
+    "request.json": "22307c044e7fc83a5b3a713ac1f04c284db629d0725d91eacd38186d28ac2c87",
+    "response.json": "e024f39ed1441a8a067caeb8db8edae681a4b5b0da45b08551f9e5a36544869c",
+    "reservation.json": "f174de295b3284f8378a160f4d915fb93764f60d2e58642dc7faa1ac0868eb01"
+  }
+}

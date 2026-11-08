@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175547-xPfbP2FYfKxzYLsOBo2n",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Calidad general de la aplicación\",\"topic_description\":\"Los usuarios expresan una alta satisfacción con la aplicación, describiéndola como \\\"excelente\\\" y destacando su fiabilidad a lo largo del tiempo. Un usuario menciona que \\\"casi no falla\\\" después de años de uso.\",\"proposed_feature\":null,\"assessment\":\"unclear\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175547,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 96,
+    "prompt_tokens": 1106,
+    "total_tokens": 1202,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005718,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005718,
+      "upstream_inference_prompt_cost": 0.0003318,
+      "upstream_inference_completions_cost": 0.00024
+    }
+  },
+  "provider": "Google AI Studio"
+}

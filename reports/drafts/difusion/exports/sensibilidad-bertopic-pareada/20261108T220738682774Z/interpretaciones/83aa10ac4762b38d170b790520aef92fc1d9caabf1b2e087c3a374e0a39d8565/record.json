@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y visualización de movimientos",
+    "topic_description": "Los usuarios experimentan dificultades para iniciar sesión en la aplicación, lo que les impide acceder a sus cuentas. Además, se reportan problemas al intentar ver los movimientos de sus cuentas, con la aplicación bloqueándose o no mostrando la información de manera adecuada. También se menciona que no se pueden ver los detalles de los depósitos como en la versión de escritorio y que los cortes mensuales no se reciben correctamente.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+      "appbot:498483038:3747942371",
+      "appbot:498483038:3738324714",
+      "appbot:498483038:3745937943",
+      "appbot:498483038:3746324999"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+    "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+    "appbot:498483038:3747942371",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3745937943",
+    "appbot:498483038:3746324999"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006779,
+  "charged_or_reserved_usd": 0.0006779,
+  "usage": {
+    "completion_tokens": 128,
+    "prompt_tokens": 1193,
+    "total_tokens": 1321,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006779,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006779,
+      "upstream_inference_prompt_cost": 0.0003579,
+      "upstream_inference_completions_cost": 0.00032
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175534-Ofp05dqR4zXJhKFC6YAr",
+  "files": {
+    "request.json": "d1aadb42a720ca64c6d89d0b9bee48483f720964ad69a248a6fd23a6b1ba498f",
+    "response.json": "352ae4eb54365604a4c3db7b4a04b321cfad662c5a3fb9067ce9d493f6d509a8",
+    "reservation.json": "c783e43c1ab4e845673228853e998f6c9192baa891e599106118fac669058adf"
+  }
+}

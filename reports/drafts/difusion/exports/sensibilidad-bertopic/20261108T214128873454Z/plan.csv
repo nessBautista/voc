@@ -1,0 +1,11 @@
+configuración,n_neighbors,n_components,min_dist,random_state,min_cluster_size,min_samples,cluster_selection_method
+B0,15,5,0.0,42,10,3,eom
+U-vecinos10,10,5,0.0,42,10,3,eom
+U-vecinos30,30,5,0.0,42,10,3,eom
+U-dim3,15,3,0.0,42,10,3,eom
+U-dim10,15,10,0.0,42,10,3,eom
+H-tamano20,15,5,0.0,42,20,3,eom
+H-tamano30,15,5,0.0,42,30,3,eom
+H-muestras1,15,5,0.0,42,10,1,eom
+H-muestras10,15,5,0.0,42,10,10,eom
+H-leaf,15,5,0.0,42,10,3,leaf

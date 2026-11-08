@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175549-TAR96XIPyeCmPX31UboQ",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Evaluación general de la aplicación\",\"topic_description\":\"Las reseñas expresan opiniones generales sobre la aplicación, utilizando términos como \\\"exelente\\\", \\\"Grandioso\\\" y \\\"Versatil didáctica\\\". También hay comentarios negativos como \\\"Rateros\\\" y \\\"Datos confusos\\\", que sugieren problemas con la claridad o la confianza en la información. Sin embargo, la mayoría de las reseñas son demasiado breves para identificar una característica específica.\",\"proposed_feature\":null,\"assessment\":\"mixed\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175549,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 125,
+    "prompt_tokens": 1037,
+    "total_tokens": 1162,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 742,
+      "video_tokens": 0
+    },
+    "cost": 0.00042326,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00042326,
+      "upstream_inference_prompt_cost": 0.00011076,
+      "upstream_inference_completions_cost": 0.0003125
+    }
+  },
+  "provider": "Google AI Studio"
+}

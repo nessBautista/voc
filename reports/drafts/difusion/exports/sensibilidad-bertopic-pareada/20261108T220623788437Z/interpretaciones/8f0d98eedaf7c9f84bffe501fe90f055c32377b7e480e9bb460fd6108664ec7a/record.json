@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Seguridad y fiabilidad de la aplicación",
+    "topic_description": "Los usuarios valoran positivamente la aplicación por su seguridad, mencionando que protege sus datos y es fiable. También se destaca su rapidez y eficiencia en las operaciones. Un usuario incluso planea usarla como medio de pago.",
+    "proposed_feature": "Seguridad de los datos y transacciones",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+      "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+      "play:com.citibanamex.banamexmobile:43c8f84b-dc2d-4980-96ef-80538ef25a64"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "play:com.citibanamex.banamexmobile:17c58069-5eed-4a3d-b1a6-8ebef757e74f",
+    "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+    "play:com.citibanamex.banamexmobile:43c8f84b-dc2d-4980-96ef-80538ef25a64"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "8f0d98eedaf7c9f84bffe501fe90f055c32377b7e480e9bb460fd6108664ec7a",
+    "response.json": "ca8867d22e15de7b67b677b3a7169feceadf98af3ddcc372c40e321a44a9a79b"
+  }
+}

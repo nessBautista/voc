@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175467-RoHyeNXfNAHwKqz3T0ta",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Seguridad en la aplicación\",\"topic_description\":\"Los usuarios valoran positivamente la seguridad de la aplicación, mencionando que es fiable y segura de utilizar. Algunos comentarios sugieren mejoras en la seguridad al momento de realizar transferencias y verificar la identidad, proponiendo el uso de huella digital o fotografía para este fin.\",\"proposed_feature\":\"Autenticación biométrica (huella o fotografía) para transferencias\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175467,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 114,
+    "prompt_tokens": 1168,
+    "total_tokens": 1282,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006354,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006354,
+      "upstream_inference_prompt_cost": 0.0003504,
+      "upstream_inference_completions_cost": 0.000285
+    }
+  },
+  "provider": "Google AI Studio"
+}

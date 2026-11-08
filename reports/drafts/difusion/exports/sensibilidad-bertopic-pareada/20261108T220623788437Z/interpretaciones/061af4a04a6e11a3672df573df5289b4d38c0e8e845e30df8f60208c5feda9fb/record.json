@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de disponibilidad y lentitud en operaciones",
+    "topic_description": "Los usuarios reportan que la aplicación presenta fallas y lentitud en diversas operaciones, como la realización de transferencias y el acceso a fondos en apartados. Se mencionan periodos específicos de inoperatividad, como mantenimientos nocturnos, problemas por las mañanas y fallas durante los fines de semana. Las transferencias pueden tardar horas en reflejarse.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:53387a85-d3c5-4446-a1b7-3bc77acf36d8",
+      "play:com.citibanamex.banamexmobile:bed94fd7-4a87-4622-83f7-8462ab537cc1",
+      "play:com.citibanamex.banamexmobile:5b2a8995-e6a5-49f0-89a3-3ce75a443fd0",
+      "play:com.citibanamex.banamexmobile:0ebc7f82-f4de-4560-ba08-7aadef376a8f",
+      "play:com.citibanamex.banamexmobile:3d0e4bbe-2262-4eb4-8596-7ee1b0240d77",
+      "play:com.citibanamex.banamexmobile:7d8f22da-9bc5-4962-a695-6c0f48f96d7c"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:53387a85-d3c5-4446-a1b7-3bc77acf36d8",
+    "play:com.citibanamex.banamexmobile:bed94fd7-4a87-4622-83f7-8462ab537cc1",
+    "play:com.citibanamex.banamexmobile:5b2a8995-e6a5-49f0-89a3-3ce75a443fd0",
+    "play:com.citibanamex.banamexmobile:0ebc7f82-f4de-4560-ba08-7aadef376a8f",
+    "play:com.citibanamex.banamexmobile:3d0e4bbe-2262-4eb4-8596-7ee1b0240d77",
+    "play:com.citibanamex.banamexmobile:7d8f22da-9bc5-4962-a695-6c0f48f96d7c"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006911,
+  "charged_or_reserved_usd": 0.0006911,
+  "usage": {
+    "completion_tokens": 128,
+    "prompt_tokens": 1237,
+    "total_tokens": 1365,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006911,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006911,
+      "upstream_inference_prompt_cost": 0.0003711,
+      "upstream_inference_completions_cost": 0.00032
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175568-zSGkh4MSXXBpEyW4o5L9",
+  "files": {
+    "request.json": "3cdf078feb2bf2c13ae4f04ab50b5861292f8811be0a52cb5be6d55eec0121e6",
+    "response.json": "bc4b62301744757c9c9f9a4563a8c890d2054640a3b694bb92b9ba79127326c8",
+    "reservation.json": "ef35e1872f7bf93b39de49775e11894c213389d650ba8291949db34882c405be"
+  }
+}

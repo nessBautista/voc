@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad de la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación, con problemas como la imposibilidad de ingresar códigos de seguridad de la NetKey, la aplicación se congela o no responde al intentar iniciar sesión. También se mencionan fallos en la visualización de movimientos y en la realización de transferencias, así como la aplicación se traba al cambiar entre aplicaciones o al intentar realizar pagos durante una llamada.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+      "play:com.citibanamex.banamexmobile:e5e03582-eb0f-49cb-aeb8-ff04540cd00e",
+      "play:com.citibanamex.banamexmobile:01af58aa-cf9d-4d25-b388-0d9dd31ce7a7",
+      "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "play:com.citibanamex.banamexmobile:e5e03582-eb0f-49cb-aeb8-ff04540cd00e",
+    "appbot:498483038:3747774521",
+    "play:com.citibanamex.banamexmobile:01af58aa-cf9d-4d25-b388-0d9dd31ce7a7",
+    "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007547,
+  "charged_or_reserved_usd": 0.0007547,
+  "usage": {
+    "completion_tokens": 125,
+    "prompt_tokens": 1474,
+    "total_tokens": 1599,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007547,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007547,
+      "upstream_inference_prompt_cost": 0.0004422,
+      "upstream_inference_completions_cost": 0.0003125
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175467-QuncAQikK94Zok9ycuJD",
+  "files": {
+    "request.json": "bab4efda09fca0e9bcaedcb94d72fecafaac428082cac18ffcfcdbca6dd16a33",
+    "response.json": "d79a1ad2854ec657bb5fe25128dfb6620a641605827e430f2cc60dce1986feb8",
+    "reservation.json": "27db303ef47a5c8f82bb5dbdbceeeec317b4d0fc0ecd2152741ac3075c8afd84"
+  }
+}

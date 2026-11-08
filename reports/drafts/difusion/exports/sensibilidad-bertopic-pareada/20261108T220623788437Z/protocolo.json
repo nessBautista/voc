@@ -1,0 +1,278 @@
+{
+  "schema": "voc-paired-sensitivity-v1",
+  "inputs": {
+    "base": "9d48da5f9e4c967863beb8acab9ea32965d2aab264198e9e7d6167a6a1c64139",
+    "alternative": "6b3178ed6668e0079513496f38f5926e40dc49b09edf023c607e17d1005bac9a"
+  },
+  "configs": {
+    "B0": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "U-vecinos10": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 10,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "U-vecinos30": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 30,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "U-dim3": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 3,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "U-dim10": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 10,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "H-tamano20": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 20,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "H-tamano30": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 30,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "H-muestras1": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 1,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "H-muestras10": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 10,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "H-leaf": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "leaf"
+      }
+    }
+  },
+  "representation": {
+    "method": "keybert_mmr",
+    "ngram_min": 1,
+    "ngram_max": 2,
+    "top_n_words": 10,
+    "candidate_words": 30,
+    "min_df": 1,
+    "reduce_frequent_words": true,
+    "diversity": 0.3,
+    "nr_repr_docs": 5,
+    "nr_samples": 500,
+    "batch_size": 32
+  },
+  "saved_analyses": {
+    "base": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+    "alternative": "8170593a-f915-4b9e-aec6-9e09cd17744d"
+  },
+  "sources": {
+    "data/experiments/julaug-2026/protocol.json": "cdaa8a4205db1696f7fe0777f1e66faac51154c34de244e3e026d660b3eee091",
+    "data/experiments/julaug-2026/relevance.csv": "85c4f0ee628fa9929fe0b07f483eaf6d9074f24d7a66572f9a13ccd4422c06e3",
+    "data/experiments/julaug-2026-paso-a-paso/interpretation-run.json": "79630036a69472598fc0af21df92304c48af1e2a4a6ca3cc2ef431620733c0e5",
+    "data/analyses/a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52/manifest.json": "eb18c2ab92e923e7a46b0f955bf166190ed4eb0f4728909bb53c569c2ad80f53",
+    "data/analyses/8170593a-f915-4b9e-aec6-9e09cd17744d/manifest.json": "31f7703b658d44d8e264ed8664b80bc1029dbed1782d27d11f7ec6f4a36f923b"
+  },
+  "software": {
+    "bertopic": "0.17.4",
+    "umap-learn": "0.5.12",
+    "hdbscan": "0.8.44",
+    "numpy": "2.5.3",
+    "scikit-learn": "1.9.1",
+    "torch": "2.14.1+cpu",
+    "sentence-transformers": "6.0.0"
+  },
+  "code": {
+    "src/voc_ml/topics/bertopic.py": "1322b4b951e53301d236045a97cfeaee2453b762242d7b321f4f1e261ab1b7f7",
+    "src/voc_ml/topics/reduction.py": "b2dfa517cfabea170da274ce45ec299827358cc5db9a1007eee507eef54cc374",
+    "src/voc_ml/topics/representation.py": "af981b0be95f4f3133cfd8f22c68ae0778a79ef21a7e2718c832cc50b6253fb7"
+  },
+  "helper_sha256": "c5a8db08599c32bf8d7b3e16eed55ae25d79a42e51e397b0d1811e92bc84fc4a"
+}

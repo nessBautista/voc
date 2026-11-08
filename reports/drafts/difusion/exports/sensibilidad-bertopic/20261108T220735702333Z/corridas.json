@@ -1,0 +1,532 @@
+{
+  "B0": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "B0",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": false,
+    "umap_seconds": 6.830770399999892,
+    "grouping_seconds": 7.605128147000869,
+    "representation_seconds": 2.472615066999424,
+    "wall_seconds": 16.908513614000185,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "ffa1f78d8c8dc0fcfc07d0cfccdc45a95b7470cf6f7aea06bacaef4a77c8e756",
+      "topicos.csv": "d445a7f3662d759cf00305a09f3ed22b8e89a5c418eb9d2ab1d1eea4bd506856"
+    }
+  },
+  "U-vecinos10": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "U-vecinos10",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 10,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": false,
+    "umap_seconds": 1.0413902409982256,
+    "grouping_seconds": 0.06574408700180356,
+    "representation_seconds": 1.9430407209983969,
+    "wall_seconds": 3.050175048998426,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "f0c1ce874ead4868114de18f22c060bd1f4befaabb8509c64eec716f3b69e969",
+      "topicos.csv": "fb0afc3dd35978bc6c058f040394bca2a888cba440c7f863875ea08b884af138"
+    }
+  },
+  "U-vecinos30": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "U-vecinos30",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 30,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": false,
+    "umap_seconds": 1.4677447119993303,
+    "grouping_seconds": 0.06381786400015699,
+    "representation_seconds": 1.9539261460013222,
+    "wall_seconds": 3.4854887220008095,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "c030b20a5ae0c7f70516cc11eecc272b9e83459fae0e524a3bb3e83454609b8f",
+      "topicos.csv": "0cfa5cf046b3afe5f49f03c6e6dec85b3406ed1d06b9f1d9aacb7970dd6965fa"
+    }
+  },
+  "U-dim3": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "U-dim3",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 3,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": false,
+    "umap_seconds": 1.1234848399999464,
+    "grouping_seconds": 0.07921047399941017,
+    "representation_seconds": 2.733138322999366,
+    "wall_seconds": 3.935833636998723,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "7a09c4f1ba3dcb91e416332f58475906eab4427757c732c40f07c94806a3bfef",
+      "topicos.csv": "1e04610d4d676967b312b8d458be3d64ee0f1ec772defda0a672e50e6db0a123"
+    }
+  },
+  "U-dim10": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "U-dim10",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 10,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": false,
+    "umap_seconds": 1.2361878270003217,
+    "grouping_seconds": 0.06710619099976611,
+    "representation_seconds": 1.8474166120013251,
+    "wall_seconds": 3.150710630001413,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "ed59e117564a4ecc99ec0e3e1258ea1fa8c65fa79719dc4cb8f6400d8580a978",
+      "topicos.csv": "fd77a07807b6a6a08bc1ac5ac8c297a5fea9edd36389d0792cb13143af8eb32b"
+    }
+  },
+  "H-tamano20": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "H-tamano20",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 20,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": true,
+    "umap_seconds": 0.014660828999694786,
+    "grouping_seconds": 0.06499068000084662,
+    "representation_seconds": 1.8327826569984609,
+    "wall_seconds": 1.9124341659990023,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "644b49545455621814f98b39c3230b07eaf7399d518df0fd35beb7775e520327",
+      "topicos.csv": "a0790fbbb9a62be6231bf5cd727916c9d79ba806a688b21673ba9d34f0b6faad"
+    }
+  },
+  "H-tamano30": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "H-tamano30",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 30,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": true,
+    "umap_seconds": 0.015127571999983047,
+    "grouping_seconds": 0.05927168000016536,
+    "representation_seconds": 1.3154792429995723,
+    "wall_seconds": 1.3898784949997207,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "851cb4cbd26cb8957cc33be0f8807dc802f0323dee194d8ce06f9755b806a18f",
+      "topicos.csv": "c491e8e05c9b52de8bca2db8fc466dec4772d4b12bf42bf431ab736c01f42bb6"
+    }
+  },
+  "H-muestras1": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "H-muestras1",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 1,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": true,
+    "umap_seconds": 0.01575523700012127,
+    "grouping_seconds": 0.07444674599901191,
+    "representation_seconds": 2.1671690130006027,
+    "wall_seconds": 2.257370995999736,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "7d37c5c30ad8c3ca47f1c9038a98aed7fc1b156e7f0493642622e07619f35f6b",
+      "topicos.csv": "fdffbd5d7916426e72248f030bafa02d7c8c34c241e2a082b3906d36a252d921"
+    }
+  },
+  "H-muestras10": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "H-muestras10",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 10,
+        "metric": "euclidean",
+        "cluster_selection_method": "eom"
+      }
+    },
+    "reduction_reused": true,
+    "umap_seconds": 0.014544044999638572,
+    "grouping_seconds": 0.06605740600025456,
+    "representation_seconds": 1.933095341999433,
+    "wall_seconds": 2.013696792999326,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "61b2d12debdb1be519ccf50b5c94dc085179c2cf5796a80275b7b251ca1a4eec",
+      "topicos.csv": "def2e2bf8623fae98f1f702f4f61b1860c63946a30a52fc14ed5d527abf97c17"
+    }
+  },
+  "H-leaf": {
+    "state": "completed",
+    "study_id": "a1a22f43061392ad2f16a3815d3bb52f8b7dd6dd2c84bb1aaa7f7fd87fdd933b",
+    "name": "H-leaf",
+    "configuration": {
+      "topics": {
+        "backend": "bertopic"
+      },
+      "selection": {
+        "kind": "explicit",
+        "size": 1000,
+        "seed": null
+      },
+      "reduction": {
+        "n_neighbors": 15,
+        "n_components": 5,
+        "min_dist": 0.0,
+        "metric": "cosine",
+        "random_state": 42
+      },
+      "clustering": {
+        "min_cluster_size": 10,
+        "min_samples": 3,
+        "metric": "euclidean",
+        "cluster_selection_method": "leaf"
+      }
+    },
+    "reduction_reused": true,
+    "umap_seconds": 0.015035705999252968,
+    "grouping_seconds": 0.08497680599975865,
+    "representation_seconds": 3.2702816399996664,
+    "wall_seconds": 3.370294151998678,
+    "representation": {
+      "method": "keybert_mmr",
+      "ngram_min": 1,
+      "ngram_max": 2,
+      "top_n_words": 10,
+      "candidate_words": 30,
+      "min_df": 1,
+      "reduce_frequent_words": true,
+      "diversity": 0.3,
+      "nr_repr_docs": 5,
+      "nr_samples": 500,
+      "batch_size": 32
+    },
+    "embedding_profile_id": "02f309b906e861dbffe6651c600f252e680944b65001a1217accae027d699fad",
+    "provider_requests": 0,
+    "sentiment_inferences": 0,
+    "files": {
+      "asignaciones.csv": "022f4e138c9502b93690488089e9dd3562dbc25bf845fe076c18024eb43580cd",
+      "topicos.csv": "758f256f3f47efc605f2ecff762f7e9e4a0a4d69358aaa468523c007a417676d"
+    }
+  }
+}

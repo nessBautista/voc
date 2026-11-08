@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y navegación en la aplicación móvil",
+    "topic_description": "Los usuarios reportan dificultades para iniciar la aplicación, con pantallas que se quedan en blanco o en color azul sin avanzar. También experimentan cierres inesperados de la aplicación, problemas para iniciar sesión debido a detecciones erróneas de sesiones abiertas, y lentitud general. Algunos usuarios mencionan que no pueden regresar a la pantalla de inicio después de ver movimientos en iPhone. Estos problemas persisten incluso después de reinstalar la aplicación o borrar el caché.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5393344d-4e8d-4e02-ad9d-91e190e26a13",
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+      "appbot:498483038:3742439108",
+      "appbot:498483038:3742631173",
+      "appbot:498483038:3746324998"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5393344d-4e8d-4e02-ad9d-91e190e26a13",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+    "appbot:498483038:3742439108",
+    "appbot:498483038:3742631173",
+    "appbot:498483038:3746324998"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007954,
+  "charged_or_reserved_usd": 0.0007954,
+  "usage": {
+    "completion_tokens": 145,
+    "prompt_tokens": 1443,
+    "total_tokens": 1588,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007954,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007954,
+      "upstream_inference_prompt_cost": 0.0004329,
+      "upstream_inference_completions_cost": 0.0003625
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175485-eN7OMg5Y7Iq4SPNIvp5q",
+  "files": {
+    "request.json": "7b5aee15cc6f2d768683b7be7d8eff4b285cb50a6c640799f6b38851d00e9091",
+    "response.json": "4828eb117c5bfc0741614355d6426296925a7f19c2acdfa62283c767ce597a64",
+    "reservation.json": "3d89ff7c8f4bbbb63c8fe3e3aed3ce08c3136b60b36c7c3544319a699ae2240a"
+  }
+}

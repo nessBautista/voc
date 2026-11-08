@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de funcionamiento y acceso a la aplicación",
+    "topic_description": "Los usuarios reportan fallos constantes en la aplicación, impidiendo el acceso y la realización de operaciones. Se menciona que la pantalla se oscurece al intentar entrar, requiriendo reiniciar el teléfono o la aplicación repetidamente. También se describe la necesidad de cerrar y reabrir la aplicación para refrescar el historial de compras o volver a la pantalla de inicio. Algunos usuarios atribuyen estos problemas a actualizaciones recientes o a la desvinculación con Citi.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "appbot:498483038:3762293703",
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:a4843162-7c2c-449a-95a3-29f1f261d3ff",
+      "appbot:498483038:3758817842",
+      "play:com.citibanamex.banamexmobile:1d315d5d-1747-4212-bd39-618cdd699678"
+    ]
+  },
+  "evidence_ids": [
+    "appbot:498483038:3762293703",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "play:com.citibanamex.banamexmobile:a4843162-7c2c-449a-95a3-29f1f261d3ff",
+    "appbot:498483038:3750955635",
+    "appbot:498483038:3758817842",
+    "play:com.citibanamex.banamexmobile:1d315d5d-1747-4212-bd39-618cdd699678"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007368,
+  "charged_or_reserved_usd": 0.0007368,
+  "usage": {
+    "completion_tokens": 141,
+    "prompt_tokens": 1281,
+    "total_tokens": 1422,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007368,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007368,
+      "upstream_inference_prompt_cost": 0.0003843,
+      "upstream_inference_completions_cost": 0.0003525
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175537-mHfqH0rIH4DVHxAkzOFI",
+  "files": {
+    "request.json": "75f3807ab851585a1c32e1aa4c3aa74c566ee66684ff089c919e74e0c404276f",
+    "response.json": "f2d0e9dc936f4f9af416d39c5cc397985932e6996c037b4ca822165a5a289706",
+    "reservation.json": "0363669c23cbca0aece4de0e9173e267b544bd28cce4c283eb3e6dfea765240e"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Seguridad y accesibilidad en trámites",
+    "topic_description": "Los usuarios valoran la seguridad y la facilidad de acceso al realizar trámites en la aplicación. Se menciona que los trámites son rápidos, seguros y accesibles, y que la aplicación es fácil de usar y ofrece mucha seguridad para evitar robos. También se sugiere mejorar la seguridad al momento de transferir y probar la identidad mediante huella o fotografía.",
+    "proposed_feature": "Mejorar la seguridad en transferencias y verificación de identidad con biometría",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:902c7822-ca55-4738-bea0-03f01e7242b4",
+      "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+      "play:com.citibanamex.banamexmobile:86f0b381-1e88-4fb1-b034-e70b2480b6b0",
+      "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+      "play:com.citibanamex.banamexmobile:69e9a7e3-c552-4a27-8418-07dc92b14f8e",
+      "play:com.citibanamex.banamexmobile:9b553790-79fb-4a13-af4a-d2074f4c0de6"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:902c7822-ca55-4738-bea0-03f01e7242b4",
+    "play:com.citibanamex.banamexmobile:7b8f27ef-3bc1-48d9-b294-0f29a40c7cc0",
+    "play:com.citibanamex.banamexmobile:86f0b381-1e88-4fb1-b034-e70b2480b6b0",
+    "play:com.citibanamex.banamexmobile:1ffcbb7e-64b4-47bb-8d5b-84a687828180",
+    "play:com.citibanamex.banamexmobile:69e9a7e3-c552-4a27-8418-07dc92b14f8e",
+    "play:com.citibanamex.banamexmobile:9b553790-79fb-4a13-af4a-d2074f4c0de6"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006881,
+  "charged_or_reserved_usd": 0.0006881,
+  "usage": {
+    "completion_tokens": 137,
+    "prompt_tokens": 1152,
+    "total_tokens": 1289,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006881,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006881,
+      "upstream_inference_prompt_cost": 0.0003456,
+      "upstream_inference_completions_cost": 0.0003425
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175582-A43h8EajGdXY90GyRuSh",
+  "files": {
+    "request.json": "aff40d5579524f9738c5f4360ecac1544e58a145b85465d56b9cc816ce747b01",
+    "response.json": "847e60514d316b75b25de21ac7a0bec9e303b766c5471fcf590e17b4a8423b7b",
+    "reservation.json": "4965aff4e92bbd37f7a4eb205ea2cd454ee9ba9881c9c846929cb96438987de7"
+  }
+}

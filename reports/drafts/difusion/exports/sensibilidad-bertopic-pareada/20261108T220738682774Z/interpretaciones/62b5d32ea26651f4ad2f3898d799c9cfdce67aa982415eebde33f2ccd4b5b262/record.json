@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de visualización de movimientos y acceso a fondos",
+    "topic_description": "Los usuarios experimentan dificultades para visualizar los movimientos de sus cuentas, con reportes de que la aplicación no muestra el detalle de los depósitos o no permite ver los movimientos en absoluto. Además, se menciona que no es posible acceder a los fondos de los apartados después de ciertas horas, lo que impide disponer del dinero en caso de emergencia. También se reportan problemas para iniciar sesión, con la aplicación fallando frecuentemente al intentar abrirla o al usar la huella digital.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+      "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+      "appbot:498483038:3747942371",
+      "appbot:498483038:3738324714",
+      "appbot:498483038:3745937943"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:6d8a072a-1397-489a-bd9d-3d715ee85673",
+    "play:com.citibanamex.banamexmobile:c371b470-d793-49fa-83c6-2c5f96fa0840",
+    "appbot:498483038:3747942371",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3745937943",
+    "appbot:498483038:3746324999"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007232,
+  "charged_or_reserved_usd": 0.0007232,
+  "usage": {
+    "completion_tokens": 146,
+    "prompt_tokens": 1194,
+    "total_tokens": 1340,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007232,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007232,
+      "upstream_inference_prompt_cost": 0.0003582,
+      "upstream_inference_completions_cost": 0.000365
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175459-FZx3FMvIGy3szW7z16wT",
+  "files": {
+    "request.json": "805e76c85293549878e9085dda5daba16a8d39bde9f5d2664759a29e16c870b7",
+    "response.json": "d926eb75163a63d295a80d469cb61e3f3b2f08957386c79b57ee57fc8161da59",
+    "reservation.json": "328deaf761389d0c5b674bb4ad2b3d94b7af7eba824ab18a21ba4b6945dfc937"
+  }
+}

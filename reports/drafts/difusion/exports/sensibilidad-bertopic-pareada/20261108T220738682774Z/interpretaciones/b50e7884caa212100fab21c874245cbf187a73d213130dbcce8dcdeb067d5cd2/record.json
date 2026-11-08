@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Agradecimiento general por la información y atención al cliente",
+    "topic_description": "Los usuarios expresan gratitud por la información proporcionada y la atención al cliente recibida. Se menciona que la información es útil y fabulosa, y que el servicio de atención al cliente es excelente, rápido y amable, siempre atento a las necesidades de los usuarios.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "youtube:-:UgzTdO4qHPxcx4APEpt4AaABAg",
+      "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+      "youtube:-:UgwAtme4E0RfWGHsfKR4AaABAg",
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+      "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+      "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+    ]
+  },
+  "evidence_ids": [
+    "youtube:-:UgzTdO4qHPxcx4APEpt4AaABAg",
+    "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+    "youtube:-:UgwAtme4E0RfWGHsfKR4AaABAg",
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005911,
+  "charged_or_reserved_usd": 0.0005911,
+  "usage": {
+    "completion_tokens": 106,
+    "prompt_tokens": 1087,
+    "total_tokens": 1193,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005911,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005911,
+      "upstream_inference_prompt_cost": 0.0003261,
+      "upstream_inference_completions_cost": 0.000265
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175549-bdsTbMuZVChnAELmmfB8",
+  "files": {
+    "request.json": "a30dbf71edbd3dd618024f89e6ade192892755d2846523ab839fbca3a3c27c6b",
+    "response.json": "1721c0b26dd17f208dd127be786c14165171e541e023c0bb14a1414063aa9689",
+    "reservation.json": "6a3c82928464699b5de0df189a4ea269316f7d858b9e153ab1d32492f97a9560"
+  }
+}

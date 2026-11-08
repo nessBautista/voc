@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas al abrir la aplicación y acceder a estados de cuenta",
+    "topic_description": "Los usuarios reportan dificultades para abrir la aplicación, mencionando que no carga la pantalla de inicio o que simplemente no abre. Algunos usuarios experimentan este problema específicamente cuando están conectados a una red Wi-Fi, mientras que otros no pueden acceder a sus estados de cuenta incluso si la aplicación llega a abrir. También se menciona un problema al intentar actualizar la aplicación.",
+    "proposed_feature": "Capacidad para abrir la aplicación y acceder a estados de cuenta",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:9c7be365-4e49-4d31-80ac-5ce12c2e77c4",
+      "play:com.citibanamex.banamexmobile:68c1a4e9-d7fb-4bb8-8874-ca6f7daf5802",
+      "play:com.citibanamex.banamexmobile:a36b8538-5c7b-4655-843c-45f227704c55",
+      "play:com.citibanamex.banamexmobile:01a803fc-256e-473f-9062-545f74e59fa0",
+      "play:com.citibanamex.banamexmobile:0c11b3d8-3083-4221-a8f2-066a5233174c",
+      "play:com.citibanamex.banamexmobile:234f2242-8d5f-4eca-b5c1-8866541b7bb8"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:9c7be365-4e49-4d31-80ac-5ce12c2e77c4",
+    "play:com.citibanamex.banamexmobile:68c1a4e9-d7fb-4bb8-8874-ca6f7daf5802",
+    "play:com.citibanamex.banamexmobile:a36b8538-5c7b-4655-843c-45f227704c55",
+    "play:com.citibanamex.banamexmobile:01a803fc-256e-473f-9062-545f74e59fa0",
+    "play:com.citibanamex.banamexmobile:0c11b3d8-3083-4221-a8f2-066a5233174c",
+    "play:com.citibanamex.banamexmobile:234f2242-8d5f-4eca-b5c1-8866541b7bb8"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "acd2fe3e11f548d082a0b1992ed62bdb3ef02656a2e52b4b048fb971543bd599",
+    "response.json": "b6945eda3d82149f82b0a5958dbe96dd49ef2bb0cef9f405db2f952a11f23994"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Evaluación general de la aplicación",
+    "topic_description": "Las reseñas proporcionadas son muy breves y se limitan a expresar una opinión positiva general sobre la aplicación, utilizando términos como \"bien\", \"muy bien\" o \"bueno\". Una de las reseñas menciona que la aplicación \"Cumple con su propósito\", lo que sugiere que los usuarios encuentran que la aplicación satisface sus expectativas básicas, aunque no se especifica cuál es ese propósito. La falta de detalles impide identificar características específicas o funcionalidades que los usuarios valoren o deseen mejorar.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:1868ec35-6586-423b-b21c-054f8b78fd29",
+      "play:com.citibanamex.banamexmobile:6ed4b5e1-454b-4a6a-a8e7-a437ca8b3c27",
+      "play:com.citibanamex.banamexmobile:6e22cdf4-80d9-4721-9896-d7c948dd0e74",
+      "play:com.citibanamex.banamexmobile:22a14975-c436-4485-9f58-74443a8c53b0",
+      "play:com.citibanamex.banamexmobile:2e80dc49-e4a1-4291-a253-7f17b74f9355",
+      "play:com.citibanamex.banamexmobile:4b060599-bc6a-45dc-b1bc-c9519f2b0e53"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:1868ec35-6586-423b-b21c-054f8b78fd29",
+    "play:com.citibanamex.banamexmobile:6ed4b5e1-454b-4a6a-a8e7-a437ca8b3c27",
+    "play:com.citibanamex.banamexmobile:6e22cdf4-80d9-4721-9896-d7c948dd0e74",
+    "play:com.citibanamex.banamexmobile:22a14975-c436-4485-9f58-74443a8c53b0",
+    "play:com.citibanamex.banamexmobile:2e80dc49-e4a1-4291-a253-7f17b74f9355",
+    "play:com.citibanamex.banamexmobile:4b060599-bc6a-45dc-b1bc-c9519f2b0e53"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006951,
+  "charged_or_reserved_usd": 0.0006951,
+  "usage": {
+    "completion_tokens": 147,
+    "prompt_tokens": 1092,
+    "total_tokens": 1239,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006951,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006951,
+      "upstream_inference_prompt_cost": 0.0003276,
+      "upstream_inference_completions_cost": 0.0003675
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175524-phcOHwnPqRTOMoOjSCmg",
+  "files": {
+    "request.json": "db54f2548a287ba2556555df6cecfd184f6da736819ac4920dbcb7cac88fc95a",
+    "response.json": "b2c7eafb874cfda1e128f0bb56011321a2b1e968e2078fbb234f272c26350c76",
+    "reservation.json": "37c9105dcf32234ed43cd70138e99213ab861dd4b80b9303f5c84f31ca7342e6"
+  }
+}

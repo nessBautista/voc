@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de carga y funcionamiento de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación falla con frecuencia, impidiendo su uso. Específicamente, mencionan que la aplicación se queda cargando al inicio o que no abre correctamente en sus dispositivos móviles.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:ce0f0127-acec-4c98-88d4-a9417878fd0a",
+      "play:com.citibanamex.banamexmobile:a52e86e2-ef4d-4e6f-9578-398e34f3c96f",
+      "play:com.citibanamex.banamexmobile:f55466c1-3fbc-434c-b833-38bb57c53cc5",
+      "appbot:498483038:3758817842",
+      "play:com.citibanamex.banamexmobile:4c6e8977-649f-4326-872f-482ea48079c9"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:ce0f0127-acec-4c98-88d4-a9417878fd0a",
+    "play:com.citibanamex.banamexmobile:a52e86e2-ef4d-4e6f-9578-398e34f3c96f",
+    "play:com.citibanamex.banamexmobile:f55466c1-3fbc-434c-b833-38bb57c53cc5",
+    "appbot:498483038:3750955635",
+    "appbot:498483038:3758817842",
+    "play:com.citibanamex.banamexmobile:4c6e8977-649f-4326-872f-482ea48079c9"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005562,
+  "charged_or_reserved_usd": 0.0005562,
+  "usage": {
+    "completion_tokens": 90,
+    "prompt_tokens": 1104,
+    "total_tokens": 1194,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005562,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005562,
+      "upstream_inference_prompt_cost": 0.0003312,
+      "upstream_inference_completions_cost": 0.000225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175570-IgbyrrohJUNsvSpZll7c",
+  "files": {
+    "request.json": "4e01d983f88805706776e82edae64594995dd183491a2b423b22fba6410dc608",
+    "response.json": "6bae0dfc2c57b15ac4d947b4698251643a9b87eac17315ce5a6062aa13feee6f",
+    "reservation.json": "4f7afd99945e26c0900e77821fb4d9b873d8a3c2b5f7e03aecfeb2fe2210a763"
+  }
+}

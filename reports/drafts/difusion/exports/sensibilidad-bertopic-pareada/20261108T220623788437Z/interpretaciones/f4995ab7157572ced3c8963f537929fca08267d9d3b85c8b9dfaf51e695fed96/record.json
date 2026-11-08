@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Rapidez y eficiencia en las operaciones de la aplicación",
+    "topic_description": "Los usuarios valoran la rapidez y eficiencia de la aplicación, destacando que permite realizar operaciones de manera inmediata y que sus funciones son precisas. Algunos usuarios mencionan mejoras en la velocidad de la aplicación.",
+    "proposed_feature": "Rapidez y eficiencia en las operaciones",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:e2a879cc-2740-4169-ad37-9ed8712d36ea",
+      "play:com.citibanamex.banamexmobile:5b08af98-d313-4bdf-a924-96bab107f2ce",
+      "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+      "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+      "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb",
+      "play:com.citibanamex.banamexmobile:2471c035-45d0-46c8-8228-dfaf58acb6d3"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:e2a879cc-2740-4169-ad37-9ed8712d36ea",
+    "play:com.citibanamex.banamexmobile:5b08af98-d313-4bdf-a924-96bab107f2ce",
+    "play:com.citibanamex.banamexmobile:b9b29ee2-24d7-4ea8-83f9-9ff9fd38d2df",
+    "play:com.citibanamex.banamexmobile:04269dea-118f-455e-ab9b-57bed526277f",
+    "play:com.citibanamex.banamexmobile:15616945-10eb-42a0-8e2a-3839a27c0afb",
+    "play:com.citibanamex.banamexmobile:2471c035-45d0-46c8-8228-dfaf58acb6d3"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "a0ffe996-6f0f-44e1-8b24-6eb2b8bf9e52",
+  "files": {
+    "request.json": "f4995ab7157572ced3c8963f537929fca08267d9d3b85c8b9dfaf51e695fed96",
+    "response.json": "c24becf154c080530681d678697ffb31f37fc1b49f6aeab86df539c231032c27"
+  }
+}

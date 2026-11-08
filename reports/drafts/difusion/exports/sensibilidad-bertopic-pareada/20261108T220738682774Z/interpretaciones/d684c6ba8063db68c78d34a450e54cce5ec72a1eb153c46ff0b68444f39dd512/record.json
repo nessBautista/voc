@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidad y utilidad general de la aplicación",
+    "topic_description": "Los usuarios expresan una alta satisfacción con la aplicación, destacando su utilidad y la calidad de sus funcionalidades. Se menciona que la aplicación es práctica y simplifica las actividades cotidianas, lo que sugiere que sus características son efectivas y fáciles de usar.",
+    "proposed_feature": "Funcionalidades útiles y prácticas",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+      "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+      "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+    "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+    "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+    "appbot:498483038:3758817839",
+    "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+    "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005888,
+  "charged_or_reserved_usd": 0.0005888,
+  "usage": {
+    "completion_tokens": 101,
+    "prompt_tokens": 1121,
+    "total_tokens": 1222,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005888,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005888,
+      "upstream_inference_prompt_cost": 0.0003363,
+      "upstream_inference_completions_cost": 0.0002525
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175560-GC7VrQsyPBuWIxSuaDl8",
+  "files": {
+    "request.json": "0ef85e650d5d07898472ce2d131c8378f7f360793e55537d61363ab39926c6d8",
+    "response.json": "52d12a54bc3f58ac1aefa784a68c8c70bac02e1a56abb2fb242108139964b476",
+    "reservation.json": "6013a878e25de6f2b6b3eb45276e51a4ef42d8431703cefc0683a606bdab4f4e"
+  }
+}

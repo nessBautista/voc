@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de visualización del estado de cuenta y usabilidad general de la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para visualizar el estado de cuenta, mencionando que la opción aparece pero no muestra información. Además, la aplicación es percibida como poco amigable y no intuitiva, lo que afecta la experiencia general del usuario.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:e9f08260-d02d-408c-9eeb-363f591bbf79",
+      "play:com.citibanamex.banamexmobile:bbb57008-4abe-4dc7-a995-50d293275f72",
+      "play:com.citibanamex.banamexmobile:0e71800b-322e-4a4e-9fcc-98e17184322a",
+      "play:com.citibanamex.banamexmobile:1f76e2b4-6ba9-4b2c-9c9a-912990e9b173"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:e9f08260-d02d-408c-9eeb-363f591bbf79",
+    "play:com.citibanamex.banamexmobile:bbb57008-4abe-4dc7-a995-50d293275f72",
+    "play:com.citibanamex.banamexmobile:bcc4e135-7b92-4b42-859a-fbdb2f4abe6e",
+    "play:com.citibanamex.banamexmobile:0e71800b-322e-4a4e-9fcc-98e17184322a",
+    "play:com.citibanamex.banamexmobile:1f76e2b4-6ba9-4b2c-9c9a-912990e9b173",
+    "play:com.citibanamex.banamexmobile:391d571b-b1cd-4416-bcdd-3b1f4d3616ea"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005928,
+  "charged_or_reserved_usd": 0.0005928,
+  "usage": {
+    "completion_tokens": 99,
+    "prompt_tokens": 1151,
+    "total_tokens": 1250,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005928,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005928,
+      "upstream_inference_prompt_cost": 0.0003453,
+      "upstream_inference_completions_cost": 0.0002475
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175470-XqXiDHi4bz63jMPmkzdG",
+  "files": {
+    "request.json": "3d6d5262963163d47f3c28afa7dbeca873928e0ea5a929f9b1db3ee752897e85",
+    "response.json": "85aed1051b535e1a762a5d835840370633a6229700fd1a2973dc041b79ca6316",
+    "reservation.json": "c5b5ed97c5fc57b189f4bc51167ec190c6c04f75c44f5cf48179bbeb08826078"
+  }
+}

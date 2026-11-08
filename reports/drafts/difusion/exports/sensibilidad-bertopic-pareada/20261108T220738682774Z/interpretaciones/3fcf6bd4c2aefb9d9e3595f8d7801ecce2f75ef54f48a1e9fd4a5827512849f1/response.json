@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175565-YYk66n0VSaO9zRpFf0Hn",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de navegación y visualización en la aplicación\",\"topic_description\":\"Los usuarios reportan dificultades para navegar dentro de la aplicación, específicamente para regresar a la pantalla de inicio o a pantallas anteriores después de ver los movimientos de su cuenta. Algunos mencionan que la aplicación se congela o que las flechas de retorno no son visibles, lo que impide la navegación. También se reportan problemas de acceso a la aplicación, donde la pantalla se queda oscura o la aplicación no abre después de la primera instalación.\",\"proposed_feature\":\"Funcionalidad para regresar a la pantalla anterior o de inicio\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175565,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 145,
+    "prompt_tokens": 1320,
+    "total_tokens": 1465,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007585,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007585,
+      "upstream_inference_prompt_cost": 0.000396,
+      "upstream_inference_completions_cost": 0.0003625
+    }
+  },
+  "provider": "Google AI Studio"
+}

@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Facilidad de uso de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por ser fácil de usar, lo que sugiere una interfaz intuitiva y procesos sencillos. Algunos comentarios también mencionan que es rápida y útil. Sin embargo, un usuario reporta que en ocasiones se traba al buscar movimientos o cambiar de cuenta, lo que podría afectar la experiencia de uso en esos momentos específicos.",
+    "proposed_feature": "Interfaz de usuario intuitiva y sencilla",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:423a3007-8d31-4253-8157-7973f1390b66",
+      "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+      "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+      "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+      "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da",
+      "play:com.citibanamex.banamexmobile:1bfa3bd3-ad51-4b99-8c38-e6f4e1d07d04"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:423a3007-8d31-4253-8157-7973f1390b66",
+    "play:com.citibanamex.banamexmobile:f8d127ba-f70b-4c15-b6ad-20f395cacf38",
+    "play:com.citibanamex.banamexmobile:fd20f11e-42d3-4328-948c-2cb728cfd51f",
+    "play:com.citibanamex.banamexmobile:0602f893-28ce-4b27-8a06-b86b948c8686",
+    "play:com.citibanamex.banamexmobile:06b3c9c3-08f9-49ce-842e-b765c35013da",
+    "play:com.citibanamex.banamexmobile:1bfa3bd3-ad51-4b99-8c38-e6f4e1d07d04"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "eadc8cb1473cde882d843cfecf68f77a53e22e8fe760e0163bba5bedcc7966e1",
+    "response.json": "6e499e54019ef4fe4545d2b867500105c81e390efcf548f5bcc2976f9139f54b"
+  }
+}

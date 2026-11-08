@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Seguridad de la aplicación",
+    "topic_description": "Los usuarios valoran la seguridad de la aplicación, mencionando que la perciben como muy segura y eficiente. Destacan que protege sus datos y que es fiable en su funcionamiento.",
+    "proposed_feature": "Protección de datos y seguridad en las transacciones",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:890e356a-d0d2-47e6-9e50-b7c7e86d2614",
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+      "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953",
+      "play:com.citibanamex.banamexmobile:7203291d-c84b-4c26-9928-09194b22030d"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:890e356a-d0d2-47e6-9e50-b7c7e86d2614",
+    "play:com.citibanamex.banamexmobile:9b100fd6-7631-422f-9ab9-44503194dfdf",
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+    "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953",
+    "play:com.citibanamex.banamexmobile:7203291d-c84b-4c26-9928-09194b22030d"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005773,
+  "charged_or_reserved_usd": 0.0005773,
+  "usage": {
+    "completion_tokens": 91,
+    "prompt_tokens": 1166,
+    "total_tokens": 1257,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005773,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005773,
+      "upstream_inference_prompt_cost": 0.0003498,
+      "upstream_inference_completions_cost": 0.0002275
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175503-6mVB5ge3yoooCWGSZzyK",
+  "files": {
+    "request.json": "de9c21c40cc28803fe3ac9947697af670157b74c7cd52867dcb7d33bc2ac4c21",
+    "response.json": "cb1fa2672c2c42fd6a04369e87ddd1679216b8419e6758dded4968b12496a109",
+    "reservation.json": "f325b9303aca8c20dc59a25d567af07370ee5e724848e3eeadfb6c9d7ff74b31"
+  }
+}

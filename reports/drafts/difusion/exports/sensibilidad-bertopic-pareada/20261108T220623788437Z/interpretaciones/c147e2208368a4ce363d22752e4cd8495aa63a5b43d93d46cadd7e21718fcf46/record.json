@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Ahorro de tiempo al evitar visitas a sucursales bancarias",
+    "topic_description": "Los usuarios valoran la aplicación como una herramienta que les permite evitar la necesidad de visitar una sucursal bancaria, lo que se percibe como un ahorro de tiempo y una mejora en la conveniencia.",
+    "proposed_feature": "Capacidad para realizar gestiones bancarias sin ir a la sucursal",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:11f41416-5bba-4488-923b-757d68078fb7",
+    "play:com.citibanamex.banamexmobile:1fce8ff4-b8da-4de3-8533-9ed4ad3230e1",
+    "play:com.citibanamex.banamexmobile:6a38d40c-1ad8-44ff-8348-fb7c791644a0",
+    "play:com.citibanamex.banamexmobile:0bea76ec-5cd5-4388-96a6-0548ba54d3e0",
+    "play:com.citibanamex.banamexmobile:1d012545-556a-4fcc-8aaf-a63e92766a99",
+    "play:com.citibanamex.banamexmobile:21b5b60e-3b75-4abf-8e43-dbc6b0c941a5"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005801,
+  "charged_or_reserved_usd": 0.0005801,
+  "usage": {
+    "completion_tokens": 98,
+    "prompt_tokens": 1117,
+    "total_tokens": 1215,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005801,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005801,
+      "upstream_inference_prompt_cost": 0.0003351,
+      "upstream_inference_completions_cost": 0.000245
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175483-qmFC4V2hYzlU9GrWmUMe",
+  "files": {
+    "request.json": "b8404fb1ca169106d31a61fc34d40d4d74547342b862d4527d7aa47f9ac06acf",
+    "response.json": "26349ae57a9bbb9a85a2767ef71c78a16e7ef84f5ada9e401f73d33001758564",
+    "reservation.json": "359efee50d1ab67d5d29d54a76918b9d7b0a6e8e5ab077b8e04370cd8093619c"
+  }
+}

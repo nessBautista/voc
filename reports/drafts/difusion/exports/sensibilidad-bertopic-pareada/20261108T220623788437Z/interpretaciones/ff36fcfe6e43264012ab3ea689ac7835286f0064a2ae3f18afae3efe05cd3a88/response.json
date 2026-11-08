@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175489-8e9W0NKx9JNg2emWciRm",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Gestión de tarjetas: Bloqueo, estados de cuenta y seguimiento\",\"topic_description\":\"Los usuarios solicitan la capacidad de bloquear tarjetas de débito, descargar estados de cuenta de tarjetas de débito y dar seguimiento a tarjetas vencidas o por vencer. También se mencionan problemas al acceder a la tarjeta virtual y al visualizar el detalle de compras de la tarjeta digital, así como dificultades para realizar pagos con la tarjeta.\",\"proposed_feature\":\"Bloquear tarjeta de débito\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E3\",\"E5\",\"E6\",\"E2\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175489,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 129,
+    "prompt_tokens": 1352,
+    "total_tokens": 1481,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007281,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007281,
+      "upstream_inference_prompt_cost": 0.0004056,
+      "upstream_inference_completions_cost": 0.0003225
+    }
+  },
+  "provider": "Google AI Studio"
+}

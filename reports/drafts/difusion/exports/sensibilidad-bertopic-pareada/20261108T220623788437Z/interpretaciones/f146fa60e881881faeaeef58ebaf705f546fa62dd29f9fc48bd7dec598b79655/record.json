@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Facilidad para gestionar dinero y realizar operaciones bancarias",
+    "topic_description": "Los usuarios valoran la aplicación por su facilidad para enviar y recibir dinero, gestionar gastos e inversiones, y realizar operaciones bancarias como transferencias interbancarias y descarga de estados de cuenta. También se menciona que la aplicación ahorra tiempo en trámites y facilita el cumplimiento de compromisos.",
+    "proposed_feature": "Gestión de dinero y operaciones bancarias",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:872cac2d-6623-45c4-8457-bf98394b6437",
+      "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+      "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:872cac2d-6623-45c4-8457-bf98394b6437",
+    "play:com.citibanamex.banamexmobile:52479ef7-1fc7-442b-8465-8feacbe3a48b",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "appbot:498483038:3759645483",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+    "play:com.citibanamex.banamexmobile:24ff9865-a8bf-45ec-a81d-6df18e4d8e3a"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "f146fa60e881881faeaeef58ebaf705f546fa62dd29f9fc48bd7dec598b79655",
+    "response.json": "848f01b7a9efeadee12154452f90fcd20a2474faadce52b29094ae4c3410aae2"
+  }
+}

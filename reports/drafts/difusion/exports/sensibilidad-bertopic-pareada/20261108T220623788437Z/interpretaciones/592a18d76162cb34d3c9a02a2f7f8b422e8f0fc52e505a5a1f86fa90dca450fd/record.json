@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de apertura de la aplicación y visualización de estados de cuenta",
+    "topic_description": "Los usuarios reportan que la aplicación no se abre o presenta dificultades para cargar, lo que impide su uso. Algunos mencionan que el problema ocurre específicamente al intentar acceder desde una red Wi-Fi, mientras que otros experimentan fallos al intentar ver o descargar sus estados de cuenta.",
+    "proposed_feature": "Estabilidad en la apertura de la aplicación y acceso a estados de cuenta",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:12d30e07-97ae-4e8e-aa9e-dcad328e1220",
+      "play:com.citibanamex.banamexmobile:a36b8538-5c7b-4655-843c-45f227704c55",
+      "play:com.citibanamex.banamexmobile:68c1a4e9-d7fb-4bb8-8874-ca6f7daf5802",
+      "play:com.citibanamex.banamexmobile:01a803fc-256e-473f-9062-545f74e59fa0",
+      "play:com.citibanamex.banamexmobile:0c11b3d8-3083-4221-a8f2-066a5233174c",
+      "play:com.citibanamex.banamexmobile:234f2242-8d5f-4eca-b5c1-8866541b7bb8"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:12d30e07-97ae-4e8e-aa9e-dcad328e1220",
+    "play:com.citibanamex.banamexmobile:a36b8538-5c7b-4655-843c-45f227704c55",
+    "play:com.citibanamex.banamexmobile:68c1a4e9-d7fb-4bb8-8874-ca6f7daf5802",
+    "play:com.citibanamex.banamexmobile:01a803fc-256e-473f-9062-545f74e59fa0",
+    "play:com.citibanamex.banamexmobile:0c11b3d8-3083-4221-a8f2-066a5233174c",
+    "play:com.citibanamex.banamexmobile:234f2242-8d5f-4eca-b5c1-8866541b7bb8"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006907,
+  "charged_or_reserved_usd": 0.0006907,
+  "usage": {
+    "completion_tokens": 130,
+    "prompt_tokens": 1219,
+    "total_tokens": 1349,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006907,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006907,
+      "upstream_inference_prompt_cost": 0.0003657,
+      "upstream_inference_completions_cost": 0.000325
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175538-Sab4LNXGiuqnJFhHQX6W",
+  "files": {
+    "request.json": "0aeeef57aad5901410813dc66e3a74c31547b08d1d6b49c5b954f6879a14e688",
+    "response.json": "4a0676af5a65e536ec34d5be4b5a9f62865b7587b14c8f2228a215d7627ea7e4",
+    "reservation.json": "2384ddf82bd69c2a8c9433e20a6f8ba2a4df6f8dd55b3e977a1ed30f5cb8267f"
+  }
+}

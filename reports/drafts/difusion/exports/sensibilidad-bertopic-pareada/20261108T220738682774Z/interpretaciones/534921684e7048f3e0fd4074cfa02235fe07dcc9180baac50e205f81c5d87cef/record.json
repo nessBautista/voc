@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Experiencia general positiva con Banamex",
+    "topic_description": "Las reseñas expresan una satisfacción general con los servicios de Banamex, destacando la amabilidad del personal en sucursales y la mejora progresiva de la aplicación móvil. Algunos usuarios mencionan no haber tenido problemas con la aplicación a lo largo de los años. Sin embargo, también se observa la presencia de muchos anuncios de productos de Banamex y una preocupación por un incidente de seguridad reportado en redes sociales, lo que introduce elementos mixtos en la percepción general.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+      "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+      "x:2075801022052614312",
+      "appbot:498483038:3760879979",
+      "play:com.citibanamex.banamexmobile:144a37c3-862a-4deb-a0a6-65da1f39b4a5",
+      "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a",
+    "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+    "x:2075801022052614312",
+    "appbot:498483038:3760879979",
+    "play:com.citibanamex.banamexmobile:144a37c3-862a-4deb-a0a6-65da1f39b4a5",
+    "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00052781,
+  "charged_or_reserved_usd": 0.00052781,
+  "usage": {
+    "completion_tokens": 146,
+    "prompt_tokens": 1242,
+    "total_tokens": 1388,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 777,
+      "video_tokens": 0
+    },
+    "cost": 0.00052781,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00052781,
+      "upstream_inference_prompt_cost": 0.00016281,
+      "upstream_inference_completions_cost": 0.000365
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175557-70yfpS6keY4Fe4ILAgDW",
+  "files": {
+    "request.json": "5d722442efab23a53542e47cd8dbb9cd2042f8ea31b6a5058e95a35d75e17423",
+    "response.json": "f86951c589c5673bbee9919d14c0948d275841a85b6cebf8ede3e411a9ee396c",
+    "reservation.json": "480ae1d1016c9469fabf44a7684777e48b56baccffe4f8985fe4974d93210050"
+  }
+}

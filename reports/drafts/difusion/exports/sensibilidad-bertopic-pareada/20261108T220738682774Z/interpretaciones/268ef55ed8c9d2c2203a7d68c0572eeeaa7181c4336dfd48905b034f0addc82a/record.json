@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Calidad del servicio y atención al cliente",
+    "topic_description": "Los usuarios valoran positivamente la calidad del servicio y la atención recibida, tanto a través de la aplicación móvil como en otros canales. Se destaca la rapidez, eficiencia y seguridad del servicio, así como el trato amable y profesional del personal. Algunos usuarios mencionan que la aplicación les permite evitar filas y realizar trámites de manera cómoda.",
+    "proposed_feature": "Mejora de la atención al cliente y la eficiencia del servicio",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+      "play:com.citibanamex.banamexmobile:af3b66ca-fd5c-4a34-9fbf-5f96ee674cba",
+      "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+      "appbot:498483038:3745979774",
+      "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+      "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+    "play:com.citibanamex.banamexmobile:af3b66ca-fd5c-4a34-9fbf-5f96ee674cba",
+    "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+    "appbot:498483038:3745979774",
+    "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622",
+    "play:com.citibanamex.banamexmobile:0c0d04f1-6b96-46d1-a95f-6564c987322c"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006786,
+  "charged_or_reserved_usd": 0.0006786,
+  "usage": {
+    "completion_tokens": 132,
+    "prompt_tokens": 1162,
+    "total_tokens": 1294,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006786,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006786,
+      "upstream_inference_prompt_cost": 0.0003486,
+      "upstream_inference_completions_cost": 0.00033
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175552-i4Oq31yAcgo1l9JyNJKV",
+  "files": {
+    "request.json": "cc5d2114bae26171412541b2440960bf1f8ac29c142a5413ac3ad88e91fdb7dc",
+    "response.json": "3108d8c3b84bf39eeceb3fb7afaf23c8dd6eef0650603b7de871615487d45d22",
+    "reservation.json": "f9847bd4041eaf5c8065e49281fc0e7305790062ba355a188c022743ad202f79"
+  }
+}

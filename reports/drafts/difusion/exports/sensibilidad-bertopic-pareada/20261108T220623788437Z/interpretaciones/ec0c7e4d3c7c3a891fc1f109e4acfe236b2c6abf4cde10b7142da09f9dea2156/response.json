@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175570-CPiAYxMUGj8mgxRct5ay",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de rendimiento y usabilidad de la aplicación bancaria\",\"topic_description\":\"Los usuarios experimentan dificultades significativas al intentar usar la aplicación, incluyendo la necesidad de reiniciar el teléfono y borrar la caché para que funcione, lo que sugiere problemas de rendimiento y estabilidad. Además, se menciona que la aplicación es lenta y que la interfaz está llena de publicidad no deseada, lo que afecta la experiencia del usuario al dificultar el acceso directo a las funciones bancarias principales.\",\"proposed_feature\":null,\"assessment\":\"mixed\",\"supporting_evidence\":[\"E1\",\"E2\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175570,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 121,
+    "prompt_tokens": 1329,
+    "total_tokens": 1450,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007012,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007012,
+      "upstream_inference_prompt_cost": 0.0003987,
+      "upstream_inference_completions_cost": 0.0003025
+    }
+  },
+  "provider": "Google AI Studio"
+}

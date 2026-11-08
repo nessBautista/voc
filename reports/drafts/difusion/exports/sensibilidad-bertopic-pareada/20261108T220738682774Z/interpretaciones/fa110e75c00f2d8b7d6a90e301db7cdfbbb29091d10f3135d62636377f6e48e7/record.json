@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de rendimiento y estabilidad de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación se traba o falla con frecuencia, especialmente al intentar ingresar. Algunos mencionan que estos problemas son recientes o que han estado batallando últimamente con el funcionamiento de la aplicación.",
+    "proposed_feature": "Estabilidad y rendimiento de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+      "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+      "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+      "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+      "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:7fe83c6c-f724-4c68-a534-a42dfd94efe4",
+    "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+    "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+    "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+    "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+    "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005838,
+  "charged_or_reserved_usd": 0.0005838,
+  "usage": {
+    "completion_tokens": 99,
+    "prompt_tokens": 1121,
+    "total_tokens": 1220,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005838,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005838,
+      "upstream_inference_prompt_cost": 0.0003363,
+      "upstream_inference_completions_cost": 0.0002475
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175541-EObC2sVkgRHl4rP6a47J",
+  "files": {
+    "request.json": "f4f5c515eb34da1197f52b508128848b7e28c5840f1a848272a4209c53639a4d",
+    "response.json": "244497e9bf8018833a229b23a269a43610d104522a8e4b7d73a6d35dfeae02d3",
+    "reservation.json": "a71cdfb21de2bad61144eea1af095fa72b0d07c1081d78f29520c8b8c6dfa96b"
+  }
+}

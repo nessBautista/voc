@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Mejoras en la velocidad y funcionalidad de la aplicación",
+    "topic_description": "Los usuarios han notado mejoras significativas en la aplicación, destacando que ahora es más rápida al abrir y permite realizar movimientos de manera más funcional. Algunos mencionan que la aplicación ha mejorado muchísimo y que se están realizando renovaciones para ofrecer mayor calidad y rapidez en su uso.",
+    "proposed_feature": "Mejoras en la velocidad y funcionalidad general de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:a5bdeede-ae07-40f9-9df1-024e0ff5d796",
+      "play:com.citibanamex.banamexmobile:e31bd465-7084-4fa5-841a-5238b83a112b",
+      "play:com.citibanamex.banamexmobile:239a8107-3508-4d19-a426-a952831cac3c",
+      "play:com.citibanamex.banamexmobile:0cd8fd51-7629-40b0-aab3-7a234c2c89e2"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:a5bdeede-ae07-40f9-9df1-024e0ff5d796",
+    "play:com.citibanamex.banamexmobile:e31bd465-7084-4fa5-841a-5238b83a112b",
+    "play:com.citibanamex.banamexmobile:239a8107-3508-4d19-a426-a952831cac3c",
+    "play:com.citibanamex.banamexmobile:0bea76ec-5cd5-4388-96a6-0548ba54d3e0",
+    "play:com.citibanamex.banamexmobile:0cd8fd51-7629-40b0-aab3-7a234c2c89e2",
+    "play:com.citibanamex.banamexmobile:11f41416-5bba-4488-923b-757d68078fb7"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "815dbc625c26f79a54ed92f4879f46168e84a7efce48e4fcc1871b0fbb6248a7",
+    "response.json": "f591503dd01346dd5ff739fb66c69bc99c7e8511d4539ee1f49b1c13f43ed470"
+  }
+}

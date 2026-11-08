@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Calidad del servicio y atención al cliente",
+    "topic_description": "Los usuarios expresan satisfacción con la calidad del servicio y la atención recibida, destacando la amabilidad, eficiencia y profesionalismo del personal. Algunos mencionan que la aplicación les permite evitar filas, lo que resulta cómodo.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+      "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+      "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+      "appbot:498483038:3745979774",
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:603f9775-d54e-44d9-b73b-f0f12896304a",
+    "play:com.citibanamex.banamexmobile:2c6e26dd-c677-4a86-a8be-38a6d3507a46",
+    "play:com.citibanamex.banamexmobile:f4608915-5de3-4747-a76d-484e91761e4d",
+    "appbot:498483038:3745979774",
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:07f93e96-5f87-4b0b-9dcb-4bbd3cbf4622"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005742,
+  "charged_or_reserved_usd": 0.0005742,
+  "usage": {
+    "completion_tokens": 96,
+    "prompt_tokens": 1114,
+    "total_tokens": 1210,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005742,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005742,
+      "upstream_inference_prompt_cost": 0.0003342,
+      "upstream_inference_completions_cost": 0.00024
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175504-iJnWAcegGWAQZob2Llvw",
+  "files": {
+    "request.json": "834076f8560963532a30d9213003b506345cb92003b45b0db534fe85dfc99ffd",
+    "response.json": "0d5613565772082bb8bbbbc926af041fe73066071af0b8ce479a5168c31bff50",
+    "reservation.json": "97644fb5cf99e2f6d91b7788a203da7920e00dfc70b15fa3b9ef32a6955a855f"
+  }
+}

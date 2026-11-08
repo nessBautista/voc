@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Retrasos en transferencias y depósitos",
+    "topic_description": "Los usuarios experimentan demoras significativas en la aplicación al realizar depósitos y transferencias, con tiempos de espera que pueden extenderse por horas o incluso días. Estas fallas ocurren tanto entre semana como los fines de semana, y también afectan la disponibilidad de fondos en apartados. Además, se reportan periodos de inoperatividad diaria por mantenimiento.",
+    "proposed_feature": "Reducir el tiempo de procesamiento de transferencias y depósitos",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:3d0e4bbe-2262-4eb4-8596-7ee1b0240d77",
+      "play:com.citibanamex.banamexmobile:5b2a8995-e6a5-49f0-89a3-3ce75a443fd0",
+      "play:com.citibanamex.banamexmobile:0ebc7f82-f4de-4560-ba08-7aadef376a8f",
+      "play:com.citibanamex.banamexmobile:53387a85-d3c5-4446-a1b7-3bc77acf36d8"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:3d0e4bbe-2262-4eb4-8596-7ee1b0240d77",
+    "play:com.citibanamex.banamexmobile:bed94fd7-4a87-4622-83f7-8462ab537cc1",
+    "play:com.citibanamex.banamexmobile:5b2a8995-e6a5-49f0-89a3-3ce75a443fd0",
+    "play:com.citibanamex.banamexmobile:0ebc7f82-f4de-4560-ba08-7aadef376a8f",
+    "play:com.citibanamex.banamexmobile:53387a85-d3c5-4446-a1b7-3bc77acf36d8",
+    "play:com.citibanamex.banamexmobile:7d8f22da-9bc5-4962-a695-6c0f48f96d7c"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006983,
+  "charged_or_reserved_usd": 0.0006983,
+  "usage": {
+    "completion_tokens": 131,
+    "prompt_tokens": 1236,
+    "total_tokens": 1367,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006983,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006983,
+      "upstream_inference_prompt_cost": 0.0003708,
+      "upstream_inference_completions_cost": 0.0003275
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175581-bzSw1aqbetsJFJINVkqq",
+  "files": {
+    "request.json": "dec3a74802329784b704ceda8c18e46e0085bfbc29109a3938ff5e45785b2285",
+    "response.json": "6d3ab8629e8bc07c034bdd8b4381b6e6466d203b03627d327b1ab1d777e3ba62",
+    "reservation.json": "9242c974a0aeafa9fce80c13526dbc353491617b94d610b6198953d225091d9a"
+  }
+}

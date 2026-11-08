@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas con la activación de NetKey móvil",
+    "topic_description": "Los usuarios reportan que la aplicación no puede leer o capturar automáticamente el código de activación de NetKey que llega por SMS, impidiendo la actualización o activación de esta funcionalidad. Algunos mencionan que la aplicación indica que el campo se llenará solo, pero esto no ocurre, y tampoco se permite la entrada manual del código. Este problema afecta la capacidad de realizar operaciones dentro de la aplicación.",
+    "proposed_feature": "Permitir el ingreso manual del código de activación de NetKey",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f0b16d2e-330e-47e1-8934-2e9513cd8e6c",
+      "x:2076879636324085826",
+      "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+      "play:com.citibanamex.banamexmobile:3ba9825c-5c03-4a3e-be3c-8da95ba70868",
+      "play:com.citibanamex.banamexmobile:3cb1999d-a089-4dab-8ad8-4e54720cbdcf"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f0b16d2e-330e-47e1-8934-2e9513cd8e6c",
+    "x:2076879636324085826",
+    "play:com.citibanamex.banamexmobile:febba73b-fee8-442c-a349-1dabd8ff26c9",
+    "play:com.citibanamex.banamexmobile:3ba9825c-5c03-4a3e-be3c-8da95ba70868",
+    "play:com.citibanamex.banamexmobile:3cb1999d-a089-4dab-8ad8-4e54720cbdcf",
+    "play:com.citibanamex.banamexmobile:4ac2c36e-9a00-4db9-b634-0b58b54b6731"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007713,
+  "charged_or_reserved_usd": 0.0007713,
+  "usage": {
+    "completion_tokens": 141,
+    "prompt_tokens": 1396,
+    "total_tokens": 1537,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007713,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007713,
+      "upstream_inference_prompt_cost": 0.0004188,
+      "upstream_inference_completions_cost": 0.0003525
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175564-Wt4q6UUJVPxJIMLfcCec",
+  "files": {
+    "request.json": "c5f2c4c2e0972b0c9e89f5899381c1bee6f8b9797fb4be7b5ae2240d9e2d03f7",
+    "response.json": "c5fad31186b632ee4977f36299675c90d396af17507755246d089889b6451b2d",
+    "reservation.json": "912653dd23829e4f5fbeddaa3eabebcc462330a09454390462871638750c6f49"
+  }
+}

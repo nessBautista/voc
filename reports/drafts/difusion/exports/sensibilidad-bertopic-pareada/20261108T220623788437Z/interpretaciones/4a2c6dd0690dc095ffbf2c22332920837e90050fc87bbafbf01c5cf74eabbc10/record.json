@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Aplicación útil y funcional",
+    "topic_description": "Los usuarios expresan satisfacción general con la aplicación, destacando su utilidad y funcionalidad. Mencionan que les ha servido mucho y que simplifica sus actividades cotidianas.",
+    "proposed_feature": "Utilidad y funcionalidad general de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+      "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+      "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+      "appbot:498483038:3758817839",
+      "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+      "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:aa275ca6-0f5f-425b-b2a8-3b616786265f",
+    "play:com.citibanamex.banamexmobile:2b13cc69-3678-4a98-ba25-229ece7cd4c1",
+    "play:com.citibanamex.banamexmobile:b76a28c7-b6bc-4ae6-b180-dc54de31fd25",
+    "appbot:498483038:3758817839",
+    "play:com.citibanamex.banamexmobile:061ad3d0-504f-4050-baca-61f59edd070e",
+    "play:com.citibanamex.banamexmobile:06b4f365-bd84-42b1-9474-3abe835b9e74"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00035724,
+  "charged_or_reserved_usd": 0.00035724,
+  "usage": {
+    "completion_tokens": 90,
+    "prompt_tokens": 1123,
+    "total_tokens": 1213,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 758,
+      "video_tokens": 0
+    },
+    "cost": 0.00035724,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00035724,
+      "upstream_inference_prompt_cost": 0.00013224,
+      "upstream_inference_completions_cost": 0.000225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175538-P79JzOzH4dxnpAKHsTjk",
+  "files": {
+    "request.json": "651a81c9ee029d8d9ccd28afec206de167645d8604a8572aa94859ec2287c82d",
+    "response.json": "c61663993905750889c1ec36dc499ada43901cce13c0dd2852436eaaa2ac7d5f",
+    "reservation.json": "946aa59af73b9618fe505046904ddc44d90d8aaf55e567d85724cb0319f74359"
+  }
+}

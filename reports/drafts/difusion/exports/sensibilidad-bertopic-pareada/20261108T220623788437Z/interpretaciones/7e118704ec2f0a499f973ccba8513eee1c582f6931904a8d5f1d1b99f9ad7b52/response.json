@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175480-kyLdoADDAomKysXfu4Wj",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de acceso y visualización de movimientos en la aplicación móvil\",\"topic_description\":\"Los usuarios reportan dificultades para acceder a la aplicación, con la pantalla quedándose oscura o requiriendo reinicios constantes del teléfono. Además, la aplicación no muestra los movimientos bancarios de manera oportuna, lo que genera confusión sobre los pagos realizados y los saldos pendientes. Algunos usuarios mencionan que no pueden ver estados de cuenta ni datos de la tarjeta física.\",\"proposed_feature\":\"Visualización de movimientos y estados de cuenta\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175480,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 131,
+    "prompt_tokens": 1332,
+    "total_tokens": 1463,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007271,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007271,
+      "upstream_inference_prompt_cost": 0.0003996,
+      "upstream_inference_completions_cost": 0.0003275
+    }
+  },
+  "provider": "Google AI Studio"
+}

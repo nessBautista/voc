@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de navegación y acceso a la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para navegar dentro de la aplicación, específicamente para regresar a la pantalla de inicio o a pantallas anteriores después de ver los movimientos de la cuenta. Mencionan que la aplicación se congela o que las flechas de retorno no son visibles, lo que impide la navegación. Además, algunos usuarios experimentan problemas para abrir la aplicación después de una actualización, quedando atascados en la pantalla de inicio o siendo requeridos a reingresar el código de cliente repetidamente.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:5a76c051-62af-4dc1-8038-d1f0e4d0ddcc",
+      "play:com.citibanamex.banamexmobile:22ea3e5a-a5ec-4f3e-9cfc-8fd9f2ad3ec8",
+      "appbot:498483038:3756586486",
+      "appbot:498483038:3742631173",
+      "appbot:498483038:3752254896",
+      "appbot:498483038:3755936230"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:5a76c051-62af-4dc1-8038-d1f0e4d0ddcc",
+    "play:com.citibanamex.banamexmobile:22ea3e5a-a5ec-4f3e-9cfc-8fd9f2ad3ec8",
+    "appbot:498483038:3756586486",
+    "appbot:498483038:3742631173",
+    "appbot:498483038:3752254896",
+    "appbot:498483038:3755936230"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007687,
+  "charged_or_reserved_usd": 0.0007687,
+  "usage": {
+    "completion_tokens": 151,
+    "prompt_tokens": 1304,
+    "total_tokens": 1455,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007687,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007687,
+      "upstream_inference_prompt_cost": 0.0003912,
+      "upstream_inference_completions_cost": 0.0003775
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175542-T93g5rHiOjRkBksSeN5k",
+  "files": {
+    "request.json": "7ab0eb0b58b10dc17a4ba4db03889809cc94469d4178be09f002304a071e140e",
+    "response.json": "dfdc7bff76e3613e6ea886b9d5b620f273a82ac960d010cbdf42e59af86128b3",
+    "reservation.json": "57a64593d91d3875c2577367bb88d8dbaaf4b4cf449df89edd5dc2d35f76bc40"
+  }
+}

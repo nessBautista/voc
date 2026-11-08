@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175471-ozj5g9xyniGsYV3pd6mF",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas con la tarjeta digital y movimientos\",\"topic_description\":\"Los usuarios reportan dificultades para acceder a los detalles de compras de la tarjeta digital, visualizar los movimientos de la tarjeta y regresar a otras opciones dentro de la aplicación. También mencionan que la aplicación no reconoce los pagos realizados y sigue marcando pendientes, y que no pueden ver los estados de cuenta ni los datos de la tarjeta física. Además, se presentan errores al intentar acceder a la tarjeta virtual, indicando que se está generando una clave dinámica sin haberla solicitado, y que la aplicación es lenta.\",\"proposed_feature\":\"Visualización y gestión de la tarjeta digital y sus movimientos\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175471,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 160,
+    "prompt_tokens": 1362,
+    "total_tokens": 1522,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0008086,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0008086,
+      "upstream_inference_prompt_cost": 0.0004086,
+      "upstream_inference_completions_cost": 0.0004
+    }
+  },
+  "provider": "Google AI Studio"
+}

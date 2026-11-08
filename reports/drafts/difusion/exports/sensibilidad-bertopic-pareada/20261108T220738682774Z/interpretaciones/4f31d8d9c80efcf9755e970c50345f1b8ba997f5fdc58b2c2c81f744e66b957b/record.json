@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidad de retiros sin tarjeta y gestión de estados de cuenta",
+    "topic_description": "Los usuarios valoran la aplicación por su funcionalidad para realizar operaciones bancarias básicas como pagos de tarjetas y transferencias. Sin embargo, algunos usuarios sugieren la implementación de retiros sin tarjeta, similar a otras aplicaciones bancarias, y la capacidad de descargar estados de cuenta de tarjetas de débito. También se menciona la necesidad de mejorar la fiabilidad de las transferencias y la facilidad de acceso a ciertas opciones.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:3cb2a2b6-2eaa-48e6-8349-73c5c68281c2",
+      "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+      "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+      "play:com.citibanamex.banamexmobile:08657362-a012-4b39-9efd-f8b405f38e19",
+      "play:com.citibanamex.banamexmobile:3a6f5635-fc91-4824-ae81-937436b3aa38",
+      "play:com.citibanamex.banamexmobile:67e963af-5341-427f-a5dc-4f697dbda097"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:3cb2a2b6-2eaa-48e6-8349-73c5c68281c2",
+    "play:com.citibanamex.banamexmobile:377e90a9-c21b-42c2-ad3f-a7c10f2dfda6",
+    "play:com.citibanamex.banamexmobile:05843067-a6c1-4b94-90d6-31eed7150bd0",
+    "play:com.citibanamex.banamexmobile:08657362-a012-4b39-9efd-f8b405f38e19",
+    "play:com.citibanamex.banamexmobile:3a6f5635-fc91-4824-ae81-937436b3aa38",
+    "play:com.citibanamex.banamexmobile:67e963af-5341-427f-a5dc-4f697dbda097"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007667,
+  "charged_or_reserved_usd": 0.0007667,
+  "usage": {
+    "completion_tokens": 137,
+    "prompt_tokens": 1414,
+    "total_tokens": 1551,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007667,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007667,
+      "upstream_inference_prompt_cost": 0.0004242,
+      "upstream_inference_completions_cost": 0.0003425
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175567-uLsTYw6cpg2yNIeiwAg7",
+  "files": {
+    "request.json": "d2beab7d0858c7d28569643973ea1cb0eee56748288e0856de04b958a29dedf8",
+    "response.json": "295162d63ef4de6c77b2b51bb0a7544bc915469b89987563115f18b4b399da23",
+    "reservation.json": "f7cd2b544ec952182c45733112f7eb681104593715d21aa33a0c209168e30b2e"
+  }
+}

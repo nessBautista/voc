@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175480-ixF02G7fuJeQKKQyQBl2",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Calidad del servicio y atención al cliente\",\"topic_description\":\"Los usuarios expresan satisfacción con la calidad del servicio y la atención recibida, destacando la amabilidad, eficiencia y profesionalismo del personal. Algunos mencionan que la atención fue clara y que recibieron asesoría paso a paso. También se valora la comodidad de no tener que hacer filas para realizar cobros o pagos, lo que sugiere que la aplicación facilita estas operaciones.\",\"proposed_feature\":null,\"assessment\":\"mixed\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175480,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 125,
+    "prompt_tokens": 1122,
+    "total_tokens": 1247,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006491,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006491,
+      "upstream_inference_prompt_cost": 0.0003366,
+      "upstream_inference_completions_cost": 0.0003125
+    }
+  },
+  "provider": "Google AI Studio"
+}

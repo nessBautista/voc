@@ -1,0 +1,58 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas con la cuenta Switch y notificaciones",
+    "topic_description": "Los usuarios experimentan dificultades con la cuenta Switch, específicamente al intentar aumentar el límite de la cuenta, ya que la aplicación no detecta el comprobante de domicilio. Además, se reporta que la aplicación no envía notificaciones para las transacciones realizadas en la cuenta Switch.",
+    "proposed_feature": "Notificaciones para la cuenta Switch",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:598ac302-cd68-42d9-b43b-88ac98fc3549",
+      "play:com.citibanamex.banamexmobile:1dfa7b8d-2b08-4917-99ec-4ed09586f54a"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:598ac302-cd68-42d9-b43b-88ac98fc3549",
+    "play:com.citibanamex.banamexmobile:01af58aa-cf9d-4d25-b388-0d9dd31ce7a7",
+    "x:2089474981243629794",
+    "appbot:498483038:3747573962",
+    "appbot:498483038:3757219327",
+    "play:com.citibanamex.banamexmobile:1dfa7b8d-2b08-4917-99ec-4ed09586f54a"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006296,
+  "charged_or_reserved_usd": 0.0006296,
+  "usage": {
+    "completion_tokens": 101,
+    "prompt_tokens": 1257,
+    "total_tokens": 1358,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006296,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006296,
+      "upstream_inference_prompt_cost": 0.0003771,
+      "upstream_inference_completions_cost": 0.0002525
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175563-OGqNF2VEB4ygYKR0hp25",
+  "files": {
+    "request.json": "c411a18da5fad1b3a97fcf40561f207ca8d1fd974ec3bb47aeaf22590a1c5344",
+    "response.json": "d4a994f428c31dd19fd1caa0a936e1c123b96b27852052457d9ef4bf7a923e56",
+    "reservation.json": "357f3d3c5023ffae5ae0f415688f11ba6649f33bffb078ccede44aa5f6896438"
+  }
+}

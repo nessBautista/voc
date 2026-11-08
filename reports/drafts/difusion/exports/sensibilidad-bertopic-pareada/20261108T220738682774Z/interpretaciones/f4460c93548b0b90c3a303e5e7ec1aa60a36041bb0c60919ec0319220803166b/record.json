@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Valoración positiva general de la aplicación",
+    "topic_description": "Las reseñas expresan una satisfacción general con la aplicación, utilizando términos como \"super cool\", \"increíble\", \"excelente\" y \"fantástica\". No se mencionan características específicas, solo una apreciación positiva del producto en su conjunto.",
+    "proposed_feature": null,
+    "assessment": "unclear",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:50d9704a-95ba-4306-b1ea-1ca5da5d1607",
+      "play:com.citibanamex.banamexmobile:fd71f4e3-d1ce-4fb1-a86f-c1388b74b988",
+      "play:com.citibanamex.banamexmobile:9d59152b-f350-406b-bd4a-c94cb57206a8",
+      "play:com.citibanamex.banamexmobile:302e9d4e-72ab-4996-9b6a-a712ef9da779",
+      "play:com.citibanamex.banamexmobile:4d35cd08-44db-45bc-8a73-fc41643154b4",
+      "play:com.citibanamex.banamexmobile:81984b24-cb32-4347-9246-ff468401528d"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:50d9704a-95ba-4306-b1ea-1ca5da5d1607",
+    "play:com.citibanamex.banamexmobile:fd71f4e3-d1ce-4fb1-a86f-c1388b74b988",
+    "play:com.citibanamex.banamexmobile:9d59152b-f350-406b-bd4a-c94cb57206a8",
+    "play:com.citibanamex.banamexmobile:302e9d4e-72ab-4996-9b6a-a712ef9da779",
+    "play:com.citibanamex.banamexmobile:4d35cd08-44db-45bc-8a73-fc41643154b4",
+    "play:com.citibanamex.banamexmobile:81984b24-cb32-4347-9246-ff468401528d"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005787,
+  "charged_or_reserved_usd": 0.0005787,
+  "usage": {
+    "completion_tokens": 99,
+    "prompt_tokens": 1104,
+    "total_tokens": 1203,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005787,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005787,
+      "upstream_inference_prompt_cost": 0.0003312,
+      "upstream_inference_completions_cost": 0.0002475
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175483-Ze22Mynlh3kRfRnEuVXH",
+  "files": {
+    "request.json": "6dbcee5bc79878fe079ce5f9b9edc4f9ea330a1705d827fe0e1dcbecc4200353",
+    "response.json": "4763dc6955672d44d05ab8229c9a3f90cb6bc64ec4490ad5df76ef0289faa30f",
+    "reservation.json": "789cbb88894bdc5fc35e7255497bad0479e1c027e586cf6beece8c5975c6c3b0"
+  }
+}

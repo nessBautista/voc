@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175458-FZC7F0RKiTUSKDs9fp59",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Seguridad en la aplicación\",\"topic_description\":\"Los usuarios valoran la seguridad de la aplicación, mencionando que es un trámite rápido y seguro, fácil de usar y que ofrece mucha seguridad para evitar robos por duplicado de cuenta. También se sugiere mejorar la seguridad al momento de transferir y probar la identidad, por ejemplo, mediante huella o fotografía.\",\"proposed_feature\":\"Funcionalidades de seguridad para proteger transacciones e identidad\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\",\"E4\",\"E5\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175458,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 124,
+    "prompt_tokens": 1143,
+    "total_tokens": 1267,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006529,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006529,
+      "upstream_inference_prompt_cost": 0.0003429,
+      "upstream_inference_completions_cost": 0.00031
+    }
+  },
+  "provider": "Google AI Studio"
+}

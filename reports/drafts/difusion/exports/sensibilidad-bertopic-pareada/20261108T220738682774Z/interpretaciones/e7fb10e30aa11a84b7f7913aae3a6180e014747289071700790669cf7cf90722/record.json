@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Evaluación de la claridad y utilidad de la aplicación",
+    "topic_description": "Las reseñas expresan opiniones variadas sobre la aplicación. Algunos usuarios la describen como \"exelente\", \"versatil didáctica\" y \"Grandioso\", lo que sugiere una experiencia positiva en términos de funcionalidad y facilidad de uso. Sin embargo, otros usuarios utilizan términos negativos como \"Rateros\" y \"Datos confusos\", lo que indica problemas con la transparencia, la confianza o la presentación de la información dentro de la aplicación. La disparidad en las opiniones hace difícil identificar una única característica específica que sea el foco principal de todas las reseñas.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:09c5bae7-5911-46d0-9bd7-1a02ef9c9404",
+      "play:com.citibanamex.banamexmobile:a24ae1f0-1449-4f24-92b9-af4aa526cb02",
+      "appbot:498483038:3751339820",
+      "appbot:498483038:3753175577",
+      "appbot:498483038:3756424121",
+      "play:com.citibanamex.banamexmobile:05512b9c-929d-439f-bed9-96bc3cf6515f"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:09c5bae7-5911-46d0-9bd7-1a02ef9c9404",
+    "play:com.citibanamex.banamexmobile:a24ae1f0-1449-4f24-92b9-af4aa526cb02",
+    "appbot:498483038:3751339820",
+    "appbot:498483038:3753175577",
+    "appbot:498483038:3756424121",
+    "play:com.citibanamex.banamexmobile:05512b9c-929d-439f-bed9-96bc3cf6515f"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "e7fb10e30aa11a84b7f7913aae3a6180e014747289071700790669cf7cf90722",
+    "response.json": "d4bee832df7aeaf81247c3948a71b2cbfb287085f61109dc39793dd98321d689"
+  }
+}

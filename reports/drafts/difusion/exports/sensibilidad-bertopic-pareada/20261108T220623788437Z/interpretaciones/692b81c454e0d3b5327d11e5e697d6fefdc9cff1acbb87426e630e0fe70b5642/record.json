@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad en la aplicación móvil de Banamex",
+    "topic_description": "Los usuarios reportan dificultades para acceder a la aplicación móvil de Banamex, incluyendo problemas para iniciar sesión con contraseña o número de tarjeta, y la imposibilidad de escanear tarjetas para agregarlas. Algunos usuarios mencionan que la aplicación no abre o no funciona correctamente, incluso después de intentar soluciones como borrar el caché o reinstalarla. También se sugiere que la aplicación podría requerir que la línea telefónica esté registrada para usar la banca móvil.",
+    "proposed_feature": "Mejorar la estabilidad y el proceso de inicio de sesión/registro de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "x:2088773170614460751",
+      "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+      "x:2078352589356191842",
+      "x:2072374032779944379",
+      "x:2072422112535486968",
+      "x:2072785423953183013"
+    ]
+  },
+  "evidence_ids": [
+    "x:2088773170614460751",
+    "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+    "x:2078352589356191842",
+    "x:2072374032779944379",
+    "x:2072422112535486968",
+    "x:2072785423953183013"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007917,
+  "charged_or_reserved_usd": 0.0007917,
+  "usage": {
+    "completion_tokens": 165,
+    "prompt_tokens": 1264,
+    "total_tokens": 1429,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007917,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007917,
+      "upstream_inference_prompt_cost": 0.0003792,
+      "upstream_inference_completions_cost": 0.0004125
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175557-CCMVSmnZ6bkKuuE1OTuJ",
+  "files": {
+    "request.json": "55d9b76cdcdce1eccf4626fcf083e50c29b742c3f2fad2679f753b01c3e4e066",
+    "response.json": "e7064dbd1453e5d27a47615bea775e7bdbdf2e80a1fb8fabe6f2f84b53ff2966",
+    "reservation.json": "1206cec31fb7ed631a0e521c2e73b90a4cac1887a37705e575287e489e71f5bc"
+  }
+}

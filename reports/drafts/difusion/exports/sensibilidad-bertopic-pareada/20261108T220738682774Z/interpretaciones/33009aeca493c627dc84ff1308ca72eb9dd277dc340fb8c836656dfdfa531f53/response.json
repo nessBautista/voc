@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175535-pM3cH7fRVrYGR44ngFsg",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"La aplicación facilita las operaciones bancarias y es percibida como buena por los usuarios.\",\"topic_description\":\"Los usuarios expresan satisfacción general con la aplicación, destacando que facilita la realización de movimientos bancarios y la consideran buena o excelente. Algunos mencionan que, aunque ocasionalmente presenta lentitud o se detiene, la experiencia general es positiva y sugieren que se realizan mejoras continuas para ofrecer mayor calidad y rapidez.\",\"proposed_feature\":\"Facilitación de movimientos bancarios\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E2\",\"E1\",\"E3\",\"E5\",\"E4\",\"E6\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175535,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 133,
+    "prompt_tokens": 1182,
+    "total_tokens": 1315,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006871,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006871,
+      "upstream_inference_prompt_cost": 0.0003546,
+      "upstream_inference_completions_cost": 0.0003325
+    }
+  },
+  "provider": "Google AI Studio"
+}

@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175474-Yj2drTDWCPREkRnnvUr9",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Funcionalidades de control de gastos y transferencias\",\"topic_description\":\"Los usuarios valoran la aplicación por permitirles controlar sus gastos, realizar liquidaciones y obtener reembolsos por compras. También se destaca su utilidad para facilitar operaciones y transferencias interbancarias, así como la descarga de estados de cuenta.\",\"proposed_feature\":\"Control de gastos, transferencias y descarga de estados de cuenta\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E2\",\"E3\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175474,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 103,
+    "prompt_tokens": 1162,
+    "total_tokens": 1265,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006061,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006061,
+      "upstream_inference_prompt_cost": 0.0003486,
+      "upstream_inference_completions_cost": 0.0002575
+    }
+  },
+  "provider": "Google AI Studio"
+}

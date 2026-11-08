@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Funcionalidad y seguridad de la aplicación",
+    "topic_description": "Los usuarios valoran la aplicación por su utilidad y seguridad. Mencionan que les permite realizar retiros sin tarjeta, facilita operaciones y transferencias interbancarias, y la consideran un medio de pago seguro. Además, destacan que es rápida, amigable y les ahorra tiempo en sus trámites.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+      "play:com.citibanamex.banamexmobile:08f96f00-7a64-4f17-93d6-0a3ea1493cc0",
+      "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "appbot:498483038:3759645483",
+    "play:com.citibanamex.banamexmobile:08f96f00-7a64-4f17-93d6-0a3ea1493cc0",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.00042254,
+  "charged_or_reserved_usd": 0.00042254,
+  "usage": {
+    "completion_tokens": 110,
+    "prompt_tokens": 1183,
+    "total_tokens": 1293,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 768,
+      "video_tokens": 0
+    },
+    "cost": 0.00042254,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.00042254,
+      "upstream_inference_prompt_cost": 0.00014754,
+      "upstream_inference_completions_cost": 0.000275
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175528-VogtP3EyjetYpXZPch0X",
+  "files": {
+    "request.json": "e474983a7d2757cbdc0ff89a8596b424c421e3a315552a23f8462c70f6b6584a",
+    "response.json": "55db01f27b314195fd2953cc9bb73cd5a6eb8f93d4444de20e54f31e85a21b90",
+    "reservation.json": "c883f214a1d061f40c01a80aa7dc03d355c2a2f329c88c2a5d42e1827c615574"
+  }
+}

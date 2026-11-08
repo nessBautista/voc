@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Mejoras en la aplicación y servicio al cliente de Banamex",
+    "topic_description": "Los usuarios expresan satisfacción con las mejoras progresivas de la aplicación, destacando su facilidad de uso y practicidad. También se menciona la excelencia en el servicio proporcionado por el personal de Banamex, desde ejecutivos hasta personal de limpieza, lo que contribuye a una experiencia positiva general. Sin embargo, también se señala la presencia de muchos anuncios de productos Banamex dentro de la aplicación.",
+    "proposed_feature": null,
+    "assessment": "mixed",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+      "play:com.citibanamex.banamexmobile:4c163123-1765-4668-8ae5-9bf23e33e536",
+      "appbot:498483038:3760879979",
+      "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+      "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:dc887e77-e74e-4266-a085-b9e4ed97475b",
+    "play:com.citibanamex.banamexmobile:4c163123-1765-4668-8ae5-9bf23e33e536",
+    "x:2075801022052614312",
+    "appbot:498483038:3760879979",
+    "play:com.citibanamex.banamexmobile:2fb19709-5dcb-44f1-a0d4-8900feb196ed",
+    "play:com.citibanamex.banamexmobile:4cc35b8b-3ea2-46eb-840a-9081589f680a"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007201,
+  "charged_or_reserved_usd": 0.0007201,
+  "usage": {
+    "completion_tokens": 133,
+    "prompt_tokens": 1292,
+    "total_tokens": 1425,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007201,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007201,
+      "upstream_inference_prompt_cost": 0.0003876,
+      "upstream_inference_completions_cost": 0.0003325
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175534-Ibsbf59Hu4FOZ3Ht1lPc",
+  "files": {
+    "request.json": "d3389c8ca14fd449a2edfc7f575c5309646ad26930ad6cc9bbc5dceb83bdd38d",
+    "response.json": "a148e9c72fddb72c9a84e7f4ebd6d14b3f8c7226d1a41b998bcbeb4ebade08a5",
+    "reservation.json": "f1456ecc3dfe8a9a8182cd9ce2c0b3eddcffab9560b49d79cb046ca033952201"
+  }
+}

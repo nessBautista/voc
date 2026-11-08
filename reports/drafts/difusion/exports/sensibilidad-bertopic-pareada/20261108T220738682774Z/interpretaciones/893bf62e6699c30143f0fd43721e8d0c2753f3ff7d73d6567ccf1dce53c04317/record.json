@@ -1,0 +1,61 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de acceso y funcionalidad de la aplicación",
+    "topic_description": "Los usuarios reportan dificultades para abrir la aplicación, que se queda en una pantalla azul o se oscurece, impidiendo el acceso. Algunos han intentado reinstalarla o borrar el caché sin éxito. También se menciona que la aplicación es lenta y no muestra los movimientos bancarios de manera oportuna.",
+    "proposed_feature": "Mejorar la estabilidad y el rendimiento de la aplicación al iniciar",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+      "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+      "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+      "appbot:498483038:3738324714",
+      "appbot:498483038:3738360561"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:4d4804a3-43f0-4970-9015-02355c317195",
+    "play:com.citibanamex.banamexmobile:73962522-0930-4d71-8799-3932bf49a89e",
+    "play:com.citibanamex.banamexmobile:71c77ad8-78a7-4a2b-a819-abae8a3cef0c",
+    "appbot:498483038:3738324714",
+    "appbot:498483038:3738360561",
+    "appbot:498483038:3738390463"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0007059,
+  "charged_or_reserved_usd": 0.0007059,
+  "usage": {
+    "completion_tokens": 123,
+    "prompt_tokens": 1328,
+    "total_tokens": 1451,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0007059,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0007059,
+      "upstream_inference_prompt_cost": 0.0003984,
+      "upstream_inference_completions_cost": 0.0003075
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175497-6Bad8DGzboA08YLuXH44",
+  "files": {
+    "request.json": "d8cac78457c9b20f3a120b3d6f76c0a9d9ee3f0953e3ca2c6aa6e84dea971e2b",
+    "response.json": "219237b7608a5803e7540df4cca5f678bd0469374355222b2ee437262bdc1f3b",
+    "reservation.json": "f7e1f3a8c47037d0b6e33ed62912d70e0906d0e73f384839c0f6ea6797b57211"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "status": "completed",
+  "origin": "published_reuse",
+  "result": {
+    "name": "Problemas de acceso y registro en la aplicación móvil de Banamex",
+    "topic_description": "Los usuarios reportan dificultades para iniciar sesión en la aplicación de Banamex, siendo expulsados inesperadamente o impidiéndoles el acceso con su número de tarjeta o teléfono. Algunos usuarios mencionan que la aplicación no responde o falla constantemente. También se presentan problemas al intentar registrar una tarjeta nueva, específicamente con la función de escaneo que no logra capturar el número de la tarjeta, y la imposibilidad de ingresar el código SMS de activación de NetKey en dispositivos Android.",
+    "proposed_feature": "Mejorar el proceso de inicio de sesión y registro de tarjetas",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "x:2078352589356191842",
+      "x:2076879636324085826",
+      "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+      "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328",
+      "play:com.citibanamex.banamexmobile:9d4ad448-c036-428f-b867-8037834f4899",
+      "play:com.citibanamex.banamexmobile:b1ccce64-88bd-4016-88a1-f2ff6e69b9c3"
+    ]
+  },
+  "evidence_ids": [
+    "x:2078352589356191842",
+    "x:2076879636324085826",
+    "play:com.citibanamex.banamexmobile:4c215f6e-3383-4b75-ad95-8c64550df0c5",
+    "play:com.citibanamex.banamexmobile:027da551-d898-4b00-b8f6-50bed4e9b328",
+    "play:com.citibanamex.banamexmobile:9d4ad448-c036-428f-b867-8037834f4899",
+    "play:com.citibanamex.banamexmobile:b1ccce64-88bd-4016-88a1-f2ff6e69b9c3"
+  ],
+  "error": null,
+  "cost_usd": 0,
+  "charged_or_reserved_usd": 0,
+  "provider_attempt": false,
+  "analysis_id": "8170593a-f915-4b9e-aec6-9e09cd17744d",
+  "files": {
+    "request.json": "b604c785ffb41ac542ac24b595fd4a270607e8063e9af3542e61941991b99b32",
+    "response.json": "38850923d94c3af3d9e20b457c0771f0f661831225c8f1cffdfa74590e267dcb"
+  }
+}

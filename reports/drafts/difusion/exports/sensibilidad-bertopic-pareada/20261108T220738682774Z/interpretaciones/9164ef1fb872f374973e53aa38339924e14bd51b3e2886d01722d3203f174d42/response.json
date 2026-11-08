@@ -1,0 +1,53 @@
+{
+  "id": "gen-1794175576-D3Y3Rf6AY1rFhCFo4QPP",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\"name\":\"Problemas de funcionamiento general de la aplicación Banamex\",\"topic_description\":\"Los usuarios reportan fallas recurrentes en la aplicación de Banamex, describiéndola como inoperable o con un mal servicio. Algunos mencionan que la aplicación no funciona correctamente de manera constante, lo que les impide realizar sus operaciones. Se expresa frustración por la falta de soluciones y la necesidad de que se arregle la aplicación.\",\"proposed_feature\":\"Funcionamiento estable de la aplicación\",\"assessment\":\"single_feature\",\"supporting_evidence\":[\"E1\",\"E3\",\"E4\"]}",
+        "refusal": null,
+        "role": "assistant",
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "tool_calls": null,
+        "reasoning": null
+      },
+      "native_finish_reason": "STOP"
+    }
+  ],
+  "created": 1794175576,
+  "model": "google/gemini-2.5-flash",
+  "object": "chat.completion",
+  "moderation": null,
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 121,
+    "prompt_tokens": 1180,
+    "total_tokens": 1301,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006565,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006565,
+      "upstream_inference_prompt_cost": 0.000354,
+      "upstream_inference_completions_cost": 0.0003025
+    }
+  },
+  "provider": "Google AI Studio"
+}

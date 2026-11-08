@@ -1,0 +1,60 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Atención al cliente eficiente y amable",
+    "topic_description": "Los usuarios expresan satisfacción con la atención al cliente, destacando que es clara, eficiente, rápida y amable. Agradecen la utilidad de la información proporcionada y la atención a sus necesidades.",
+    "proposed_feature": "Atención al cliente eficiente y amable",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "appbot:498483038:3750400727",
+      "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+      "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+      "youtube:-:UgwAtme4E0RfWGHsfKR4AaABAg"
+    ]
+  },
+  "evidence_ids": [
+    "youtube:-:UgwAtme4E0RfWGHsfKR4AaABAg",
+    "appbot:498483038:3750400727",
+    "play:com.citibanamex.banamexmobile:4fdf5ba1-4642-488a-a021-6a59321c3513",
+    "play:com.citibanamex.banamexmobile:074c45d7-7e8d-4ced-a1e6-647e354a5133",
+    "play:com.citibanamex.banamexmobile:095261a4-2009-4b02-bfe7-90ef263df593",
+    "play:com.citibanamex.banamexmobile:456dc052-21eb-4dca-8447-493d3a886d95"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005541,
+  "charged_or_reserved_usd": 0.0005541,
+  "usage": {
+    "completion_tokens": 90,
+    "prompt_tokens": 1097,
+    "total_tokens": 1187,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005541,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005541,
+      "upstream_inference_prompt_cost": 0.0003291,
+      "upstream_inference_completions_cost": 0.000225
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175455-Pi9rsLOcQh8NiXJKfkeo",
+  "files": {
+    "request.json": "299fef6f2c23f9d351a14259117a51074c082fa8a08d2be5f3adb00b89646e73",
+    "response.json": "dd91e79a1c8baf98bfc85afdf0158666cc49842996987963b127c0450654fc6c",
+    "reservation.json": "d396cb4310c2107824de7b1fe42aaa6ac259ed1fabd9b84650201bf783e88a36"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Seguridad y facilidad de uso en la aplicación móvil",
+    "topic_description": "Los usuarios valoran la aplicación por su seguridad, mencionando que protege sus datos y es confiable para realizar operaciones. Además, destacan su utilidad para realizar diversas transacciones como retiros sin tarjeta, pagos y transferencias interbancarias, lo que les ahorra tiempo y facilita sus compromisos.",
+    "proposed_feature": "Funcionalidades de seguridad y transacciones bancarias",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+      "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+      "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+      "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+      "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+      "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:f2df2d9b-aeec-4305-b91e-0c8c8ba2551b",
+    "play:com.citibanamex.banamexmobile:f49283bd-4525-45c9-b75e-d4d4040d34b3",
+    "play:com.citibanamex.banamexmobile:96e124de-63c6-420f-a217-89b1df783c21",
+    "play:com.citibanamex.banamexmobile:13f1b539-9be6-4347-b152-8a651ae872af",
+    "play:com.citibanamex.banamexmobile:2937bf7b-2aa5-4bc6-a615-da3e2e9b27aa",
+    "play:com.citibanamex.banamexmobile:4415e68c-863f-4291-9857-7e4182b27953"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0006721,
+  "charged_or_reserved_usd": 0.0006721,
+  "usage": {
+    "completion_tokens": 124,
+    "prompt_tokens": 1207,
+    "total_tokens": 1331,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0006721,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0006721,
+      "upstream_inference_prompt_cost": 0.0003621,
+      "upstream_inference_completions_cost": 0.00031
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175549-1uAUUsL3JdGSZnIWzYfN",
+  "files": {
+    "request.json": "73f99aa04592a59ed7863a78693adf0850be9989bf17e9e9f1abe90501a89657",
+    "response.json": "a1826f64341c50657687283484b4bf4c482e47843bdbcbd2813716098bec9d87",
+    "reservation.json": "e9f1c158c431ae6331161008c39bf18fb62e459b229d3027a8964aebf2e65635"
+  }
+}

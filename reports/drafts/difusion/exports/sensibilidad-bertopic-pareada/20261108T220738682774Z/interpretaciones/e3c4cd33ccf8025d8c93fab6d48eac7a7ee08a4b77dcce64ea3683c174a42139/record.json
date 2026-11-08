@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "origin": "provider",
+  "result": {
+    "name": "Problemas de rendimiento y congelamiento de la aplicación",
+    "topic_description": "Los usuarios reportan que la aplicación se congela o se traba con frecuencia, lo que impide su uso normal. Algunos mencionan que esto ocurre al intentar ingresar a la aplicación o que es un problema reciente.",
+    "proposed_feature": "Estabilidad y rendimiento de la aplicación",
+    "assessment": "single_feature",
+    "supporting_review_ids": [
+      "play:com.citibanamex.banamexmobile:bb9cc4d8-9cb2-4a99-b1c7-ecc0448ee5f2",
+      "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+      "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+      "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+      "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+      "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+    ]
+  },
+  "evidence_ids": [
+    "play:com.citibanamex.banamexmobile:bb9cc4d8-9cb2-4a99-b1c7-ecc0448ee5f2",
+    "play:com.citibanamex.banamexmobile:e1f98d2b-9614-457a-9010-3745bbb699d8",
+    "play:com.citibanamex.banamexmobile:3d9570e3-a85e-4ec5-90c7-f5f241cb3bbd",
+    "play:com.citibanamex.banamexmobile:15aef65e-d49a-499d-8d7d-57fc2c4c5aec",
+    "play:com.citibanamex.banamexmobile:1f04dfe1-2cc2-42ed-b344-fc1b8345d3b5",
+    "play:com.citibanamex.banamexmobile:4d2e9f1c-3631-47b5-8199-a2a6b5a57209"
+  ],
+  "error": null,
+  "provider_attempt": true,
+  "cost_usd": 0.0005904,
+  "charged_or_reserved_usd": 0.0005904,
+  "usage": {
+    "completion_tokens": 102,
+    "prompt_tokens": 1118,
+    "total_tokens": 1220,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null,
+      "image_tokens": 0
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost": 0.0005904,
+    "is_byok": false,
+    "cost_details": {
+      "upstream_inference_cost": 0.0005904,
+      "upstream_inference_prompt_cost": 0.0003354,
+      "upstream_inference_completions_cost": 0.000255
+    }
+  },
+  "model": "google/gemini-2.5-flash",
+  "response_id": "gen-1794175467-2N2E11PaioaEFSNKOEMo",
+  "files": {
+    "request.json": "2600cafcffe7db27274c600754613a3161eb8bc049d38ded5537fd971f5d2d0f",
+    "response.json": "6d1589eaf34fa28f6285a765faf6b1e61ad60c4055a84684748c20efa78a2fe7",
+    "reservation.json": "6cdab10d3cd192afe0db8eb17ac20952ef5d69fbae96d333749fe7005906d3ef"
+  }
+}
