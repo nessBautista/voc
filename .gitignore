@@ -60,6 +60,7 @@ htmlcov/
 
 # --- Notebooks ---
 .ipynb_checkpoints/
+.ipynb_checkpoints */
 */.ipynb_checkpoints/*
 __marimo__/
 *.marimo.cache

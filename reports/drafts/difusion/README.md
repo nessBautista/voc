@@ -284,3 +284,7 @@ El punto de entrada para el reporte es [evidencia-articulo-14.ipynb](../../difus
 Puede consultarse también en [HTML con salidas](sensibilidad-bertopic.html). Para ejecutar, abrirla desde `just difusion-jupyter`. Requiere las entradas locales del experimento `julaug-2026` y MiniLM descargado. `EJECUTAR_AJUSTES=False` reutiliza resultados guardados. Para ajustar configuraciones nuevas, cambiarlo a `True` o iniciar el entorno con `DIFUSION_RUN_SENSITIVITY=1`. La caché queda en `data/experiments/bertopic-sensibilidad/` y los resultados exportados en `exports/sensibilidad-bertopic/`.
 
 La libreta ahora incluye una segunda fase pareada: diez configuraciones con y sin filtro (20 condiciones), sentimiento guardado de Robertuito original/adaptado e interpretaciones del LLM. En la consulta normal reutiliza las cachés sin llamadas nuevas. La revisión humana y las repeticiones con otras semillas siguen pendientes. Este experimento no cambia la libreta de referencia ni el artículo y no declara una configuración óptima. Véase la [guía de lectura y ejecución](sensibilidad-bertopic.md).
+
+## Comparación de tres modelos de sentimiento (marimo)
+
+[workflow05_stores_comparison.py](workflow05_stores_comparison.py) adapta el comparativo original, ajuste completo y parcial. Incluye F1, matrices, desacuerdos y silueta opcional. Los CSV originales están pendientes. Consulta [la guía](workflow05_stores_comparison.md).

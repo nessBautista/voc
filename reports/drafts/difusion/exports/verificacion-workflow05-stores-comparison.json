@@ -1,0 +1,25 @@
+{
+  "state": "notebook_verified_historical_inputs_missing",
+  "created_at": "2026-11-09T01:52:41.820016+00:00",
+  "source_file": "journal/linear/WOR-228-producto-difusion/context/workflow05_stores_comparison.py",
+  "source_sha256": "40873eda3a2a42c80a6aaa6f5b77574ce5bb9849acc6b0a1fa19b31b1c5072d5",
+  "notebook": "workflow05_stores_comparison.py",
+  "notebook_sha256": "ef80d652934acc016f4a383373e0887609bc0d8dc434939e2ece3edb1e0e17cb",
+  "marimo_version": "0.25.0",
+  "cells": 13,
+  "checks": [
+    "live kernel cell graph valid",
+    "missing files explained without fabricated results",
+    "synthetic ID alignment despite row ordering",
+    "synthetic metrics and confusion matrices",
+    "mismatched test text rejected",
+    "invalid probability rejected",
+    "duplicate record ID rejected",
+    "six synthetic silhouette values within [-1,1]",
+    "paths restored and synthetic results removed"
+  ],
+  "real_comparison_executed": false,
+  "historical_csv_files_missing": 5,
+  "model_requests": 0,
+  "training_runs": 0
+}
