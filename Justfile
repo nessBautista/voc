@@ -75,3 +75,33 @@ app-logs:
 # Exercise the built app with isolated synthetic publications; run on the Mac.
 app-cycle action:
     python3 tests/acceptance/data_state_cycle/cycle.py {{quote(action)}}
+
+# Create the private demo configuration without replacing existing keys.
+demo-configure:
+    @bash scripts/demo.sh configure
+
+# Build the local web demo and install the selected publication.
+demo-setup:
+    @bash scripts/demo.sh setup
+
+# Start the local dashboard/chat using the installed publication.
+demo-up:
+    @bash scripts/demo.sh up
+
+# Stop the local demo, preserving its data and conversations.
+demo-down:
+    @bash scripts/demo.sh stop
+
+alias demo-stop := demo-down
+
+# Install the selected publication, reusing a valid local copy.
+demo-sync:
+    @bash scripts/demo.sh sync
+
+# Show local demo container status.
+demo-status:
+    @bash scripts/demo.sh status
+
+# Show recent local demo logs.
+demo-logs:
+    @bash scripts/demo.sh logs

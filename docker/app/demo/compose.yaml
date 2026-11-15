@@ -1,0 +1,60 @@
+# Independent local demo. Neither the Operator .env nor cloud settings are loaded.
+name: voc-local-demo
+services:
+  app:
+    image: voc-local-demo:dev
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    init: true
+    ports: ["127.0.0.1:${VOC_DEMO_PORT:-8091}:8000"]
+    environment:
+      VOC_PUBLICATIONS_DIR: /app/catalog
+      VOC_APP_STATE_DIR: /app/state
+      VOC_AUTH_MODE: local
+      VOC_PUBLIC_ORIGIN: http://localhost:${VOC_DEMO_PORT:-8091}
+      VOC_PLANNER_MODE: model
+      VOC_LLM_BASE_URL: https://openrouter.ai/api/v1
+      VOC_LLM_MODEL: ${VOC_DEMO_MODEL:-anthropic/claude-sonnet-5.5}
+      VOC_LLM_API_KEY: ${VOC_DEMO_OPENROUTER_API_KEY:-}
+      VOC_MCP_ENABLED: "false"
+      VOC_TURN_TIMEOUT_SECONDS: "90"
+    volumes:
+      - catalog:/app/catalog:ro
+      - state:/app/state
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5).close()"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+      start_period: 15s
+
+  # Only this short-lived process receives S3 credentials. Never started by up.
+  prepare:
+    image: voc-local-demo:dev
+    profiles: [tools]
+    entrypoint: [python, /tools/demo_data.py]
+    environment:
+      AWS_ACCESS_KEY_ID: ${VOC_DEMO_AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${VOC_DEMO_AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${VOC_DEMO_AWS_SESSION_TOKEN:-}
+      AWS_EC2_METADATA_DISABLED: "true"
+    volumes:
+      - catalog:/app/catalog
+      - state:/app/state
+      - ./scripts/demo_data.py:/tools/demo_data.py:ro
+      - ./config/demo-publication.json:/tools/publication.json:ro
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=512m"]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+# Named Linux volumes retain SQLite locking/permissions on Windows Docker Desktop.
+# They are separate from the existing data/voc-app and from the cloud installation.
+volumes:
+  catalog:
+  state:
