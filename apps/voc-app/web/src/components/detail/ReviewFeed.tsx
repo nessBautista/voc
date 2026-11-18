@@ -84,8 +84,8 @@ const named = (chosen: Set<Label>) => {
     : names[0];
 };
 
-// A topic's reviews, text first. The sentiment filter is the dashboard's own:
-// choosing "Negativas" here sets the chips, the tiles and the charts too.
+// A topic's reviews, text first. The sentiment filter belongs to the feed:
+// choosing "Negativas" here changes only the reviews listed.
 export function ReviewFeed({
   result,
   keywords,
@@ -117,7 +117,6 @@ export function ReviewFeed({
             className="voc-segmented"
             role="group"
             aria-label="Filtrar por sentimiento"
-            title="Este filtro también se aplica al resto del panel"
           >
             <button type="button" aria-pressed={!filtered} onClick={showAll}>
               Todas<span className="voc-seg-count">{number(counts.all)}</span>

@@ -219,6 +219,56 @@ test("drilling into a topic shows its reviews with paging and evidence", async (
   await expect(row).toBeFocused();
 });
 
+test("the review feed's sentiment filter stays inside the detail", async ({
+  page,
+}) => {
+  await page.goto("/dashboard/");
+  const topics = page.getByRole("region", {
+    name: "Temas por volumen y sentimiento",
+  });
+  await topics
+    .getByRole("button", { name: /Tema 0 · Una funcionalidad/ })
+    .click();
+  const detail = page.getByRole("region", {
+    name: "Lentitud al abrir y cargar la aplicación",
+  });
+  await detail.getByRole("tab", { name: /Reseñas/ }).click();
+  const feed = detail.getByRole("group", { name: "Filtrar por sentimiento" });
+  await feed.getByRole("button", { name: /Negativas/ }).click();
+  await expect(feed.getByRole("button", { name: /Negativas/ })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  // The topic's reviews are read again with the label…
+  await expect
+    .poll(() =>
+      requested.some(
+        (u) =>
+          u.includes("/reviews") &&
+          u.includes("topic_id=0") &&
+          u.includes("labels=negative"),
+      ),
+    )
+    .toBe(true);
+  // …and nothing else is: the dashboard's chips, tiles and charts keep theirs.
+  await page.waitForTimeout(600);
+  expect(
+    requested.filter((u) => u.includes("labels=") && !u.includes("topic_id=0")),
+  ).toHaveLength(0);
+  expect(requested.filter((u) => u.includes("/summary"))).toHaveLength(1);
+  const filters = page.getByRole("region", { name: "Filtros" });
+  for (const name of ["Neutras", "Positivas"]) {
+    await expect(
+      filters.getByRole("button", { name, exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+  }
+  await expect(
+    page
+      .getByRole("region", { name: "Indicadores de la selección" })
+      .getByText("60", { exact: true }),
+  ).toBeVisible();
+});
+
 test("a refused selection is reported without losing the page", async ({
   page,
 }) => {

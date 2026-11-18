@@ -34,9 +34,14 @@ type Loaded =
   | { status: "ready"; snapshot: AnalysisSnapshot }
   | { status: "loading" }
   | { status: "error"; error: DataError };
-// A topic as read with every filter, and, while the sentiment filter is
-// narrowed, read again without it so the detail's summary stays whole.
-type TopicView = { snapshot: TopicSnapshot; mix?: TopicSnapshot };
+// A topic as read with the dashboard's filters; while the sentiment filter is
+// narrowed, read again without it so the detail's summary stays whole; and,
+// when the review feed has its own sentiment filter, the feed's page.
+type TopicView = {
+  snapshot: TopicSnapshot;
+  mix?: TopicSnapshot;
+  feed?: TopicSnapshot;
+};
 type TopicState =
   | { status: "closed" }
   // `keep` holds the page on screen while the next page or filter loads.
@@ -65,6 +70,9 @@ export function AnalysisDashboard({
   const [sort, setSort] = useState<Sort>("volume");
   const [state, setState] = useState<Loaded>({ status: "loading" });
   const [topic, setTopic] = useState<TopicState>({ status: "closed" });
+  // The review feed's own sentiment filter. It never touches the dashboard's;
+  // null follows the dashboard's selection until the reader chooses one.
+  const [feedLabels, setFeedLabels] = useState<Set<Label> | null>(null);
   const [months, setMonths] = useState<string[]>([]);
   const debounced = useDebounced(filters, 250);
   const latest = useRef(0);
@@ -123,19 +131,23 @@ export function AnalysisDashboard({
     topic.status === "loading"
       ? topic.page
       : topic.status === "ready"
-        ? topic.view.snapshot.reviews.data.page
+        ? (topic.view.feed ?? topic.view.snapshot).reviews.data.page
         : 1;
   useEffect(() => {
     if (topicId === null) return;
     const controller = new AbortController();
     const narrowed = debounced.labels.size < allLabels.length;
+    const ownFeed =
+      feedLabels !== null &&
+      (feedLabels.size !== debounced.labels.size ||
+        [...feedLabels].some((label) => !debounced.labels.has(label)));
     Promise.all([
       loadTopic(
         publicationId,
         topicId,
         debounced,
-        page,
-        PAGE_SIZE,
+        ownFeed ? 1 : page,
+        ownFeed ? 1 : PAGE_SIZE,
         controller.signal,
       ),
       narrowed
@@ -148,10 +160,20 @@ export function AnalysisDashboard({
             controller.signal,
           )
         : Promise.resolve(undefined),
+      ownFeed
+        ? loadTopic(
+            publicationId,
+            topicId,
+            { ...debounced, labels: feedLabels },
+            page,
+            PAGE_SIZE,
+            controller.signal,
+          )
+        : Promise.resolve(undefined),
     ])
-      .then(([snapshot, mix]) => {
+      .then(([snapshot, mix, feed]) => {
         if (!controller.signal.aborted)
-          setTopic({ status: "ready", topicId, view: { snapshot, mix } });
+          setTopic({ status: "ready", topicId, view: { snapshot, mix, feed } });
       })
       .catch((error) => {
         if (!controller.signal.aborted)
@@ -165,7 +187,7 @@ export function AnalysisDashboard({
           });
       });
     return () => controller.abort();
-  }, [publicationId, topicId, page, debounced]);
+  }, [publicationId, topicId, page, debounced, feedLabels]);
 
   // The detail sheet: the open topic, its tab, and where focus returns.
   const [tab, setTab] = useState<DetailTab>("summary");
@@ -183,6 +205,7 @@ export function AnalysisDashboard({
           ? null
           : document.querySelector<HTMLElement>(`[data-topic-id="${topicId}"]`);
     setTopic({ status: "closed" });
+    setFeedLabels(null);
     focused.current = null;
     opener.current = null;
     back?.focus();
@@ -207,9 +230,10 @@ export function AnalysisDashboard({
           topic.keep?.snapshot.detail.data.topic_id === topic.topicId
         ? topic.keep
         : null;
-  // The review feed's filter is the dashboard's own sentiment filter.
+  // The review feed's filter stays in the detail: the dashboard behind it
+  // keeps its own selection.
   const setLabels = (next: Set<Label>) => {
-    setFilters((current) => ({ ...current, labels: next }));
+    setFeedLabels(next);
     if (topic.status === "ready" && page !== 1)
       setTopic({
         status: "loading",
@@ -334,8 +358,8 @@ export function AnalysisDashboard({
                 detail={view.snapshot.detail}
                 mix={view.mix?.detail}
                 timeline={(view.mix ?? view.snapshot).timeline}
-                reviews={view.snapshot.reviews}
-                labels={filters.labels}
+                reviews={(view.feed ?? view.snapshot).reviews}
+                labels={feedLabels ?? filters.labels}
                 onLabels={setLabels}
                 onPage={(page) =>
                   setTopic({
@@ -354,7 +378,7 @@ export function AnalysisDashboard({
                 results={[
                   view.snapshot.detail,
                   view.snapshot.timeline,
-                  view.snapshot.reviews,
+                  (view.feed ?? view.snapshot).reviews,
                   ...(view.mix ? [view.mix.detail, view.mix.timeline] : []),
                 ]}
               />
