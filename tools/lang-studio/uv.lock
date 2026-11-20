@@ -1815,6 +1815,10 @@ dev = [
     { name = "pyyaml", specifier = ">=6,<7" },
     { name = "ruff", specifier = ">=0.12" },
 ]
+notebook = [
+    { name = "ipykernel", specifier = ">=6,<8" },
+    { name = "langchain-openrouter", specifier = ">=0.2,<1" },
+]
 
 [[package]]
 name = "voc-lang-studio"
